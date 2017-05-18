@@ -1,0 +1,22 @@
+<div id="mgsettings">
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">{{ _('Hide Debug') }}</label>
+        <div class="controls">
+           <input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.hideDebug" />
+        </div>
+    </div>
+</form>
+
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">{{ _('MGSetup As First Tab') }}</label>
+        <div class="controls">
+           <input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.firstTab " />
+        </div>
+    </div>
+</form>
+
+<button data-bind="enable: loginState.isUser(), click: function() { $root.turnSshOn() }">Turn SSH On</button><br><br>
+<button data-bind="enable: loginState.isUser(), click: function() { $root.turnSshOff() }">Turn SSH Off</button><br><br>
+</div>

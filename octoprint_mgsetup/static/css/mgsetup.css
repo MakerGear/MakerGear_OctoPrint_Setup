@@ -1,0 +1,197 @@
+#tab_plugin_hellopablo {
+	button.btngo {
+		border-radius:15px;
+		
+}
+}
+#hellopablo{overflow:hidden}
+#hellopablo.jog-panel{float:left;margin-right:19px}
+#hellopablo h1{text-align:left}
+#hellopablo.jog-panel>div{text-align:center}
+#hellopablo.jog-panel>div.distance{text-align:left}
+#hellopablo.jog-panel .slider{margin-bottom:10px}
+#hellopablo.box{width:30px;height:30px;margin-right:10px;margin-bottom:10px;padding-left:8px}
+#hellopablo.control-box{display:block;height:30px;margin-bottom:10px}
+#hellopablo.btn-group{margin-bottom:10px}
+#hellopablo.btn-group.distance>.btn{width:43px;padding:3px 0;height:30px}
+#hellopablo.slider-handle{width:14px;height:14px;margin-left:-7px;margin-top:-3px}
+#hellopablo.custom_section h1{cursor:pointer}
+#hellopablo.custom_section_horizontal>.custom_control{display:inline-block}
+#hellopablo.custom_section_vertical>.custom_control{display:block}
+#hellopablo.custom_control .slider{margin-left:10px;margin-right:10px;margin-bottom:2px}
+
+
+/* Should I */
+button.btnstay {
+		border-radius:10px;
+		background-color:#484848;
+		color:white;
+		font-size:25px;
+		padding:10px;
+
+}
+
+button.btnstay:hover {
+
+		background-color:#696969;
+
+
+}
+
+
+
+
+
+/* Or should I */
+
+button.btngo {
+		border-radius:10px;
+		background-color:#ff6e35;
+		color:white;
+		font-size:15px;
+		opacity:1;
+
+}
+
+button.btngo:hover {
+		border-radius:10px;
+		background-color:#E94707;
+		color:white;
+
+}
+
+
+button.btngo:disabled,button.btnstay:disabled,  button.btnstayBig:disabled, button.btngoBig:disabled, button.arrowbtn:disabled   {
+			opacity:.15;
+
+
+}
+
+/* Or should I */
+
+button.btngoBig {
+		border-radius:10px;
+		background-color:#ff6e35;
+		color:white;
+		font-size:25px;
+		padding:10px;
+		line-height:25px;
+
+}
+
+button.btngoBig:hover {
+		border-radius:10px;
+		background-color:#E94707;
+		color:white;
+
+}
+
+
+
+button.btnstayBig {
+		border-radius:10px;
+		background-color:#484848;
+		color:white;
+		font-size:25px;
+		padding:10px;
+		line-height:25px;
+
+}
+
+button.btnstayBig:hover {
+		border-radius:10px;
+		background-color:#696969;
+		color:white;
+
+}
+
+
+
+
+
+
+
+
+
+.choiceTable 
+{
+	border:solid #ddd 2px;
+}
+
+
+
+table.choiceTable  tr td
+{
+	width:33%;
+	padding:10px;
+
+	border-left:2px solid #ddd; 
+	border-right:2px solid #ddd;
+}
+
+td.buttonCell
+{
+	border:solid #ddd 2px;
+
+}
+
+
+
+button.topleft {
+		position:absolute;
+		top:5%;
+		left:10%;
+		border-color:#ff6e35;
+}
+button.topright {
+		position:absolute;
+		top:5%;
+		right:10%;
+		border-color:#ff6e35;
+}
+button.bottomleft {
+		position:absolute;
+		top:85%;
+		left:10%;
+		border-color:#ff6e35;
+}
+button.bottomright {
+		position:absolute;
+		top:85%;
+		right:10%;
+		border-color:#ff6e35;
+}
+
+
+button.arrowbtn {
+	border-radius:5px;
+	background-color:#ff6e35;
+	color:white;
+}
+
+
+/*.wrapper {
+  width: 100%;
+  /* whatever width you want */
+ /* display: inline-block;
+  position: relative;
+  background-size: contain;
+  background: url('https://upload.wikimedia.org/wikipedia/en/thumb/6/67/Wiki-llama.jpg/1600px-Wiki-llama.jpg') top center no-repeat;
+  margin: 0 auto;
+}
+.wrapper:after {
+  padding-top: 75%;
+  /* this llama image is 800x600 so set the padding top % to match 600/800 = .75 */
+  /*display: block;
+  content: '';
+}
+.main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  color: black;
+  text-align: center;
+  margin-top: 5%;
+}*/

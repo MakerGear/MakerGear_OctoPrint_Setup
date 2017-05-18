@@ -1,0 +1,42 @@
+{#<a href="https://www.makergear.com/pages/support">MakerGear Support</a>#}
+
+<a id="support_link" class="pull-right" title="MakerGear Support" href="#" data-bind="click: function() { $root.showSupport() }">
+    <i class="icon-question-sign"></i> Support
+</a>
+
+<div id="mgsetup_support_widget" class="modal hide fade">
+<center>Registration</center>
+<br><br>
+Please Register your M3 printer:
+<br><br>
+Serial Number:<br>
+<input data-bind="textInput: $root.serialNumber" /><br><br>
+First Name:<br>
+<input data-bind="textInput: $root.firstName" /><br><br>
+Last Name:<br>
+<input data-bind="textInput: $root.lastName" /><br><br>
+Date Received (mm/dd/yyyy):<br>
+<input data-bind="textInput: $root.dateReceived" /><br><br>
+Email:<br>
+<input data-bind="textInput: $root.emailAddress" /><br><br>
+Where did you buy your MakerGear M3?<br>
+<select data-bind="options: $root.channelOptions, value: $root.channel"></select>
+<br>
+<input data-bind="textInput: $root.channelOtherInput, visible: $root.channel()=='Other - Please Specify Below'"/>
+<br>
+
+How did you hear about MakerGear?<br>
+<select data-bind="options: $root.referrerOptions, value: $root.referrer"></select>
+<br>
+<input data-bind="textInput: $root.referrerOtherInput, visible: $root.referrer()=='Other - Please Describe Below'"/>
+<br>
+
+Who is the primary user of this 3D Printer?<br>
+<select data-bind="options: $root.segmentOptions, value: $root.segment"></select>
+<br>
+<input data-bind="textInput: $root.segmentOtherInput, visible: $root.segment()=='Other - Please Describe Below'"/><br>
+
+<input type="checkbox" data-bind="checked: $root.newsletter" />Would you like to receive our newsletter?<br><br>
+
+<center><button data-bind="click: function() { $root.submitRegistration() }">{{ _('Submit Registration') }}</button></center><br><br>
+</div>

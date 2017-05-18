@@ -5,6 +5,20 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 
+*.pyc
+*.swp
+.idea
+*.iml
+build
+dist
+*.egg*
+.DS_Store
+*.zip
+*.mp4
+*.webm
+
+
+
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
