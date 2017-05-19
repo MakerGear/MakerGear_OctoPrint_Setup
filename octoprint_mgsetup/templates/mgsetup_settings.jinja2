@@ -17,6 +17,26 @@
     </div>
 </form>
 
-<button data-bind="enable: loginState.isUser(), click: function() { $root.turnSshOn() }">Turn SSH On</button><br><br>
-<button data-bind="enable: loginState.isUser(), click: function() { $root.turnSshOff() }">Turn SSH Off</button><br><br>
+<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('turnSshOn' }">Turn SSH On</button><br>
+This will enable the SSH service on the printer host computer.<br><br>
+
+<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('turnSshOff' }">Turn SSH Off</button><br>
+This will disable the SSH service on the printer host computer.<br><br>
+
+<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('resetWifi') }">Forget Wifi</button><br>
+This will disconnect the printer from your current network and enable the default printer Access Point.<br><br>
+
+<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('uploadFirmware') }">
+Upload Firmware</button><br>This will upload the bundled firmware to the printer.  Disconnect before uploading.<br><br>
+
+New Netconnectd Access Point Password:
+<input data-bind="textInput: $root.newNetconnectdPassword" /><br>
+<button data-bind="enable: loginState.isUser(), click: function() { $root.writeNetconnectdPassword($root.newNetconnectdPassword()) }">
+Set Password</button><br>This will change the Netconnect Access Point Password.<br><br>
+
+New Hostname and Access Point Name:
+<input data-bind="textInput: $root.newHostname" /><br>
+<button data-bind="enable: loginState.isUser(), click: function() { $root.changeHostname($root.newHostname()) }">
+Change Hostname</button><br>This will change the Hostname and Access Point Name.  Please manually Reboot the Pi after changing this.<br><br>
+
 </div>

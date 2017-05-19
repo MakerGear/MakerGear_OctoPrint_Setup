@@ -1,19 +1,20 @@
 # coding=utf-8
 
 from __future__ import absolute_import
-
-import octoprint.plugin
-from octoprint.events import Events
+import re
 
 
 import subprocess
-import flask
 import os
 import shutil
 import hashlib
 import logging
 import socket
-
+import yaml
+import octoprint.plugin
+import octoprint.settings
+from octoprint.events import Events
+import flask
 
 
 
@@ -43,11 +44,16 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 	def on_settings_initialized(self):
+		octoprint.settings.Settings.get(octoprint.settings.settings(),["appearance", "components", "order", "tab"])
 		self.firstTab = self._settings.get(["firstTab"])
 		if self.firstTab:
-					self.firstTabName = "plugin_mgsetup"
+			self.firstTabName = "plugin_mgsetup"
+			# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "components", "order", "tab"],["plugin_mgsetup", "temperature", "control", "gcodeviewer", "terminal", "timelapse"],force=True)
+			octoprint.settings.Settings.add_overlay(octoprint.settings.settings(),dict(appearance=dict(components=dict(order=dict(tab=["plugin_mgsetup", "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 		else:
 			self.firstTabName = "temperature"
+			# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "components", "order", "tab"],["temperature", "control", "gcodeviewer", "terminal", "plugin_mgsetup", "timelapse"],force=True)
+			octoprint.settings.Settings.add_overlay(octoprint.settings.settings(),dict(appearance=dict(components=dict(order=dict(tab=["temperature", "control", "gcodeviewer", "terminal", "plugin_mgsetup", "timelapse"])))))
 		self.firstRunComplete = self._settings.get(["firstRunComplete"])
 		self.hideDebug = self._settings.get(["hideDebug"])
 		if self._settings.get(["serialNumber"]) != -1:
@@ -60,7 +66,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				self._logger.info("serial.txt does not exist!")
 		self._logger.info(self.serial)
 		self._settings.get(["registered"])
-
+#		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
+#		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
+		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
+		octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
 		
 	def on_after_startup(self):
 		self._logger.info("Hello Pablo!")
@@ -107,6 +116,20 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			shutil.copy(self._basefolder+"/static/gcode/newWiggleAll","/home/pi/.octoprint/scripts/gcode/newWiggleAll")
 			self._logger.info("Had to overwrite newWiggleAll with new version.")					
 
+		src_files = os.listdir(self._basefolder+"/static/scripts/")
+		src = (self._basefolder+"/static/scripts/")
+		dest = ("/home/pi/.octoprint/scripts/")
+		for file_name in src_files:
+			full_src_name = os.path.join(src, file_name)
+			full_dest_name = os.path.join(dest, file_name)
+			if not (os.path.isfile(full_dest_name)):
+				shutil.copy(full_src_name, dest)
+				self._logger.info("Had to copy "+file_name+" to scripts folder.")
+			else:
+				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
+					shutil.copy(full_src_name, dest)
+					self._logger.info("Had to overwrite "+file_name+" with new version.")
+
 	def get_template_configs(self):
 		return [
 			dict(type="navbar", custom_bindings=True),
@@ -135,14 +158,34 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		if event == Events.CLIENT_OPENED:
 			#self._logger.info(payload + " connected")
+			self.serial = ""
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline, hostname = self.newhost, serial = self.serial, registered = self.registered))
 
+
+	def writeNetconnectdPassword(self, newPassword):
+		subprocess.call("/home/pi/.octoprint/scripts/changeNetconnectdPassword.sh "+newPassword['password'], shell=True)
+		self._logger.info("Netconnectd password changed to "+newPassword['password']+" !")
+
+		# file_name = "/etc/netconnectd.yaml"
+		# with open(file_name) as f:
+		# 	doc = yaml.safe_load(f)
+		# self._logger.info(str(doc))
+		# self._logger.info(type(doc))
+		# doc['ap']['psk'] = newPassword['password']
+		# self._logger.info(str(doc))
+		# with open(file_name, 'w') as f:
+		# 	yaml.safe_dump(doc, f, default_flow_style=False)
+	# 		http://stackoverflow.com/questions/40762382/changing-a-value-in-a-yaml-file-using-python
+
+	def changeHostname(self, newHostname):
+		subprocess.call("/home/pi/.octoprint/scripts/changeHostname.sh "+newHostname['hostname'], shell=True)
+		self._logger.info("Hostname changed to "+newHostname['hostname']+" !")
 
 	def get_api_commands(self):
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[])
+		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'])
 
 	def on_api_get(self, request):
 		return flask.jsonify(dict(
@@ -163,6 +206,18 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#__plugin_implementation__._logger.info(line)
 		return line
 
+	def adminAction(self, action):
+		self._logger.info("adminAction called: "+ str(action))
+		if action == 'turnSshOn':
+			self.turnSshOn()
+		elif action == 'turnSshOff':
+			self.turnSshOff()
+		elif action == 'resetWifi':
+			subprocess.call("/home/pi/.octoprint/scripts/resetWifi.sh")
+		elif action == 'uploadFirmware':
+			subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
+
+
 	def turnSshOn(self):
 		subprocess.call("/home/pi/.octoprint/scripts/startSsh.sh")
 		self._logger.info("SSH service started!")
@@ -176,6 +231,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.turnSshOn()
 		elif command == 'turnSshOff':
 			self.turnSshOff()
+		elif command == 'adminAction':
+			self.adminAction(data)
+		elif command == 'writeNetconnectdPassword':
+			self.writeNetconnectdPassword(data)
+		elif command == 'changeHostname':
+			self.changeHostname(data)
 
 
 	##plugin auto update
@@ -220,7 +281,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
                                                                                                    status_code=404)))
         ]        
 #__plugin_settings_overlay__ = {appearance: {components: {order: {tab: {'- plugin_mgsetup'}}}}}
-__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
+#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
 #__plugin_settings_overlay__ = dict(server=dict(port=5001))
 
 __plugin_name__ = "MakerGear Setup"
