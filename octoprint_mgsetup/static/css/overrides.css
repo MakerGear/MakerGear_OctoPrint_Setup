@@ -95,6 +95,8 @@ a {
 
 
 
+
+
 .accordion-heading {
   border-bottom: 0;
   background-color:#A8A8A8;
@@ -126,3 +128,16 @@ a {
   background-color: #FF6E35;
   border-color: transparent;
 }
+
+
+
+#navbar .navbar-inner .brand span {
+   
+
+    overflow: visible !important;
+   
+  } 
+
+
+
+
