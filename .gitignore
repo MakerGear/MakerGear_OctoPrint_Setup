@@ -14,7 +14,7 @@ dist
 *.egg*
 .DS_Store
 *.zip
-*.mp4
+
 *.webm
 
 
