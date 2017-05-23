@@ -36,7 +36,7 @@
 
     <div data-bind="visible: !$root.googleGood()"> 
     <p>
-        <!--<em>This button's message/  visiblity will change based on if the printer is connected to the Internet.</em> -->
+        <!--<em>This button's message/  visiblity will change based on if the printer is connected to the interent.</em> -->
         You are <span style="color:red"> NOT </span> connected to the Internet. Please connect an Ethernet cable or use the button below to connect your M3 3D printer to an Internet enabled network.
 
 
@@ -460,12 +460,12 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepFiveStartingHeigh
 <input type="checkbox" data-bind="checked: $root.unlockSupport" /> Show Support button.<br><br>
 <a href="#settings_plugin_netconnectd" data-bind="click: function() { $root.showSettings(); }">click here to go to the API settings "tab"</a>
    <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;">
-        <img data-bind="attr: {'src': '', 'width': '150', 'height': '150'} , visible: loginState.isUser && setupStep()==='6'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/FUaURsA.gif', 'width': '150', 'height': '150'} , visible: loginState.isUser && setupStep()==='6'" />
     </div>  We can play gifs!
 
     <br><br>
 
-<!--    <audio id="Printcomplete" src=""></audio>-->
+    <audio id="Printcomplete" src="/plugin/mgsetup/static/snd/Windows-Print-complete.wav"></audio>
 <button onclick="document.getElementById('Printcomplete').play()">Play!</button>
 And play local audio files!  (<s>maybe...</s> totally)
 <br><br>
@@ -480,17 +480,15 @@ And play local audio files!  (<s>maybe...</s> totally)
  <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/four.png', 'width': '150', 'height': '150'} , visible: loginState.isUser && setupStep()==='6'" />
     </div>
-    <!--
-<video id="my-video" class="video-js" controls preload="none" poster="/plugin/mgsetup/static/video/MY_VIDEO_POSTER.jpg" data-setup='{"fluid": true}'>
+    
+<video id="my-video" class="video-js" controls preload="auto" poster="/plugin/mgsetup/static/video/MY_VIDEO_POSTER.jpg" data-setup='{"fluid": true}'>
     <source src="/plugin/mgsetup/static/video/abl-3DBenchy_20170503162402.mpg" type='video/mpeg4-generic'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
       <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
     </p>
   </video>
-
   Video^<br>
-  -->
   Lightbox \/
 <br><br><br>
 <a href="/plugin/mgsetup/static/img/one.png" data-lightbox="roadtrip">Image #1</a>
@@ -1168,7 +1166,7 @@ Once the printer has stopped moving, use the four Zigzag pattern Position button
 
 If the entire Zigzag pattern was completely stuck to the bed, the bed leveling screw needs to be loosened by turning it counter-clockwise, to lower the bed at this position.<br><br>
    
-   <video id="ccw" class="video-js"  preload="none"  data-setup='{"controls":true, "fluid": true}'  data-bind="attr: { controls: 'true', autoplay: 'true', loop: 'true' }, if:  setupStep() === '7'" >
+   <video id="ccw" class="video-js"  preload="auto"  data-setup='{"controls":true, "fluid": true}'  data-bind="attr: { controls: 'true', autoplay: 'true', loop: 'true' }, if:  setupStep() === '7'" >
     <source src="/plugin/mgsetup/video/ccw.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1183,7 +1181,7 @@ If the entire Zigzag pattern was completely stuck to the bed, the bed leveling s
 If the entire Zigzag pattern was loose or not adhered to the bed at all, the bed leveling screw needs to be tightened by turning it clockwise, to raise the bed at this position.<br><br>
 
 
-   <video id="cw" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true'}, if:  setupStep() === '7'" >
+   <video id="cw" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true'}, if:  setupStep() === '7'" >
     <source src="/plugin/mgsetup/video/cw.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1271,7 +1269,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
    
-   <video id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '8'" >
+   <video id="filamentVideo1" class="video-js"  preload="auto"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '7'" >
     <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1508,7 +1506,7 @@ Place the PLA filament spool on the spool holder so that the loose end points up
 
 Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
 
-<video id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '11'" >
+<video id="filamentVideo1" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '11'" >
     <source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1522,7 +1520,7 @@ Feed the tip of your filament up through the black filament guide and the clear 
 
  Next insert the filament into the hole on top of the extruder. 
 
-<video id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' ,controls: 'true'}, if:  setupStep() === '11'" >
+<video id="filamentVideo2" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' ,controls: 'true'}, if:  setupStep() === '11'" >
     <source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1561,7 +1559,7 @@ Continue clicking "Feed Filament" until a thin strand of filament is consistentl
  Push the filament guide tube down into the plastic extruder hole. 
 
 
-<video id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '11'" >
+<video id="filamentVideo3" class="video-js" preload="auto"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '11'" >
     <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that

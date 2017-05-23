@@ -5,6 +5,7 @@
 </a>
 
 <div id="mgsetup_support_widget" class="modal hide fade">
+<div id="registration" data-bind="visible: $root.registered() === false">
 <center>Registration</center>
 <br><br>
 Please Register your M3 printer:
@@ -38,5 +39,11 @@ Who is the primary user of this 3D Printer?<br>
 
 <input type="checkbox" data-bind="checked: $root.newsletter" />Would you like to receive our newsletter?<br><br>
 
-<center><button data-bind="click: function() { $root.submitRegistration() }">{{ _('Submit Registration') }}</button></center><br><br>
+<center><button data-bind="click: function() { $root.submitRegistration() }, enable: $root.serialNumber() != undefined && $root.firstName() != undefined &&  $root.lastName() != undefined && $root.dateReceived() != undefined && $root.emailAddress() != undefined && $root.channel() != '-' && $root.referrer() != '-' && $root.segment() != '-'">{{ _('Submit Registration') }}</button></center><br><br>
+
+
+</div>
+<div id="activation" data-bind="visible: $root.activated() === false && $root.registered() === true">
+
+
 </div>

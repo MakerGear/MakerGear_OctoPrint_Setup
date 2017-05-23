@@ -83,38 +83,19 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			if not os.path.isdir('/home/pi/.octoprint/scripts/gcode'):
 				raise
 		else:
-			shutil.copy(self._basefolder+"/static/gcode/homeWiggle","/home/pi/.octoprint/scripts/gcode/homeWiggle")
-			shutil.copy(self._basefolder+"/static/gcode/homeWiggleAll","/home/pi/.octoprint/scripts/gcode/homeWiggleAll")
-			shutil.copy(self._basefolder+"/static/gcode/newWiggle","/home/pi/.octoprint/scripts/gcode/newWiggle")
-			shutil.copy(self._basefolder+"/static/gcode/newWiggleAll","/home/pi/.octoprint/scripts/gcode/newWiggleAll")
-			self._logger.info("Had to copy scripts to folder.")
-
-		if not os.path.isfile('/home/pi/.octoprint/scripts/gcode/homeWiggle'):
-			shutil.copy(self._basefolder+"/static/gcode/homeWiggle","/home/pi/.octoprint/scripts/gcode/homeWiggle")
-			self._logger.info("Had to copy homeWiggle to folder.")
-		if not os.path.isfile('/home/pi/.octoprint/scripts/gcode/homeWiggleAll'):
-			shutil.copy(self._basefolder+"/static/gcode/homeWiggleAll","/home/pi/.octoprint/scripts/gcode/homeWiggleAll")
-			self._logger.info("Had to copy homeWiggleAll to folder.")
-		if not os.path.isfile('/home/pi/.octoprint/scripts/gcode/newWiggle'):
-			shutil.copy(self._basefolder+"/static/gcode/newWiggle","/home/pi/.octoprint/scripts/gcode/newWiggle")
-			self._logger.info("Had to copy newWiggle to folder.")			
-		if not os.path.isfile('/home/pi/.octoprint/scripts/gcode/newWiggleAll'):
-			shutil.copy(self._basefolder+"/static/gcode/newWiggleAll","/home/pi/.octoprint/scripts/gcode/newWiggleAll")
-			self._logger.info("Had to copy newWiggleAll to folder.")
-
-		scriptnewWiggle = (hashlib.md5(open('/home/pi/.octoprint/scripts/gcode/newWiggle', 'rb').read()).hexdigest())
-		scriptnewWiggleAll = (hashlib.md5(open('/home/pi/.octoprint/scripts/gcode/newWiggleAll', 'rb').read()).hexdigest())
-		stocknewWiggle = (hashlib.md5(open(self._basefolder+"/static/gcode/newWiggle", 'rb').read()).hexdigest())
-		stocknewWiggleAll = (hashlib.md5(open(self._basefolder+"/static/gcode/newWiggleAll", 'rb').read()).hexdigest())
-
-		if scriptnewWiggle != stocknewWiggle:
-			os.remove("/home/pi/.octoprint/scripts/gcode/newWiggle")
-			shutil.copy(self._basefolder+"/static/gcode/newWiggle","/home/pi/.octoprint/scripts/gcode/newWiggle")
-			self._logger.info("Had to overwrite newWiggle with new version.")
-		if scriptnewWiggleAll != stocknewWiggleAll:
-			os.remove("/home/pi/.octoprint/scripts/gcode/newWiggleAll")
-			shutil.copy(self._basefolder+"/static/gcode/newWiggleAll","/home/pi/.octoprint/scripts/gcode/newWiggleAll")
-			self._logger.info("Had to overwrite newWiggleAll with new version.")					
+			src_files = os.listdir(self._basefolder+"/static/gcode")
+			src = (self._basefolder+"/static/gcode")
+			dest = ("/home/pi/.octoprint/scripts/gcode")
+			for file_name in src_files:
+				full_src_name = os.path.join(src, file_name)
+				full_dest_name = os.path.join(dest, file_name)
+				if not (os.path.isfile(full_dest_name)):
+					shutil.copy(full_src_name, dest)
+					self._logger.info("Had to copy "+file_name+" to scripts folder.")
+				else:
+					if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
+						shutil.copy(full_src_name, dest)
+						self._logger.info("Had to overwrite "+file_name+" with new version.")
 
 		src_files = os.listdir(self._basefolder+"/static/scripts/")
 		src = (self._basefolder+"/static/scripts/")
@@ -129,6 +110,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
 					shutil.copy(full_src_name, dest)
 					self._logger.info("Had to overwrite "+file_name+" with new version.")
+			if ".sh" in file_name:
+				os.chmod(full_dest_name, 0755)
 
 	def get_template_configs(self):
 		return [
@@ -166,17 +149,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		subprocess.call("/home/pi/.octoprint/scripts/changeNetconnectdPassword.sh "+newPassword['password'], shell=True)
 		self._logger.info("Netconnectd password changed to "+newPassword['password']+" !")
 
-		# file_name = "/etc/netconnectd.yaml"
-		# with open(file_name) as f:
-		# 	doc = yaml.safe_load(f)
-		# self._logger.info(str(doc))
-		# self._logger.info(type(doc))
-		# doc['ap']['psk'] = newPassword['password']
-		# self._logger.info(str(doc))
-		# with open(file_name, 'w') as f:
-		# 	yaml.safe_dump(doc, f, default_flow_style=False)
-	# 		http://stackoverflow.com/questions/40762382/changing-a-value-in-a-yaml-file-using-python
-
 	def changeHostname(self, newHostname):
 		subprocess.call("/home/pi/.octoprint/scripts/changeHostname.sh "+newHostname['hostname'], shell=True)
 		self._logger.info("Hostname changed to "+newHostname['hostname']+" !")
@@ -185,7 +157,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'])
+		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'])
 
 	def on_api_get(self, request):
 		return flask.jsonify(dict(
@@ -238,6 +210,27 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif command == 'changeHostname':
 			self.changeHostname(data)
 
+	def sendSerial(self):
+		self._plugin_manager.send_plugin_message("mgsetup", dict(serial = self.serial))
+
+	def storeActivation(self, activation):
+		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
+			os.makedirs('/home/pi/.mgsetup')
+		except OSError:
+			if not os.path.isdir('/home/pi/.mgsetup'):
+				raise
+		else:
+			file = open('/home/pi/.mgsetup/actkey', 'rw')
+			file.write(activation)
+			file.close()
+
+	def checkActivation(self, userActivation):
+		with open('/home/pi/.mgsetup/actkey', 'r') as f:
+			self.activation = f.readline().strip()
+			if (activation == userActivation):
+				self._logger.info("Activation successful!")
+			else:
+				self._logger.info("Activation failed!")
 
 	##plugin auto update
 	def get_version(self):

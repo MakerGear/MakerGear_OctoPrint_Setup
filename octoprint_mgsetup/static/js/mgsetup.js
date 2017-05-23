@@ -87,7 +87,8 @@ $(function() {
 		self.channelOptions = ko.observableArray(['-','MakerGear.com','Amazon','Other - Please Specify Below']);
 		self.referrerOptions = ko.observableArray(['-','Friend/Colleague','Reviews','Amazon','Social Media','Other - Please Describe Below']);
 		self.segmentOptions = ko.observableArray(['-','Education: K-12','Education: College/University/Trade School','Business: <100 Employees','Business: >100 Employees','Individual: Hobby','Individual: Professional','Government','Other - Please Describe Below']);
-
+		self.registered = ko.observable(false);
+		self.activated = ko.observable(false);
 
 		self.testDisplayValue = ko.observable(parseFloat(self.displayBedTemp)); 
 		
@@ -171,10 +172,20 @@ $(function() {
 			OctoPrint.postJson("https://morning-mesa-66149.herokuapp.com/registrations.json", {"api_key":"v1-1234567890" , "registration":{"serial_number":"31118825", "first_name":self.firstName(), "last_name":self.lastName(), "date_received":self.dateReceived(), "email":self.emailAddress(), "channel":self.channel(), "other_channel":self.channelOtherInput(), "referrer":self.referrer(), "other_referrer":self.referrerOtherInput(), "segment":self.segment(), "other_segment":self.segmentOtherInput(), "newsletter":self.newsletterValue}}, {})
 				.done(function(response){
 
-					console.log(response);
-					alert(response.activation_key);
-				});
+					if (response.message == "registration successful - please check your email"){
 
+						alert("Registration Successful - Please Check Your Email.");
+					$self.registered(true);
+					} 
+					//console.log(response);
+	//				alert(response.activation_key);
+				})
+				.fail(function(response){
+
+					alert("Something went wrong.  Please check all fields and try again, or contact Support.  Error: "+response.status+" "+response.statusText);
+					console.log(response);
+
+				});
 
 
 		};
