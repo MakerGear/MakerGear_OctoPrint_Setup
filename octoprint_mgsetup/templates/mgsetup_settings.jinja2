@@ -18,10 +18,10 @@
     </div>
 </form>
 
-<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('turnSshOn' }">Turn SSH On</button><br>
+<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('turnSshOn') }">Turn SSH On</button><br>
 This will enable the SSH service on the printer host computer.<br><br>
 
-<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('turnSshOff' }">Turn SSH Off</button><br>
+<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('turnSshOff') }">Turn SSH Off</button><br>
 This will disable the SSH service on the printer host computer.<br><br>
 
 <button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('resetWifi') }">Forget Wifi</button><br>

@@ -1,4 +1,4 @@
-<div id="mgtabwarning" style="display: inline"><center><br><p style="font-size:60px">LOADING</p><br><br>If you can see this, OctoPrint and the MakerGear Setup tab are still loading; if this does not change shortly, a popup or script blocker may be preventing the page from loading correctly.</center></div>
+    <div id="mgtabwarning" style="display: inline"><center><br><p style="font-size:60px">LOADING</p><br><br>If you can see this, OctoPrint and the MakerGear Setup tab are still loading; if this does not change shortly, a popup or script blocker may be preventing the page from loading correctly.</center></div>
 <div id="mglogin" style="visibility: hidden" data-bind="visible: loginState.loggedIn() === false"><center><br><br>You are not logged into OctoPrint. Use the "Login" button in the upper right corner to continue. You can find the default username and password in the setup guide.<br><br></center></div>
 
 <div id="mgtab" style="visibility: hidden" data-bind="visible: loginState.isUser">
@@ -109,15 +109,15 @@
 <h1 style="text-align:left;">Starting Height Check</h1>
 
     
-    <div style="text-align:left;">
+   
+<!-- <div style="text-align:left;">
             <a style="" href="#" onClick="window.open('/plugin/mgsetup/static/html/network.html','pagename','resizable=no,height=520,width=740'); return false;">
                 <i class="icon-play-circle" style="font-size:50px;"></i>
             </a>
-            <!--
              <a style="font-size:30px;" href="#" onClick="window.open('/plugin/mgsetup/static/html/network.html','pagename','resizable=no,height=520,width=740'); return false;">
                Video Guide
-            </a>-->
-    </div>
+            </a>
+    </div>-->
     
 <hr />
 
@@ -128,15 +128,13 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupCheckLevel(0); $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button><br><br>
 
-<p style="text-align:left;">
+<p style="text-align:left;font-size:20px;">
     Once the printer has stopped moving, manually slide the extruder towards the build surface. 
 </p>
-<hr />
-<br />
-<br />
+
 
 <p >
-    <strong style="font-size:20px;" >Which of the following options best describes your current extruder starting height?</strong>
+    <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current extruder starting height?</span>
 </p>
 
 
@@ -1489,7 +1487,7 @@ Once you've gone around at least once, you can then proceed; where you go next d
 
     <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
 
-    You're extruder will begin go get very hot. Your build surface will also start to heat up(You'll need your build surface to be heated for the next step and it can take a few minutes for it to heat up).  Do not touch the extruder's nozzle or the build surface.
+    You're extruder will begin go get very hot. Your build surface will also start to heat up (You'll need your build surface to be heated for the next step and it can take a few minutes for it to heat up).  Do not touch the extruder's nozzle or the build surface.
 </p>
 
 
