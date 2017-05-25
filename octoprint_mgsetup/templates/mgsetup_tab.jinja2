@@ -457,7 +457,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepFiveStartingHeigh
 
 <input type="checkbox" data-bind="checked: $root.unlockSupport" /> Show Support button.<br><br>
 <a href="#settings_plugin_netconnectd" data-bind="click: function() { $root.showSettings(); }">click here to go to the API settings "tab"</a>
-   <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;">
+ {#   <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/FUaURsA.gif', 'width': '150', 'height': '150'} , visible: loginState.isUser && setupStep()==='6'" />
     </div>  We can play gifs!
 
@@ -470,16 +470,15 @@ And play local audio files!  (<s>maybe...</s> totally)
 <input onclick='responsiveVoice.speak(" We might even be able to play from responsiveVoice! ");' type='button' value='🔊 Play' src="temp" />  We _might_ even be able to play from responsiveVoice!
 <br><br>
   <button class="btn btn-block control-box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.notify() }">{{ _('Notify') }}</button>
-<br>
+<br> #}
 <button data-bind="enable: loginState.isUser(), click: function() { $root.turnSshOff() }">Turn SSH On</button><br><br>
 <button class="btn btn-primary" data-bind="click: function() { $root.requestEeprom() }">{{ _('Request EEPROM Data') }}</button><br><br>
-<button class="btn btn-primary" data-bind="click: function() { $root.submitRegistration() }">{{ _('Submit Registration') }}</button>
 <br><br>
  <div class="fileupload-new thumbnail" style="width: 150px; height: 150px;">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/four.png', 'width': '150', 'height': '150'} , visible: loginState.isUser && setupStep()==='6'" />
     </div>
     
-<video id="my-video" class="video-js" controls preload="auto" poster="/plugin/mgsetup/static/video/MY_VIDEO_POSTER.jpg" data-setup='{"fluid": true}'>
+{# <video id="my-video" class="video-js" controls preload="auto" poster="/plugin/mgsetup/static/video/MY_VIDEO_POSTER.jpg" data-setup='{"fluid": true}'>
     <source src="/plugin/mgsetup/static/video/abl-3DBenchy_20170503162402.mpg" type='video/mpeg4-generic'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -493,7 +492,7 @@ And play local audio files!  (<s>maybe...</s> totally)
 <a href="/plugin/mgsetup/static/img/two.png" data-lightbox="roadtrip">Image #2</a>
 <a href="/plugin/mgsetup/static/img/three.png" data-lightbox="roadtrip">Image #3</a>
 <a href="/plugin/mgsetup/static/img/four.png" data-lightbox="roadtrip">Image #4</a>
-<br><br>
+<br><br> #}
 Can we make a self-disabling/enabling button?<br>
 <button data-bind="enable: $root.lockButton(), click: function() { $root.lockButton(false), $root.enableLockedButton(2000) }">{{ _('Disable and Enable Maybe') }}</button>
 <br><br>
