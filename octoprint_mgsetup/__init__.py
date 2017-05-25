@@ -180,13 +180,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def adminAction(self, action):
 		self._logger.info("adminAction called: "+ str(action))
-		if action == 'turnSshOn':
+		if action["action"] == 'turnSshOn':
 			self.turnSshOn()
-		elif action == 'turnSshOff':
+		elif action["action"] == 'turnSshOff':
 			self.turnSshOff()
-		elif action == 'resetWifi':
+		elif action["action"] == 'resetWifi':
 			subprocess.call("/home/pi/.octoprint/scripts/resetWifi.sh")
-		elif action == 'uploadFirmware':
+		elif action["action"] == 'uploadFirmware':
 			subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
 
 

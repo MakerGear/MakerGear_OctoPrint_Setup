@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo ~/OctoPrint/venv/bin/python2.7 ~/.octoprint/scripts/changeNetconnectdPassword.py $1
+sudo ~/oprint/bin/python2.7 ~/.octoprint/scripts/changeNetconnectdPassword.py $1
