@@ -478,7 +478,7 @@ And play local audio files!  (<s>maybe...</s> totally)
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/four.png', 'width': '150', 'height': '150'} , visible: loginState.isUser && setupStep()==='6'" />
     </div>
     
-{# <video id="my-video" class="video-js" controls preload="auto" poster="/plugin/mgsetup/static/video/MY_VIDEO_POSTER.jpg" data-setup='{"fluid": true}'>
+{# <video controls id="my-video" class="video-js" controls preload="auto" poster="/plugin/mgsetup/static/video/MY_VIDEO_POSTER.jpg" data-setup='{"fluid": true}'>
     <source src="/plugin/mgsetup/static/video/abl-3DBenchy_20170503162402.mpg" type='video/mpeg4-generic'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1163,7 +1163,7 @@ Once the printer has stopped moving, use the four Zigzag pattern Position button
 
 If the entire Zigzag pattern was completely stuck to the bed, the bed leveling screw needs to be loosened by turning it counter-clockwise, to lower the bed at this position.<br><br>
    
-   <video id="ccw" class="video-js"  preload="auto"  data-setup='{"controls":true, "fluid": true}'  data-bind="attr: { controls: 'true', autoplay: 'true', loop: 'true' }, if:  setupStep() === '7'" >
+   <video controls id="ccw" class="video-js"  preload="auto"  data-setup='{ "fluid": true}'  data-bind="attr: {  autoplay: 'true', loop: 'true' }, if:  setupStep() === '7'" >
     <source src="/plugin/mgsetup/video/ccw.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1178,7 +1178,7 @@ If the entire Zigzag pattern was completely stuck to the bed, the bed leveling s
 If the entire Zigzag pattern was loose or not adhered to the bed at all, the bed leveling screw needs to be tightened by turning it clockwise, to raise the bed at this position.<br><br>
 
 
-   <video id="cw" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true'}, if:  setupStep() === '7'" >
+   <video controls id="cw" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true'}, if:  setupStep() === '7'" >
     <source src="/plugin/mgsetup/video/cw.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1266,7 +1266,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
    
-   <video id="filamentVideo1" class="video-js"  preload="auto"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '8'" >
+   <video controls id="filamentVideo1" class="video-js"  preload="auto"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' }, if:  setupStep() === '8'" >
     <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1503,7 +1503,7 @@ Place the PLA filament spool on the spool holder so that the loose end points up
 
 Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
 
-<video id="filamentVideo1" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '11'" >
+<video controls id="filamentVideo1" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' }, if:  setupStep() === '11'" >
     <source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1517,7 +1517,7 @@ Feed the tip of your filament up through the black filament guide and the clear 
 
  Next insert the filament into the hole on top of the extruder. 
 
-<video id="filamentVideo2" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' ,controls: 'true'}, if:  setupStep() === '11'" >
+<video controls id="filamentVideo2" class="video-js"  preload="auto"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' }, if:  setupStep() === '11'" >
     <source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1556,7 +1556,7 @@ Continue clicking "Feed Filament" until a thin strand of filament is consistentl
  Push the filament guide tube down into the plastic extruder hole. 
 
 
-<video id="filamentVideo3" class="video-js" preload="auto"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true',controls: 'true' }, if:  setupStep() === '11'" >
+<video controls id="filamentVideo3" class="video-js" preload="auto"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' }, if:  setupStep() === '11'" >
     <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
