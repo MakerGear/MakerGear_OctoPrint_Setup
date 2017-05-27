@@ -105,6 +105,8 @@
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='2'">
 
+Before proceeding, please make sure that you have read and completed all of the task in the manual that came with your printer. 
+
 
 <h1 style="text-align:left;">Starting Height Check</h1>
 
@@ -201,8 +203,8 @@ First you need to ensure that your factory settings are correct. Click <strong>P
    <!-- <span style="font-size:12px;">*It may take a moment for your printer to heat up before printing the Zigzag patterns  </span> -->
 
 
-
-<p style="text-align:center;">
+<br />
+<p style="text-align:center; font-size:25px;line-height:25px;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
 </p>
@@ -1153,7 +1155,8 @@ Here you will be able to print Zigzag patterns in each corner and then adjust th
 <center><button class="btnstay" data-bind="enable: !$root.stepSevenPrepared(), click: function() { $root.setupSetStartingHeight('0') ; $root.stepSevenPrepared(true) }">Prepare</button></center><br>
 
 
-<p style="text-align:center;">
+
+<p style="text-align:center; font-size:25px;line-height:25px;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
 </p>
@@ -1259,8 +1262,13 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 <br>
 
 <center><button class="btnstay" data-bind="enable: !$root.stepEightFirstWiggleClicked(), click: function() { $root.printWiggle(1); $root.stepEightFirstWiggleClicked(true); $root.enableLockedButton(8000) }">Print First Zigzag Pattern</button></center><br>
-Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
-Hotend Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br><br>
+
+
+
+<p style="text-align:center; font-size:25px;line-height:25px;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+</p>
 
 Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  How the Zigzag pattern comes off the bed tells us if the bed is level at this position:<br><br>
 
@@ -1540,7 +1548,7 @@ Below you can see your extruder temperature. Once the extruder temperature match
 
 
 
-<p style="text-align:center;">
+<p style="text-align:center; font-size:25px;line-height:25px;">
     <!--Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>-->
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> /  Target Temperature: <span data-bind="text: $root.displayToolTempTarget()"></span><br>
 </p>
