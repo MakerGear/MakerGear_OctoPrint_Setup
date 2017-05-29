@@ -168,7 +168,7 @@ button.arrowbtn {
 	background-color:#ff6e35;
 	color:white;
 }
-
+.vjs-big-play-button { display: none !important; }
 
 /*.wrapper {
   width: 100%;

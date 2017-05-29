@@ -926,7 +926,7 @@ $(function() {
 			if (checkLevelStep == "0") {
 				OctoPrint.control.sendGcode(["G28",
 				"G1 F2000 X217 Y125",
-				"G1 F1400 Z0.5",
+				"G1 F1400 Z0.25",
 				"M84 X"
 				]);//changed to X217 for Demeter
 			}
