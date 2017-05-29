@@ -209,25 +209,29 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.writeNetconnectdPassword(data)
 		elif command == 'changeHostname':
 			self.changeHostname(data)
+		elif command == 'storeActivation':
+			self.storeActivation(data)
+		elif command == 'checkActivation':
+			self.checkActivation(data)
 
 	def sendSerial(self):
 		self._plugin_manager.send_plugin_message("mgsetup", dict(serial = self.serial))
 
 	def storeActivation(self, activation):
+		self._logger.info(activation)
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 			os.makedirs('/home/pi/.mgsetup')
 		except OSError:
 			if not os.path.isdir('/home/pi/.mgsetup'):
 				raise
-		else:
-			file = open('/home/pi/.mgsetup/actkey', 'rw')
-			file.write(activation)
-			file.close()
+		f = open('/home/pi/.mgsetup/actkey', 'w')
+		f.write(activation["activation"])
+		f.close()
 
 	def checkActivation(self, userActivation):
 		with open('/home/pi/.mgsetup/actkey', 'r') as f:
 			self.activation = f.readline().strip()
-			if (activation == userActivation):
+			if (activation == userActivation['userActivation']):
 				self._logger.info("Activation successful!")
 			else:
 				self._logger.info("Activation failed!")

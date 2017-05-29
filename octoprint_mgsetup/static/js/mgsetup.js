@@ -9,8 +9,8 @@ $(function() {
 		self.googleGood = ko.observable(false);
 		self.waitingForM = ko.observable(false);
 		self.showFontAwesome = ko.observable(false);
-		self.newNetconnectdPassword = ko.observable(undefined);
-		self.newHostname = ko.observable(undefined);
+		self.newNetconnectdPassword = ko.observable("");
+		self.newHostname = ko.observable("");
 		self.homeWiggleArray = ('"{% set xpos = parameters.wiggleX %}","{% set ypos = parameters.wiggleY %}","{% set zpos = parameters.wiggleHeight %}","{% set tohome = parameters.tohome %}","{% set wigglenumber = parameters.wigglenumber %}","{% set ypurge = 30 + (2 * wigglenumber ) %}","{% set epurge = 13 - wigglenumber %}","G90","M82","{% if tohome == true %}","G28","{% endif %}","G1 F1000 X205 Y{{ ypurge }} Z10","G1 F1000 Z{{ zpos }}","G92 E0","G1 F240 E{{ epurge }}","G1 F240 X190 E{{ epurge + 2}}","G1 F360 E{{ epurge + 1}}","G92 E0","G1 F1000 Z10","G1 F2500 X{{xpos}} Y{{ypos}} Z{{ zpos }}","G1 E0.95","G92 E0","G91","M83","G91","G1 X20 E0.5 F1000","G3 Y0.38 J0.19 E0.014","G1 X-20 E0.5","G3 Y0.385 J0.1925 E0.014","G1 X20 E0.5 F1000","G3 Y0.39 J0.185 E0.014","G1 X-20 E0.5","G3 Y0.395 J0.1975 E0.014","G1 X20 E0.5","G3 Y0.40 J0.2 E0.014","G1 X-20 E0.5","G3 Y0.405 J0.2025 E0.014","G1 X20 E0.5","G3 Y0.41 J0.205 E0.014","G1 X-20 E0.5","G3 Y0.415 J0.2075 E0.014","G1 X20 E0.5","G3 Y0.42 J0.21 E0.014","G1 X-20 E0.5","G3 Y0.425 J0.2125 E0.014","G1 X20 E0.5","G3 Y0.43 J0.215 E0.014","G1 X-20 E0.5","G3 Y0.435 J0.2175 E0.014","G1 X20 E0.5","G3 Y0.44 J0.22 E0.014","G1 X-20 E0.5","G3 Y0.445 J0.2225 E0.014","G1 X20 E0.5","G3 Y0.45 J0.225 E0.014","G1 X-20 E0.5","G3 Y0.455 J0.2275 E0.014","G1 X20 E0.5","G3 Y0.46 J0.23 E0.014","G1 X-20 E0.5","G3 Y0.465 J0.2325 E0.014","G1 Z10 E0.5","G1 F360 E-1","G90","M82","G92 E0","{% if wigglenumber <= 3 %}","G1 F2000 X170 Y200","{% endif %}","{% if wigglenumber == 4 %}","G1 F2000 X20 Y200","{% endif %}","{% if wigglenumber == 5 %}","G1 F2000 X170 Y200","{% endif %}"');
 		self.isErrorOrClosed = ko.observable(undefined);
 		self.isOperational = ko.observable(undefined);
@@ -42,8 +42,8 @@ $(function() {
 			//and then "$root.enableLockedButton(2000)" in the "click: function() { ... }" section;
 			//if just $root.enableLockedButton() is sent the default timeout will be 5 seconds.
 			if (timeoutLength != undefined && typeof(timeoutLength) === 'number'){
-			window.setTimeout(function() {self.lockButton(true)},timeoutLength);
-			return;
+				window.setTimeout(function() {self.lockButton(true)},timeoutLength);
+				return;
 			}
 
 			window.setTimeout(function() {self.lockButton(true)},5000);
@@ -69,11 +69,11 @@ $(function() {
 		self.hostname = ko.observable();
 		self.unlockSupport = ko.observable(false);
 
-		self.serialNumber = ko.observable(undefined);
-		self.firstName = ko.observable(undefined);
-		self.lastName = ko.observable(undefined);
-		self.dateReceived = ko.observable(undefined);
-		self.emailAddress = ko.observable(undefined);
+		self.serialNumber = ko.observable("");
+		self.firstName = ko.observable("");
+		self.lastName = ko.observable("");
+		self.dateReceived = ko.observable("");
+		self.emailAddress = ko.observable("");
 		self.channel = ko.observable(undefined);
 		self.referrer = ko.observable(undefined);
 		self.segment = ko.observable(undefined);
@@ -89,7 +89,7 @@ $(function() {
 		self.segmentOptions = ko.observableArray(['-','Education: K-12','Education: College/University/Trade School','Business: <100 Employees','Business: >100 Employees','Individual: Hobby','Individual: Professional','Government','Other - Please Describe Below']);
 		self.registered = ko.observable(false);
 		self.activated = ko.observable(false);
-
+		self.userActivation = ko.observable("");
 		self.testDisplayValue = ko.observable(parseFloat(self.displayBedTemp)); 
 		
 	//	window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="makergear.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
@@ -169,13 +169,14 @@ $(function() {
 			} else{
 				self.newsletterValue = "0";
 			}
-			OctoPrint.postJson("https://morning-mesa-66149.herokuapp.com/registrations.json", {"api_key":"v1-1234567890" , "registration":{"serial_number":"31118825", "first_name":self.firstName(), "last_name":self.lastName(), "date_received":self.dateReceived(), "email":self.emailAddress(), "channel":self.channel(), "other_channel":self.channelOtherInput(), "referrer":self.referrer(), "other_referrer":self.referrerOtherInput(), "segment":self.segment(), "other_segment":self.segmentOtherInput(), "newsletter":self.newsletterValue}}, {})
+			OctoPrint.postJson("https://morning-mesa-66149.herokuapp.com/registrations.json", {"api_key":"v1-1234567890" , "registration":{"serial_number":self.serialNumber(), "first_name":self.firstName(), "last_name":self.lastName(), "date_received":self.dateReceived(), "email":self.emailAddress(), "channel":self.channel(), "other_channel":self.channelOtherInput(), "referrer":self.referrer(), "other_referrer":self.referrerOtherInput(), "segment":self.segment(), "other_segment":self.segmentOtherInput(), "newsletter":self.newsletterValue}}, {})
 				.done(function(response){
 
 					if (response.message == "registration successful - please check your email"){
 
 						alert("Registration Successful - Please Check Your Email.");
-					$self.registered(true);
+						self.registered(true);
+						self.storeActivation((response.activation_key));
 					} 
 					//console.log(response);
 	//				alert(response.activation_key);
@@ -189,8 +190,22 @@ $(function() {
 
 
 		};
-
-
+		self.storeActivation = function(actkey) {
+			//console.log(actkey);
+			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			OctoPrint.issueCommand(url, "storeActivation", {"activation":actkey})
+				.done(function(response) {
+					//console.log(response);
+				});
+		};
+		self.checkActivation = function(actkey) {
+			//console.log(actkey);
+			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			OctoPrint.issueCommand(url, "checkActivation", {"userActivation":actkey})
+				.done(function(response) {
+					//console.log(response);
+				});
+		};
 		self.turnSshOn = function() {
 			url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "turnSshOn")

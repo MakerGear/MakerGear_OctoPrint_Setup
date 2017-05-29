@@ -405,28 +405,28 @@ Current Z Position : <span data-bind="text: $root.ZPos"></span>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 1mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.1mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared, click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared, click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.01mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared, click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared, click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFivePrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
         </div>
     </div>
 

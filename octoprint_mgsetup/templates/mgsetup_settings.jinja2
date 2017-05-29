@@ -32,12 +32,12 @@ Upload Firmware</button><br>This will upload the bundled firmware to the printer
 
 New Netconnectd Access Point Password:
 <input data-bind="textInput: $root.newNetconnectdPassword" /><br>
-<button data-bind="enable: loginState.isUser(), click: function() { $root.writeNetconnectdPassword($root.newNetconnectdPassword()) }">
-Set Password</button><br>This will change the Netconnect Access Point Password.<br><br>
+<button data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.writeNetconnectdPassword($root.newNetconnectdPassword()) }">
+Set Password</button><br>This will change the Netconnect Access Point Password.  This will restart the Netconnectd Service.<div data-bind="visible: loginState.isUser() && $root.newNetconnectdPassword().length < 8">The password must be at least 8 characters long.</div> <br><br>
 
 New Hostname and Access Point Name:
 <input data-bind="textInput: $root.newHostname" /><br>
-<button data-bind="enable: loginState.isUser(), click: function() { $root.changeHostname($root.newHostname()) }">
+<button data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.changeHostname($root.newHostname()) }">
 Change Hostname</button><br>This will change the Hostname and Access Point Name.  Please manually Reboot the Pi after changing this.<br><br>
 
 
