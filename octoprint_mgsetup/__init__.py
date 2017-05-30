@@ -202,7 +202,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'counterTest':
 			self.counterTest()
 		elif action["action"] == 'expandFilesystem':
-			subprocess.call("/home/pi/.octoprint/scripts/expandFilesystem.sh")
+			subprocess.call("/home/pi/.octoprint/scripts/expandFilesystem.sh", shell=True)
 
 
 	def turnSshOn(self):
