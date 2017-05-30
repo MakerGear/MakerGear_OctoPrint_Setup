@@ -38,6 +38,20 @@ def changeHostname(newHostname):
 	with open(file_name, 'w') as f:
 		yaml.safe_dump(doc, f, default_flow_style=False)
 
+def changeHosts(newHostname, oldHostname):
+	file_name = "/etc/hosts"
+	with open(file_name) as f:
+		filedata = f.read()
+
+	filedata = filedata.replace(oldHostname, newHostname)
+	
+	with open(file_name, 'w') as f:
+		f.write(filedata)
+
+
+
+
 changeHostname(str(sys.argv[1]))
+changeHosts(str(sys.argv[1]), str(sys.argv[2]))
 #print str(sys.argv[1])
 # print str(sys.stdin.readline())

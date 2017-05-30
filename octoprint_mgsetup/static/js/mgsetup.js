@@ -123,6 +123,7 @@ $(function() {
 			//OctoPrint.settings.save({appearance: {name:self.targetName}});
 			//self.hideDebug(self.settings.plugins.mgsetup.hideDebug);
 			self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
+			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 			window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="makergear.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
 
 			if (self.unlockSupport()){
@@ -518,6 +519,7 @@ $(function() {
 			if (self.googleGood()===false){
 				window.setTimeout(function() {self.checkGoogle()},1000);
 			}
+			OctoPrint.settings.get();
 		};
 
 		self.fromCurrentData = function (data) {
@@ -584,6 +586,28 @@ $(function() {
 			self._processStateData(data.state);
 		};
 
+		self.sendTones = function(tones) {
+			var toneArray = [];
+			for (var i=0; i < tones.length; i++) {
+				//var myRe = /(\d+),/;
+				//toneArray[i].note = myRe.exec(tones)[0];
+				//toneArray[i].length = myRe.exec(tones)[1];
+				toneArray[i].note = tones[i+0];
+				toneArray[i].length = tones[i+1];
+
+			}
+			self.toneList = [];
+			for (var i=0; i<toneArray.length; i++) {
+				if (toneArray[i].note = 0){
+					self.toneList = self.tonelist.push("G4 P"+(toneArray[i].length).toStr());
+				} else {
+					self.toneList = self.tonelist.push("M300 S"+(toneArray[i].note).toStr()+" P"+(toneArray[i].length).toStr());
+
+				}
+			}
+			OctoPrint.control.sendGcode(toneArray);
+		};
+
 		self._processStateData = function (data) {
 			self.isErrorOrClosed(data.flags.closedOrError);
 			self.isOperational(data.flags.operational);
@@ -601,6 +625,7 @@ $(function() {
 			console.log(self.settings);
 			//self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
 			self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
+			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 		};
 		
 		//self.onPrinter
@@ -663,8 +688,13 @@ $(function() {
 			self.hostname(data.hostname);
 			console.log("onDataUpdaterPluginMessage content:");
 			console.log(data);
-			console.log(data.hostname);
-			self.serialNumber(data.serial);
+			if (data == "activation failed"){
+
+				alert("Activation Failed - Please check your entered key and try again.");
+
+			}
+			//console.log(data.hostname);
+			//self.serialNumber(data.serial);
 		};
 		//self.onEventConnected = function() {
 		//	

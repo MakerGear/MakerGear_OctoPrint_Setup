@@ -41,6 +41,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.newhost =  socket.gethostname()
 		self.serial = -1
 		self.registered = False
+		self.activated = False
 
 
 	def on_settings_initialized(self):
@@ -62,10 +63,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			if os.path.isfile('/boot/serial.txt'):
 				with open('/boot/serial.txt', 'r') as f:
 					self.serial = f.readline().strip()
+					self._settings.set(["serialNumber"],[self.serial])
 			else:
 				self._logger.info("serial.txt does not exist!")
 		self._logger.info(self.serial)
 		self._settings.get(["registered"])
+		self._settings.get(["activated"])
 #		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 #		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
@@ -120,7 +123,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		]
 
 	def get_settings_defaults(self):
-		return dict(hideDebug=True, firstRunComplete=False, registered=False, firstTab=True, serialNumber = -1)
+		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1)
+
+	def get_settings_restricted_paths(self):
+		return dict(user=[["serialNumber","registered","activated"]])
 
 	def get_assets(self):
 		return dict(
@@ -141,8 +147,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		if event == Events.CLIENT_OPENED:
 			#self._logger.info(payload + " connected")
-			self.serial = ""
-			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline, hostname = self.newhost, serial = self.serial, registered = self.registered))
+			#self.serial = ""
+			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline))
 
 	def counterTest(actionMaybe):
 		p = subprocess.call("/home/pi/.octoprint/scripts/counter.sh", shell=True)
@@ -155,7 +161,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("Netconnectd password changed to "+newPassword['password']+" !")
 
 	def changeHostname(self, newHostname):
-		subprocess.call("/home/pi/.octoprint/scripts/changeHostname.sh "+newHostname['hostname'], shell=True)
+		subprocess.call("/home/pi/.octoprint/scripts/changeHostname.sh "+newHostname['hostname']+" "+self.newHost, shell=True)
 		self._logger.info("Hostname changed to "+newHostname['hostname']+" !")
 
 	def get_api_commands(self):
@@ -195,6 +201,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
 		elif action["action"] == 'counterTest':
 			self.counterTest()
+		elif action["action"] == 'expandFilesystem':
+			subprocess.call("sudo raspi-config --expand-rootfs")
 
 
 	def turnSshOn(self):
@@ -234,14 +242,18 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		f = open('/home/pi/.mgsetup/actkey', 'w')
 		f.write(activation["activation"])
 		f.close()
+		self._settings.set(["registered"], [True])
+
 
 	def checkActivation(self, userActivation):
 		with open('/home/pi/.mgsetup/actkey', 'r') as f:
 			self.activation = f.readline().strip()
 			if (activation == userActivation['userActivation']):
 				self._logger.info("Activation successful!")
+				self._settings.set(["activated"],[True])
 			else:
 				self._logger.info("Activation failed!")
+				self._plugin_manager.send_plugin_message("mgsetup","activation failed")
 
 	##plugin auto update
 	def get_version(self):
