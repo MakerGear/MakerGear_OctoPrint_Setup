@@ -202,7 +202,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'counterTest':
 			self.counterTest()
 		elif action["action"] == 'expandFilesystem':
-			subprocess.call("sudo raspi-config --expand-rootfs")
+			subprocess.call("/home/pi/.octoprint/scripts/expandFilesystem.sh")
 
 
 	def turnSshOn(self):
