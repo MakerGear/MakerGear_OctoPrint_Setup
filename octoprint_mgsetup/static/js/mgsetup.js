@@ -477,9 +477,12 @@ $(function() {
 			});
 		};
 		
-		self.showSettings = function() {
-
-			self.settings.show("settings_plugin_netconnectd");
+		self.showSettings = function(target) {
+			if (target == undefined){
+				self.settings.show("settings_plugin_netconnectd");
+			} else {
+				self.settings.show(target);
+			}
 
 		};
 

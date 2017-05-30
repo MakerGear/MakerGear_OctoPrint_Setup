@@ -144,6 +144,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.serial = ""
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline, hostname = self.newhost, serial = self.serial, registered = self.registered))
 
+	def counterTest(actionMaybe):
+		p = subprocess.call("/home/pi/.octoprint/scripts/counter.sh", shell=True)
+		#while p.poll():
+		#	self._logger.info(p.readline())
+
 
 	def writeNetconnectdPassword(self, newPassword):
 		subprocess.call("/home/pi/.octoprint/scripts/changeNetconnectdPassword.sh "+newPassword['password'], shell=True)
@@ -188,6 +193,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			subprocess.call("/home/pi/.octoprint/scripts/resetWifi.sh")
 		elif action["action"] == 'uploadFirmware':
 			subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
+		elif action["action"] == 'counterTest':
+			self.counterTest()
 
 
 	def turnSshOn(self):

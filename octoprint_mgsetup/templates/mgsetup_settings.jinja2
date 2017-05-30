@@ -13,7 +13,7 @@
     <div class="control-group">
         <label class="control-label">{{ _('MGSetup As First Tab') }}</label>
         <div class="controls">
-           <input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.firstTab " />
+           <input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.firstTab " />  This will set either the MakerGear Setup or Temperature tab as the first, primary tab.  After changing this, please Restart OctoPrint and Refresh the page to show the change.
         </div>
     </div>
 </form>
@@ -23,6 +23,9 @@ This will enable the SSH service on the printer host computer.<br><br>
 
 <button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('turnSshOff') }">Turn SSH Off</button><br>
 This will disable the SSH service on the printer host computer.<br><br>
+
+<button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('counterTest') }">COUNTER TEST</button><br>
+<br><br>
 
 <button data-bind="enable: loginState.isUser(), click: function() { $root.adminAction('resetWifi') }">Forget Wifi</button><br>
 This will disconnect the printer from your current network and enable the default printer Access Point.<br><br>
