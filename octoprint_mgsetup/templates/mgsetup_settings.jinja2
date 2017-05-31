@@ -18,33 +18,45 @@
     </div>
 </form>
 
-<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button><br>
-This will enable the SSH service on the printer host computer.<br><br>
-
-<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button><br>
-This will disable the SSH service on the printer host computer.<br><br>
-
-<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('counterTest'), $root.showCommandResponse() }">COUNTER TEST</button><br>
-<br><br>
-
-<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Forget Wifi</button><br>
-This will disconnect the printer from your current network and enable the default printer Access Point.<br><br>
-
-<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
-Upload Firmware</button><br>This will upload the bundled firmware to the printer.  Disconnect before uploading.<br><br>
-
-<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button><br>
-This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.<br><br>
-
 New Netconnectd Access Point Password:
 <input data-bind="textInput: $root.newNetconnectdPassword" /><br>
-<button data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.writeNetconnectdPassword($root.newNetconnectdPassword()) }">
+<button data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.commandResponse(''), $root.writeNetconnectdPassword($root.newNetconnectdPassword()), $root.showCommandResponse() }">
 Set Password</button><br>This will change the Netconnect Access Point Password.  The Netconnectd Service will Restart to use the new Password.<div data-bind="visible: loginState.isUser() && $root.newNetconnectdPassword().length < 8">The password must be at least 8 characters long.</div> <br><br>
 
 New Hostname and Access Point Name:
 <input data-bind="textInput: $root.newHostname" /><br>
-<button data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.changeHostname($root.newHostname()) }">
+<button data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.commandResponse(''), $root.changeHostname($root.newHostname()), $root.showCommandResponse() }">
 Change Hostname</button><br>This will change the Hostname and Access Point Name.  Your Raspberry Pi will automatically Restart after changing the Hostname - Please use the new Hostname to connect again.<br><br>
+
+
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">{{ _('Unlock Advanced Operations') }}</label>
+        <div class="controls">
+           <input type="checkbox" data-bind="checked: $root.unlockAdvanced " />  These should only be performed when instructed by Support, as these operations can significantly change printer configuration.
+        </div>
+    </div>
+</form>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button><br>
+This will enable the SSH service on the printer host computer.<br><br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button><br>
+This will disable the SSH service on the printer host computer.<br><br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('counterTest'), $root.showCommandResponse() }">COUNTER TEST</button><br>
+<br><br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Forget Wifi</button><br>
+This will disconnect the printer from your current network and enable the default printer Access Point.<br><br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
+Upload Firmware</button><br>This will upload the bundled firmware to the printer.  Disconnect before uploading.<br><br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button><br>
+This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.<br><br>
+
+
 
 <div id="command_response_popup" class="modal hide fade">
 <center>Command Response:</center><br>

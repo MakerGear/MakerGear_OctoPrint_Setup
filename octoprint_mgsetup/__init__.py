@@ -252,7 +252,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("Netconnectd password changed to "+newPassword['password']+" !")
 
 	def changeHostname(self, newHostname):
-		subprocess.call("/home/pi/.octoprint/scripts/changeHostname.sh "+newHostname['hostname']+" "+self.newHost, shell=True)
+		subprocess.call("/home/pi/.octoprint/scripts/changeHostname.sh "+newHostname['hostname']+" "+self.newhost, shell=True)
 		self._logger.info("Hostname changed to "+newHostname['hostname']+" !")
 
 	def get_api_commands(self):
@@ -322,9 +322,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif command == 'adminAction':
 			self.adminAction(data)
 		elif command == 'writeNetconnectdPassword':
-			self.writeNetconnectdPassword(data)
+			#self.writeNetconnectdPassword(data)
+			self._execute("/home/pi/.octoprint/scripts/changeNetconnectdPassword.sh "+data['password'])
+			self._logger.info("Netconnectd password changed to "+data['password']+" !")
 		elif command == 'changeHostname':
-			self.changeHostname(data)
+			#self.changeHostname(data)
+			self._execute("/home/pi/.octoprint/scripts/changeHostname.sh "+data['hostname']+" "+self.newhost)
+			self._logger.info("Hostname changed to "+data['hostname']+" !")
 		elif command == 'storeActivation':
 			self.storeActivation(data)
 		elif command == 'checkActivation':
