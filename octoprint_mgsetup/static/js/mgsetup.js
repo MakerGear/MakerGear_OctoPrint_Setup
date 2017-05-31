@@ -34,6 +34,7 @@ $(function() {
 
 		self.stepElevenStartHeatingClicked = ko.observable(false); //implemented, good
 		self.lockButton = ko.observable(true);
+		self.commandResponse = ko.observable("");
 
 		self.enableLockedButton = function(timeoutLength) {
 			self.lockButton(false);
@@ -692,6 +693,10 @@ $(function() {
 
 				alert("Activation Failed - Please check your entered key and try again.");
 
+			}
+			if (data.commandResponse != undefined ){
+				console.log(data.commandResponse);
+				self.commandResponse(self.commandResponse()+data.commandResponse);
 			}
 			//console.log(data.hostname);
 			//self.serialNumber(data.serial);

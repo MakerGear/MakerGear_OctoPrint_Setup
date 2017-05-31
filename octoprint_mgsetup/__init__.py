@@ -150,8 +150,76 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#self.serial = ""
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline))
 
-	def counterTest(actionMaybe):
-		p = subprocess.call("/home/pi/.octoprint/scripts/counter.sh", shell=True)
+	def _execute(self, command, **kwargs):
+		import sarge
+
+		if isinstance(command, (list, tuple)):
+			joined_command = " ".join(command)
+		else:
+			joined_command = command
+		#_log_call(joined_command)
+
+		# kwargs.update(dict(async=True, stdout=sarge.Capture(), stderr=sarge.Capture()))
+
+		try:
+			p = sarge.run("/home/pi/.octoprint/scripts/counter.sh", async=True, stdout=sarge.Capture(), stderr=sarge.Capture())
+			while len(p.commands) == 0:
+				# somewhat ugly... we can't use wait_events because
+				# the events might not be all set if an exception
+				# by sarge is triggered within the async process
+				# thread
+				time.sleep(0.01)
+
+			# by now we should have a command, let's wait for its
+			# process to have been prepared
+			p.commands[0].process_ready.wait()
+
+			if not p.commands[0].process:
+				# the process might have been set to None in case of any exception
+				#print("Error while trying to run command {}".format(joined_command), file=sys.stderr)
+				return None, [], []
+		except:
+			#print("Error while trying to run command {}".format(joined_command), file=sys.stderr)
+			#traceback.print_exc(file=sys.stderr)
+			return None, [], []
+
+		all_stdout = []
+		all_stderr = []
+		try:
+			while p.commands[0].poll() is None:
+				lines = p.stderr.readlines(timeout=0.5)
+				if lines:
+					#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+					#_log_stderr(*lines)
+					all_stderr += list(lines)
+
+				lines = p.stdout.readlines(timeout=0.5)
+				if lines:
+					#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+					#_log_stdout(*lines)
+					all_stdout += list(lines)
+					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = lines))
+
+		finally:
+			p.close()
+
+		lines = p.stderr.readlines()
+		if lines:
+			#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+			#_log_stderr(*lines)
+			all_stderr += lines
+
+		lines = p.stdout.readlines()
+		if lines:
+			#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+			#_log_stdout(*lines)
+			all_stdout += lines
+
+		return p.returncode, all_stdout, all_stderr
+
+	def counterTest(self, actionMaybe):
+		self._execute("commands")
+		#p = subprocess.call("/home/pi/.octoprint/scripts/counter.sh", shell=True)
 		#while p.poll():
 		#	self._logger.info(p.readline())
 
@@ -200,7 +268,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'uploadFirmware':
 			subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
 		elif action["action"] == 'counterTest':
-			self.counterTest()
+			self.counterTest(action)
 		elif action["action"] == 'expandFilesystem':
 			subprocess.call("/home/pi/.octoprint/scripts/expandFilesystem.sh", shell=True)
 
