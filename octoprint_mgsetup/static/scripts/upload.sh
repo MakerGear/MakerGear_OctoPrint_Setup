@@ -1,4 +1,5 @@
 #!/bin/sh
+echo "Trying to upload firmware."
 cd /home/pi/m3firmware
 echo "M300 S659 P500" > /dev/ttyS0
 

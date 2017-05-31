@@ -49,7 +49,7 @@ Who is the primary user of this 3D Printer?<br>
 <br><br>
 Please enter the Activation Key that you received in your email:<br>
 <center><input data-bind="textInput: $root.userActivation" /></center><br><br><br>
-<center><button data-bind="click: function() { $root.checkRegistration() }, enable: $root.userActivation() != undefined">{{ _('Activate') }}</button></center>
+<center><button data-bind="click: function() { $root.checkActivation($root.userActivation()) }, enable: $root.userActivation() != undefined">{{ _('Activate') }}</button></center>
 
 </div>
 </div>

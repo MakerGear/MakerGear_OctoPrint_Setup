@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 import re
 
 
@@ -15,6 +15,10 @@ import octoprint.plugin
 import octoprint.settings
 from octoprint.events import Events
 import flask
+import traceback
+import time
+import errno
+import sys
 
 
 
@@ -64,6 +68,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				with open('/boot/serial.txt', 'r') as f:
 					self.serial = f.readline().strip()
 					self._settings.set(["serialNumber"],[self.serial])
+					self._settings.save()
 			else:
 				self._logger.info("serial.txt does not exist!")
 		self._logger.info(self.serial)
@@ -150,6 +155,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#self.serial = ""
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline))
 
+	def _to_unicode(self, s_or_u, encoding="utf-8", errors="strict"):
+		"""Make sure ``s_or_u`` is a unicode string."""
+		if isinstance(s_or_u, str):
+			return s_or_u.decode(encoding, errors=errors)
+		else:
+			return s_or_u
+
 	def _execute(self, command, **kwargs):
 		import sarge
 
@@ -162,7 +174,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# kwargs.update(dict(async=True, stdout=sarge.Capture(), stderr=sarge.Capture()))
 
 		try:
-			p = sarge.run("/home/pi/.octoprint/scripts/counter.sh", async=True, stdout=sarge.Capture(), stderr=sarge.Capture())
+			p = sarge.run(command, async=True, stdout=sarge.Capture(), stderr=sarge.Capture())
 			while len(p.commands) == 0:
 				# somewhat ugly... we can't use wait_events because
 				# the events might not be all set if an exception
@@ -177,9 +189,16 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			if not p.commands[0].process:
 				# the process might have been set to None in case of any exception
 				#print("Error while trying to run command {}".format(joined_command), file=sys.stderr)
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Error while trying to run command - 1."))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = p.stderr.readlines(timeout=0.5)))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = p.stdout.readlines(timeout=0.5)))
 				return None, [], []
 		except:
 			#print("Error while trying to run command {}".format(joined_command), file=sys.stderr)
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Error while trying to run command - 2."))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = p.stderr.readlines(timeout=0.5)))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = traceback.format_exc()))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = p.stdout.readlines(timeout=0.5)))
 			#traceback.print_exc(file=sys.stderr)
 			return None, [], []
 
@@ -189,13 +208,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			while p.commands[0].poll() is None:
 				lines = p.stderr.readlines(timeout=0.5)
 				if lines:
-					#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+					lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
 					#_log_stderr(*lines)
 					all_stderr += list(lines)
 
 				lines = p.stdout.readlines(timeout=0.5)
 				if lines:
-					#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+					lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
 					#_log_stdout(*lines)
 					all_stdout += list(lines)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = lines))
@@ -205,20 +224,24 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		lines = p.stderr.readlines()
 		if lines:
-			#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+			lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
 			#_log_stderr(*lines)
 			all_stderr += lines
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
+			self._logger.info(lines)
 
 		lines = p.stdout.readlines()
 		if lines:
-			#lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+			lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
 			#_log_stdout(*lines)
 			all_stdout += lines
 
+			self._logger.info(all_stdout)
+			self._logger.info(all_stderr)
 		return p.returncode, all_stdout, all_stderr
 
 	def counterTest(self, actionMaybe):
-		self._execute("commands")
+		self._execute("/home/pi/.octoprint/scripts/counter.sh")
 		#p = subprocess.call("/home/pi/.octoprint/scripts/counter.sh", shell=True)
 		#while p.poll():
 		#	self._logger.info(p.readline())
@@ -260,17 +283,27 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def adminAction(self, action):
 		self._logger.info("adminAction called: "+ str(action))
 		if action["action"] == 'turnSshOn':
-			self.turnSshOn()
+			#self.turnSshOn()
+			self._execute("/home/pi/.octoprint/scripts/startSsh.sh")
+			self._logger.info("SSH service started!")
 		elif action["action"] == 'turnSshOff':
-			self.turnSshOff()
+			#self.turnSshOff()
+			self._execute("/home/pi/.octoprint/scripts/stopSsh.sh")
+			self._logger.info("SSH service stopped!")
 		elif action["action"] == 'resetWifi':
-			subprocess.call("/home/pi/.octoprint/scripts/resetWifi.sh")
+			#subprocess.call("/home/pi/.octoprint/scripts/resetWifi.sh")
+			self._execute("/home/pi/.octoprint/scripts/resetWifi.sh")
+			self._logger.info("Wifi reset!")
 		elif action["action"] == 'uploadFirmware':
-			subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
+			#subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
+			self._execute("/home/pi/.octoprint/scripts/upload.sh")
+			self._logger.info("Firmware uploaded!")
 		elif action["action"] == 'counterTest':
 			self.counterTest(action)
 		elif action["action"] == 'expandFilesystem':
-			subprocess.call("/home/pi/.octoprint/scripts/expandFilesystem.sh", shell=True)
+			#subprocess.call("/home/pi/.octoprint/scripts/expandFilesystem.sh", shell=True)
+			self._execute("/home/pi/.octoprint/scripts/expandFilesystem.sh")
+			self._logger.info("Filesystem expanded - will reboot now.")
 
 
 	def turnSshOn(self):
@@ -311,14 +344,16 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		f.write(activation["activation"])
 		f.close()
 		self._settings.set(["registered"], [True])
+		self._settings.save()
 
 
 	def checkActivation(self, userActivation):
 		with open('/home/pi/.mgsetup/actkey', 'r') as f:
 			self.activation = f.readline().strip()
-			if (activation == userActivation['userActivation']):
+			if (self.activation == userActivation['userActivation']):
 				self._logger.info("Activation successful!")
 				self._settings.set(["activated"],[True])
+				self._settings.save()
 			else:
 				self._logger.info("Activation failed!")
 				self._plugin_manager.send_plugin_message("mgsetup","activation failed")
