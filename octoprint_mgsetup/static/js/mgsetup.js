@@ -96,11 +96,20 @@ $(function() {
 		
 	//	window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="makergear.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
 
+		self.updateCuraProfiles = function() {
+
+			//OctoPrint.slicing.SlicingManager.all_profiles(cura,true);
+			OctoPrint.slicing.listProfilesForSlicer("cura")
+			.done(function(response) {
+					console.log(response);
+			});
+
+		};
 
 		self.onStartupComplete = function() {
 			//console.log(self.temperatures.tools());
 			console.log(self.oldZOffset);
-			
+			self.updateCuraProfiles();
 			self.displayToolTemp(self.temperatures.tools()[0].actual);
 			self.displayToolTempTarget(self.temperatures.tools()[0].target);
 			self.mgtab = $("#mgtab");
@@ -153,7 +162,7 @@ $(function() {
 				}
 
 			};*/
-
+			//OctoPrint.settings.save({settings: {allViewModels: {ControlViewModel: {} }}})
 		};
 
 		self.unlockSupport.subscribe(function(newValue) {
@@ -170,12 +179,13 @@ $(function() {
 		
 
 		self.submitRegistration = function() {
-			if (self.newsletter == true){
+			if (self.newsletter() == true){
 				self.newsletterValue = "1";
 			} else{
 				self.newsletterValue = "0";
 			}
-			OctoPrint.postJson("https://morning-mesa-66149.herokuapp.com/registrations.json", {"api_key":"v1-1234567890" , "registration":{"serial_number":self.serialNumber(), "first_name":self.firstName(), "last_name":self.lastName(), "date_received":self.dateReceived(), "email":self.emailAddress(), "channel":self.channel(), "other_channel":self.channelOtherInput(), "referrer":self.referrer(), "other_referrer":self.referrerOtherInput(), "segment":self.segment(), "other_segment":self.segmentOtherInput(), "newsletter":self.newsletterValue}}, {})
+//			OctoPrint.postJson("https://morning-mesa-66149.herokuapp.com/registrations.json", {"api_key":"v1-1234567890" , "registration":{"serial_number":self.serialNumber(), "first_name":self.firstName(), "last_name":self.lastName(), "date_received":self.dateReceived(), "email":self.emailAddress(), "channel":self.channel(), "other_channel":self.channelOtherInput(), "referrer":self.referrer(), "other_referrer":self.referrerOtherInput(), "segment":self.segment(), "other_segment":self.segmentOtherInput(), "newsletter":self.newsletterValue}}, {})
+			OctoPrint.postJson("http://registration.makergear.com/registrations.json", {"api_key":"v1-1234567890" , "registration":{"serial_number":self.serialNumber(), "first_name":self.firstName(), "last_name":self.lastName(), "date_received":self.dateReceived(), "email":self.emailAddress(), "channel":self.channel(), "other_channel":self.channelOtherInput(), "referrer":self.referrer(), "other_referrer":self.referrerOtherInput(), "segment":self.segment(), "other_segment":self.segmentOtherInput(), "newsletter":self.newsletterValue}}, {})
 				.done(function(response){
 
 					if (response.message == "registration successful - please check your email"){
@@ -244,6 +254,10 @@ $(function() {
 		self.adminAction = function(targetAction) {
 			if (targetAction === "uploadFirmware"){
 				OctoPrint.connection.disconnect();
+			}
+			if (targetAction === "resetRegistration"){
+				self.registered(false);
+				self.activated(false);
 			}
 			url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "adminAction", {"action":targetAction})
@@ -603,7 +617,7 @@ $(function() {
 			self._processStateData(data.state);
 		};
 
-		self.sendTones = function(tones) {
+		self.sendTones = function(tones) { //UNTESTED
 			var toneArray = [];
 			for (var i=0; i < tones.length; i++) {
 				//var myRe = /(\d+),/;
@@ -710,6 +724,13 @@ $(function() {
 			if (data == "activation failed"){
 
 				alert("Activation Failed - Please check your entered key and try again.");
+
+			}
+			if (data == "activation success"){
+
+				self.activated(true);
+				alert("Activation Succeeded.");
+				self.support_widget.modal("hide");
 
 			}
 			if (data.commandResponse != undefined ){

@@ -46,9 +46,18 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.serial = -1
 		self.registered = False
 		self.activated = False
+		self.actApiKey = 0
+		self.actServer = "http://whatever.what"
 
 
 	def on_settings_initialized(self):
+		# octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), dict(controls=dict(children=dict(name="Medium Quality"), dict(commands=["M201 X900 Y900", "M205 X20 Y20", "M220 S50"]))))
+		#octoprint.settings.Settings.set(octoprint.settings.settings(), ["controls", "children", "name"],["Fan Orn"])
+		#octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), ["controls"],["name"]
+#dict(api=dict(enabled=False),
+ #                                  server=dict(host="127.0.0.1",
+  #                                             port=5001))
+
 		octoprint.settings.Settings.get(octoprint.settings.settings(),["appearance", "components", "order", "tab"])
 		self.firstTab = self._settings.get(["firstTab"])
 		if self.firstTab:
@@ -91,8 +100,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			if not os.path.isdir('/home/pi/.octoprint/scripts/gcode'):
 				raise
 		else:
-			src_files = os.listdir(self._basefolder+"/static/gcode")
-			src = (self._basefolder+"/static/gcode")
+			src_files = os.listdir(self._basefolder+"/static/maintenance/gcode")
+			src = (self._basefolder+"/static/maintenance/gcode")
 			dest = ("/home/pi/.octoprint/scripts/gcode")
 			for file_name in src_files:
 				full_src_name = os.path.join(src, file_name)
@@ -105,8 +114,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 						shutil.copy(full_src_name, dest)
 						self._logger.info("Had to overwrite "+file_name+" with new version.")
 
-		src_files = os.listdir(self._basefolder+"/static/scripts/")
-		src = (self._basefolder+"/static/scripts/")
+		src_files = os.listdir(self._basefolder+"/static/maintenance/scripts/")
+		src = (self._basefolder+"/static/maintenance/scripts/")
 		dest = ("/home/pi/.octoprint/scripts/")
 		for file_name in src_files:
 			full_src_name = os.path.join(src, file_name)
@@ -120,6 +129,21 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._logger.info("Had to overwrite "+file_name+" with new version.")
 			if ".sh" in file_name:
 				os.chmod(full_dest_name, 0755)
+
+		src_files = os.listdir(self._basefolder+"/static/maintenance/cura/")
+		src = (self._basefolder+"/static/maintenance/cura/")
+		dest = ("/home/pi/.octoprint/slicingProfiles/cura/")
+		for file_name in src_files:
+			full_src_name = os.path.join(src, file_name)
+			full_dest_name = os.path.join(dest, file_name)
+			if not (os.path.isfile(full_dest_name)):
+				shutil.copy(full_src_name, dest)
+				self._logger.info("Had to copy "+file_name+" to scripts folder.")
+			else:
+				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
+					shutil.copy(full_src_name, dest)
+					self._logger.info("Had to overwrite "+file_name+" with new version.")
+
 
 	def get_template_configs(self):
 		return [
@@ -280,6 +304,20 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#__plugin_implementation__._logger.info(line)
 		return line
 
+	def resetRegistration(self):
+		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
+			os.makedirs('/home/pi/.mgsetup')
+		except OSError:
+			if not os.path.isdir('/home/pi/.mgsetup'):
+				raise
+		f = open('/home/pi/.mgsetup/actkey', 'w')
+		f.write("")
+		f.close()
+		self._settings.set(["registered"], False)
+		self._settings.set(["activated"], False)
+		self._settings.save()
+		self._logger.info("Activation and Registration Reset!")
+
 	def adminAction(self, action):
 		self._logger.info("adminAction called: "+ str(action))
 		if action["action"] == 'turnSshOn':
@@ -304,6 +342,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#subprocess.call("/home/pi/.octoprint/scripts/expandFilesystem.sh", shell=True)
 			self._execute("/home/pi/.octoprint/scripts/expandFilesystem.sh")
 			self._logger.info("Filesystem expanded - will reboot now.")
+		elif action["action"] == 'resetRegistration':
+			self.resetRegistration()
+			self._logger.info("Registration reset!")
 
 
 	def turnSshOn(self):
@@ -358,6 +399,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				self._logger.info("Activation successful!")
 				self._settings.set(["activated"],[True])
 				self._settings.save()
+				self._plugin_manager.send_plugin_message("mgsetup","activation success")
 			else:
 				self._logger.info("Activation failed!")
 				self._plugin_manager.send_plugin_message("mgsetup","activation failed")

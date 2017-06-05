@@ -56,7 +56,8 @@ Upload Firmware</button><br>This will upload the bundled firmware to the printer
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button><br>
 This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.<br><br>
 
-
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetRegistration'), $root.showCommandResponse() }">Reset Registration</button><br>
+This will Reset the Registration on this printer.<br><br>
 
 <div id="command_response_popup" class="modal hide fade">
 <center>Command Response:</center><br>

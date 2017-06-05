@@ -8,9 +8,9 @@
 <center><div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: loginState.isUser">
     <br><center><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/0of5.png', 'width': '50%',} , visible: loginState.isUser && setupStep()==='1'" />
                 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/1of5.png', 'width': '50%',} , visible: loginState.isUser && setupStep()==='2'" />
-                <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/2of5.png', 'width': '50%',} , visible: loginState.isUser && setupStep()==='3'" />
+                <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/2of5.png', 'width': '50%',} , visible: loginState.isUser && (setupStep()==='3' || setupStep()==='11' || setupStep()==='5')" />
                 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5of5.png', 'width': '50%',} , visible: loginState.isUser && setupStep()==='4'" />
-                <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/3of5.png', 'width': '50%',} , visible: loginState.isUser && (setupStep()==='5' || setupStep()==='8')" />
+                <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/3of5.png', 'width': '50%',} , visible: loginState.isUser && (setupStep()==='8')" />
                 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4of5.png', 'width': '50%',} , visible: loginState.isUser && (setupStep()==='7' || setupStep()==='7')" />
         </center><br>
         </div>
