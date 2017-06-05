@@ -4,6 +4,7 @@ from __future__ import print_function
 import RPi.GPIO as GPIO
 import subprocess, time, socket
 import serial
+import shutil
 
 GPIO.setwarnings(False)
 
@@ -64,7 +65,18 @@ def resetPasswordHold():
   ser.write("M300 S623 P400 \r\n")
   ser.write("M300 S723 P400 \r\n")
   ser.close()
-  #execute script here
+  
+
+  subprocess.call(["netconnectcli ", "forget_wifi"])
+
+  shutil.copy("/etc/netconnectd.yaml", "/etc/netconnectd.yaml.userold")
+  shutil.copy("/home/pi/.octoprint/config.yaml", "/home/pi/.octoprint/config.yaml.userold")
+  shutil.copy("/home/pi/.octoprint/users.yaml", "/home/pi/.octoprint/users.yaml.userold")
+
+  shutil.copy("/etc/netconnectd.yaml.backup", "/etc/netconnectd.yaml")
+  shutil.copy("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml")
+  shutil.copy("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml")
+  subprocess.call(["shutdown", "-r", "now"])
 
 
 # Initialization
@@ -88,7 +100,6 @@ resetPasswordHoldEnable      = False
 
 # Main loop
 while(True):
-  time.sleep(100/1000000.0)
 
   # Poll current button state and time
   buttonState = GPIO.input(buttonPin)
