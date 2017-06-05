@@ -130,8 +130,8 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupCheckLevel(0); $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button><br><br>
 
-<p style="text-align:left;font-size:20px;">
-    Once the printer has stopped moving, manually slide the extruder towards the build surface. 
+<p style="">
+    Once the printer has stopped moving, use your hand to slide the extruder towards the build surface. If the nozzle hits the glass, do not force the extruder any further. 
 </p>
 
 
@@ -265,7 +265,8 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 
     <tr>
         <td>
-            <strong>A perfectly leveled corner</strong> will result in corner Zigzag pattern that peels off in an even strand of zig-zags while leaving a small section of connected strand segments at the end (3-4 segments). 
+            <strong>A perfectly leveled corner</strong> will result in corner Zigzag pattern that peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments.
+
             <br />
             <br />
             <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
@@ -1324,8 +1325,12 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
     <tr>
 
         <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-            If the  Zigzag pattern that peels-off in an even strand  while leaving a small section of connected segments at the end (3-4 segments), you have <strong>a perfect Starting Height</strong>. Click below to proceed to the next step. 
+            If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Starting Height</strong>. Click below to proceed to the next step. 
             <br />
+
+
+
+
             <br />
 
             <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
