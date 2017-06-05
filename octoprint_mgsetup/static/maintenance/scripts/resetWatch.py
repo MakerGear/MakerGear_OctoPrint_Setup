@@ -5,6 +5,10 @@ import RPi.GPIO as GPIO
 import subprocess, time, socket
 import serial
 import shutil
+import pwd
+import grp
+import os
+
 
 GPIO.setwarnings(False)
 
@@ -76,6 +80,19 @@ def resetPasswordHold():
   shutil.copy("/etc/netconnectd.yaml.backup", "/etc/netconnectd.yaml")
   shutil.copy("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml")
   shutil.copy("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml")
+
+  os.chmod("/etc/netconnectd.yaml", 0600)
+  os.chmod("/home/pi/.octoprint/config.yaml", 0600)
+  os.chmod("/home/pi/.octoprint/users.yaml", 0600)
+
+  uidRoot = pwd.getpwnam("root").pw_uid
+  uidPi = pwd.getpwnam("pi").pw_uid
+  gidRoot = grp.getgrnam("root").gr_gid
+  gidPi = grp.getgrnam("pi").gr_gid
+
+  os.chown("/etc/netconnectd.yaml", uidRoot, gidRoot)
+  os.chown("/home/pi/.octoprint/config.yaml", uidPi, gidPi)
+  os.chown("/home/pi/.octoprint/users.yaml", uidPi, gidPi)
   subprocess.call(["shutdown", "-r", "now"])
 
 

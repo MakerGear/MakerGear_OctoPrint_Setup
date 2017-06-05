@@ -1,0 +1,159 @@
+accessControl:
+  salt: fakeSalt
+api:
+  enabled: false
+  key: null
+appearance:
+  name:
+  - MakerGear M3Printer
+components:
+  order:
+    tab:
+    - temperature
+    - control
+    - gcodeviewer
+    - terminal
+    - timelapse
+feature: {}
+controls:
+- children:
+  - commands:
+    - M201 X500 Y500
+    - M205 X8 Y8
+    - M220 S20
+    name: High Quality
+  - commands:
+    - M201 X900 Y900
+    - M205 X20 Y20
+    - M220 S50
+    name: Medium Quality
+  - commands:
+    - M201 X2000 Y2000
+    - M205 X60 Y60
+    - M220 S150
+    name: Turbo
+  - commands:
+    - M220 S100
+    - M205 X30 Y30
+    - M201 X1000 Y1200
+    name: Restore Normal Settings
+  collapsed: true
+  layout: horizontal
+  name: Quality and speed overrides
+gcodeViewer: {}
+plugins:
+  ScreenSquish:
+    octoprint_max_version: ''
+  _disabled:
+  - slicer
+  - printhistory
+  - touchui
+  announcements:
+    channels:
+      _important:
+        read_until: 1478614200
+  cura:
+    cura_engine: /usr/local/bin/cura_engine
+  discovery:
+    publicPort: 80
+    upnpUuid: null
+  softwareupdate:
+    _config_version: 5
+    check_providers:
+      autoscroll: autoscroll
+      autoselect: autoselect
+      ipOnConnect: ipOnConnect
+      octoprint_mgsetup: mgsetup
+      octoprint_nautilus: mgsetup
+      printhistory: printhistory
+      slicer: slicer
+      touchui: touchui
+    checks:
+      octoprint:
+        checkout_folder: /home/pi/OctoPrintMG
+        prerelease: false
+        prerelease_channel: null
+        user: MakerGear
+printerParameters: {}
+printerProfiles:
+  defaultProfile:
+    axes:
+      e:
+        inverted: false
+        speed: 400
+      x:
+        inverted: false
+        speed: 12000
+      y:
+        inverted: true
+        speed: 12000
+      z:
+        inverted: false
+        speed: 1200
+    color: default
+    extruder:
+      count: 1
+      nozzleDiameter: 0.35
+      offsets:
+      - - 0.0
+        - 0.0
+      sharedNozzle: false
+    heatedBed: true
+    id: _default
+    model: M3 Single X Carriage
+    name: MakerGear M3
+    volume:
+      custom_box:
+        x_max: 240.0
+        x_min: 0.0
+        y_max: 250.0
+        y_min: 0.0
+        z_max: 205.0
+        z_min: 0.0
+      depth: 250.0
+      formFactor: rectangular
+      height: 200.0
+      origin: lowerleft
+      width: 200.0
+serial:
+  additionalPorts:
+  - /dev/ttyS0
+  autoconnect: true
+  baudrate: 115200
+  disconnectOnErrors: false
+  port: /dev/ttyS0
+  timeout:
+    communication: 60.0
+    connection: 30.0
+    sdStatus: 10.0
+server:
+  commands:
+    serverRestartCommand: /home/pi/.octoprint/scripts/resetOctoprint.sh
+    systemRestartCommand: /home/pi/.octoprint/scripts/resetRpi.sh
+    systemShutdownCommand: /home/pi/.octoprint/scripts/shutdownRpi.sh
+  firstRun: false
+  secretKey: null
+  seenWizards:
+    cura: null
+slicing:
+  defaultProfiles:
+    cura: pla-no-support
+system:
+  actions:
+  - action: reset_rambo
+    command: /home/pi/.octoprint/scripts/resetRambo.sh
+    confirm: You are about to reset the rambo.
+    name: Reset RAMBo
+temperature:
+  cutoff: 5
+  profiles:
+  - bed: '115'
+    extruder: '265'
+    name: ABS
+  - bed: '70'
+    extruder: '215'
+    name: PLA
+webcam:
+  ffmpeg: /usr/bin/avconv
+  snapshot: http://127.0.0.1:8080/?action=snapshot
+  stream: /webcam/?action=stream

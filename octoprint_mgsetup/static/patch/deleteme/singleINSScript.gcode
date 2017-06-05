@@ -1,0 +1,7 @@
+;Single INS script ~~~~~~
+M104 S210
+M140 S115
+M106 S255
+G28
+M84 
+G1 X220 Z30 Y100
