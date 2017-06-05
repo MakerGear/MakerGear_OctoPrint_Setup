@@ -60,11 +60,11 @@ This will expand the root filesystem to allow access to the full storage capacit
 This will Reset the Registration on this printer.<br><br>
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('patch'), $root.showCommandResponse() }">Patch</button><br>
-This will Reset the Registration on this printer.<br><br>
+One-time pre-ship patch.<br><br>
 
 <div id="command_response_popup" class="modal hide fade">
 <center>Command Response:</center><br>
-<textarea data-bind="text: $root.commandResponse" style="width:100%;"></textarea><br>
+<textarea data-bind="text: $root.commandResponse" style="width:90%;"></textarea><br>
 
 </div>
 
