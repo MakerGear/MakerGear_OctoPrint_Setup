@@ -46,12 +46,26 @@ import time
 
 def patch():
 
-	os.remove("/home/pi/.octoprint/uploads/demos/pla/Clip_Bug_Cura.gco")
-	os.remove("/home/pi/.octoprint/uploads/demos/pla/EarthElemental_S3d.gcode")
-	os.remove("/home/pi/.octoprint/uploads/demos/stl/Clip_Bug.stl")
-	os.remove("/home/pi/.octoprint/uploads/demos/stl/EarthElemental.stl")
+	try:
+		os.remove("/home/pi/.octoprint/uploads/demos/pla/Clip_Bug_Cura.gco")
+	except OSError:
+		print("no file")
+	try:
+		os.remove("/home/pi/.octoprint/uploads/demos/pla/EarthElemental_S3d.gcode")
+	except OSError:
+		print("no file")
+	try:
+		os.remove("/home/pi/.octoprint/uploads/demos/stl/Clip_Bug.stl")
+	except OSError:
+		print("no file")
+	try:
+		os.remove("/home/pi/.octoprint/uploads/demos/stl/EarthElemental.stl")
+	except OSError:
+		print("no file")
+
 
 	src_files = os.listdir("/home/pi/.octoprint/slicingProfiles/cura/")
+	src = "/home/pi/.octoprint/slicingProfiles/cura/"
 	for file_name in src_files:
 		full_src_name = os.path.join(src, file_name)
 		os.remove(full_src_name)
@@ -63,7 +77,6 @@ def patch():
 
 	shutil.copy("/home/pi/.octoprint/users.yaml", "/home/pi/.octoprint/users.yaml.backup")
 
-	os.chmod("/etc/netconnectd.yaml.backup", 0755)
 
 	originalSalt = ""
 	with open("/home/pi/.octoprint/config.yaml") as f:
@@ -86,16 +99,17 @@ def patch():
 		if not os.path.isdir('/home/pi/.octoprint/uploads/deleteme'):
 			raise
 	else:
-		src_files = os.listdir("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/deleteme/")
-		src = ("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/deleteme/")
-		dest = ("/home/pi/.octoprint/uploads/deleteme")
-		for file_name in src_files:
-			full_src_name = os.path.join(src, file_name)
-			full_dest_name = os.path.join(dest, file_name)
-			if not (os.path.isfile(full_dest_name)):
+		print("deleteme exists")	
+	src_files = os.listdir("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/deleteme/")
+	src = ("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/deleteme/")
+	dest = ("/home/pi/.octoprint/uploads/deleteme")
+	for file_name in src_files:
+		full_src_name = os.path.join(src, file_name)
+		full_dest_name = os.path.join(dest, file_name)
+		if not (os.path.isfile(full_dest_name)):
+			shutil.copy(full_src_name, dest)
+		else:
+			if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
 				shutil.copy(full_src_name, dest)
-			else:
-				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
-					shutil.copy(full_src_name, dest)
 
 patch()
