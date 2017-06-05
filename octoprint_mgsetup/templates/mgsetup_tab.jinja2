@@ -13,6 +13,7 @@
                 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/3of5.png', 'width': '50%',} , visible: loginState.isUser && (setupStep()==='8')" />
                 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4of5.png', 'width': '50%',} , visible: loginState.isUser && (setupStep()==='7' || setupStep()==='7')" />
         </center><br>
+        <h5 data-bind=" visible: loginState.isUser && setupStep()!=='1'">NOTE: Do not refresh during the setup process, or you will need to start over from the beginning.</h5>
         </div>
 {#        88    #}
 {#      ,d88    #}
@@ -87,6 +88,10 @@
         
                 <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.goTo('2'); window.scroll(0,0) }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
 
+<hr />
+<br />
+                <center> <button style="width:150px;height:100px;" class="btngo"  onclick="location.href='http://makergear.zendesk.com/hc';" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button></center>
+
 
    
 
@@ -121,7 +126,7 @@ Before proceeding, please make sure that you have read and completed all of the 
             </a>
     </div>-->
     
-<hr />
+    
 
 
 <p style="text-align:left;">
@@ -329,11 +334,11 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 
 
     <h1 style="text-align:left;">Your First Print</h1>
-
+    <!--
     <p>
         <em>How to print Video</em>
     </p>
-
+-->
 
     <p> 
         In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. ( You can leave all the settings at their default values.)
@@ -345,9 +350,22 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 
 
     <p>
-        You will see a progress bar, and once the GCode has been generated, you should see 'mgkeychain.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print. You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
+        You will see a progress bar, and once the GCode has been generated, you should see 'mgkeychain.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
     </p>
-    <img src="/plugin/mgsetup/static/img/gcode.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+    <img src="/plugin/mgsetup/static/img/gcode.png" 
+
+
+    <p>
+        Your printer will make sure that the extruder/bed are heated correctly, and then start to print the keychain.  You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
+    </p>
+
+    <p>
+        Learn how to get the most out of your M3 by visiting the  <a href="http://makergear.zendesk.com/hc">M3 Knowledge Base</a>.
+
+    </p>
+
+
+    style="display:block;width::50%;margin-left:auto;margin-right:auto">
     <!--
     <p>
     
