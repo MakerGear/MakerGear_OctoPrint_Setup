@@ -78,6 +78,7 @@ def patch():
 	shutil.copy("/home/pi/.octoprint/users.yaml", "/home/pi/.octoprint/users.yaml.backup")
 
 
+
 	originalSalt = ""
 	with open("/home/pi/.octoprint/config.yaml") as f:
 		doc = yaml.safe_load(f)
@@ -92,6 +93,9 @@ def patch():
 			yaml.safe_dump(doc, f, default_flow_style=False)
 
 	shutil.copy("/home/pi/.octoprint/config.yaml", "/home/pi/.octoprint/config.yaml.backup")
+
+	os.chmod("/home/pi/.octoprint/config.yaml", 0600)
+	os.chmod("/home/pi/.octoprint/config.yaml.backup", 0600)
 
 	try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 		os.makedirs('/home/pi/.octoprint/uploads/deleteme')
