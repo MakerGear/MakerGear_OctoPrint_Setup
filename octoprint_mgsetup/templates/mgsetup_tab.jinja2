@@ -340,7 +340,7 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 -->
 
     <p> 
-        In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. ( You can leave all the settings at their default values.)
+        In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. (You can leave all the settings at their default values.)
         <img src="/plugin/mgsetup/static/img/stl.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
             <br/>
         <img src="/plugin/mgsetup/static/img/slice.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
@@ -1510,7 +1510,7 @@ Once you've gone around at least once, you can then proceed; where you go next d
 
 <p>
     Now you need to load filament into your printer. 
-    When you click "Prepare" the printer will perform the following actions
+    When you click "Prepare" the printer will perform the following actions:
 </p>
 
 <ol>
@@ -1532,9 +1532,9 @@ Once you've gone around at least once, you can then proceed; where you go next d
 </p>
 
 
-<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepElevenStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepElevenStartHeatingClicked(true) }">{{ _('Start heating') }}</button></center><br><br>
+<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepElevenStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepElevenStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
 
-Now we'll prepare to load filament while waiting for your MakerGear M3 to heat up:
+Now we’ll prepare to load filament, if you have not already, while waiting for your M3 to heat up.
 <br><br>
 
 
