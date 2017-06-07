@@ -118,6 +118,8 @@ resetPasswordHoldEnable      = False
 # Main loop
 while(True):
 
+  time.sleep(1/10000.0)
+
   # Poll current button state and time
   buttonState = GPIO.input(buttonPin)
   t           = time.time()
