@@ -31,6 +31,7 @@ $(function() {
 		self.stepSevenWigglePrinted = ko.observable(false); //implemented, good
 
 		self.stepEightFirstWiggleClicked = ko.observable(false); //implemented, good
+		self.stepEightShowFineAdjustments = ko.observable(false);
 
 		self.stepElevenStartHeatingClicked = ko.observable(false); //implemented, good
 		self.lockButton = ko.observable(true);
@@ -69,6 +70,7 @@ $(function() {
 		self.displayBedTempTarget(self.temperatures.bedTemp.target);
 		self.hostname = ko.observable();
 		self.unlockSupport = ko.observable(false);
+		self.remindPlease = ko.observable(false);
 
 		self.serialNumber = ko.observable("");
 		self.firstName = ko.observable("");
@@ -96,20 +98,20 @@ $(function() {
 		
 	//	window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="makergear.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
 
-		self.updateCuraProfiles = function() {
+		// self.updateCuraProfiles = function() {
 
-			//OctoPrint.slicing.SlicingManager.all_profiles(cura,true);
-			OctoPrint.slicing.listProfilesForSlicer("cura")
-			.done(function(response) {
-					console.log(response);
-			});
+		// 	//OctoPrint.slicing.SlicingManager.all_profiles(cura,true);
+		// 	OctoPrint.slicing.listProfilesForSlicer("cura")
+		// 	.done(function(response) {
+		// 			console.log(response);
+		// 	});
 
-		};
+		// };
 
 		self.onStartupComplete = function() {
 			//console.log(self.temperatures.tools());
 			console.log(self.oldZOffset);
-			self.updateCuraProfiles();
+			//self.updateCuraProfiles();
 			self.displayToolTemp(self.temperatures.tools()[0].actual);
 			self.displayToolTempTarget(self.temperatures.tools()[0].target);
 			self.mgtab = $("#mgtab");
@@ -139,6 +141,15 @@ $(function() {
 			self.registered(self.settings.settings.plugins.mgsetup.registered());
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
 			window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="makergear.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+			zESettings = {
+				webWidget: {
+					contactForm: {
+						fields: [
+							{ id: 25226546, prefill: { '*': self.serialNumber() } }
+						]
+					}
+				}
+			};
 
 			if (self.unlockSupport()){
 				zE(function() {
@@ -199,7 +210,7 @@ $(function() {
 				})
 				.fail(function(response){
 
-					alert("Something went wrong.  Please check all fields and try again, or contact Support.  Error: "+response.status+" "+response.statusText);
+					alert("Something went wrong.  Please check all fields and try again, or contact Support@MakerGear.com .  Error: "+response.status+" "+response.statusText);
 					console.log(response);
 
 				});
@@ -509,19 +520,33 @@ $(function() {
 
 		};
 
-		self.showSupport = function() {
+		self.showSupport = function(input) {
 			if ((self.registered() === false) || (self.activated() === false)){
-				self.support_widget.modal("show");
+				//self.support_widget.modal("show");
+				self.support_widget.modal({keyboard: false, backdrop: "static", show: true});
 			} else {
 				zE.activate();
 			}
+			if (input === "hide"){
+				self.support_widget.modal("hide");
+			}
+			if (input === "remind"){
+				self.support_widget.modal("hide");
+				url = OctoPrint.getSimpleApiUrl("mgsetup");
+				OctoPrint.issueCommand(url, "remindLater")
+					.done(function(response) {
+					//console.log(response);
+					});
 
+			}
 		};
 
-		self.showCommandResponse = function(){
+		self.showCommandResponse = function(input){
 
-			self.command_response_popup.modal("show");
-
+			self.command_response_popup.modal({keyboard: false, backdrop: "static", show: true});
+			if (input === "hide"){
+				self.command_response_popup.modal("hide");
+			}
 		};
 
 		self.incrementZWiggleHeight = function (amount) {
@@ -551,6 +576,7 @@ $(function() {
 				window.setTimeout(function() {self.checkGoogle()},1000);
 			}
 			OctoPrint.settings.get();
+			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 		};
 
 		self.fromCurrentData = function (data) {
@@ -617,27 +643,39 @@ $(function() {
 			self._processStateData(data.state);
 		};
 
-		self.sendTones = function(tones) { //UNTESTED
-			var toneArray = [];
-			for (var i=0; i < tones.length; i++) {
-				//var myRe = /(\d+),/;
-				//toneArray[i].note = myRe.exec(tones)[0];
-				//toneArray[i].length = myRe.exec(tones)[1];
-				toneArray[i].note = tones[i+0];
-				toneArray[i].length = tones[i+1];
+// 		self.sendTones = function(tones) { //Fundamentally broken, do not use.
 
-			}
-			self.toneList = [];
-			for (var i=0; i<toneArray.length; i++) {
-				if (toneArray[i].note = 0){
-					self.toneList = self.tonelist.push("G4 P"+(toneArray[i].length).toStr());
-				} else {
-					self.toneList = self.tonelist.push("M300 S"+(toneArray[i].note).toStr()+" P"+(toneArray[i].length).toStr());
+// //UI code sample:
+// // 			Can we play a tone with sendTones() ?
+// // <button data-bind="click: function() { $root.sendTones([1000,100]) }">{{ _('Send Tones') }}</button>
+// // <br><br>
+// 			console.log(tones);
+// 			self.toneArray = [];
+// 			for (var i=0; i < tones.length; i++) {
+// 				console.log(i);
+// 				console.log(tones.length);
+// 				console.log(tones[0]);
+// 				//var myRe = /(\d+),/;
+// 				//self.toneArray[i].note = myRe.exec(tones)[0];
+// 				//self.toneArray[i].length = myRe.exec(tones)[1];
+// 				self.toneArray[i+0] = tones[i+0];
+// 				console.log(self.toneArray[i]);
+// 				self.toneArray[i+1] = tones[i+1];
+// 				console.log(self.toneArray[i]);
 
-				}
-			}
-			OctoPrint.control.sendGcode(toneArray);
-		};
+
+// 			}
+// 			self.toneList = [];
+// 			for (var i=0; i<self.toneArray.length; i++) {
+// 				if (self.toneArray[i] == 0){
+// 					self.toneList = self.toneList.push("G4 P"+(self.toneArray[i+1]).toString());
+// 				} else {
+// 					self.toneList = self.toneList.push("M300 S"+(self.toneArray[i]).toString()+" P"+(self.toneArray[i+1]).toString());
+
+// 				}
+// 			}
+// 			OctoPrint.control.sendGcode(self.toneList);
+// 		};
 
 		self._processStateData = function (data) {
 			self.isErrorOrClosed(data.flags.closedOrError);
@@ -740,6 +778,13 @@ $(function() {
 			if (data.commandError != undefined){
 				console.log(data.commandError);
 			}
+			if (data.pleaseRemind != undefined){
+				self.remindPlease(true);
+				if (self.remindPlease()===true){
+					window.setTimeout(function() {self.showSupport()},10000);
+					console.log("Reminding.");
+				}
+			}
 			//console.log(data.hostname);
 			//self.serialNumber(data.serial);
 		};
@@ -756,7 +801,9 @@ $(function() {
 				OctoPrint.control.sendGcode("M114");
 				//alert("hello client");
 			}
-			self.checkGoogle();
+			if (self.googleGood()===false){
+				window.setTimeout(function() {self.checkGoogle()},1000);
+			}
 		};
 		
 		self.onAfterBinding = function() {

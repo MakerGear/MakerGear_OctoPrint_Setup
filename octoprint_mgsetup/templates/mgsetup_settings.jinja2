@@ -64,7 +64,8 @@ One-time pre-ship patch.<br><br>
 
 <div id="command_response_popup" class="modal hide fade">
 <center>Command Response:</center><br>
-<textarea data-bind="text: $root.commandResponse" style="width:90%;"></textarea><br>
+<center><textarea data-bind="text: $root.commandResponse" style="width:90%;"></textarea></center><br>
+<div align="right"><button data-bind="click: function() { $root.showCommandResponse('hide') }">Close</button></div>
 
 </div>
 

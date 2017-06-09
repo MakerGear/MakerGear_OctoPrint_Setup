@@ -521,6 +521,7 @@ And play local audio files!  (<s>maybe...</s> totally)
 Can we make a self-disabling/enabling button?<br>
 <button data-bind="enable: $root.lockButton(), click: function() { $root.lockButton(false), $root.enableLockedButton(2000) }">{{ _('Disable and Enable Maybe') }}</button>
 <br><br>
+
 <input type="checkbox" data-bind="checked: $root.showFontAwesome" /> Show FontAwesome demo icons.
 <div data-bind= "visible: $root.showFontAwesome()">
     <i class="icon-glass" > </i>
@@ -1386,21 +1387,29 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-
-            <center><button class="btnstay" data-bind="enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>            
+<div data-bind="visible: $root.stepEightShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==false, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==true, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.04); $root.enableLockedButton(10000) }">Adjust by 0.04mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==true, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.02); $root.enableLockedButton(10000) }">Adjust by 0.02mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==true, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.01); $root.enableLockedButton(10000) }">Adjust by 0.01mm and Print</button></center>            
 
         </td>
 
 
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-            
-            <center><button class="btnstay" data-bind="enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>  
+            <div data-bind="visible: $root.stepEightShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==false, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==true, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.04); $root.enableLockedButton(10000) }">Adjust by 0.04mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==true, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.02); $root.enableLockedButton(10000) }">Adjust by 0.02mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepEightShowFineAdjustments()==true, enable: $root.stepEightFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.01); $root.enableLockedButton(10000) }">Adjust by 0.01mm and Print</button></center>  
             <!--Too Close-->
         </td>
     <tr>
 
 </table>
 
+
+<input type="checkbox" data-bind="checked: $root.stepEightShowFineAdjustments" /> Show the Fine Adjustment Buttons.
 
 
 </div>

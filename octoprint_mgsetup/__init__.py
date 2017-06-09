@@ -48,6 +48,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.activated = False
 		self.actApiKey = 0
 		self.actServer = "http://whatever.what"
+		self.nextReminder = -1
 
 
 	def on_settings_initialized(self):
@@ -72,17 +73,19 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.hideDebug = self._settings.get(["hideDebug"])
 		if self._settings.get(["serialNumber"]) != -1:
 			self.serial = self._settings.get(["serialNumber"])
+			self._logger.info("Retrieved serialNumber from Settings.")
 		else:
 			if os.path.isfile('/boot/serial.txt'):
 				with open('/boot/serial.txt', 'r') as f:
 					self.serial = f.readline().strip()
-					self._settings.set(["serialNumber"],[self.serial])
+					self._settings.set(["serialNumber"],self.serial)
 					self._settings.save()
 			else:
 				self._logger.info("serial.txt does not exist!")
 		self._logger.info(self.serial)
-		self._settings.get(["registered"])
-		self._settings.get(["activated"])
+		self.registered = self._settings.get(["registered"])
+		self.activated = self._settings.get(["activated"])
+		self.nextReminder = self._settings.get(["nextReminder"])
 #		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 #		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
@@ -93,7 +96,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.current_position = current_position
 		self._logger.info(self.newhost)
 		
-		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
+		# os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
 
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 			os.makedirs('/home/pi/.octoprint/scripts/gcode')
@@ -153,10 +156,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		]
 
 	def get_settings_defaults(self):
-		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1)
+		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1)
 
 	def get_settings_restricted_paths(self):
-		return dict(user=[["serialNumber","registered","activated"]])
+		return dict(user=[["serialNumber","registered","activated"],])
 
 	def get_assets(self):
 		return dict(
@@ -167,6 +170,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			videojs=["video-js/*"]
 		)
 	
+	def remindLater(self):
+		self.nextReminder = time.mktime(time.gmtime()) + 604800
+		self._logger.info("Next Reminder: "+str(self.nextReminder) + ", currently: "+str(time.mktime(time.gmtime())))
+		self._settings.set(["nextReminder"],self.nextReminder)
+		self._settings.save()
+
 	def on_event(self, event, payload):
 		if event == Events.POSITION_UPDATE:
 			self._logger.info(payload)
@@ -179,6 +188,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#self._logger.info(payload + " connected")
 			#self.serial = ""
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline))
+			self._logger.info(str(self.nextReminder))
+			if (self.nextReminder <= time.mktime(time.gmtime())) and (self.nextReminder > 0):
+				self._plugin_manager.send_plugin_message("mgsetup", dict(pleaseRemind = True))
+			else:
+				self._logger.info(str(self.nextReminder))
+				self._logger.info(str(time.mktime(time.gmtime())))
+			return
+
 
 	def _to_unicode(self, s_or_u, encoding="utf-8", errors="strict"):
 		"""Make sure ``s_or_u`` is a unicode string."""
@@ -284,7 +301,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'])
+		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[])
 
 	def on_api_get(self, request):
 		return flask.jsonify(dict(
@@ -378,6 +395,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.storeActivation(data)
 		elif command == 'checkActivation':
 			self.checkActivation(data)
+		elif command == 'remindLater':
+			self.remindLater()
 
 	def sendSerial(self):
 		self._plugin_manager.send_plugin_message("mgsetup", dict(serial = self.serial))
@@ -392,7 +411,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		f = open('/home/pi/.mgsetup/actkey', 'w')
 		f.write(activation["activation"])
 		f.close()
-		self._settings.set(["registered"], [True])
+		self._settings.set(["registered"], True)
 		self._settings.save()
 
 
@@ -401,7 +420,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.activation = f.readline().strip()
 			if (self.activation == userActivation['userActivation']):
 				self._logger.info("Activation successful!")
-				self._settings.set(["activated"],[True])
+				self._settings.set(["activated"],True)
 				self._settings.save()
 				self._plugin_manager.send_plugin_message("mgsetup","activation success")
 			else:
