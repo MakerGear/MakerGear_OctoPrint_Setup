@@ -96,7 +96,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.current_position = current_position
 		self._logger.info(self.newhost)
 		
-		# os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
+		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
+		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
+
 
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 			os.makedirs('/home/pi/.octoprint/scripts/gcode')

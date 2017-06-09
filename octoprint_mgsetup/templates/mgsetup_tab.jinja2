@@ -64,10 +64,11 @@
             <a style="" href="#" onClick="window.open('/plugin/mgsetup/static/html/network.html','pagename','resizable=no,height=520,width=740'); return false;">
                 <i class="icon-play-circle" style="font-size:20px;"></i>
             </a>
-
+            <!--
              <a style="" href="#" onClick="window.open('/plugin/mgsetup/static/html/network.html','pagename','resizable=no,height=520,width=740'); return false;">
                Watch the instructional video.
             </a>
+            -->
     </div>
     
 
@@ -90,10 +91,8 @@
 
 <hr />
 <br />
-                <center> <button style="width:150px;height:100px;" class="btngo"  onclick="location.href='http://makergear.zendesk.com/hc';" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button></center>
+                <center> <button style="width:150px;height:100px;" class="btngo"  onClick="window.open('https://makergear.zendesk.com/hc/en-us/categories/115000563646-M3','_blank','menubar=yes,resizable=yes,height=520,width=740'); return false;" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button></center>
 
-
-   
 
 </div>
 
@@ -141,7 +140,7 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 
 
 <p >
-    <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current extruder starting height?</span>
+    <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current extruder starting height? Click the photos to zoom in.</span>
 </p>
 
 
@@ -159,14 +158,14 @@ First you need to ensure that your factory settings are correct. Click <strong>P
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 
 <a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepTwoPrepared(), click: function() { $root.goTo('11'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(1mm or less)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepTwoPrepared(), click: function() { $root.goTo('11'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5mm or less)') }}</button>
 
 
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 
  <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepTwoPrepared(), click: function() { $root.goTo('5'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than 1mm)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepTwoPrepared(), click: function() { $root.goTo('5'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5mm)') }}</button>
 
 
         </td>
@@ -241,7 +240,7 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 <p ></p>
 
 
-<strong style="font-size:20px;" >Which of the following options best describes the results of your Corner Check?</strong>
+<strong style="font-size:20px;" >Which of the following options best describes the results of your Corner Check? Click the photos to zoom in.</strong>
 
 
 <table class="choiceTable">
@@ -341,7 +340,7 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 -->
 
     <p> 
-        In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. ( You can leave all the settings at their default values.)
+        In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. (You can leave all the settings at their default values.)
         <img src="/plugin/mgsetup/static/img/stl.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
             <br/>
         <img src="/plugin/mgsetup/static/img/slice.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
@@ -352,7 +351,7 @@ First you need to ensure that your factory settings are correct. Click <strong>P
     <p>
         You will see a progress bar, and once the GCode has been generated, you should see 'mgkeychain.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
     </p>
-    <img src="/plugin/mgsetup/static/img/gcode.png" 
+    <img src="/plugin/mgsetup/static/img/gcode.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
 
 
     <p>
@@ -360,12 +359,11 @@ First you need to ensure that your factory settings are correct. Click <strong>P
     </p>
 
     <p>
-        Learn how to get the most out of your M3 by visiting the  <a href="http://makergear.zendesk.com/hc">M3 Knowledge Base</a>.
+        Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us/categories/115000563646-M3" target="_blank">M3 Knowledge Base</a>.
 
     </p>
 
 
-    style="display:block;width::50%;margin-left:auto;margin-right:auto">
     <!--
     <p>
     
@@ -1188,6 +1186,8 @@ Here you will be able to print Zigzag patterns in each corner and then adjust th
 
 Once the printer has stopped moving, use the four Zigzag pattern Position buttons to print in each corner, starting with the corner that was most different from the others in the Four Zigzag pattern print.  After each print, inspect the Zigzag pattern and adjust the bed accordingly:<br><br>
 
+
+
 If the entire Zigzag pattern was completely stuck to the bed, the bed leveling screw needs to be loosened by turning it counter-clockwise, to lower the bed at this position.<br><br>
    
    <video controls id="ccw" class="video-js"  preload="none"  data-setup='{ "fluid": true}'  data-bind="attr: {  autoplay: 'true', loop: 'true', poster:'/plugin/mgsetup/static/img/ccwposter.jpg' }, if:  setupStep() === '7'" onclick="this.paused ? this.play() : this.pause();">
@@ -1213,9 +1213,7 @@ If the entire Zigzag pattern was loose or not adhered to the bed at all, the bed
     </p>
     </video>
 
-
-
-
+<hr />
 
 A quarter-turn should be the largest adjustment made between tests.<br><br>
 Note: All positions wait for the bed and hotend temperatures to stabilize before starting, so it may take a moment to begin printing.<br><br>
@@ -1232,7 +1230,16 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
     </div></center>
 <br><br><br>
 
-<center>When you have verified that your printer is printing each Zigzag pattern well, you can go on to the next step:<br><br>
+<center>
+
+
+
+<img src="/plugin/mgsetup/static/img/10.jpg">
+<p>A perfectly leveled corner</strong> will result in corner Zigzag pattern that peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments. If your zigzag is close to this, your corner is set and needs no further adjustment. When all 4 patterens are correct, you can proceed.
+</p>
+
+
+
 <button class="btngo" data-bind="enable: $root.stepSevenWigglePrinted(), click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button>
 
 </div>
@@ -1310,7 +1317,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
 <p >
-    <strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern?</strong>
+    <strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
 </p>
 
 
@@ -1512,7 +1519,7 @@ Once you've gone around at least once, you can then proceed; where you go next d
 
 <p>
     Now you need to load filament into your printer. 
-    When you click "Prepare" the printer will perform the following actions
+    When you click "Prepare" the printer will perform the following actions:
 </p>
 
 <ol>
@@ -1534,9 +1541,9 @@ Once you've gone around at least once, you can then proceed; where you go next d
 </p>
 
 
-<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepElevenStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepElevenStartHeatingClicked(true) }">{{ _('Start heating') }}</button></center><br><br>
+<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepElevenStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepElevenStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
 
-Now we'll prepare to load filament while waiting for your MakerGear M3 to heat up:
+Now we’ll prepare to load filament, if you have not already, while waiting for your M3 to heat up.
 <br><br>
 
 

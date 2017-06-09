@@ -71,7 +71,7 @@ def resetPasswordHold():
   ser.close()
   
 
-  subprocess.call(["netconnectcli ", "forget_wifi"])
+  subprocess.call(["netconnectcli", "forget_wifi"])
 
   shutil.copy("/etc/netconnectd.yaml", "/etc/netconnectd.yaml.userold")
   shutil.copy("/home/pi/.octoprint/config.yaml", "/home/pi/.octoprint/config.yaml.userold")
@@ -117,6 +117,8 @@ resetPasswordHoldEnable      = False
 
 # Main loop
 while(True):
+
+  time.sleep(1/10000.0)
 
   # Poll current button state and time
   buttonState = GPIO.input(buttonPin)

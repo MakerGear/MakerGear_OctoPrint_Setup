@@ -162,7 +162,7 @@ retraction_minimal_extrusion: 0.02
 retraction_speed: 200.0
 skirt_gap: 3.0
 skirt_line_count: true
-skirt_minimal_length: 250.0
+skirt_minimal_length: 300.0
 solid_bottom: true
 solid_layer_thickness: 0.6
 solid_top: true
