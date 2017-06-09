@@ -1,6 +1,0 @@
-;Check Starting Height ~~~~~~
-G28 X Y
-G1 F2000 X100 Y125
-G28 Z
-G1 F2000 Z10
-G1 F400 Z0

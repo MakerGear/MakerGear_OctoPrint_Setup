@@ -96,7 +96,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.current_position = current_position
 		self._logger.info(self.newhost)
 		
-		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
+		#os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
 		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
 
 
@@ -365,9 +365,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'resetRegistration':
 			self.resetRegistration()
 			self._logger.info("Registration reset!")
-		elif action["action"] == 'patch':
-			self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh")
-			self._logger.info("Patch started.")
+		# elif action["action"] == 'patch':
+		# 	self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh")
+		# 	self._logger.info("Patch started.")
 
 
 	def turnSshOn(self):
