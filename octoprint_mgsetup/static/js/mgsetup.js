@@ -6,7 +6,8 @@ $(function() {
 		self.settings = parameters[1];
 		self.temperatures = parameters[2];
 		self.userSettings = parameters[3];
-		self.googleGood = ko.observable(false);
+		self.googleGood = ko.observable(-1);
+		self.googleChecks = ko.observable(0);
 		self.waitingForM = ko.observable(false);
 		self.showFontAwesome = ko.observable(false);
 		self.newNetconnectdPassword = ko.observable("");
@@ -128,7 +129,7 @@ $(function() {
 			}
 			self.support_widget = $("#mgsetup_support_widget");
 			self.command_response_popup = $("#command_response_popup");
-			self.checkGoogle();
+			//self.checkGoogle();
 			self.requestEeprom();
 			console.log(self.settings);
 			console.log(self.userSettings);
@@ -463,26 +464,37 @@ $(function() {
 
 
 		self.checkGoogle = function(){
+			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			OctoPrint.issueCommand(url, "checkGoogle")
+				.done(function(response) {
+				//console.log(response);
+				});
 
+			// if (self.loginState.isUser()){
+			// 	OctoPrint.util.testUrl("http://www.google.com", {"response": "true"})
+			// 		.done(function(response) {
+			// 			if (response.result) {
+			// 				console.log(response);
+   //      	            // check passed
+   //          	       // alert("connected to google!")
+			// 				self.googleChecks(self.googleChecks()+1);
+			// 				if (response.status!==0 && response.status < 300){
+			// 					self.googleGood(1);
+			// 				}
+			// 			} else {
+			// 			//check failed
+			// 				if (self.googleChecks()>4){
+			// 				self.googleGood(0);
+			// 				} else {
+			// 					window.setTimeout(function() {self.checkGoogle()},3000);
+			// 					console.log("Google Check: "+str(self.googleChecks()));
 
-			if (self.loginState.isUser()){
-				OctoPrint.util.testUrl("http://www.google.com", {"response": "true"})
-					.done(function(response) {
-						if (response.result) {
-							console.log(response);
-        	            // check passed
-            	       // alert("connected to google!")
-							if (response.status!==0 && response.status < 300){
-								self.googleGood(true);
-							}
-						} else {
-        	    // check failed
-							self.googleGood(false);
-						}
-					});
-			} else {
-				//window.setTimeout(function() {self.checkGoogle()},5000);
-			}
+			// 				}
+			// 			}
+			// 		});
+			// } else {
+			// 	//window.setTimeout(function() {self.checkGoogle()},5000);
+			// }
 		};
 
 
@@ -572,8 +584,8 @@ $(function() {
 		
 
 		self.onUserLoggedIn = function (data){
-			if (self.googleGood()===false){
-				window.setTimeout(function() {self.checkGoogle()},1000);
+			if (self.googleGood()===-1 || self.googleGood()===0){
+				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
 			OctoPrint.settings.get();
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
@@ -581,9 +593,7 @@ $(function() {
 
 		self.fromCurrentData = function (data) {
 			self._processStateData(data.state);
-			if (self.googleGood()===false){
-				self.checkGoogle();
-			}
+
 			//if (self.waitingForM()===true){
 				/*_.each(data.logs, function (line) {
 					// M206 Home offset
@@ -785,6 +795,13 @@ $(function() {
 					console.log("Reminding.");
 				}
 			}
+			if (data.internetConnection != undefined){
+				if (data.internetConnection){
+					self.googleGood(1);
+				} else{
+					self.googleGood(0);
+				}
+			}
 			//console.log(data.hostname);
 			//self.serialNumber(data.serial);
 		};
@@ -801,8 +818,8 @@ $(function() {
 				OctoPrint.control.sendGcode("M114");
 				//alert("hello client");
 			}
-			if (self.googleGood()===false){
-				window.setTimeout(function() {self.checkGoogle()},1000);
+			if (self.googleGood()===-1 || self.googleGood()===0){
+				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
 		};
 		
