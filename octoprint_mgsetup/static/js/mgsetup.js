@@ -592,6 +592,10 @@ $(function() {
 			}
 			OctoPrint.settings.get();
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
+			if (Array.isArray(self.serialNumber())){
+				console.log("Serial number is an array, grabbing the first entry for serialNumber() .");
+				self.serialNumber(self.serialNumber()[0]);
+			}
 		};
 
 		self.fromCurrentData = function (data) {
