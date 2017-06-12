@@ -44,8 +44,7 @@
     <div data-bind="visible: $root.googleGood()===0"> 
     <p>
         <!--<em>This button's message/  visiblity will change based on if the printer is connected to the interent.</em> -->
-        You are <span style="color:red"> NOT </span> connected to the Internet. Please connect an Ethernet cable or use the button below to connect your M3 3D printer to an Internet enabled network.<br><br>
-        If you think this is incorrect: <button data-bind="click: function() { $root.checkGoogle() }">Click Here to Check Internet Connection Again</button><br>
+        You are <span style="color:red"> NOT </span> connected to the Internet. Please connect an Ethernet cable or use the "Wireless Configuration" button below to connect your M3 3D Printer to an Internet enabled network.
 
 
 
@@ -55,6 +54,8 @@
                     <br />Wireless Configuration</button></center>
 
                     <br />
+        <button data-bind="click: function() { $root.checkGoogle() }"> Check Internet Connection Again</button><br>
+
 
             <!--
     <div style="text-align:center;">
