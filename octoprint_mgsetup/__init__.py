@@ -95,18 +95,24 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		
 
 
-	def checkInternet(self, timeout, iterations):
+	def checkInternet(self, timeout, iterations, url):
+		if url == 'none':
+			url = "http://google.com"
+		elif url == 'fail':
+			url = "http://httpstat.us/404"
+		else:
+			url = url
 		for i in range(0, iterations+1):
 			self._logger.info("Testing Internet Connection, iteration "+str(i)+" of "+str(iterations)+", timeout of "+str(timeout)+" .")
 			try:
-				response=urllib2.urlopen('http://httpstat.us/404',timeout=timeout)
-				self._logger.info("Check Internet Passed.")
+				response=urllib2.urlopen(url,timeout=timeout)
+				self._logger.info("Check Internet Passed.  URL: "+str(url))
 				self.internetConnection = True
 				self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
 				return True
 			except urllib2.URLError as err: pass
 			if (i >= iterations):
-				self._logger.info("Testing Internet Connection Failed, iteration "+str(i)+" of "+str(iterations)+", timeout of "+str(timeout)+" .")
+				self._logger.info("Testing Internet Connection Failed, iteration "+str(i)+" of "+str(iterations)+", timeout of "+str(timeout)+" .  Looking for URL: "+str(url))
 				self.internetConnection = False
 				self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
 				return False
@@ -117,7 +123,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("Hello Pablo!")
 		self.current_position = current_position
 		self._logger.info(self.newhost)
-		self.checkInternet(3,3)
+		self.checkInternet(3,3,'none')
 		
 		#os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
 
@@ -216,7 +222,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline))
 			self._logger.info(str(self.nextReminder))
 			#if (self.internetConnection == False ):
-			self.checkInternet(3,5)
+			self.checkInternet(3,5, 'none')
 			#else:
 			#	self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
 
@@ -332,7 +338,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=[])
+		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'])
 
 	def on_api_get(self, request):
 		return flask.jsonify(dict(
@@ -429,7 +435,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif command == 'remindLater':
 			self.remindLater()
 		elif command == 'checkGoogle':
-			self.checkInternet(3,3)
+			self.checkInternet(3,3, data['url'])
 
 	def sendSerial(self):
 		self._plugin_manager.send_plugin_message("mgsetup", dict(serial = self.serial))

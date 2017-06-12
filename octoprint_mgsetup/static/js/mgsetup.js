@@ -463,9 +463,12 @@ $(function() {
 		};
 
 
-		self.checkGoogle = function(){
+		self.checkGoogle = function(testUrl){
+			if (testUrl === undefined){
+				testUrl = "none";
+			}
 			url = OctoPrint.getSimpleApiUrl("mgsetup");
-			OctoPrint.issueCommand(url, "checkGoogle")
+			OctoPrint.issueCommand(url, "checkGoogle", {"url":testUrl})
 				.done(function(response) {
 				//console.log(response);
 				});

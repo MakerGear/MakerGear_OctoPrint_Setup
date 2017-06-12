@@ -1771,6 +1771,10 @@ Ignore everything below this statement.  And this statement.<br>
 
 </div>
 Check network connectivity again: <button data-bind="click: function() { $root.checkGoogle() }">Check Google</button><br>
+Check network connectivity again: <button data-bind="click: function() { $root.checkGoogle('fail') }">Check Fail</button><br>
+Check network connectivity again: <button data-bind="click: function() { $root.checkGoogle() }">Check Google</button><br>
+
+
 Waiting For M503: <span data-bind="text: 'True', visible: $root.waitingForM()"></span><span data-bind="text: 'False', visible: !$root.waitingForM()"></span>
 <br>Bed: <span data-bind="text: $root.displayBedTemp()"></span><br>
 Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
