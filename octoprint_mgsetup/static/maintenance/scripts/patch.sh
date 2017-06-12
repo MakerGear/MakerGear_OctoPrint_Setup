@@ -18,9 +18,9 @@ sudo chgrp pi /home/pi/.octoprint/uploads/demos/pla/Flex_Rex_s3d.gcode
 
 
 
-sudo chown pi /home/pi/.octoprint/uploads/deletme
-sudo chgrp pi /home/pi/.octoprint/uploads/deletme
+sudo chown pi /home/pi/.octoprint/uploads/deleteme
+sudo chgrp pi /home/pi/.octoprint/uploads/deleteme
 
-sudo chown pi /home/pi/.octoprint/uploads/deletme/*.*
-sudo chgrp pi /home/pi/.octoprint/uploads/deletme/*.*
+sudo chown pi /home/pi/.octoprint/uploads/deleteme/*.*
+sudo chgrp pi /home/pi/.octoprint/uploads/deleteme/*.*
 
