@@ -1,7 +1,7 @@
 {#<a href="https://www.makergear.com/pages/support">MakerGear Support</a>#}
 
 <a id="support_link" class="pull-right" title="MakerGear Support" href="#" data-bind="click: function() { $root.showSupport() }">
-    <i class="icon-question-sign"></i> Support
+    <i class="icon-question-sign"></i> <span data-bind="text: $root.supportState()"></span>
 </a>
 
 <div id="mgsetup_support_widget" class="modal hide fade">
