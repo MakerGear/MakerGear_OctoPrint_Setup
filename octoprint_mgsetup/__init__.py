@@ -99,7 +99,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		for i in range(0, iterations+1):
 			self._logger.info("Testing Internet Connection, iteration "+str(i)+" of "+str(iterations)+", timeout of "+str(timeout)+" .")
 			try:
-				response=urllib2.urlopen('http://google.com',timeout=timeout)
+				response=urllib2.urlopen('http://httpstat.us/404',timeout=timeout)
 				self._logger.info("Check Internet Passed.")
 				self.internetConnection = True
 				self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
@@ -120,7 +120,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.checkInternet(3,3)
 		
 		#os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
-		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
+
 
 
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
@@ -172,6 +172,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
 					shutil.copy(full_src_name, dest)
 					self._logger.info("Had to overwrite "+file_name+" with new version.")
+		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
 
 
 	def get_template_configs(self):
@@ -214,10 +215,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#self.serial = ""
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline))
 			self._logger.info(str(self.nextReminder))
-			if (self.internetConnection == False ):
-				self.checkInternet(3,5)
-			else:
-				self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
+			#if (self.internetConnection == False ):
+			self.checkInternet(3,5)
+			#else:
+			#	self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
+
 			if (self.nextReminder <= time.mktime(time.gmtime())) and (self.nextReminder > 0):
 				self._plugin_manager.send_plugin_message("mgsetup", dict(pleaseRemind = True))
 			else:
