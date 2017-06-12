@@ -400,7 +400,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'resetRegistration':
 			self.resetRegistration()
 			self._logger.info("Registration reset!")
-		 elif action["action"] == 'patch':
+		elif action["action"] == 'patch':
 		 	self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh")
 		 	self._logger.info("Patch started.")
 
