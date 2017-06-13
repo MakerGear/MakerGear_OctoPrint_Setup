@@ -331,9 +331,11 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 <h1 style="text-align:left;">Quick Check Complete</h1>
 
 
-       <div class="fileupload-new thumbnail" style="width: 95%; ">
-        <!--<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/1.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='4'" />-->
-    </div>Congratulations, your M3 is ready to start printing!
+      <!-- <div class="fileupload-new thumbnail" style="width: 95%; ">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/1.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='4'" />
+    </div>-->
+
+    Congratulations, your M3 is ready to start printing!
     Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.<br>
     <center>
         <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button>
