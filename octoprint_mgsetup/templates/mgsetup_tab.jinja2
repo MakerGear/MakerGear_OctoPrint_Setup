@@ -8,7 +8,7 @@
 <div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: loginState.isUser">
 <br>
                 <div class="progress">
-                    <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="8" data-bind="style: {width: ((parseFloat(setupStep())) * 12.5) + '%'} "></div>
+                    <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat(setupStep())) * (100/parseFloat(maxSteps()))) + '%'} "></div>
                 </div>
 
         <h5 data-bind=" visible: loginState.isUser && setupStep()!=='0'"><center>NOTE: Do not refresh during the setup process, or you will need to start over from the beginning.</center></h5>
@@ -253,37 +253,21 @@ Feed the tip of your filament up through the black filament guide and the clear 
       <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
     </p>
 </video>
-
-
 <br /><br />
 
-
 Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed you should feel it being pulled into the extruder. 
-
-
-
-
-
-
-
-
-
 
 <p style="text-align:center; font-size:25px;line-height:25px;">
     <!--Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>-->
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> /  Target Temperature: <span data-bind="text: $root.displayToolTempTarget()"></span><br>
 </p>
 
-
 <br>
 <center><button title="Extrude 75mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament(); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
 <br>
 Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
 
-
-
- Push the filament guide tube down into the plastic extruder hole. 
-
+Push the filament guide tube down into the plastic extruder hole. 
 
 <video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '3'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
@@ -293,13 +277,9 @@ Continue clicking "Feed Filament" until a thin strand of filament is consistentl
     </p>
 </video>
 
-
-
 Once filament is consistently extruding, click to proceed:<br>
 <center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button></center>
 </div>
-
-
 
 
 {#            ,d8    #}
@@ -715,6 +695,18 @@ Congratulations, your M3 is ready to start printing!
 
 <!-- Container for custom controls -->
 
+{#                                              
+    88888888ba,                             88  
+    88      `"8b                            88  
+    88        `8b                           88  
+    88         88  88       88  ,adPPYYba,  88  
+    88         88  88       88  ""     `Y8  88  
+    88         8P  88       88  ,adPPPPP88  88  
+    88      .a8P   "8a,   ,a88  88,    ,88  88  
+    88888888Y"'     `"YbbdP'Y8  `"8bbdP"Y8  88  
+                                                
+                                              #}
+
 
 {#   ad88888ba   
     d8"     "8b  
@@ -724,7 +716,40 @@ Congratulations, your M3 is ready to start printing!
     d8"     "8b  
     Y8a     a8P  
      "Y88888P"   #}
+{# Cold Starting Height Check - EXT1 #}
 
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='8'">
+<h1 style="text-align:left;">Extruder 1 Starting Height Check</h1>
+<p style="text-align:left;">
+First you need to ensure that your factory settings are correct for Extruder 1 as well. Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
+</p>
+<center>
+<button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepEightPrepared(), click: function() { $root.dualSetupCheckLevel(0); $root.stepEightPrepared(true) }">{{ _('Prepare') }}</button><br><br>
+<p style="">
+    Once the printer has stopped moving, use your hand to slide both extruders towards the build surface. If the nozzle of Extruder 1 hits the glass, do not force the extruder any further. 
+</p>
+<p >
+    <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current Extruder 1 starting height? Click the photos to zoom in.</span>
+</p>
+</center>
+TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO!
+<table>
+    <tr>
+        <td style="width:33%;padding:10px;border:2px solid #ddd;">
+<a href="/plugin/mgsetup/static/img/6.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/6.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
+        </td>
+        <td style="width:33%;padding:10px;border:2px solid #ddd;">
+<a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5mm or less)') }}</button>
+        </td>
+        <td style="width:33%;padding:10px;border:2px solid #ddd;">
+ <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5mm)') }}</button>
+        </td>
+    </tr>
+</table>
+</div>
 
 
 {#   ad88888ba   
@@ -735,6 +760,97 @@ Congratulations, your M3 is ready to start printing!
              8P  
     8b,    a8P   
     `"Y8888P'    #}
+{# Load Filament - EXT1 #}
+
+<div id="nine" data-bind="visible: loginState.isUser && setupStep()==='9'">
+<h1 style="text-align:left">Extrude Filament on Extruder 1</h1>
+
+
+<p>
+    Now you need to load filament into your printer. 
+    When you click "Prepare" the printer will perform the following actions:
+</p>
+
+<ol>
+    <li>Move the heated build platform down to its home position
+    <li>Move the X and Y axes to their home positions
+    <li>Start heating the printer's hot end
+    <li>Start heating the printer's heated build platform.
+</ol>
+
+<p>
+    Click 'Prepare' and then continue reading the instructions while you wait for your printer to heat up.
+</p>
+
+<p>
+
+    <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
+
+    Your right extruder will begin to get very hot.  Your build surface will also start to heat up.  (You'll need your build surface to be heated for the next step and it can take a few minutes for it to heat up).  Do not touch the right extruder's nozzle or the build surface.
+</p>
+
+
+<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepNineStartHeatingClicked(), click: function() { $root.sendWigglePreheat('T1'); $root.stepNineStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
+
+Now we’ll prepare to load filament, if you have not already, while waiting for your M3 to heat up.
+<br><br>
+
+
+Place the PLA filament spool on the spool holder so that the loose end points up toward the filament guide.  Cut the end of the filament so that the tip is flat.
+
+<br /><br />
+
+
+Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
+
+<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '9'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
+    <source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+</video>
+
+<br /><br />
+
+
+
+ Next insert the filament into the hole on top of the right extruder. 
+
+<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '9'" onclick="this.paused ? this.play() : this.pause();">
+    <source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+</video>
+<br /><br />
+
+Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed you should feel it being pulled into the extruder. 
+
+<p style="text-align:center; font-size:25px;line-height:25px;">
+    <!--Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>-->
+    Extruder Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> /  Target Temperature: <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+</p>
+
+<br>
+<center><button title="Extrude 75mm of Filament" class="btnstay" data-bind="enable: $root.stepNineStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Feed Filament</button></center>
+<br>
+Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
+
+Push the filament guide tube down into the plastic extruder hole. 
+
+<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '9'" onclick="this.paused ? this.play() : this.pause();">
+    <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+</video>
+
+Once filament is consistently extruding, click to proceed:<br>
+<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.goTo('10'); window.scroll(0,0) }">Next Step</button></center>
+</div>
 
 
 {#      88     ,a8888a,     
@@ -745,8 +861,149 @@ Congratulations, your M3 is ready to start printing!
         88  `8b        d8'  
         88   `8ba,  ,ad8'   
         88     "Y8888P"     #}
+{# Print Wiggle (or equivalent) on EXT1 #}
+<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='10'">
+
+<h1 style="text-align:left">Verify Starting Height</h1>
 
 
+
+
+
+<p>
+   
+    <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i> The printer's extruders and build platform are hot - do not touch them!
+</p>
+
+<p>
+    In this step you will print a zigzag pattern on the build platform with both extruders.  
+</p>
+
+<em>Zigzag pattern Picture</em>
+
+<p>
+    When you click "Print Zigzag Pattern Set" the printer will perform the following actions
+</p>
+
+<ol>
+    <li>Wait for the Extruders and build platform to reach their target temperatures. (The printer will not move while it waits. You can see the actual temperatures in red and the target temperatures in black below the "Print First Zigzag Pattern" button)
+    <li>Move to its home position
+    <li>Move to its printing position
+    <li>Print a small amount of material off the side of the bed
+    <li>Print a Zigzag pattern in the middle of the bed with Extruder 0
+    <li>Switch Tools and print another Zigzag near the middle of the bed with Extruder 1
+    <li>Move to its final position
+</ol>
+
+
+<p>
+    When you are ready, click "Print Zigzag Pattern Set"
+</p>
+<br>
+
+<center><button class="btnstay" data-bind="enable: !$root.stepTenFirstWiggleClicked(), click: function() { $root.printWiggle('dual'); $root.stepTenFirstWiggleClicked(true); $root.enableLockedButton(8000) }">Print Zigzag Pattern Set</button></center><br>
+
+
+
+<p style="text-align:center; font-size:25px;line-height:25px;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+</p>
+
+Once the Zigzag patterns have printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag patterns by using your tweezers to lift each off the bed from the rear left "tail".  How the Zigzag patterns come off the bed tells us if Extruder 1 is at the same Z Height as Extruder 0:<br><br>
+<strong>For this test, we only care that both Zigzags printed the same - if they are both a bit over- or under-squished, that is fine for now.</strong><br><br>
+
+   
+   <video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  setupStep() === '10'" onclick="this.paused ? this.play() : this.pause();">
+    <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+    </video>
+
+
+
+
+<p >
+    <strong style="font-size:20px;" >Do your two Zigzag patterns match:</strong>
+</p>
+
+
+
+<table>
+    <tr>
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+            <a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" /></a>
+ 
+        </td>
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+            <a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" /></a>
+            <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" /></a>
+ 
+        </td>
+ 
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+            If both Zigzag patterns peel off with fifty percent of the pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Starting Height</strong> for both Extruders. Click below to proceed to the next step. 
+            <br />
+
+
+
+
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+
+
+             
+        </td>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+                If the two Zigzag patterns peel-off differently - one as an even strand made with no small section of connected segments at the end and one with about fifty percent of the pattern as loose segments, <strong>the Starting Height of Extruder 1 must be adjusted</strong>. Click below to adjust the Extruder 1 starting height.<br>
+                
+
+           <!-- <br />
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. -->
+
+        </td>
+
+    </tr>
+
+    <tr>
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            
+            <center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.goTo('12'); window.scroll(0,0) }">Next Step<br /></button></center>
+
+  <!--Too far-->
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.goTo('11'); window.scroll(0,0) }">Adjust Extruder 1 Height<br /></button></center>
+        </td>
+
+
+    <tr>
+
+</table>
+
+</div>
 
 {#      88      88  
       ,d88    ,d88  
@@ -756,7 +1013,88 @@ Congratulations, your M3 is ready to start printing!
         88      88  
         88      88  
         88      88  #}
+{# Physically Adjust EXT1 Hotend Height in Clamp #}
+<div data-bind="visible: loginState.isUser && setupStep()==='11'">
+In this step, we will physically adjust the height of Extruder 1 in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
+<br>Click Prepare to Extrude a small amount of filament through Extruder 1, and turn off all heaters:<br>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(0) }">Prepare<br /></button></center>
+<p style="text-align:center; font-size:25px;line-height:25px;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+</p><br><br>
+All heaters have been turned off.  Once Extruder 1 is below 50°C, loosen the clamping bolt [TODO: PICTURES] securing the Extruder 1 hotend.  Once loose:<br><br>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(1) }">Move to Position<br /></button></center><br><br>
+During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (Extruder 0) and the glass.
 
+<p>
+    First, press the "1mm Up" button as you are watching the bed. You will see the bed move 1mm towards the nozzle. You will need to slowly repeat this process until the glass is within 1mm of the nozzle. Be careful not to hit the nozzle with the build platform!
+</p>
+
+<p>
+    Now you can put the blue feeler gauge between the nozzle and the glass. Use the ".1mm up button" to bring the glass even close to the nozzle. As soon as you feel the feeler gauge get stuck, use the ".1mm down button" to move the bed back down (the feeler gauge should move freely)
+</p>
+
+<p>
+    Next, use the ".01 up button" to move the bed up until you until you start to feel resistance while sliding the feeler gauge between the glass and nozzle. 
+</p>
+<h4>Bed Height Buttons</h4>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 1mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 0.1mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 0.01mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+        </div>
+    </div>
+<br><br>
+Once the feeler gauge catches between the nozzle and bed, click "Next" to start adjusting the Extruder 1 height:
+<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(2) }">Next<br /></button></center><br><br>
+Now use these buttons to raise and lower the Extruder 1 hotend in the mounting plate, until it too is just catching the feeler gauge between the nozzle tip and bed.<br><br>
+
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>E 0.1mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>E 0.01mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+        </div>
+    </div>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(3) }">Extruder 1 is touching feeler gauge<br /></button></center><br><br>
+<strong><center>Now that Extruder 1's height has been adjusted, tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
+<br><br>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.goTo('12') }">Next Step<br /></button></center>
+
+</div>
 {#      88   ad888888b,  
       ,d88  d8"     "88  
     888888          a8P  
@@ -765,8 +1103,16 @@ Congratulations, your M3 is ready to start printing!
         88   a8P'        
         88  d8"          
         88  88888888888  #}
+{# Print Something with EXT1 Only #}
+<div data-bind="visible: loginState.isUser && setupStep()==='12'">
+Print a file for T1 only - parametric_spike_ring.gcode should work, and take about 16 minutes (16:14 first run).
 
 
+
+
+
+
+</div>
 {#      88   ad888888b,  
       ,d88  d8"     "88  
     888888          a8P  
@@ -775,8 +1121,19 @@ Congratulations, your M3 is ready to start printing!
         88          "8b  
         88  Y8,     a88  
         88   "Y888888P'  #}
+{# Print with Both Extruders - MG Keychain ? #}
+<div data-bind="visible: loginState.isUser && setupStep()==='13'">
+Same as 12, but have the instructions have the user run a presliced .gcode file to print with both extruders, some model that will show if the X and Y offsets are close enough for general printing, or if the user needs to calibrate.  Kyle likes ooze shield for this.
 
+User version:
 
+Print [file] from OctoPrint.  While printing, observe the contact areas between the two colors of filament - are there large gaps between the two colors, and if so, are they consistent across the print (always on the right bottom edge, for instance)?  If so, you need to calibrate your X/Y Offset - go to 14.
+
+If the print comes out cleanly, with no large gaps between the two colors, your X/Y Offsets are already calibrated well enough.  Go to 15.
+
+TODO - pictures, pick and test a model, add buttons here, etc. etc.
+
+</div>
 {#      88          ,d8    
       ,d88        ,d888    
     888888      ,d8" 88    
@@ -785,7 +1142,70 @@ Congratulations, your M3 is ready to start printing!
         88  8888888888888  
         88           88    
         88           88    #}
+{# Imperfection in Both Prints Requires X/Y Calibration #}
+<div data-bind="visible: loginState.isUser && setupStep()==='14'">
 
+Now we'll print a special offset pattern to determine which direction and magnitude your X offset needs to change.  When ready, click "Print Bin Set" to begin.<br>
+NOTE - code doesn't set temperatures yet.  TODO - fix that...<br>
+
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.printSawBin() }">Print Bin Set</button></center>
+
+
+
+Imagine here a picture of the sawtooth/bins, labeled 1 to 5.
+<br><br><br><br><br>
+Which bin is closest to having the sawtooth perfectly centered?<br>
+<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(5) }">5</button></center>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+X/Y Offset Calibration - print sawtooth bin, ask user which bin is closest to having the sawtooth centered.
+
+If not middle bin, offset by the bin that is selected and print again.  Repeat until middle bin is selected.
+
+Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and repeat the process.  Then switch to 0.05mm offset pattern and repeat.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
 {#      88  8888888888   
       ,d88  88           
     888888  88  ____     
@@ -794,6 +1214,19 @@ Congratulations, your M3 is ready to start printing!
         88           d8  
         88  Y8a     a8P  
         88   "Y88888P"   #}
+{# Done with Both EXT0 and EXT1 Setup! #}
+<div data-bind="visible: loginState.isUser && setupStep()==='15'">
+
+
+
+
+
+
+
+</div>
+
+
+
 
 <br><br><button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasHistory(), click: function() {$root.stepBack()}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasFuture(), click: function() {$root.stepForward()}" style="float:right;"><i class="icon-circle-arrow-right"></i></button><br><br><br>
 
@@ -820,13 +1253,14 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="5" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Five - Heated Corner Check (Wiggles)</div>
     <div><input type="radio" name="setupStepSelect" value="6" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Six - Heated Leveling (Wiggles)</div>
     <div><input type="radio" name="setupStepSelect" value="7" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Seven - Done</div>
-    <div><input type="radio" name="setupStepSelect" value="9" data-bind="checked: setupStep, click: window.scroll(0,0)" /></div>
-    <div><input type="radio" name="setupStepSelect" value="10" data-bind="checked: setupStep, click: window.scroll(0,0)" /></div>
-    <div><input type="radio" name="setupStepSelect" value="11" data-bind="checked: setupStep, click: window.scroll(0,0)" /></div>
-    <div><input type="radio" name="setupStepSelect" value="12" data-bind="checked: setupStep, click: window.scroll(0,0)" /></div>
-    <div><input type="radio" name="setupStepSelect" value="13" data-bind="checked: setupStep, click: window.scroll(0,0)" /></div>
-    <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /></div>
-    <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /></div>
+    <div><input type="radio" name="setupStepSelect" value="8" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eight - Dual Cold Starting Height Check</div>
+    <div><input type="radio" name="setupStepSelect" value="9" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Nine - Dual Load Filament Extruder 1</div>
+    <div><input type="radio" name="setupStepSelect" value="10" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Ten - Dual Printed Starting Height Verification</div>
+    <div><input type="radio" name="setupStepSelect" value="11" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eleven - Dual Extruder 1 Height Adjustment</div>
+    <div><input type="radio" name="setupStepSelect" value="12" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Twelve - Dual Extruder 1 First Print</div>
+    <div><input type="radio" name="setupStepSelect" value="13" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Thirteen - Dual Both Extruders Print</div>
+    <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X/Y Offset Calibration</div>
+    <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Done</div>
 
 
 </div>

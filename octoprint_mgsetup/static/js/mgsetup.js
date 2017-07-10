@@ -59,10 +59,32 @@ $(function() {
 		self.displayBedTempTarget = ko.observable(undefined);
 		self.displayToolTemp = ko.observable(undefined);
 		self.displayToolTempTarget = ko.observable(undefined);
+		self.displayTool1Temp = ko.observable(undefined);
+		self.displayTool1TempTarget = ko.observable(undefined);
 		self.displayBedTemp(self.temperatures.bedTemp.actual);
 		self.displayBedTempTarget(self.temperatures.bedTemp.target);
 		self.tools = ko.observableArray([]);
 		self.tools(self.temperatures.tools());
+
+		self.isDual = ko.pureComputed(function(){
+			if (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
+				console.log("We're a Dual!");
+				return true;
+			} else {
+				console.log("We're a Single!");
+				return false;
+			}
+		},this); //stand-in for setting dual vs. single - set to true for now/testing - TODO - change this to actually check/reflect dual state
+
+//		self.isDual = ko.observable(false);
+
+		self.maxSteps = ko.pureComputed(function(){
+			if (self.isDual()){
+				return 15;
+			} else{
+				return 8;
+			}
+		},this);
 
 
 		// Settings controls:
@@ -104,6 +126,9 @@ $(function() {
 		self.stepFiveBeginCornerCheckClicked = ko.observable(false); //implemented, good
 		self.stepSixPrepared = ko.observable(false); //implemented/updated
 		self.stepSixWigglePrinted = ko.observable(false); //implemented, good
+		self.tooloffsetline = ko.observable(undefined);
+		self.tool1XOffset = ko.observable(undefined);
+		self.tool1YOffset = ko.observable(undefined);
 
 
 		// Orphaned Variables?  Test...:
@@ -201,7 +226,7 @@ $(function() {
 				//just to keep this from being empty...
 			}
 			if (wigglePosition === 1){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				console.log(parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
@@ -213,26 +238,26 @@ $(function() {
 		//              });
 			}
 			if (wigglePosition === 2){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 20, tohome: true, wigglenumber: parseFloat(wigglePosition)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 20, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				console.log(parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
 			}
 			if (wigglePosition === 3){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 170, wiggleY: 20, tohome: false, wigglenumber: parseFloat(wigglePosition)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 170, wiggleY: 20, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
 			if (wigglePosition === 4){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 170, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 170, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}                       
 			if (wigglePosition === 5){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
@@ -245,36 +270,66 @@ $(function() {
 				self.WiggleReady(false);
 			}
 			if (wigglePosition === "all"){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
 			} 
 			if (wigglePosition === 10){ //same as position 1 but without homing
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				console.log(parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
 			if (wigglePosition === 20){ //same as position 2 but without homing
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 20, tohome: false, wigglenumber: parseFloat(2)};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 20, tohome: false, wigglenumber: parseFloat(2), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
 			}
+			if (wigglePosition === "dual"){
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 0};
+				var context = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
+				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+
+			}
 		};
 
-		self.feedFilament = function() {
-			OctoPrint.printer.extrude(75);
+		self.feedFilament = function(targetTool) {
+
+			if (targetTool == undefined){
+				targetTool = "tool0";
+			}
+			OctoPrint.printer.extrude(75, {"tool":targetTool});
 		};
 
-		self.sendWigglePreheat = function () {
+		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
+
+			if (targetTemperature == undefined){
+				temperature = 220;
+			}
+			if (targetHotend == undefined){
+				hotend = "T0";
+			} else {
+				hotend = targetHotend;
+			}
+			if (hotend == "T0"){
 				OctoPrint.control.sendGcode(["G28 Z",
 					"G28 Y X",
 					"G1 X20",
-					"M104 S220",
+					"M104 T0 S220",
 					"M140 S70"
 				]);
+			} else if (hotend == "T1"){
+				OctoPrint.control.sendGcode(["G28 Z",
+					"G28 Y X",
+					"G1 X20 Y100",
+					"M104 T1 S220",
+					"M140 S70"
+				]);
+			}
 		};
 
 		self.cooldown = function () {
@@ -318,6 +373,15 @@ $(function() {
 				]);
 //				OctoPrint.control.sendGcode("G1 F2000 X20 Y20");
 //				OctoPrint.control.sendGcode("G1 F1400 Z-0.05");
+			}
+			if (checkLevelStep == "4") { //for Dual
+				OctoPrint.control.sendGcode(["G28",
+					"T0",
+					"G1 F2000 X217 Y125",
+					"G1 F1400 Z0.25",
+					"M84 X",
+					"T1",
+					"M84 X"])
 			}
 			OctoPrint.control.sendGcode("M114");
 		};
@@ -474,6 +538,176 @@ $(function() {
 				self.coldLevelCheck(self.coldLevelCheckPosition());
 			};
 		};
+
+
+
+                                                
+    // 88888888ba,                             88  
+    // 88      `"8b                            88  
+    // 88        `8b                           88  
+    // 88         88  88       88  ,adPPYYba,  88  
+    // 88         88  88       88  ""     `Y8  88  
+    // 88         8P  88       88  ,adPPPPP88  88  
+    // 88      .a8P   "8a,   ,a88  88,    ,88  88  
+    // 88888888Y"'     `"YbbdP'Y'  `"8bbdP"Y8  88  
+                                                
+                                                
+
+		self.stepEightPrepared = ko.observable(false);
+		self.extOneNeedsPhysical = ko.observable(false);
+		self.stepNineStartHeatingClicked = ko.observable(false);
+		self.stepTenFirstWiggleClicked = ko.observable(false);
+
+		self.dualSetupCheckLevel = function(dualCheckLevelStep){
+
+			if (dualCheckLevelStep === 0){
+				OctoPrint.control.sendGcode(["G28 X",
+					"T0",
+					"G28 X",
+					"T0",
+					"G28",
+					"T1",
+					"G1 F1000 Y125 Z20",
+					"G1 F1800 X220",
+					"G1 F1000 Z0.25",
+					"G4 P1000",
+					"M84 X",
+				]);
+			}
+		};
+
+
+
+		self.dualRightNozzleAdjust = function(dualRightNozzleAdjustStep){
+
+			if (dualRightNozzleAdjustStep === 0){
+				OctoPrint.control.sendGcode(["G28 X",
+					"T0",
+					"G28 X",
+					"T0",
+					"G28",
+				]);
+				OctoPrint.printer.extrude(10);
+				self.cooldown();
+			}
+
+			if (dualRightNozzleAdjustStep === 1){
+				OctoPrint.control.sendGcode(["T1",
+					"G92 E0",
+					"G1 F200 E-0.5",
+					"G92 E0",
+					"T0",
+					"G28 X",
+					"G28",
+					"G1 F2000 X100 Y125 Z10",
+					"G1 F1400 Z2"
+				]);
+			}
+			if (dualRightNozzleAdjustStep === 2){
+				OctoPrint.control.sendGcode(["T1"
+				]);
+			}
+			if (dualRightNozzleAdjustStep === 3){
+				OctoPrint.control.sendGcode(["T0"
+				]);
+			}
+
+
+		};
+
+		self.calibrationStep = ko.observable(0);
+		self.calibrationOffset = ko.pureComputed(function(){
+			if (self.calibrationStep() === 0){
+				return 0.25;
+			} else if (self.calibrationStep() === 1){
+				return 0.1;
+			} else if (self.calibrationStep() === 2){
+				return 0.05;
+			}
+		},this);
+
+		self.printSawBin = function(){
+			console.log("Print Saw Bin triggered.");
+			if (self.calibrationStep() === 0){
+				var parameters = {};
+				var context = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
+			}
+			if (self.calibrationStep() === 1){
+				var parameters = {};
+				var context = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
+			}
+			if (self.calibrationStep() === 2){
+				var parameters = {};
+				var context = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
+			}
+
+
+		};
+
+		self.pickSawBin = function(chosenMatch){
+			if (chosenMatch == 1){
+				self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
+				OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
+					"M500",
+					"M501"]);
+			}
+			if (chosenMatch == 2){
+				self.newT1XOffset = ((self.tool1XOffset()+(1*self.calibrationOffset())).toString());
+				OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
+					"M500",
+					"M501"]);
+			}
+			if (chosenMatch == 3){
+				// self.newT1XOffset = ((self.tool1XOffset()+(0*self.calibrationOffset())).toString());
+				// OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
+				// 	"M500",
+				// 	"M501"]);
+				self.calibrationStep(self.calibrationStep()+1);
+				if (self.calibrationStep() === 3){
+					self.goTo(15);
+				}
+			}
+			if (chosenMatch == 4){
+				self.newT1XOffset = ((self.tool1XOffset()+(-1*self.calibrationOffset())).toString());
+				OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
+					"M500",
+					"M501"]);
+			}
+			if (chosenMatch == 5){
+				self.newT1XOffset = ((self.tool1XOffset()+(-2*self.calibrationOffset())).toString());
+				OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
+					"M500",
+					"M501"]);
+			}
+
+		};
+
+
+// print bins:
+
+// "were any of the top spikes inside of the bin?"
+
+// if yes, user selects the best bin and center from there to print sawteeth
+// if no, user selects closest bin, we center on bin and then print bins again
+
+// to center - if bin 1, add (2*offset); if bin 2, add (1*offset); bin 3, (0*offset); bin 4, (-1*offset); bin 5, (-2*offset) to M218 T1 X offset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                                                                              
     //   ,ad8888ba,                                                             
@@ -703,6 +937,7 @@ $(function() {
 				self.support_widget.modal({keyboard: false, backdrop: "static", show: true});
 			} else {
 				zE.activate();
+				zE.hide();
 			}
 			if (input === "hide"){
 				self.support_widget.modal("hide");
@@ -820,6 +1055,10 @@ $(function() {
 			//self.updateCuraProfiles();
 			self.displayToolTemp(self.temperatures.tools()[0].actual);
 			self.displayToolTempTarget(self.temperatures.tools()[0].target);
+			if (self.temperatures.tools()[1] != undefined){
+				self.displayTool1Temp(self.temperatures.tools()[1].actual);
+				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			}
 			self.mgtab = $("#mgtab");
 			if (self.mgtab.css("visibility") == "hidden") {
                 self.mgtab.css("visibility", "visible");
@@ -880,6 +1119,11 @@ $(function() {
 
 			};*/
 			//OctoPrint.settings.save({settings: {allViewModels: {ControlViewModel: {} }}})
+			// console.log(self.settings.printerProfiles.currentProfileData().extruder.count());
+			// if (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
+			// 	self.isDual(true);
+			// 	console.log("We're a Dual!");
+			// }
 		};
 
 		self.onEventClientOpened = function() {
@@ -962,16 +1206,41 @@ $(function() {
 				// console.log('Ignoring '+plugin);
 				return;
 			}
-			var re = /Z(-?\d+\.\d\d)/;
-			if (re.exec(data.zoffsetline)){
-				var result = re.exec(data.zoffsetline);
-				//console.log(result[0]);
-				//console.log(result[1]);
-				self.ZOffset(parseFloat(result[1]));
-				//console.log(data.zoffsetline);
-				console.log(data);
+			if (data.zoffsetline != undefined){
+				var re = /Z(-?\d+\.\d\d)/;
+				if (re.exec(data.zoffsetline)){
+					var result = re.exec(data.zoffsetline);
+					//console.log(result[0]);
+					//console.log(result[1]);
+					self.ZOffset(parseFloat(result[1]));
+					//console.log(data.zoffsetline);
+					console.log(result);
+				}
+				self.zoffsetline(data.zoffsetline);
 			}
-			self.zoffsetline(data.zoffsetline);
+			if (data.tooloffsetline != undefined){
+				var re = /([XY])\d+\.\d+/g;
+				while (result = re.exec(data.tooloffsetline)){
+					//var result = re.exec(data.tooloffsetline);
+					console.log(result);
+					if (result[1]==="X"){
+						self.tool1XOffset(parseFloat(result[0].substr(1)));
+						console.log("Tool 1 X Offset: "+(result[0].substr(1)));
+					} else if (result[1]==="Y"){
+						self.tool1YOffset(parseFloat(result[0].substr(1)));
+						console.log("Tool 1 Y Offset: "+(result[0].substr(1)));
+					}
+					//self.tool1XOffset(parseFloat(result[0]));
+					//var result = re.exec(data.tooloffsetline);
+					//console.log(result[0]);
+					//self.tool1YOffset(parseFloat(result[1]));
+					//console.log(data.zoffsetline);
+					//console.log(result[1]);
+
+				}
+				self.tooloffsetline(data.tooloffsetline);
+			}
+			//self.tooloffsetline(data.tooloffsetline);
 			self.hostname(data.hostname);
 			console.log("onDataUpdaterPluginMessage content:");
 			console.log(data);

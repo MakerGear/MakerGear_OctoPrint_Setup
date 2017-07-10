@@ -26,7 +26,7 @@ import urllib2
 
 current_position = "empty for now"
 position_state = "stale"
-zoffsetline = ""
+# zoffsetline = ""
 
 
 
@@ -51,6 +51,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.actServer = "http://whatever.what"
 		self.nextReminder = -1
 		self.internetConnection = False
+		self.tooloffsetline = ""
+		self.zoffsetline = ""
 
 
 	def on_settings_initialized(self):
@@ -124,6 +126,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.current_position = current_position
 		self._logger.info(self.newhost)
 		self.checkInternet(3,3,'none')
+		# self._logger.info(self._printer_profile_manager.get_all())
+		# self._logger.info(self._printer_profile_manager.get_current())
+		self._logger.info(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"])
 		
 		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
 
@@ -219,7 +224,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		if event == Events.CLIENT_OPENED:
 			#self._logger.info(payload + " connected")
 			#self.serial = ""
-			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = zoffsetline))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._logger.info(str(self.nextReminder))
 			#if (self.internetConnection == False ):
 			self.checkInternet(3,5, 'none')
@@ -348,14 +354,19 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.position_state = "stale"
 
 	def process_z_offset(self, comm, line, *args, **kwargs):
-		if "M206" not in line:
+		if "M206" not in line and "M218" not in line:
 			return line
 
-		logging.getLogger("octoprint.plugin." + __name__ + "process_z_offset triggered")
-		self._logger.info("process_z_offset triggered")
-		#self.oldZOffset = 
-		#zoffsetline = line
-		self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = line))
+		# logging.getLogger("octoprint.plugin." + __name__ + "process_z_offset triggered")
+		if "M206" in line:
+			self._logger.info("process_z_offset triggered - Z offset")
+			self.zoffsetline = line
+			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = line))
+
+		if "M218" in line:
+			self._logger.info("process_z_offset triggered - Tool offset")
+			self.tooloffsetline = line
+			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
 		#__plugin_implementation__._logger.info(line)
 		return line
 
