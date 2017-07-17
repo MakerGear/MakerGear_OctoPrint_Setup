@@ -369,6 +369,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["G28",
 				"G1 F2000 X217 Y125",
 				"G1 F1400 Z0.25",
+				"G4 P1000",
 				"M84 X"
 				]);//changed to X217 for Demeter
 			}
@@ -403,9 +404,11 @@ $(function() {
 					"T0",
 					"G1 F2000 X217 Y125",
 					"G1 F1400 Z0.25",
+					"G4 P1000",
 					"M84 X",
 					"T1",
-					"M84 X"])
+					"G4 P1000",
+					"M84 X"]);
 			}
 			OctoPrint.control.sendGcode("M114");
 		};
