@@ -53,6 +53,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.internetConnection = False
 		self.tooloffsetline = ""
 		self.zoffsetline = ""
+		self.ip = str(([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]))
+
 
 
 	def on_settings_initialized(self):
@@ -130,7 +132,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# self._logger.info(self._printer_profile_manager.get_current())
 		self._logger.info(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"])
 		
-		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
 
 
 
@@ -139,20 +140,20 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		except OSError:
 			if not os.path.isdir('/home/pi/.octoprint/scripts/gcode'):
 				raise
-		else:
-			src_files = os.listdir(self._basefolder+"/static/maintenance/gcode")
-			src = (self._basefolder+"/static/maintenance/gcode")
-			dest = ("/home/pi/.octoprint/scripts/gcode")
-			for file_name in src_files:
-				full_src_name = os.path.join(src, file_name)
-				full_dest_name = os.path.join(dest, file_name)
-				if not (os.path.isfile(full_dest_name)):
+
+		src_files = os.listdir(self._basefolder+"/static/maintenance/gcode")
+		src = (self._basefolder+"/static/maintenance/gcode")
+		dest = ("/home/pi/.octoprint/scripts/gcode")
+		for file_name in src_files:
+			full_src_name = os.path.join(src, file_name)
+			full_dest_name = os.path.join(dest, file_name)
+			if not (os.path.isfile(full_dest_name)):
+				shutil.copy(full_src_name, dest)
+				self._logger.info("Had to copy "+file_name+" to scripts folder.")
+			else:
+				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
 					shutil.copy(full_src_name, dest)
-					self._logger.info("Had to copy "+file_name+" to scripts folder.")
-				else:
-					if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
-						shutil.copy(full_src_name, dest)
-						self._logger.info("Had to overwrite "+file_name+" with new version.")
+					self._logger.info("Had to overwrite "+file_name+" with new version.")
 
 		src_files = os.listdir(self._basefolder+"/static/maintenance/scripts/")
 		src = (self._basefolder+"/static/maintenance/scripts/")
@@ -184,12 +185,15 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					shutil.copy(full_src_name, dest)
 					self._logger.info("Had to overwrite "+file_name+" with new version.")
 		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
+		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
 
 
 	def get_template_configs(self):
 		return [
 			dict(type="navbar", custom_bindings=True),
-			dict(type="settings", custom_bindings=True)
+			dict(type="settings", custom_bindings=True),
+			dict(type="tab", template="mgsetup_tab.jinja2", div="tab_plugin_mgsetup"),
+			dict(type="tab", template="mgsetup_maintenance_tab.jinja2", div="tab_plugin_mgsetup_maintenance", name="MakerGear Maintenance")
 		]
 
 	def get_settings_defaults(self):
@@ -200,7 +204,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_assets(self):
 		return dict(
-			js=["js/mgsetup.js"],
+			js=["js/mgsetup.js","js/mgsetup_maintenance.js"],
 			css=["css/mgsetup.css", "css/overrides.css"],
 			img=["img/*"],
 			gcode=["gcode/*"],
@@ -226,6 +230,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#self.serial = ""
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
 			self._logger.info(str(self.nextReminder))
 			#if (self.internetConnection == False ):
 			self.checkInternet(3,5, 'none')

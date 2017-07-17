@@ -1,3 +1,4 @@
+
     <div id="mgtabwarning" style="display: inline"><center><br><p style="font-size:60px">LOADING</p><br><br>If you can see this, OctoPrint and the MakerGear Setup tab are still loading; if this does not change shortly, a popup or script blocker may be preventing the page from loading correctly.</center></div>
 <div id="mglogin" style="visibility: hidden" data-bind="visible: loginState.loggedIn() === false"><center><br><br>You are not logged into OctoPrint. Use the "Login" button in the upper right corner to continue. You can find the default username and password in the setup guide.<br><br></center></div>
 
@@ -741,7 +742,7 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('10'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5mm or less)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
  <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
@@ -760,77 +761,9 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
              8P  
     8b,    a8P   
     `"Y8888P'    #}
-
-{# Physical T1 Height Adjustment - By Hand #}
-
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='9'">
-
-In this step, we will physically adjust the height of Extruder 1 in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
-<br><br>
-Once Extruder 1 is below 50°C, loosen the clamping bolt [TODO: PICTURES] securing the Extruder 1 hotend, push it up into the mounting plate as far as possible, and then loosely secure the clamping bolt.<br><br>
-<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(1) }">Move to Position<br /></button></center><br><br>
-During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (Extruder 0) and the glass.
-
-<p>
-    First, press the "1mm Up" button as you are watching the bed. You will see the bed move 1mm towards the nozzle. You will need to slowly repeat this process until the glass is within 1mm of the nozzle. Be careful not to hit the nozzle with the build platform!
-</p>
-
-<p>
-    Now you can put the blue feeler gauge between the nozzle and the glass. Use the ".1mm up button" to bring the glass even close to the nozzle. As soon as you feel the feeler gauge get stuck, use the ".1mm down button" to move the bed back down (the feeler gauge should move freely)
-</p>
-
-<p>
-    Next, use the ".01 up button" to move the bed up until you until you start to feel resistance while sliding the feeler gauge between the glass and nozzle. 
-</p>
-<h4>Bed Height Buttons</h4>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 1mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
-        </div>
-    </div>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.1mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
-        </div>
-    </div>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.01mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
-        </div>
-    </div>
-<br><br>
-Once the feeler gauge catches between the nozzle and bed, click "Next" to start adjusting the Extruder 1 height:
-<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(2) }">Next<br /></button></center><br><br>
-
-Now loosen the T1 clamping bolt until the T1 hotend can move freely, and let it drop to the bed.  Move the feeler gauge under the tip of the nozzle, and then secure the T1 clamping bolt.<br>
-<strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(3) }">Extruder 1 is touching feeler gauge<br /></button></center>
-</div>
-
-{#      88     ,a8888a,     
-      ,d88   ,8P"'  `"Y8,   
-    888888  ,8P        Y8,  
-        88  88          88  
-        88  88          88  
-        88  `8b        d8'  
-        88   `8ba,  ,ad8'   
-        88     "Y8888P"     #}
-
 {# Load Filament - EXT1 #}
 
-<div id="nine" data-bind="visible: loginState.isUser && setupStep()==='10'">
+<div id="nine" data-bind="visible: loginState.isUser && setupStep()==='9'">
 <h1 style="text-align:left">Extrude Filament on Extruder 1</h1>
 
 
@@ -858,7 +791,7 @@ Now loosen the T1 clamping bolt until the T1 hotend can move freely, and let it 
 </p>
 
 
-<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepTenStartHeatingClicked(), click: function() { $root.sendWigglePreheat('T1'); $root.stepTenStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
+<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepNineStartHeatingClicked(), click: function() { $root.sendWigglePreheat('T1'); $root.stepNineStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
 
 Now we’ll prepare to load filament, if you have not already, while waiting for your M3 to heat up.
 <br><br>
@@ -871,7 +804,7 @@ Place the PLA filament spool on the spool holder so that the loose end points up
 
 Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
 
-<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '10'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
+<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '9'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
     <source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -885,7 +818,7 @@ Feed the tip of your filament up through the black filament guide and the clear 
 
  Next insert the filament into the hole on top of the right extruder. 
 
-<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '10'" onclick="this.paused ? this.play() : this.pause();">
+<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '9'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -902,13 +835,13 @@ Below you can see your extruder temperature. Once the extruder temperature match
 </p>
 
 <br>
-<center><button title="Extrude 75mm of Filament" class="btnstay" data-bind="enable: $root.stepTenStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Feed Filament</button></center>
+<center><button title="Extrude 75mm of Filament" class="btnstay" data-bind="enable: $root.stepNineStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Feed Filament</button></center>
 <br>
 Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
 
 Push the filament guide tube down into the plastic extruder hole. 
 
-<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '10'" onclick="this.paused ? this.play() : this.pause();">
+<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '9'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -917,7 +850,160 @@ Push the filament guide tube down into the plastic extruder hole.
 </video>
 
 Once filament is consistently extruding, click to proceed:<br>
-<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.goTo('11'); window.scroll(0,0) }">Next Step</button></center>
+<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.goTo('10'); window.scroll(0,0) }">Next Step</button></center>
+</div>
+
+
+{#      88     ,a8888a,     
+      ,d88   ,8P"'  `"Y8,   
+    888888  ,8P        Y8,  
+        88  88          88  
+        88  88          88  
+        88  `8b        d8'  
+        88   `8ba,  ,ad8'   
+        88     "Y8888P"     #}
+{# Print Wiggle (or equivalent) on EXT1 #}
+<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='10'">
+
+<h1 style="text-align:left">Verify Starting Height</h1>
+
+
+
+
+
+<p>
+   
+    <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i> The printer's extruders and build platform are hot - do not touch them!
+</p>
+
+<p>
+    In this step you will print a zigzag pattern on the build platform with both extruders.  
+</p>
+
+<em>Zigzag pattern Picture</em>
+
+<p>
+    When you click "Print Zigzag Pattern Set" the printer will perform the following actions
+</p>
+
+<ol>
+    <li>Wait for the Extruders and build platform to reach their target temperatures. (The printer will not move while it waits. You can see the actual temperatures in red and the target temperatures in black below the "Print First Zigzag Pattern" button)
+    <li>Move to its home position
+    <li>Move to its printing position
+    <li>Print a small amount of material off the side of the bed
+    <li>Print a Zigzag pattern in the middle of the bed with Extruder 0
+    <li>Switch Tools and print another Zigzag near the middle of the bed with Extruder 1
+    <li>Move to its final position
+</ol>
+
+
+<p>
+    When you are ready, click "Print Zigzag Pattern Set"
+</p>
+<br>
+
+<center><button class="btnstay" data-bind="enable: !$root.stepTenFirstWiggleClicked(), click: function() { $root.printWiggle('dual'); $root.stepTenFirstWiggleClicked(true); $root.enableLockedButton(8000) }">Print Zigzag Pattern Set</button></center><br>
+
+
+
+<p style="text-align:center; font-size:25px;line-height:25px;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+</p>
+
+Once the Zigzag patterns have printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag patterns by using your tweezers to lift each off the bed from the rear left "tail".  How the Zigzag patterns come off the bed tells us if Extruder 1 is at the same Z Height as Extruder 0:<br><br>
+<strong>For this test, we only care that both Zigzags printed the same - if they are both a bit over- or under-squished, that is fine for now.</strong><br><br>
+
+   
+   <video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  setupStep() === '10'" onclick="this.paused ? this.play() : this.pause();">
+    <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+    </video>
+
+
+
+
+<p >
+    <strong style="font-size:20px;" >Do your two Zigzag patterns match:</strong>
+</p>
+
+
+
+<table>
+    <tr>
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+            <a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" /></a>
+ 
+        </td>
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+            <a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" /></a>
+            <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" /></a>
+ 
+        </td>
+ 
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+            If both Zigzag patterns peel off with fifty percent of the pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Starting Height</strong> for both Extruders. Click below to proceed to the next step. 
+            <br />
+
+
+
+
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+
+
+             
+        </td>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+                If the two Zigzag patterns peel-off differently - one as an even strand made with no small section of connected segments at the end and one with about fifty percent of the pattern as loose segments, <strong>the Starting Height of Extruder 1 must be adjusted</strong>. Click below to adjust the Extruder 1 starting height.<br>
+                
+
+           <!-- <br />
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. -->
+
+        </td>
+
+    </tr>
+
+    <tr>
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            
+            <center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.goTo('12'); window.scroll(0,0) }">Next Step<br /></button></center>
+
+  <!--Too far-->
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.goTo('11'); window.scroll(0,0) }">Adjust Extruder 1 Height<br /></button></center>
+        </td>
+
+
+    <tr>
+
+</table>
+
 </div>
 
 {#      88      88  
@@ -928,7 +1014,7 @@ Once filament is consistently extruding, click to proceed:<br>
         88      88  
         88      88  
         88      88  #}
-{# EEPROM Adjust EXT1 Hotend Offset #}
+{# Physically Adjust EXT1 Hotend Height in Clamp #}
 <div data-bind="visible: loginState.isUser && setupStep()==='11'">
 
 <h1 style="text-align:left">Verify T1 Starting Height</h1>
@@ -1095,6 +1181,97 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{# In this step, we will physically adjust the height of Extruder 1 in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
+<br>Click Prepare to Extrude a small amount of filament through Extruder 1, and turn off all heaters:<br>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(0) }">Prepare<br /></button></center>
+<p style="text-align:center; font-size:25px;line-height:25px;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+</p><br><br>
+All heaters have been turned off.  Once Extruder 1 is below 50°C, loosen the clamping bolt [TODO: PICTURES] securing the Extruder 1 hotend.  Once loose:<br><br>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(1) }">Move to Position<br /></button></center><br><br>
+During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (Extruder 0) and the glass.
+
+<p>
+    First, press the "1mm Up" button as you are watching the bed. You will see the bed move 1mm towards the nozzle. You will need to slowly repeat this process until the glass is within 1mm of the nozzle. Be careful not to hit the nozzle with the build platform!
+</p>
+
+<p>
+    Now you can put the blue feeler gauge between the nozzle and the glass. Use the ".1mm up button" to bring the glass even close to the nozzle. As soon as you feel the feeler gauge get stuck, use the ".1mm down button" to move the bed back down (the feeler gauge should move freely)
+</p>
+
+<p>
+    Next, use the ".01 up button" to move the bed up until you until you start to feel resistance while sliding the feeler gauge between the glass and nozzle. 
+</p>
+<h4>Bed Height Buttons</h4>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 1mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 0.1mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 0.01mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+        </div>
+    </div>
+<br><br>
+Once the feeler gauge catches between the nozzle and bed, click "Next" to start adjusting the Extruder 1 height:
+<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(2) }">Next<br /></button></center><br><br>
+Now use these buttons to raise and lower the Extruder 1 hotend in the mounting plate, until it too is just catching the feeler gauge between the nozzle tip and bed.<br><br>
+
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>E 0.1mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>E 0.01mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('e',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+        </div>
+    </div>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(3) }">Extruder 1 is touching feeler gauge<br /></button></center><br><br>
+<strong><center>Now that Extruder 1's height has been adjusted, tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
+<br><br> #}
 <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.goTo('12') }">Next Step<br /></button></center>
 
 </div>

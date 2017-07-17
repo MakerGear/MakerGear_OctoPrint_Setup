@@ -86,6 +86,15 @@ $(function() {
 			}
 		},this);
 
+		self.ipAddress = ko.observable(undefined);
+		self.ipPort = ko.observable(undefined);
+		self.hostnameJS = ko.observable(undefined);
+		self.printerViewString = ko.observable(undefined);
+		self.apiKey = ko.observable(undefined);
+		self.printerViewString = ko.pureComputed(function(){
+			return ("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+		}
+		,this);
 
 		// Settings controls:
 		self.newNetconnectdPassword = ko.observable("");
@@ -93,6 +102,7 @@ $(function() {
 
 		// Quick Check Process starting/default values:
 		self.ZWiggleHeight = ko.observable(0.20);
+		self.T1ZWiggleHeight = ko.observable(0.20);
 		self.stockZWiggleHeight = 0.20;
 		self.WiggleToRun = ko.observable(2);
 		self.WiggleReady = ko.observable(true);
@@ -129,6 +139,7 @@ $(function() {
 		self.tooloffsetline = ko.observable(undefined);
 		self.tool1XOffset = ko.observable(undefined);
 		self.tool1YOffset = ko.observable(undefined);
+		self.tool1ZOffset = ko.observable(undefined);
 
 
 		// Orphaned Variables?  Test...:
@@ -160,6 +171,7 @@ $(function() {
 		self.serialNumber = ko.observable("");
 		self.firstName = ko.observable("");
 		self.lastName = ko.observable("");
+
 		self.dateReceived = ko.observable("");
 		self.emailAddress = ko.observable("");
 		self.channel = ko.observable(undefined);
@@ -219,6 +231,7 @@ $(function() {
 			}
 			if (inputWiggleHeight !== undefined){
 				self.ZWiggleHeight(parseFloat((parseFloat(self.ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
+				//self.T1ZWiggleHeight(parseFloat((parseFloat(self.T1ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
 				console.log("ZWiggleHeight adjusted: "+self.ZWiggleHeight());
 				//console.log(typeof(self.ZWiggleHeight()));
 			}
@@ -295,6 +308,17 @@ $(function() {
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 
 			}
+			if (wigglePosition === "T1"){
+				var context = {};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 1};
+				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+			}
+			if (wigglePosition === "T1-2"){
+				var context = {};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
+				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+			}
+
 		};
 
 		self.feedFilament = function(targetTool) {
@@ -499,6 +523,36 @@ $(function() {
 				//self.setupStep("3");
 				self.goTo("5");
 			}
+
+			if (startingHeightStep == "T1") {
+				self.newZOffset = (parseFloat(self.tool1ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
+				if (self.newZOffset.toString() == "NaN") {
+					self.notify("Offset Setting Error","There was an error when setting the Z Offset.  Please refresh the page and try again.  Support values: self.newZOffset="+self.newZOffset.toString()+" ; self.ZOffset="+self.ZOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
+					console.log("Offset setting error:");
+					console.log("self.newZOffset = "+self.newZOffset.toString());
+					console.log("self.tool1ZOffset = "+self.tool1ZOffset().toString());
+					console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());
+					return;
+				}
+				//self.newZOffset = self.newZOffset + 0.1 ;
+				self.ZOffString = "M218 T1 Z"+self.newZOffset.toString();
+				console.log(self.newZOffset.toString());
+				console.log(self.ZOffString);
+				OctoPrint.control.sendGcode([self.ZOffString,
+					"M500"					
+				]);
+				self.tool1ZOffset(self.newZOffset);
+				self.requestEeprom();
+				//new PNotify({
+				//	title: 'Starting Height Adjustment',
+				//	text: "Starting Height Set to : "+self.newZOffset.toString(),
+				//	type: 'success',
+				//});
+				self.ZWiggleHeight(self.stockZWiggleHeight);
+				//self.setupStep("3");
+				self.goTo("12");
+			}
+
 			OctoPrint.control.sendGcode("M114");
 		};
 
@@ -555,13 +609,17 @@ $(function() {
 
 		self.stepEightPrepared = ko.observable(false);
 		self.extOneNeedsPhysical = ko.observable(false);
-		self.stepNineStartHeatingClicked = ko.observable(false);
+		self.stepTenStartHeatingClicked = ko.observable(false);
 		self.stepTenFirstWiggleClicked = ko.observable(false);
+		self.stepElevenFirstWiggleClicked = ko.observable(false);
+		self.stepElevenShowFineAdjustments = ko.observable(false);
 
 		self.dualSetupCheckLevel = function(dualCheckLevelStep){
 
 			if (dualCheckLevelStep === 0){
-				OctoPrint.control.sendGcode(["G28 X",
+				OctoPrint.control.sendGcode(["M218 T1 Z0",
+					"M500",
+					"G28 X",
 					"T0",
 					"G28 X",
 					"T0",
@@ -581,7 +639,9 @@ $(function() {
 		self.dualRightNozzleAdjust = function(dualRightNozzleAdjustStep){
 
 			if (dualRightNozzleAdjustStep === 0){
-				OctoPrint.control.sendGcode(["G28 X",
+				OctoPrint.control.sendGcode(["M218 T1 Z0",
+					"M500",
+					"G28 X",
 					"T0",
 					"G28 X",
 					"T0",
@@ -1105,6 +1165,7 @@ $(function() {
 					zE.hide();
 				});
 			}
+			self.apiKey(self.settings.api_key());
 
 			//console.log(parseFloat(self.displayBedTemp));
 			//console.log(parseFloat(self.displayToolTemp));
@@ -1124,6 +1185,8 @@ $(function() {
 			// 	self.isDual(true);
 			// 	console.log("We're a Dual!");
 			// }
+
+			// console.log(document.location.host);
 		};
 
 		self.onEventClientOpened = function() {
@@ -1219,7 +1282,7 @@ $(function() {
 				self.zoffsetline(data.zoffsetline);
 			}
 			if (data.tooloffsetline != undefined){
-				var re = /([XY])\d+\.\d+/g;
+				var re = /([XYZ])\d+\.\d+/g;
 				while (result = re.exec(data.tooloffsetline)){
 					//var result = re.exec(data.tooloffsetline);
 					console.log(result);
@@ -1229,6 +1292,9 @@ $(function() {
 					} else if (result[1]==="Y"){
 						self.tool1YOffset(parseFloat(result[0].substr(1)));
 						console.log("Tool 1 Y Offset: "+(result[0].substr(1)));
+					} else if (result[1]==="Z"){
+						self.tool1ZOffset(parseFloat(result[0].substr(1)));
+						console.log("Tool 1 Z Offset: "+(result[0].substr(1)));
 					}
 					//self.tool1XOffset(parseFloat(result[0]));
 					//var result = re.exec(data.tooloffsetline);
@@ -1279,6 +1345,15 @@ $(function() {
 			}
 			//console.log(data.hostname);
 			//self.serialNumber(data.serial);
+			if (data.ip != undefined){
+				self.ipAddress(data.ip);
+				self.ipPort(((document.location.host).split(":")[1]).toString());
+				self.hostnameJS(((document.location.host).split(":")[0]).toString());
+				console.log("IP: "+self.ipAddress().toString()+" ; Port: "+self.ipPort()+" ; JS Hostname: "+self.hostnameJS());
+				//self.printerViewString("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+				console.log(self.printerViewString());
+
+			}
 		};
 
 
