@@ -26,9 +26,12 @@ Set Password</button><br>This will change the Netconnect Access Point Password. 
 New Hostname and Access Point Name:
 <input data-bind="textInput: $root.newHostname" /><br>
 <button data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.commandResponse(''), $root.changeHostname($root.newHostname()), $root.showCommandResponse() }">
-Change Hostname</button><br>This will change the Hostname and Access Point Name.  Your Raspberry Pi will automatically Restart after changing the Hostname - Please use the new Hostname to connect again.<br><br>
+Change Hostname</button><br>This will change the Hostname and Access Point Name.  Your Raspberry Pi will automatically Restart after changing the Hostname - Please use the new Hostname to connect again.<br>
 
-PrinterView String:<textarea data-bind="text: $root.printerViewString" style="width:90%;"></textarea><br><br>
+<hr /><br>
+PrinterView String:<textarea data-bind="text: $root.printerViewString" style="width:90%;"></textarea><br>
+<br>
+<hr />
 
 <form class="form-horizontal">
     <div class="control-group">

@@ -53,7 +53,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.internetConnection = False
 		self.tooloffsetline = ""
 		self.zoffsetline = ""
-		self.ip = str(([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]))
+		try:
+			self.ip = str(([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]))
+		except IOError, e:
+			self._logger.info(e)
+		except:
+			raise
+
+
 
 
 
@@ -184,8 +191,19 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
 					shutil.copy(full_src_name, dest)
 					self._logger.info("Had to overwrite "+file_name+" with new version.")
-		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
-		os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
+		try:
+			os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
+		except OSError:
+			self._logger.info("Hostname.js doesn't exist?")
+		except:
+			raise
+		try:
+			os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
+		except OSError:
+			self._logger.info("Patch.sh doesn't exist?")
+		except:
+			raise
+
 
 
 	def get_template_configs(self):

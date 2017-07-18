@@ -92,7 +92,11 @@ $(function() {
 		self.printerViewString = ko.observable(undefined);
 		self.apiKey = ko.observable(undefined);
 		self.printerViewString = ko.pureComputed(function(){
-			return ("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+			if ((self.settings.api_enabled()) && (self.settings.api_allowCrossOrigin())){
+				return ("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+			} else {
+				return ("API and/or CORS are Disabled - Enable both in the API settings.");
+			}
 		}
 		,this);
 
