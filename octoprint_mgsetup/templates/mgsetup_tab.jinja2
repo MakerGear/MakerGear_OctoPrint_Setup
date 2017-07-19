@@ -638,9 +638,10 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 {# Done #}
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='7'">
-<h1 style="text-align:left;">Quick Check Complete</h1>
-Congratulations, your M3 is ready to start printing!
-    Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.<br>
+<span data-bind="visible: !$root.isDual()"><h1 style="text-align:left;">Quick Check Complete</h1></span>
+<span data-bind="visible: $root.isDual()"><h1 style="text-align:left;">Left Extruder Check Complete</h1></span>
+<span data-bind="visible: !$root.isDual()">Congratulations, your M3 is ready to start printing!
+    Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.</span><br>
     <center>
         <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button>
     </center>
@@ -779,8 +780,15 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
 
 In this step, we will physically adjust the height of Extruder 1 in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
 <br><br>
+
+<strong>Before proceeding, clean the tips of both nozzles to ensure proper height adjustment.</strong><br><br>
+
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+
 Once Extruder 1 is below 50°C, loosen the clamping bolt [TODO: PICTURES] securing the Extruder 1 hotend, push it up into the mounting plate as far as possible, and then loosely secure the clamping bolt.<br><br>
-<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(1) }">Move to Position<br /></button></center><br><br>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust(1), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
 During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (Extruder 0) and the glass.
 
 <p>
@@ -798,37 +806,37 @@ During this step you'll use the <strong>Bed Height Buttons</strong> below to adj
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 1mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1 && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button>1mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.ZPos() > 1 && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.1mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.01mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
         </div>
     </div>
 <br><br>
-Once the feeler gauge catches between the nozzle and bed, click "Next" to start adjusting the Extruder 1 height:
-<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(2) }">Next<br /></button></center><br><br>
+Once the feeler gauge catches between the nozzle and bed, click "Switch Extruders" to start adjusting the Extruder 1 height:
+<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(2), $root.stepNineExtrudersSwitched(true) }">Switch Extruders<br /></button></center><br><br>
 
-Now loosen the T1 clamping bolt until the T1 hotend can move freely, and let it drop to the bed.  Move the feeler gauge under the tip of the nozzle, and then secure the T1 clamping bolt.<br>
+Now move the feeler gauge under the tip of the nozzle. Loosen the T1 clamping bolt until the T1 hotend can move freely, and let it drop to the bed. Secure the T1 clamping bolt.<br>
 <strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.dualRightNozzleAdjust(3) }">Extruder 1 is touching feeler gauge<br /></button></center>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && $root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(3) }">Extruder 1 is touching feeler gauge<br /></button></center>
 </div>
 
 {#      88     ,a8888a,     

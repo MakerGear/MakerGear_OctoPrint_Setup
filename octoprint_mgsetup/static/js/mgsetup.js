@@ -330,6 +330,11 @@ $(function() {
 			if (targetTool == undefined){
 				targetTool = "tool0";
 			}
+			if (targetTool == "tool0"){
+				OctoPrint.control.sendGcode(["T0"]);
+			} else if (targetTool == "tool1"){
+				OctoPrint.control.sendGcode(["T1"]);
+			}
 			OctoPrint.printer.extrude(75, {"tool":targetTool});
 		};
 
@@ -355,7 +360,8 @@ $(function() {
 					"G28 Y X",
 					"G1 X20 Y100",
 					"M104 T1 S220",
-					"M140 S70"
+					"M140 S70",
+					"T1"
 				]);
 			}
 		};
@@ -557,7 +563,7 @@ $(function() {
 				//});
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("3");
-				self.goTo("12");
+				self.goTo("14");
 			}
 
 			OctoPrint.control.sendGcode("M114");
@@ -616,6 +622,8 @@ $(function() {
 
 		self.stepEightPrepared = ko.observable(false);
 		self.extOneNeedsPhysical = ko.observable(false);
+		self.stepNineAtPosition = ko.observable(false);
+		self.stepNineExtrudersSwitched = ko.observable(false);
 		self.stepTenStartHeatingClicked = ko.observable(false);
 		self.stepTenFirstWiggleClicked = ko.observable(false);
 		self.stepElevenFirstWiggleClicked = ko.observable(false);
@@ -675,8 +683,9 @@ $(function() {
 				]);
 			}
 			if (dualRightNozzleAdjustStep === 3){
-				OctoPrint.control.sendGcode(["T0"
-				]);
+				// OctoPrint.control.sendGcode(["T0"
+				// ]);
+				self.goTo("10");
 			}
 
 
