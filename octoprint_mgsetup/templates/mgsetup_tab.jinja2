@@ -107,7 +107,9 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 {# Adjust Starting Height #}
 
 <div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser  && setupStep()==='2'">
-
+<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" />
+    </div><br>
 <h1>Adjust Starting Height </h1>
 
 Here we will adjust the initial starting height of the printer.  Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
@@ -690,7 +692,13 @@ Congratulations, your M3 is ready to start printing!
     -->
     <h1 style="text-align:left;">Configuration for Further Use</h1>
 
-    Now that your initial setup is complete, you can change the first tab that is shown when you connect to the Temperature tab for immediate access.  This can be changed in the Settings: <a href="#settings_plugin_mgsetup" data-bind="click: function() { $root.showSettings('settings_plugin_mgsetup'); }">click here to go to the MakerGear Setup settings "tab"</a>.
+    Now that your initial setup is complete, you can change the first tab that is shown when you connect to the Temperature tab for immediate access.  This can be changed in the Settings: <a href="#settings_plugin_mgsetup" data-bind="click: function() { $root.showSettings('settings_plugin_mgsetup'); }">click here to go to the MakerGear Setup settings "tab"</a>.<br><br><br>
+
+    <div data-bind="visible: $root.isDual">
+    <h1 style="text-align:left;">Dual Extruder Setup</h1>
+    To continue on to the Dual Extruder configuration, click "Next":<br>
+<center><button class="btngoBig" data-bind="enable: loginState.isUser(), click: function() { $root.goTo('8'); window.scroll(0,0) }">Next</button></center>
+</div>
 </div>
 
 <!-- Container for custom controls -->
@@ -718,7 +726,11 @@ Congratulations, your M3 is ready to start printing!
      "Y88888P"   #}
 {# Cold Starting Height Check - EXT1 #}
 
+
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='8'">
+<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" />
+</div><br>
 <h1 style="text-align:left;">Extruder 1 Starting Height Check</h1>
 <p style="text-align:left;">
 First you need to ensure that your factory settings are correct for Extruder 1 as well. Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
@@ -973,7 +985,7 @@ Once filament is consistently extruding, click to proceed:<br>
 
 <p style="text-align:center; font-size:25px;line-height:25px;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
-    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
 </p>
 
 Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  How the Zigzag pattern comes off the bed tells us if the bed is level at this position:<br><br>
@@ -1095,7 +1107,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
 
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.goTo('12') }">Next Step<br /></button></center>
+{# <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.goTo('12') }">Next Step<br /></button></center> #}
 
 </div>
 {#      88   ad888888b,  
@@ -1148,22 +1160,20 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 {# Imperfection in Both Prints Requires X/Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='14'">
 
-Now we'll print a special offset pattern to determine which direction and magnitude your X offset needs to change.  When ready, click "Print Bin Set" to begin.<br>
-NOTE - code doesn't set temperatures yet.  TODO - fix that...<br>
+Now we'll print a special offset pattern to determine which direction and magnitude your X offset needs to change.  When ready, click "Print Bin Set" to begin.<br><br>
 
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.printSawBin() }">Print Bin Set</button></center>
-
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted(), click: function() { $root.printSawBin() }">Print Bin Set</button></center><br>
 
 
-Imagine here a picture of the sawtooth/bins, labeled 1 to 5.
-<br><br><br><br><br>
-Which bin is closest to having the sawtooth perfectly centered?<br>
-<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser, click: function() { $root.pickSawBin(5) }">5</button></center>
-
-
-
-
-
+<center>
+<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/bins.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14' && $root.calibrationStep() < 1" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/saws.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14' && $root.calibrationStep() > 0" />
+</div></center><br>
+<br>
+<center><span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span>
+</center><br><br>
+<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button></center>
 
 
 
@@ -1176,37 +1186,17 @@ Which bin is closest to having the sawtooth perfectly centered?<br>
 
 
 
-X/Y Offset Calibration - print sawtooth bin, ask user which bin is closest to having the sawtooth centered.
+
+
+
+
+
+{# X/Y Offset Calibration - print sawtooth bin, ask user which bin is closest to having the sawtooth centered.
 
 If not middle bin, offset by the bin that is selected and print again.  Repeat until middle bin is selected.
 
 Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and repeat the process.  Then switch to 0.05mm offset pattern and repeat.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ #}
 
 </div>
 {#      88  8888888888   
@@ -1217,9 +1207,28 @@ Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and 
         88           d8  
         88  Y8a     a8P  
         88   "Y88888P"   #}
-{# Done with Both EXT0 and EXT1 Setup! #}
+{# Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='15'">
 
+
+
+
+
+Now we'll repeat the process to determine which direction and magnitude your Y offset needs to change.  When ready, click "Print Bin Set" to begin.<br><br>
+
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted(), click: function() { $root.calibrationAxis('Y'), $root.printSawBin(), $root.sawBinPrinted(true) }">Print Bin Set</button></center><br>
+
+
+<center>
+Just...imagine these are rotated, with 1 at the bottom/front of the bed...
+<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/bins.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() < 1" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/saws.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() > 0" />
+</div></center><br>
+<br>
+<center><span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span>
+</center><br><br>
+<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button></center>
 
 
 
@@ -1227,6 +1236,75 @@ Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and 
 
 
 </div>
+
+
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='16'">
+<h1 style="text-align:left;">Quick Check Complete</h1>
+Congratulations, your M3 Dual is ready to start printing!
+    Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.<br>
+    <center>
+        <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button>
+    </center>
+
+
+    <h1 style="text-align:left;">Your First Print on T1</h1>
+    <!--
+    <p>
+        <em>How to print Video</em>
+    </p>
+-->
+
+
+    <p>
+        We've already sliced the same keychain as before for T1 - you should see 'mgkeychainT1.gco' with several buttons below it in the file menu. Press the <span class="icon-print"></span> icon to start the keychain printing on T1.
+    </p>
+    <img src="/plugin/mgsetup/static/img/mgkeychainT1gco.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+
+
+    <p>
+        Your printer will make sure that the extruder/bed are heated correctly, and then start to print the keychain.  You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
+    </p>
+
+<br>
+    <h1 style="text-align:left;">Your First Dual Color Print</h1>
+    <p>
+        Once your T1 keychain is complete, and your print bed is cleared, you can print with both extruders. We've also included a different keychain that makes use of both extruders - select "mgkeychainDual.gco" for printing to start that model.
+    <img src="/plugin/mgsetup/static/img/mgkeychainDualgco.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+
+
+
+
+
+    </p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1257,13 +1335,14 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="6" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Six - Heated Leveling (Wiggles)</div>
     <div><input type="radio" name="setupStepSelect" value="7" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Seven - Done</div>
     <div><input type="radio" name="setupStepSelect" value="8" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eight - Dual Cold Starting Height Check</div>
-    <div><input type="radio" name="setupStepSelect" value="9" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Nine - Dual Load Filament Extruder 1</div>
-    <div><input type="radio" name="setupStepSelect" value="10" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Ten - Dual Printed Starting Height Verification</div>
+    <div><input type="radio" name="setupStepSelect" value="9" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Nine - Dual Cold Starting Height Adjustment</div>
+    <div><input type="radio" name="setupStepSelect" value="10" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Ten - Dual Load Filament Extruder 1</div>
     <div><input type="radio" name="setupStepSelect" value="11" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eleven - Dual Extruder 1 Height Adjustment</div>
     <div><input type="radio" name="setupStepSelect" value="12" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Twelve - Dual Extruder 1 First Print</div>
     <div><input type="radio" name="setupStepSelect" value="13" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Thirteen - Dual Both Extruders Print</div>
-    <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X/Y Offset Calibration</div>
-    <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Done</div>
+    <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X Offset Calibration</div>
+    <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Y Offset Calibration</div>
+    <div><input type="radio" name="setupStepSelect" value="16" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Sixteen - Done/Prints</div>
 
 
 </div>
