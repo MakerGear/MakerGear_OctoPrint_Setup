@@ -643,7 +643,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 <span data-bind="visible: !$root.isDual()">Congratulations, your M3 is ready to start printing!
     Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.</span><br>
     <center>
-        <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button>
+        <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}, visible: !$root.isDual()">Cooldown</button>
     </center>
 
 
@@ -1168,9 +1168,11 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 {# Imperfection in Both Prints Requires X/Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='14'">
 
-Now we'll print a special offset pattern to determine which direction and magnitude your X offset needs to change.  When ready, click "Print Bin Set" to begin.<br><br>
+Now we'll print a special calibration pattern to determine which direction and magnitude your X offset needs to change.  Once the pattern has been printed, select the set (1~5) that is closest to centered - if 1, 2, 4 or 5 are selected, we'll adjust the X offset and print the same pattern again; if 3 is selected, we'll move on to a finer test.  When ready, click "Print Bin Set" to print the first calibration pattern.<br><br>
 
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted(), click: function() { $root.printSawBin() }">Print Bin Set</button></center><br>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBin() }">Print Bin Set (1/3)</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBin() }">Print Sawtooth Set (2/3)</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBin() }">Print Sawtooth Set (3/3)</button></center><br>
 
 
 <center>
@@ -1218,26 +1220,30 @@ Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and 
 {# Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='15'">
 
+Now we'll print a special calibration pattern to determine which direction and magnitude your Y offset needs to change.  Once the pattern has been printed, select the set (1~5) that is closest to centered - if 1, 2, 4 or 5 are selected, we'll adjust the Y offset and print the same pattern again; if 3 is selected, we'll move on to a finer test.  When ready, click "Print Bin Set" to print the first calibration pattern.<br><br>
 
-
-
-
-Now we'll repeat the process to determine which direction and magnitude your Y offset needs to change.  When ready, click "Print Bin Set" to begin.<br><br>
-
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted(), click: function() { $root.calibrationAxis('Y'), $root.printSawBin(), $root.sawBinPrinted(true) }">Print Bin Set</button></center><br>
-
-
-<center>
-Just...imagine these are rotated, with 1 at the bottom/front of the bed...
-<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/bins.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() < 1" />
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/saws.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() > 0" />
-</div></center><br>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('Y'),  $root.printSawBin() }">Print Bin Set (1/3)</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBin() }">Print Sawtooth Set (2/3)</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBin() }">Print Sawtooth Set (3/3)</button></center><br>
 <br>
-<center><span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span>
-</center><br><br>
-<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button></center>
+<center><span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span></center><br>
+<div>
+<div class="fileupload-new thumbnail" style="width: 75%; float: left ; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/ybins.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() < 1" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/ysaws.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() > 0" />
+</div><br>
+<button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
+<br><br><br><br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button>
+<br><br><br><br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button>
+<br><br><br><br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button>
+<br><br><br><br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button>
+</div>
+<br><br><br><br><br>
 
+{# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span>
+<br><br> #}
+{# <button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
+ #}
 
 
 
