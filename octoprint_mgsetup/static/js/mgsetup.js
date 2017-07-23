@@ -705,7 +705,7 @@ $(function() {
 		self.sawBinPrinted = ko.observable(false);
 
 		self.printSawBin = function(){
-			console.log("Print Saw Bin triggered.");
+			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
 					var parameters = {};
@@ -747,18 +747,21 @@ $(function() {
 		self.pickSawBin = function(chosenMatch){
 			if (self.calibrationAxis()=="X"){
 				if (chosenMatch == 1){
+					console.log("PickSawBin 1, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
 				}
 				if (chosenMatch == 2){
+					console.log("PickSawBin 2, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
 				}
 				if (chosenMatch == 3){
+					console.log("PickSawBin 3, X.");
 					// self.newT1XOffset = ((self.tool1XOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 					// 	"M500",
@@ -771,32 +774,36 @@ $(function() {
 					}
 				}
 				if (chosenMatch == 4){
+					console.log("PickSawBin 4, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
 				}
 				if (chosenMatch == 5){
+					console.log("PickSawBin 5, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
 				}
-			}
-			if (self.calibrationAxis()=="Y"){
+			} else if (self.calibrationAxis()=="Y"){
 				if (chosenMatch == 1){
+					console.log("PickSawBin 1, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
 				}
 				if (chosenMatch == 2){
+					console.log("PickSawBin 2, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
 				}
 				if (chosenMatch == 3){
+					console.log("PickSawBin 3, Y.");
 					// self.newT1YOffset = ((self.tool1YOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 					// 	"M500",
@@ -808,12 +815,14 @@ $(function() {
 					}
 				}
 				if (chosenMatch == 4){
+					console.log("PickSawBin 4, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
 				}
 				if (chosenMatch == 5){
+					console.log("PickSawBin 5, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
