@@ -696,8 +696,8 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
     Now that your initial setup is complete, you can change the first tab that is shown when you connect to the Temperature tab for immediate access.  This can be changed in the Settings: <a href="#settings_plugin_mgsetup" data-bind="click: function() { $root.showSettings('settings_plugin_mgsetup'); }">click here to go to the MakerGear Setup settings "tab"</a>.<br><br><br>
 
     <div data-bind="visible: $root.isDual">
-    <h1 style="text-align:left;">Dual Extruder Setup</h1>
-    To continue on to the Dual Extruder configuration, click "Next":<br>
+    <h1 style="text-align:left;">M3 Independent Dual (M3-ID) Setup</h1>
+    To continue on to the (M3-ID) configuration, click "Next":<br>
 <center><button class="btngoBig" data-bind="enable: loginState.isUser(), click: function() { $root.goTo('8'); window.scroll(0,0) }">Next</button></center>
 </div>
 </div>
@@ -751,7 +751,7 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
     <tr>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <a href="/plugin/mgsetup/static/img/6.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/6.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
@@ -759,7 +759,7 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
  <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5mm)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5mm)') }}</button>
         </td>
     </tr>
 </table>
@@ -790,6 +790,9 @@ In this step, we will physically adjust the height of Extruder 1 in the mounting
 
 Once Extruder 1 is below 50°C, loosen the clamping bolt [TODO: PICTURES] securing the Extruder 1 hotend, push it up into the mounting plate as far as possible, and then loosely secure the clamping bolt.<br><br>
 <center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust(1), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
+
+Make sure that all components (Extruders 0 and 1 and the Print Bed) are cool before touching the printer.<br><br>
+
 During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (Extruder 0) and the build plate.
 
 <p>
@@ -807,28 +810,28 @@ During this step you'll use the <strong>Bed Height Buttons</strong> below to adj
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 1mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1 && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button>1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1 && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button>1mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.ZPos() > 1 && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.1mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.01mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
         </div>
     </div>
 <br><br>
@@ -841,7 +844,7 @@ Once the feeler gauge catches between the nozzle and bed, click "Switch Extruder
     <li>Tighten the clamping bolt completely - this is a safety hazard if not secured.
 </ol>
 <strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && $root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(3) }">Extruder 1 is touching feeler gauge<br /></button></center>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && $root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(3); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br /></button></center>
 </div>
 
 {#      88     ,a8888a,     
@@ -1265,7 +1268,7 @@ Click "Print Y-Axis Pattern 1” when you are ready to begin.
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='16'">
 <h1 style="text-align:left;">Quick Check Complete</h1>
-Congratulations, your M3 Dual is ready to start printing!
+Congratulations, your M3 Independent Dual is ready to start printing!
     Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.<br>
     <center>
         <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button>
@@ -1391,7 +1394,9 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 
 
 
-
+<div id="dialog" title="Basic dialog">
+  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
 
 
 
@@ -1403,6 +1408,7 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 </script>
 {#
 <script src='https://code.responsivevoice.org/responsivevoice.src.js'></script>#}
+
 
 <script type="text/html" id="customControls_containerTemplate_collapsable">
     <div class="custom_section">

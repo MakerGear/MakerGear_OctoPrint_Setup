@@ -210,17 +210,17 @@ $(function() {
 
 
 
-                                                                                                                                                                         
-    //  ad88888ba                                                      88888888888                                                 88                                       
-    // d8"     "8b                ,d                                   88                                                   ,d     ""                                       
-    // Y8,                        88                                   88                                                   88                                              
-    // `Y8aaaaa,     ,adPPYba,  MM88MMM  88       88  8b,dPPYba,       88aaaaa      88       88  8b,dPPYba,    ,adPPYba,  MM88MMM  88   ,adPPYba,   8b,dPPYba,   ,adPPYba,  
-    //   `"""""8b,  a8P_____88    88     88       88  88P'    "8a      88"""""      88       88  88P'   `"8a  a8"     ""    88     88  a8"     "8a  88P'   `"8a  I8[    ""  
-    //         `8b  8PP"""""""    88     88       88  88       d8      88           88       88  88       88  8b            88     88  8b       d8  88       88   `"Y8ba,   
-    // Y8a     a8P  "8b,   ,aa    88,    "8a,   ,a88  88b,   ,a8"      88           "8a,   ,a88  88       88  "8a,   ,aa    88,    88  "8a,   ,a8"  88       88  aa    ]8I  
-    //  "Y88888P"    `"Ybbd8"'    "Y888   `"YbbdP'Y8  88`YbbdP"'       88            `"YbbdP'Y8  88       88   `"Ybbd8"'    "Y888  88   `"YbbdP"'   88       88  `"YbbdP"'  
-    //                                                88                                                                                                                    
-    //                                                88                                                                                                                    
+																																										 
+	//  ad88888ba                                                      88888888888                                                 88                                       
+	// d8"     "8b                ,d                                   88                                                   ,d     ""                                       
+	// Y8,                        88                                   88                                                   88                                              
+	// `Y8aaaaa,     ,adPPYba,  MM88MMM  88       88  8b,dPPYba,       88aaaaa      88       88  8b,dPPYba,    ,adPPYba,  MM88MMM  88   ,adPPYba,   8b,dPPYba,   ,adPPYba,  
+	//   `"""""8b,  a8P_____88    88     88       88  88P'    "8a      88"""""      88       88  88P'   `"8a  a8"     ""    88     88  a8"     "8a  88P'   `"8a  I8[    ""  
+	//         `8b  8PP"""""""    88     88       88  88       d8      88           88       88  88       88  8b            88     88  8b       d8  88       88   `"Y8ba,   
+	// Y8a     a8P  "8b,   ,aa    88,    "8a,   ,a88  88b,   ,a8"      88           "8a,   ,a88  88       88  "8a,   ,aa    88,    88  "8a,   ,a8"  88       88  aa    ]8I  
+	//  "Y88888P"    `"Ybbd8"'    "Y888   `"YbbdP'Y8  88`YbbdP"'       88            `"YbbdP'Y8  88       88   `"Ybbd8"'    "Y888  88   `"YbbdP"'   88       88  `"YbbdP"'  
+	//                                                88                                                                                                                    
+	//                                                88                                                                                                                    
 
 		self.printWiggle = function (wigglePosition, inputWiggleHeight) {
 			self.wiggleHeightAdjust = 0.1;
@@ -376,7 +376,8 @@ $(function() {
 		self.setupCheckLevel = function (checkLevelStep) { //this is where the magic starts, folks
 			self.ZPosFresh(false);
 			if (checkLevelStep == "0") {
-				OctoPrint.control.sendGcode(["G28",
+				OctoPrint.control.sendGcode(["M605 S1",
+				"G28",
 				"G1 F2000 X217 Y125",
 				"G1 F1400 Z0.25",
 				"G4 P1000",
@@ -608,17 +609,17 @@ $(function() {
 
 
 
-                                                
-    // 88888888ba,                             88  
-    // 88      `"8b                            88  
-    // 88        `8b                           88  
-    // 88         88  88       88  ,adPPYYba,  88  
-    // 88         88  88       88  ""     `Y8  88  
-    // 88         8P  88       88  ,adPPPPP88  88  
-    // 88      .a8P   "8a,   ,a88  88,    ,88  88  
-    // 88888888Y"'     `"YbbdP'Y'  `"8bbdP"Y8  88  
-                                                
-                                                
+												
+	// 88888888ba,                             88  
+	// 88      `"8b                            88  
+	// 88        `8b                           88  
+	// 88         88  88       88  ,adPPYYba,  88  
+	// 88         88  88       88  ""     `Y8  88  
+	// 88         8P  88       88  ,adPPPPP88  88  
+	// 88      .a8P   "8a,   ,a88  88,    ,88  88  
+	// 88888888Y"'     `"YbbdP'Y'  `"8bbdP"Y8  88  
+												
+												
 
 		self.stepEightPrepared = ko.observable(false);
 		self.extOneNeedsPhysical = ko.observable(false);
@@ -705,42 +706,49 @@ $(function() {
 		self.sawBinPrinted = ko.observable(false);
 
 		self.printSawBin = function(){
-			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
-			if (self.calibrationAxis()=="X"){
-				if (self.calibrationStep() === 0){
-					var parameters = {};
-					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
+			// ( "#dialog" ).dialog();
+			//self.printSawBinDialog.dialog(); //TODO change this to a modal, change the dialog to have
+			// "don't remind me again" option.
+			if (confirm('Is your print bed clear and ready for this print?')){
+				console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
+				if (self.calibrationAxis()=="X"){
+					if (self.calibrationStep() === 0){
+						var parameters = {};
+						var context = {};
+						OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
+					}
+					if (self.calibrationStep() === 1){
+						var parameters = {};
+						var context = {};
+						OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
+					}
+					if (self.calibrationStep() === 2){
+						var parameters = {};
+						var context = {};
+						OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
+					}
 				}
-				if (self.calibrationStep() === 1){
-					var parameters = {};
-					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
+				if (self.calibrationAxis()=="Y"){
+					if (self.calibrationStep() === 0){
+						var parameters = {};
+						var context = {};
+						OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
+					}
+					if (self.calibrationStep() === 1){
+						var parameters = {};
+						var context = {};
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
+					}
+					if (self.calibrationStep() === 2){
+						var parameters = {};
+						var context = {};
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
+					}
 				}
-				if (self.calibrationStep() === 2){
-					var parameters = {};
-					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
-				}
+				self.sawBinPrinted(true);
+			} else {
+				self.notify("Preparation","Please clear your print bed before printing that pattern.");
 			}
-			if (self.calibrationAxis()=="Y"){
-				if (self.calibrationStep() === 0){
-					var parameters = {};
-					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
-				}
-				if (self.calibrationStep() === 1){
-					var parameters = {};
-					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
-				}
-				if (self.calibrationStep() === 2){
-					var parameters = {};
-					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
-				}
-			}
-			self.sawBinPrinted(true);
 
 		};
 
@@ -856,17 +864,17 @@ $(function() {
 
 
 
-                                                                             
-    //   ,ad8888ba,                                                             
-    //  d8"'    `"8b                                                            
-    // d8'                                                                      
-    // 88              ,adPPYba,   88,dPYba,,adPYba,   88,dPYba,,adPYba,        
-    // 88             a8"     "8a  88P'   "88"    "8a  88P'   "88"    "8a       
-    // Y8,            8b       d8  88      88      88  88      88      88       
-    //  Y8a.    .a8P  "8a,   ,a8"  88      88      88  88      88      88  888  
-    //   `"Y8888Y"'    `"YbbdP"'   88      88      88  88      88      88  888  
-                                                                             
-                                                                             
+																			 
+	//   ,ad8888ba,                                                             
+	//  d8"'    `"8b                                                            
+	// d8'                                                                      
+	// 88              ,adPPYba,   88,dPYba,,adPYba,   88,dPYba,,adPYba,        
+	// 88             a8"     "8a  88P'   "88"    "8a  88P'   "88"    "8a       
+	// Y8,            8b       d8  88      88      88  88      88      88       
+	//  Y8a.    .a8P  "8a,   ,a8"  88      88      88  88      88      88  888  
+	//   `"Y8888Y"'    `"YbbdP"'   88      88      88  88      88      88  888  
+																			 
+																			 
 		self.storeActivation = function(actkey) {
 			//console.log(actkey);
 			url = OctoPrint.getSimpleApiUrl("mgsetup");
@@ -932,15 +940,15 @@ $(function() {
 				});
 		};
 
-                                                                                                                               
-    // 88        88  88      88888888888                                                 88                                       
-    // 88        88  88      88                                                   ,d     ""                                       
-    // 88        88  88      88                                                   88                                              
-    // 88        88  88      88aaaaa      88       88  8b,dPPYba,    ,adPPYba,  MM88MMM  88   ,adPPYba,   8b,dPPYba,   ,adPPYba,  
-    // 88        88  88      88"""""      88       88  88P'   `"8a  a8"     ""    88     88  a8"     "8a  88P'   `"8a  I8[    ""  
-    // 88        88  88      88           88       88  88       88  8b            88     88  8b       d8  88       88   `"Y8ba,   
-    // Y8a.    .a8P  88      88           "8a,   ,a88  88       88  "8a,   ,aa    88,    88  "8a,   ,a8"  88       88  aa    ]8I  
-    //  `"Y8888Y"'   88      88            `"YbbdP'Y8  88       88   `"Ybbd8"'    "Y888  88   `"YbbdP"'   88       88  `"YbbdP"'  
+																															   
+	// 88        88  88      88888888888                                                 88                                       
+	// 88        88  88      88                                                   ,d     ""                                       
+	// 88        88  88      88                                                   88                                              
+	// 88        88  88      88aaaaa      88       88  8b,dPPYba,    ,adPPYba,  MM88MMM  88   ,adPPYba,   8b,dPPYba,   ,adPPYba,  
+	// 88        88  88      88"""""      88       88  88P'   `"8a  a8"     ""    88     88  a8"     "8a  88P'   `"8a  I8[    ""  
+	// 88        88  88      88           88       88  88       88  8b            88     88  8b       d8  88       88   `"Y8ba,   
+	// Y8a.    .a8P  88      88           "8a,   ,a88  88       88  "8a,   ,aa    88,    88  "8a,   ,a8"  88       88  aa    ]8I  
+	//  `"Y8888Y"'   88      88            `"YbbdP'Y8  88       88   `"Ybbd8"'    "Y888  88   `"YbbdP"'   88       88  `"YbbdP"'  
 
 		self.goTo = function (targetStep){
 
@@ -1208,18 +1216,19 @@ $(function() {
 			}
 			self.mgtab = $("#mgtab");
 			if (self.mgtab.css("visibility") == "hidden") {
-                self.mgtab.css("visibility", "visible");
+				self.mgtab.css("visibility", "visible");
 			}
 			self.mgtabwarning = $("#mgtabwarning");
 			if (self.mgtabwarning.css("display") == "inline") {
-                self.mgtabwarning.css("display", "none");
+				self.mgtabwarning.css("display", "none");
 			}
 			self.mglogin = $("#mglogin");
 			if (self.mglogin.css("visibility") == "hidden") {
-                self.mglogin.css("visibility", "visible");
+				self.mglogin.css("visibility", "visible");
 			}
 			self.support_widget = $("#mgsetup_support_widget");
 			self.command_response_popup = $("#command_response_popup");
+			self.printSawBinDialog = $("dialog");
 			//self.checkGoogle();
 			self.requestEeprom();
 			console.log(self.settings);
@@ -1445,17 +1454,17 @@ $(function() {
 
 
 
-                                                                                                                                           
-    //   ,ad8888ba,                                      ad88888ba                                                                            
-    //  d8"'    `"8b                                    d8"     "8b                                                                    ,d     
-    // d8'                                              Y8,                                                                            88     
-    // 88              ,adPPYba,  8b,dPPYba,            `Y8aaaaa,    88       88  8b,dPPYba,   8b,dPPYba,    ,adPPYba,   8b,dPPYba,  MM88MMM  
-    // 88      88888  a8P_____88  88P'   `"8a             `"""""8b,  88       88  88P'    "8a  88P'    "8a  a8"     "8a  88P'   "Y8    88     
-    // Y8,        88  8PP"""""""  88       88                   `8b  88       88  88       d8  88       d8  8b       d8  88            88     
-    //  Y8a.    .a88  "8b,   ,aa  88       88  888      Y8a     a8P  "8a,   ,a88  88b,   ,a8"  88b,   ,a8"  "8a,   ,a8"  88            88,    
-    //   `"Y88888P"    `"Ybbd8"'  88       88  888       "Y88888P"    `"YbbdP'Y8  88`YbbdP"'   88`YbbdP"'    `"YbbdP"'   88            "Y888  
-    //                                                                            88           88                                             
-    //                                                                            88           88                                             
+																																		   
+	//   ,ad8888ba,                                      ad88888ba                                                                            
+	//  d8"'    `"8b                                    d8"     "8b                                                                    ,d     
+	// d8'                                              Y8,                                                                            88     
+	// 88              ,adPPYba,  8b,dPPYba,            `Y8aaaaa,    88       88  8b,dPPYba,   8b,dPPYba,    ,adPPYba,   8b,dPPYba,  MM88MMM  
+	// 88      88888  a8P_____88  88P'   `"8a             `"""""8b,  88       88  88P'    "8a  88P'    "8a  a8"     "8a  88P'   "Y8    88     
+	// Y8,        88  8PP"""""""  88       88                   `8b  88       88  88       d8  88       d8  8b       d8  88            88     
+	//  Y8a.    .a88  "8b,   ,aa  88       88  888      Y8a     a8P  "8a,   ,a88  88b,   ,a8"  88b,   ,a8"  "8a,   ,a8"  88            88,    
+	//   `"Y88888P"    `"Ybbd8"'  88       88  888       "Y88888P"    `"YbbdP'Y8  88`YbbdP"'   88`YbbdP"'    `"YbbdP"'   88            "Y888  
+	//                                                                            88           88                                             
+	//                                                                            88           88                                             
 		self.requestEeprom = function() {
 			//self.waitingForM(true);
 			self.eepromData([]);
@@ -1667,3 +1676,4 @@ $(function() {
 		//["#tab_plugin_mgsetup"]
 	]);
 });
+
