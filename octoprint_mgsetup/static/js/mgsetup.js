@@ -692,6 +692,7 @@ $(function() {
 
 		};
 
+		self.skipConfirm = ko.observable(false);
 		self.calibrationStep = ko.observable(0);
 		self.calibrationAxis = ko.observable("X");
 		self.calibrationOffset = ko.pureComputed(function(){
@@ -705,50 +706,52 @@ $(function() {
 		},this);
 		self.sawBinPrinted = ko.observable(false);
 
-		self.printSawBin = function(){
-			// ( "#dialog" ).dialog();
-			//self.printSawBinDialog.dialog(); //TODO change this to a modal, change the dialog to have
-			// "don't remind me again" option.
-			if (confirm('Is your print bed clear and ready for this print?')){
-				console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
-				if (self.calibrationAxis()=="X"){
-					if (self.calibrationStep() === 0){
-						var parameters = {};
-						var context = {};
-						OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
-					}
-					if (self.calibrationStep() === 1){
-						var parameters = {};
-						var context = {};
-						OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
-					}
-					if (self.calibrationStep() === 2){
-						var parameters = {};
-						var context = {};
-						OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
-					}
-				}
-				if (self.calibrationAxis()=="Y"){
-					if (self.calibrationStep() === 0){
-						var parameters = {};
-						var context = {};
-						OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
-					}
-					if (self.calibrationStep() === 1){
-						var parameters = {};
-						var context = {};
-						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
-					}
-					if (self.calibrationStep() === 2){
-						var parameters = {};
-						var context = {};
-						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
-					}
-				}
-				self.sawBinPrinted(true);
+		self.printSawBinConfirm = function(){
+			if (self.skipConfirm() == false){
+				self.printSawBinDialog.modal("show");
 			} else {
-				self.notify("Preparation","Please clear your print bed before printing that pattern.");
+				self.printSawBin();
 			}
+		};
+
+		self.printSawBin = function(){
+
+			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
+			if (self.calibrationAxis()=="X"){
+				if (self.calibrationStep() === 0){
+					var parameters = {};
+					var context = {};
+					OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
+				}
+				if (self.calibrationStep() === 1){
+					var parameters = {};
+					var context = {};
+					OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
+				}
+				if (self.calibrationStep() === 2){
+					var parameters = {};
+					var context = {};
+					OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
+				}
+			}
+			if (self.calibrationAxis()=="Y"){
+				if (self.calibrationStep() === 0){
+					var parameters = {};
+					var context = {};
+					OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
+				}
+				if (self.calibrationStep() === 1){
+					var parameters = {};
+					var context = {};
+					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
+				}
+				if (self.calibrationStep() === 2){
+					var parameters = {};
+					var context = {};
+					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
+				}
+			}
+			self.sawBinPrinted(true);
 
 		};
 
@@ -1228,7 +1231,7 @@ $(function() {
 			}
 			self.support_widget = $("#mgsetup_support_widget");
 			self.command_response_popup = $("#command_response_popup");
-			self.printSawBinDialog = $("dialog");
+			self.printSawBinDialog = $("#dialog");
 			//self.checkGoogle();
 			self.requestEeprom();
 			console.log(self.settings);

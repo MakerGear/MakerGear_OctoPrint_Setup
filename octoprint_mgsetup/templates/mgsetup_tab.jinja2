@@ -1180,9 +1180,9 @@ Now we'll print a special calibration pattern to ensure proper X-axis calibratio
 Once the pattern has been printed, identify and choose from positions 1 – 5 to identify the area where the points and gaps are most closely aligned. The perfect result is to have these point/gap features perfectly aligned at position number 3 — if positions 1, 2, 4, or 5 are selected, we'll automatically adjust the X offset for you and print the same pattern again.<br><br>
 Once you’ve reached your target (alignment at position three), we'll complete the same process two more times, using finer tolerances each time.<br><br>
 Click "Print X-Axis Pattern 1” when you are ready to begin.
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBin() }">Print X-Axis Pattern 1</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBin() }">Print X-Axis Pattern 2</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBin() }">Print X-Axis Pattern 3</button></center><br>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 1</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 2</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 3</button></center><br>
 
 
 <center>
@@ -1235,9 +1235,9 @@ Once the pattern has been printed, identify and choose from positions 1 – 5 to
 Once you’ve reached your target (alignment at position three), we'll complete the same process two more times, using finer tolerances each time.<br><br>
 Click "Print Y-Axis Pattern 1” when you are ready to begin.
 <br><br><center>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('Y'),  $root.printSawBin() }">Print Y-Axis Pattern 1</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBin() }">Print Y-Axis Pattern 2</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBin() }">Print Y-Axis Pattern 3</button></center><br>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('Y'),  $root.printSawBinConfirm() }">Print Y-Axis Pattern 1</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 2</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 3</button></center><br>
 <br>
 <center><span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span></center><br>
 <div>
@@ -1394,8 +1394,13 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 
 
 
-<div id="dialog" title="Basic dialog">
-  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+<div id="dialog" title="Pattern Confirmation" class="modal hide fade medium">
+    <div><p>
+    Please make sure that your Print Bed is clear before printing this Calibration Pattern.<br><br>
+    <button style="float: left; width: 35%;" data-bind="click: function() { $root.printSawBinDialog.modal('hide'); $root.skipConfirm(false) }">Cancel Pattern</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.printSawBin(); $root.printSawBinDialog.modal('hide') }">Bed Is Clear - Print</button><br><br>
+    <center><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me next time.</center>
+
+    </div>
 </div>
 
 
