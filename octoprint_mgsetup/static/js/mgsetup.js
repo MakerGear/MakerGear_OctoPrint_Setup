@@ -376,7 +376,8 @@ $(function() {
 		self.setupCheckLevel = function (checkLevelStep) { //this is where the magic starts, folks
 			self.ZPosFresh(false);
 			if (checkLevelStep == "0") {
-				OctoPrint.control.sendGcode(["M605 S1",
+				OctoPrint.control.sendGcode(["T0",
+				"M605 S1",
 				"G28",
 				"G1 F2000 X217 Y125",
 				"G1 F1400 Z0.25",
@@ -385,7 +386,8 @@ $(function() {
 				]);//changed to X217 for Demeter
 			}
 			if (checkLevelStep == "1") {
-				OctoPrint.control.sendGcode(["G28",
+				OctoPrint.control.sendGcode(["T0",
+				"G28",
 				"G1 F2000 X205 Y125",
 				"G1 F1400 Z1",
 				"G1 F1400 X195 Y125"
@@ -395,7 +397,8 @@ $(function() {
 //				OctoPrint.control.sendGcode("G1 F1400 X195 Y125");
 			}
 			if (checkLevelStep == "2") {
-				OctoPrint.control.sendGcode(["G1 F1400 Z2",
+				OctoPrint.control.sendGcode(["T0",
+				"G1 F1400 Z2",
 				"G1 F2000 X20 Y220",
 				"G1 F1400 Z0.2"
 				]);
@@ -403,7 +406,8 @@ $(function() {
 //				OctoPrint.control.sendGcode("G1 F1400 Z0.2");
 			}
 			if (checkLevelStep == "3") {
-				OctoPrint.control.sendGcode(["G1 F1400 Z2",
+				OctoPrint.control.sendGcode(["T0",
+				"G1 F1400 Z2",
 				"G1 F2000 X20 Y20",
 				"G1 F1400 Z-0.05"
 				]);
@@ -427,7 +431,8 @@ $(function() {
 		self.setupBedLevel = function (adjustLevelStep) { //this is where the magic continues, folks
 			self.ZPosFresh(false);
 			if (adjustLevelStep == "0") {
-				OctoPrint.control.sendGcode(["M84 S0",
+				OctoPrint.control.sendGcode(["T0",
+				"M84 S0",
 				"G28",
 				"G1 F2000 X20 Y50",
 				"G1 F1400 Z1"
@@ -437,7 +442,8 @@ $(function() {
 				//OctoPrint.control.sendGcode("G1 F1400 Z1");
 			}
 			if (adjustLevelStep == "1") {
-				OctoPrint.control.sendGcode(["G1 F1400 Z3",
+				OctoPrint.control.sendGcode(["T0",
+				"G1 F1400 Z3",
 				"G1 F2000 X20 Y50",
 				"G1 F1400 Z1"
 				]);
@@ -446,7 +452,8 @@ $(function() {
 				//OctoPrint.control.sendGcode("G1 F1400 Z1");
 			}
 			if (adjustLevelStep == "2") {
-				OctoPrint.control.sendGcode(["G1 F1400 Z3",
+				OctoPrint.control.sendGcode(["T0",
+				"G1 F1400 Z3",
 				"G1 F2000 X180 Y30",
 				"G1 F1400 Z1"
 				]);
@@ -454,7 +461,8 @@ $(function() {
 //				OctoPrint.control.sendGcode("G1 F1400 Z1");
 			}
 			if (adjustLevelStep == "3") {
-				OctoPrint.control.sendGcode(["G1 F1400 Z3",
+				OctoPrint.control.sendGcode(["T0",
+				"G1 F1400 Z3",
 				"G1 F2000 X180 Y230",
 				"G1 F1400 Z1"
 				]);
@@ -462,7 +470,8 @@ $(function() {
 //				OctoPrint.control.sendGcode("G1 F1400 Z1");
 			}
 			if (adjustLevelStep == "4") {
-				OctoPrint.control.sendGcode(["G1 F1400 Z3",
+				OctoPrint.control.sendGcode(["T0",
+					"G1 F1400 Z3",
 					"G1 F2000 X20 Y210",
 					"G1 F1400 Z1"
 				]);
@@ -476,7 +485,8 @@ $(function() {
 			self.ZPosFresh(false);
 			self.requestEeprom();
 			if (startingHeightStep == "0") {
-				OctoPrint.control.sendGcode(["G28",
+				OctoPrint.control.sendGcode(["T0",
+				"G28",
 				"G1 F1400 X100 Y125 Z50",
 				"G1 F1400 Z5",
 				"M114"
@@ -572,29 +582,34 @@ $(function() {
 
 		self.coldLevelCheck = function(checkPosition) {
 			if (checkPosition === 0){
-				OctoPrint.control.sendGcode(["G28",
+				OctoPrint.control.sendGcode(["T0",
+					"G28",
 					"G1 F1000 X100 Y125 Z10"]);
-			};
+			}
 			if (checkPosition === 1){
-				OctoPrint.control.sendGcode(["G1 F1000 Z5",
+				OctoPrint.control.sendGcode(["T0",
+					"G1 F1000 Z5",
 					"G1 F2000 X20 Y20",
 					"G1 F1000 Z0"]);
-			};
+			}
 			if (checkPosition === 2){
-				OctoPrint.control.sendGcode(["G1 F1000 Z5",
+				OctoPrint.control.sendGcode(["T0",
+					"G1 F1000 Z5",
 					"G1 F2000 X180 Y20",
 					"G1 F1000 Z0"]);
-			};
+			}
 			if (checkPosition === 3){
-				OctoPrint.control.sendGcode(["G1 F1000 Z5",
+				OctoPrint.control.sendGcode(["T0",
+					"G1 F1000 Z5",
 					"G1 F2000 X180 Y230",
 					"G1 F1000 Z0"]);
-			};
+			}
 			if (checkPosition === 4){
-				OctoPrint.control.sendGcode(["G1 F1000 Z5",
+				OctoPrint.control.sendGcode(["T0",
+					"G1 F1000 Z5",
 					"G1 F2000 X20 Y220",
 					"G1 F1000 Z0"]);
-			};
+			}
 
 			if (checkPosition === "next"){
 				if (self.coldLevelCheckPosition()===4){
@@ -604,7 +619,7 @@ $(function() {
 
 				}
 				self.coldLevelCheck(self.coldLevelCheckPosition());
-			};
+			}
 		};
 
 
@@ -1095,7 +1110,6 @@ $(function() {
 				self.support_widget.modal({keyboard: false, backdrop: "static", show: true});
 			} else {
 				zE.activate();
-				zE.hide();
 			}
 			if (input === "hide"){
 				self.support_widget.modal("hide");
@@ -1204,10 +1218,12 @@ $(function() {
  // 88888888888        `8'        88888888888  88      `888       88        "Y88888P"   
 
 		self.onStartup = function () {
+			console.log("onStartup triggered.");
 			self.requestData();
 		};
 
 		self.onStartupComplete = function() {
+			console.log("onStartupComplete triggered.");
 			//console.log(self.temperatures.tools());
 			console.log(self.oldZOffset);
 			//self.updateCuraProfiles();
@@ -1233,7 +1249,9 @@ $(function() {
 			self.command_response_popup = $("#command_response_popup");
 			self.printSawBinDialog = $("#dialog");
 			//self.checkGoogle();
-			self.requestEeprom();
+			if (self.isOperational()){
+				self.requestEeprom();
+			}
 			console.log(self.settings);
 			console.log(self.userSettings);
 			self.targetName = "MakerGear " + self.hostname();
@@ -1289,6 +1307,7 @@ $(function() {
 		};
 
 		self.onEventClientOpened = function() {
+			console.log("onEventClientOpened triggered.");
 			if (self.isOperational()) {
 				self.requestEeprom();
 				OctoPrint.control.sendGcode("M114");
@@ -1300,6 +1319,7 @@ $(function() {
 		};
 
 		self.onUserLoggedIn = function (data){
+			console.log("onUserLoggedIn triggered.");
 			if (self.googleGood()===-1 || self.googleGood()===0){
 				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
@@ -1312,10 +1332,12 @@ $(function() {
 		};
 
 		self.onAfterBinding = function() {
+			console.log("onAfterBinding triggered.");
 			//self.support_widget = $("#mgsetup_support_widget");
 		};
 
 		self.onEventSettingsUpdated = function (payload) {
+			console.log("onEventSettingsUpdated triggered.");
 			// the webcam url might have changed, make sure we replace it now if the tab is focused
 			//self._enableWebcam();
 			self.requestData();
@@ -1343,7 +1365,7 @@ $(function() {
 		};
 
 		self.onEventPositionUpdate = function (payload) {
-			
+			console.log("onEventPositionUpdate triggered.");
 			if (parseFloat(payload["z"])!==parseFloat(self.ZPos)){
 				//alert(payload["z"]);
 				self.currentZPosition = parseFloat(payload["z"]);
@@ -1353,6 +1375,7 @@ $(function() {
 		};
 
 		self.onEventRegisteredMessageReceived = function(payload) {
+			console.log("onEventRegisteredMessageReceived triggered.");
 			if (payload.key in self.feedbackControlLookup) {
 				var outputs = self.feedbackControlLookup[payload.key];
 				_.each(payload.outputs, function(value, key) {
@@ -1364,6 +1387,7 @@ $(function() {
 		};
 
 		self.onDataUpdaterPluginMessage = function(plugin, data) {
+			console.log("onDataUpdaterPluginMessage triggered.");
 			if (plugin != "mgsetup") {
 				// console.log('Ignoring '+plugin);
 				return;

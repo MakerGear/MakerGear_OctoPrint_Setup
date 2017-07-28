@@ -53,18 +53,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.internetConnection = False
 		self.tooloffsetline = ""
 		self.zoffsetline = ""
-		try:
-			self.ip = str(([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]))
-		except IOError, e:
-			self._logger.info(e)
-		except:
-			raise
+
 
 
 
 
 
 	def on_settings_initialized(self):
+		self._logger.info("MGSetup on_settings_initialized triggered.")
 		# octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), dict(controls=dict(children=dict(name="Medium Quality"), dict(commands=["M201 X900 Y900", "M205 X20 Y20", "M220 S50"]))))
 		#octoprint.settings.Settings.set(octoprint.settings.settings(), ["controls", "children", "name"],["Fan Orn"])
 		#octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), ["controls"],["name"]
@@ -107,6 +103,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 	def checkInternet(self, timeout, iterations, url):
+		self._logger.info("MGSetup checkInternet triggered.")
 		if url == 'none':
 			url = "http://google.com"
 		elif url == 'fail':
@@ -131,6 +128,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 	def on_after_startup(self):
+		self._logger.info("MGSetup on_after_startup triggered.")
 		self._logger.info("Hello Pablo!")
 		self.current_position = current_position
 		self._logger.info(self.newhost)
@@ -204,9 +202,15 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		except:
 			raise
 
-
+		try:
+			self.ip = str(([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]))
+		except IOError, e:
+			self._logger.info(e)
+		except:
+			raise
 
 	def get_template_configs(self):
+		self._logger.info("MGSetup get_template_configs triggered.")
 		return [
 			dict(type="navbar", custom_bindings=True),
 			dict(type="settings", custom_bindings=True),
@@ -215,12 +219,15 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		]
 
 	def get_settings_defaults(self):
+		self._logger.info("MGSetup get_settings_defaults triggered.")
 		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1)
 
 	def get_settings_restricted_paths(self):
+		self._logger.info("MGSetup get_settings_restricted_paths triggered.")
 		return dict(user=[["serialNumber","registered","activated"],])
 
 	def get_assets(self):
+		self._logger.info("MGSetup get_assets triggered.")
 		return dict(
 			js=["js/mgsetup.js","js/mgsetup_maintenance.js"],
 			css=["css/mgsetup.css", "css/overrides.css"],
@@ -230,12 +237,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		)
 	
 	def remindLater(self):
+		self._logger.info("MGSetup remindLater triggered.")
 		self.nextReminder = time.mktime(time.gmtime()) + 604800
 		self._logger.info("Next Reminder: "+str(self.nextReminder) + ", currently: "+str(time.mktime(time.gmtime())))
 		self._settings.set(["nextReminder"],self.nextReminder)
 		self._settings.save()
 
 	def on_event(self, event, payload):
+		self._logger.info("MGSetup on_event triggered.")
 		if event == Events.POSITION_UPDATE:
 			self._logger.info(payload)
 			self.current_position = dict(payload)
@@ -255,12 +264,15 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#else:
 			#	self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
 
-			if (self.nextReminder <= time.mktime(time.gmtime())) and (self.nextReminder > 0):
-				self._plugin_manager.send_plugin_message("mgsetup", dict(pleaseRemind = True))
-			else:
-				self._logger.info(str(self.nextReminder))
-				self._logger.info(str(time.mktime(time.gmtime())))
-			return
+			if (self.activated == False) or (self.registered ==False):
+				if (self.nextReminder <= time.mktime(time.gmtime())) and (self.nextReminder > 0):
+					self._logger.info("nextReminder is in the past and not 0")
+					self._plugin_manager.send_plugin_message("mgsetup", dict(pleaseRemind = True))
+				else:
+					self._logger.info("nextReminder in the future or 0")
+					self._logger.info(str(self.nextReminder))
+					self._logger.info(str(time.mktime(time.gmtime())))
+				return
 
 
 	def _to_unicode(self, s_or_u, encoding="utf-8", errors="strict"):
@@ -364,12 +376,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("Hostname changed to "+newHostname['hostname']+" !")
 
 	def get_api_commands(self):
+		self._logger.info("MGSetup get_api_commands triggered.")
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
 		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'])
 
 	def on_api_get(self, request):
+		self._logger.info("MGSetup on_api_get triggered.")
 		return flask.jsonify(dict(
 			currentposition=self.current_position,
 			positionstate=self.position_state)
@@ -448,6 +462,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("SSH service stopped!")		
 
 	def on_api_command(self, command, data):
+		self._logger.info("MGSetup on_api_command triggered.")
 		if command == 'turnSshOn':
 			self.turnSshOn()
 		elif command == 'turnSshOff':
@@ -472,6 +487,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.checkInternet(3,3, data['url'])
 
 	def sendSerial(self):
+		self._logger.info("MGSetup sendSerial triggered.")
 		self._plugin_manager.send_plugin_message("mgsetup", dict(serial = self.serial))
 
 	def storeActivation(self, activation):
@@ -502,9 +518,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	##plugin auto update
 	def get_version(self):
+		self._logger.info("MGSetup get_version triggered.")
 		return self._plugin_version
 	
 	def get_update_information(self):
+		self._logger.info("MGSetup get_update_information triggered.")
 		return dict(
 			octoprint_mgsetup=dict(
 

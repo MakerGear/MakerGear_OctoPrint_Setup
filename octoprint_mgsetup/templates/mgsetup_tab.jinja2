@@ -1,11 +1,11 @@
-    <div id="mgtabwarning" style="display: inline"><center><br><p style="font-size:60px">LOADING</p><br><br>If you can see this, OctoPrint and the MakerGear Setup tab are still loading; if this does not change shortly, a popup or script blocker may be preventing the page from loading correctly.</center></div>
+    <div id="mgtabwarning" style="display: inline"><center><br><p style="font-size:60px">LOADING</p><br><br>OctoPrint and the MakerGear Setup tab are still loading; if this does not change shortly, a popup or script blocker may be preventing the page from loading correctly.</center></div>
 <div id="mglogin" style="visibility: hidden" data-bind="visible: loginState.loggedIn() === false"><center><br><br>You are not logged into OctoPrint. Use the "Login" button in the upper right corner to continue. You can find the default username and password in the setup guide.<br><br></center></div>
 
 <div id="mgtab" style="visibility: hidden" data-bind="visible: loginState.isUser">
 
 
 
-<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: loginState.isUser">
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: loginState.isUser">
 <br>
                 <div class="progress">
                     <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat(setupStep())) * (100/parseFloat(maxSteps()))) + '%'} "></div>
@@ -64,6 +64,9 @@
 {#        88    #}
 {# STARTING HEIGHT CHECK #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='1'">
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" />
+    </div><br>
 <center>Before proceeding, please make sure that you have read and completed all of the tasks in the manual that came with your printer. </center>
 <h1 style="text-align:left;">Starting Height Check</h1>
 <p style="text-align:left;">
@@ -107,7 +110,7 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 {# Adjust Starting Height #}
 
 <div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser  && setupStep()==='2'">
-<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" />
     </div><br>
 <h1>Adjust Starting Height </h1>
@@ -147,7 +150,7 @@ Current Z Position : <span data-bind="text: $root.ZPos"></span>
             <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
@@ -310,8 +313,6 @@ Once filament is consistently extruding, click to proceed:<br>
 <p>
     In this step you will print a small pattern on the build platform. We'll call this pattern a <em>Zigzag pattern</em> in the future. The Zigzag pattern will help you to verify your starting height. 
 </p>
-
-<em>Zigzag pattern Picture</em>
 
 <p>
     When you click "Print First Zigzag Pattern" the printer will perform the following actions
@@ -780,7 +781,7 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='9'">
 
 In this step, we will physically adjust the height of Extruder 1 in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
-<br><br>
+<br><br>This adjustment process is fairly involved, and can take some time - your patience will be rewarded in the future with better, easier Dual Extruder prints.<br><br>
 
 <strong>Before proceeding, clean the tips of both nozzles to ensure proper height adjustment.</strong><br><br>
 
@@ -788,7 +789,13 @@ In this step, we will physically adjust the height of Extruder 1 in the mounting
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
 
-Once Extruder 1 is below 50°C, loosen the clamping bolt [TODO: PICTURES] securing the Extruder 1 hotend, push it up into the mounting plate as far as possible, and then loosely secure the clamping bolt.<br><br>
+Once Extruder 1 is below 50°C, loosen the clamping bolt securing the Extruder 1 hotend, push it up into the mounting plate as far as possible, and then loosely secure the clamping bolt.<br><br>
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
+</div>
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
+</div><br>
 <center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust(1), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
 
 Make sure that all components (Extruders 0 and 1 and the Print Bed) are cool before touching the printer.<br><br>
@@ -841,8 +848,13 @@ Once the feeler gauge catches between the nozzle and bed, click "Switch Extruder
     <li>Now move the feeler gauge under the tip of the T1 nozzle.
     <li>Loosen the T1 clamping bolt until the T1 hot end slides downward touches the bed.
     <li>Secure the T1 clamping bolt.
-    <li>Tighten the clamping bolt completely - this is a safety hazard if not secured.
-</ol>
+</ol><br>
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
+</div>
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
+</div><br><br>
 <strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
 <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && $root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(3); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br /></button></center>
 </div>
@@ -973,8 +985,6 @@ Once filament is consistently extruding from the tip of the nozzle, click “Nex
 <p>
     In this step you will print a small pattern on the build platform. We'll call this pattern a <em>Zigzag pattern</em> in the future. The Zigzag pattern will help you to verify your starting height. 
 </p>
-
-<em>Zigzag pattern Picture</em>
 
 <p>
     When you click "Print First Zigzag Pattern" the printer will perform the following actions
@@ -1177,7 +1187,11 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <div data-bind="visible: loginState.isUser && setupStep()==='14'">
 
 Now we'll print a special calibration pattern to ensure proper X-axis calibration between both extruders.<br><br>
-Once the pattern has been printed, identify and choose from positions 1 – 5 to identify the area where the points and gaps are most closely aligned. The perfect result is to have these point/gap features perfectly aligned at position number 3 — if positions 1, 2, 4, or 5 are selected, we'll automatically adjust the X offset for you and print the same pattern again.<br><br>
+All patterns will wait until the Print Bed and both Extruders are up to temperature, so may take a few minutes to start the first pattern:<br>
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+Once the pattern has been printed, identify and choose from positions 1 – 5 to identify the area where the points and gaps are most closely aligned. The ideal result is to have these point/gap features perfectly aligned at position number 3 — if positions 1, 2, 4, or 5 are selected, we'll automatically adjust the X offset for you and have you print the same pattern again.<br><br>
 Once you’ve reached your target (alignment at position three), we'll complete the same process two more times, using finer tolerances each time.<br><br>
 Click "Print X-Axis Pattern 1” when you are ready to begin.
 <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 1</button>
@@ -1231,7 +1245,11 @@ Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and 
 <div data-bind="visible: loginState.isUser && setupStep()==='15'">
 
 Now we'll print a special calibration pattern to ensure proper Y-axis calibration between both extruders.<br><br>
-Once the pattern has been printed, identify and choose from positions 1 – 5 to identify the area where the points and gaps are most closely aligned. The perfect result is to have these point/gap features perfectly aligned at position number 3 — if positions 1, 2, 4, or 5 are selected, we'll automatically adjust the X offset for you and print the same pattern again.<br><br>
+All patterns will wait until the Print Bed and both Extruders are up to temperature, so may take a few minutes to start the first pattern:<br>
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+Once the pattern has been printed, identify and choose from positions 1 – 5 to identify the area where the points and gaps are most closely aligned. The ideal result is to have these point/gap features perfectly aligned at position number 3 — if positions 1, 2, 4, or 5 are selected, we'll automatically adjust the Y offset for you and have you print the same pattern again.<br><br>
 Once you’ve reached your target (alignment at position three), we'll complete the same process two more times, using finer tolerances each time.<br><br>
 Click "Print Y-Axis Pattern 1” when you are ready to begin.
 <br><br><center>
@@ -1395,12 +1413,12 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 
 
 <div id="dialog" title="Pattern Confirmation" class="modal hide fade medium">
-    <div><p>
-    Please make sure that your Print Bed is clear before printing this Calibration Pattern.<br><br>
+    <div style="width:95%; height:95%; margin:auto; "><p><br>
+    <center>Please make sure that your Print Bed is clear before printing this Calibration Pattern.</center><br><br>
     <button style="float: left; width: 35%;" data-bind="click: function() { $root.printSawBinDialog.modal('hide'); $root.skipConfirm(false) }">Cancel Pattern</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.printSawBin(); $root.printSawBinDialog.modal('hide') }">Bed Is Clear - Print</button><br><br>
-    <center><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me next time.</center>
+    <div style="float:right"><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me again.</div><br>
 
-    </div>
+    </div><br>
 </div>
 
 
