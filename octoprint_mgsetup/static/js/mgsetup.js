@@ -103,6 +103,7 @@ $(function() {
 		// Settings controls:
 		self.newNetconnectdPassword = ko.observable("");
 		self.unlockAdvanced = ko.observable(false);
+		self.pluginVersion = ko.observable("");
 
 		// Quick Check Process starting/default values:
 		self.ZWiggleHeight = ko.observable(0.20);
@@ -224,6 +225,9 @@ $(function() {
 
 		self.printWiggle = function (wigglePosition, inputWiggleHeight) {
 			self.wiggleHeightAdjust = 0.1;
+			console.log(wigglePosition);
+			console.log(inputWiggleHeight);
+			console.log(self.wiggleHeightAdjust);
 			//console.log(typeof(self.ZWiggleHeight()));
 			if (wigglePosition == undefined){
 				new PNotify({
@@ -243,7 +247,7 @@ $(function() {
 				//just to keep this from being empty...
 			}
 			if (wigglePosition === 1){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				console.log(parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
@@ -255,26 +259,26 @@ $(function() {
 		//              });
 			}
 			if (wigglePosition === 2){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 20, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 20, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				console.log(parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
 			}
 			if (wigglePosition === 3){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 170, wiggleY: 20, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 170, wiggleY: 20, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
 			if (wigglePosition === 4){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 170, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 170, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}                       
 			if (wigglePosition === 5){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
@@ -287,19 +291,26 @@ $(function() {
 				self.WiggleReady(false);
 			}
 			if (wigglePosition === "all"){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
 			} 
 			if (wigglePosition === 10){ //same as position 1 but without homing
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 0};
+				console.log(wigglePosition);
+				console.log(inputWiggleHeight);
+				console.log(self.wiggleHeightAdjust);
+				console.log(self.ZWiggleHeight());
+				console.log(typeof(self.ZWiggleHeight()));
+				console.log(typeof(self.wiggleHeightAdjust));
+				console.log(parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust));
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				console.log(parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
 			if (wigglePosition === 20){ //same as position 2 but without homing
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight() + self.wiggleHeightAdjust), heatup: true, wiggleX: 20, wiggleY: 20, tohome: false, wigglenumber: parseFloat(2), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 20, tohome: false, wigglenumber: parseFloat(2), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
@@ -984,7 +995,7 @@ $(function() {
 			else {
 				self.hasFuture(false);
 			}
-
+			self.resetStep(targetStep);
 		};
 
 		self.stepBack = function (){
@@ -1007,7 +1018,7 @@ $(function() {
 			else {
 				self.hasFuture(false);
 			}
-
+			self.resetStep(self.setupStep());
 		};
 
 		self.stepForward = function (){
@@ -1030,7 +1041,7 @@ $(function() {
 			else {
 				self.hasFuture(false);
 			}
-
+			self.resetStep(self.setupStep());
 		};
 
 		self.checkGoogle = function(testUrl){
@@ -1206,6 +1217,98 @@ $(function() {
 		};
 
 
+
+
+
+		self.resetStep = function(targetStep) {
+			targetStep = parseInt(targetStep);
+			self.ZWiggleHeight(self.stockZWiggleHeight);
+			self.T1ZWiggleHeight(self.stockZWiggleHeight);
+			self.WiggleToRun(2);
+			self.WiggleReady(true);
+
+
+			if (targetStep === 0){
+				console.log("resetStep targetStep = 0");
+			}
+			if (targetStep === 1){
+				console.log("resetStep targetStep = 1");
+				self.stepOnePrepared(false);
+			}
+			if (targetStep === 2){
+				console.log("resetStep targetStep = 2");
+				self.stepTwoPrepared(false);
+				self.stepTwoStartingHeightSaved(false);
+			}
+			if (targetStep === 3){
+				console.log("resetStep targetStep = 3");
+				self.stepThreeStartHeatingClicked(false);
+			}
+			if (targetStep === 4){
+				console.log("resetStep targetStep = 4");
+				self.stepFourShowFineAdjustments(false);
+				self.stepFourFirstWiggleClicked(false);
+			}
+			if (targetStep === 5){
+				console.log("resetStep targetStep = 5");
+				self.stepFiveBeginCornerCheckClicked(false);
+			}
+			if (targetStep === 6){
+				console.log("resetStep targetStep = 6");
+				self.stepSixPrepared(false);
+				self.stepSixWigglePrinted(false);
+			}
+			if (targetStep === 7){
+				console.log("resetStep targetStep = 7");
+			}
+			if (targetStep === 8){
+				console.log("resetStep targetStep = 8");
+				self.stepEightPrepared(false);
+				self.extOneNeedsPhysical(false);
+			}
+			if (targetStep === 9){
+				console.log("targetStep = 9");
+				self.stepNineAtPosition(false);
+				self.stepNineExtrudersSwitched(false);
+			}
+			if (targetStep === 10){
+				console.log("resetStep targetStep = 10");
+				self.stepTenStartHeatingClicked(false);
+				self.stepTenFirstWiggleClicked(false); //vestigial?
+			}
+			if (targetStep === 11){
+				console.log("resetStep targetStep = 11");
+				self.stepElevenFirstWiggleClicked(false);
+				self.stepElevenShowFineAdjustments(false);
+			}
+			if (targetStep === 12){
+				console.log("resetStep targetStep = 12");
+			}
+			if (targetStep === 12){
+				console.log("resetStep targetStep = 13");
+			}
+			if (targetStep === 14){
+				console.log("resetStep targetStep = 14");
+				self.skipConfirm(false);
+				self.calibrationStep(0);
+				self.calibrationAxis("X");
+				self.sawBinPrinted(false);
+			}
+			if (targetStep === 15){
+				console.log("resetStep targetStep = 15");
+				self.skipConfirm(false);
+				self.calibrationStep(0);
+				self.calibrationAxis("Y");
+				self.sawBinPrinted(false);
+			}
+			if (targetStep === 16){
+				console.log("resetStep targetStep = 16");
+			}
+
+		};
+
+
+
 		
 
  // 88888888888  8b           d8  88888888888  888b      88  888888888888   ad88888ba   
@@ -1262,6 +1365,7 @@ $(function() {
 			//self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 			self.registered(self.settings.settings.plugins.mgsetup.registered());
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
+			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
 			window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="makergear.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
 			zESettings = {
 				webWidget: {
@@ -1347,6 +1451,7 @@ $(function() {
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 			self.registered(self.settings.settings.plugins.mgsetup.registered());
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
+			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
 		};
 
 		self.onEventPrintStarted = function(){

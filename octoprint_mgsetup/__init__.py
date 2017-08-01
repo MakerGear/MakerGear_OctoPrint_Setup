@@ -53,6 +53,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.internetConnection = False
 		self.tooloffsetline = ""
 		self.zoffsetline = ""
+		self.pluginVersion = ""
 
 
 
@@ -95,6 +96,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.registered = self._settings.get(["registered"])
 		self.activated = self._settings.get(["activated"])
 		self.nextReminder = self._settings.get(["nextReminder"])
+		self.pluginVersion = self._settings.get(["pluginVersion"])
 #		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 #		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
@@ -220,7 +222,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_settings_defaults(self):
 		self._logger.info("MGSetup get_settings_defaults triggered.")
-		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1)
+		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "master")
 
 	def get_settings_restricted_paths(self):
 		self._logger.info("MGSetup get_settings_restricted_paths triggered.")
@@ -523,27 +525,39 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	
 	def get_update_information(self):
 		self._logger.info("MGSetup get_update_information triggered.")
-		return dict(
-			octoprint_mgsetup=dict(
-
-
-				displayName="Makergear Setup",
-				displayVersion=self._plugin_version,
-				
-				# version check: github repository
-				type="github_release",
-				user="MakerGear",
-				repo="MakerGear_OctoPrint_Setup",
-				current=self._plugin_version,
-				
-				# update method: pip
-				pip="https://github.com/MakerGear/MakerGear_OctoPrint_Setup/archive/{target_version}.zip"
-
-
-
-
+		if (self.pluginVersion == "master"):
+			return dict(
+				octoprint_mgsetup=dict(
+					displayName="Makergear Setup",
+					displayVersion=self._plugin_version,
+					# version check: github repository
+					type="github_release",
+					user="MakerGear",
+					repo="MakerGear_OctoPrint_Setup",
+					current=self._plugin_version,
+					release_branch = "master",
+					# update method: pip
+					pip="https://github.com/MakerGear/MakerGear_OctoPrint_Setup/archive/{target_version}.zip"
+				)
 			)
-		)
+		if (self.pluginVersion == "refactor"):
+			return dict(
+				octoprint_mgsetup=dict(
+					displayName="Makergear Setup",
+					displayVersion=self._plugin_version,
+					
+					# version check: github repository
+					type="github_release",
+					user="MakerGear",
+					repo="MakerGear_OctoPrint_Setup",
+					current=self._plugin_version,
+					release_branch = "refactor",
+					prerelease = True,
+					# update method: pip
+					pip="https://github.com/MakerGear/MakerGear_OctoPrint_Setup/archive/{target_version}.zip"
+				)
+			)
+
 
 
 
