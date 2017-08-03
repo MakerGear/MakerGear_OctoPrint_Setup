@@ -747,7 +747,8 @@ $(function() {
 				if (self.calibrationStep() === 0){
 					var parameters = {};
 					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
+					// OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
+					OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025", context, parameters);
 				}
 				if (self.calibrationStep() === 1){
 					var parameters = {};
@@ -764,7 +765,8 @@ $(function() {
 				if (self.calibrationStep() === 0){
 					var parameters = {};
 					var context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
+					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
+					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025", context, parameters);
 				}
 				if (self.calibrationStep() === 1){
 					var parameters = {};
@@ -1575,8 +1577,10 @@ $(function() {
 			//self.serialNumber(data.serial);
 			if (data.ip != undefined){
 				self.ipAddress(data.ip);
-				self.ipPort(((document.location.host).split(":")[1]).toString());
-				self.hostnameJS(((document.location.host).split(":")[0]).toString());
+				if ((document.location.host) != undefined){
+					self.ipPort(((document.location.host).split(":")[1]).toString());
+					self.hostnameJS(((document.location.host).split(":")[0]).toString());
+				}
 				console.log("IP: "+self.ipAddress().toString()+" ; Port: "+self.ipPort()+" ; JS Hostname: "+self.hostnameJS());
 				//self.printerViewString("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
 				console.log(self.printerViewString());

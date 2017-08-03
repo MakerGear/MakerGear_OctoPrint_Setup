@@ -8,11 +8,6 @@
 {% set heatup = parameters.heatup %}
 {% set tool = parameters.tool %}
 
-{% if tool == 1 %}
-{% set xpos = xpos + 27 %}
-{% set ypurge = ypurge + 10 %}
-{% endif %}
-
 G90
 M83
 {% if heatup == true %}

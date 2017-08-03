@@ -1293,18 +1293,22 @@ Click "Print Y-Axis Pattern 1” when you are ready to begin.
 <br>
 <center><span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span></center><br>
 <div>
-<div class="fileupload-new thumbnail" style="width: 75%; float: left ; " data-bind="visible: $root.isDual">
+
+<div style="width: 100%; margin:auto;vertical-align: middle; " data-bind="visible: $root.isDual">
+<div style="display: inline-block; width:75%">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() < 1" />
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() > 0" />
-        <div style="float:right;">
-        <button style="width:20%;vertical-align: middle;
-  display: block;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button>
+        </div>
+<div style="display: inline-block; width:20%; vertical-align: middle; ">
+<button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button>
 </div>
-</div><br>
+</div>
+</div><br><br>
+
 {# <button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
 <br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button>
 <br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button>
@@ -1320,9 +1324,6 @@ Click "Print Y-Axis Pattern 1” when you are ready to begin.
 
 
 
-
-
-</div>
 
 
 
