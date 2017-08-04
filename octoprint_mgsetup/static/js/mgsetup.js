@@ -333,6 +333,12 @@ $(function() {
 				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 			}
+			if (wigglePosition === "simple"){
+				var context = {};
+				//var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
+				var parameters = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("cross", context, parameters);
+			}
 
 		};
 
@@ -585,7 +591,7 @@ $(function() {
 				//});
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("3");
-				self.goTo("14");
+				self.goTo("12");
 			}
 
 			OctoPrint.control.sendGcode("M114");
@@ -655,6 +661,8 @@ $(function() {
 		self.stepTenFirstWiggleClicked = ko.observable(false);
 		self.stepElevenFirstWiggleClicked = ko.observable(false);
 		self.stepElevenShowFineAdjustments = ko.observable(false);
+		self.stepFourteenToHome = ko.observable(true);
+		self.stepFifteeenToHome = ko.observable(true);
 
 		self.dualSetupCheckLevel = function(dualCheckLevelStep){
 
@@ -745,10 +753,15 @@ $(function() {
 			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
-					var parameters = {};
+					if (self.stepFourteenToHome()){
+						var parameters = {tohome: true};
+					} else {
+						var parameters = {};
+					}
 					var context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
 					OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025", context, parameters);
+					self.stepFourteenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
 					var parameters = {};
@@ -763,10 +776,15 @@ $(function() {
 			}
 			if (self.calibrationAxis()=="Y"){
 				if (self.calibrationStep() === 0){
-					var parameters = {};
+					if (self.stepFifteeenToHome()){
+						var parameters = {tohome: true};
+					} else {
+						var parameters = {};
+					}
 					var context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025", context, parameters);
+					self.stepFifteeenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
 					var parameters = {};
