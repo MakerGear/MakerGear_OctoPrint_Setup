@@ -338,6 +338,7 @@ $(function() {
 				//var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
 				var parameters = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("cross", context, parameters);
+				self.stepTwelveSimpleClicked(true);
 			}
 
 		};
@@ -661,6 +662,7 @@ $(function() {
 		self.stepTenFirstWiggleClicked = ko.observable(false);
 		self.stepElevenFirstWiggleClicked = ko.observable(false);
 		self.stepElevenShowFineAdjustments = ko.observable(false);
+		self.stepTwelveSimpleClicked = ko.observable(false);
 		self.stepFourteenToHome = ko.observable(true);
 		self.stepFifteeenToHome = ko.observable(true);
 

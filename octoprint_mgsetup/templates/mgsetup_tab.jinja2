@@ -75,7 +75,12 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 <center>
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepOnePrepared(), click: function() { $root.setupCheckLevel(0); $root.stepOnePrepared(1) }">{{ _('Prepare') }}</button><br><br>
 <p style="">
+<div data-bind="visible: $root.isDual()">
+Once the printer has stopped moving, use your hand to slide the extruder towards the build surface. If the T0 nozzle touches the glass, do not force the T0 extruder any further.
+</div>
+<div data-bind="visible: !$root.isDual()">
     Once the printer has stopped moving, use your hand to slide the extruder towards the build surface. If the nozzle hits the glass, do not force the extruder any further. 
+</div>
 </p>
 <p >
     <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current extruder starting height? Click the photos to zoom in.</span>
@@ -568,7 +573,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 <h1 style="text-align:left;"> Heated Build Platform Leveling</h1>
 
 
-Here you will be able to print Zigzag patterns in each corner and then adjust the bed leveling screw in that corner until the Zigzag pattern is acceptable.  To begin, please click "Prepare" to Home the printer:
+Here you will be able to print Zigzag patterns in each corner and then adjust the bed leveling screw in that corner until the Zigzag pattern is acceptable. To begin, please click "Prepare" to Home the printer:
 <center><button class="btnstay" data-bind="enable: !$root.stepSixPrepared(), click: function() { $root.setupSetStartingHeight('0') ; $root.stepSixPrepared(true) }">Prepare</button></center><br>
 
 
@@ -760,7 +765,7 @@ Now we will check your right extruder (T1) to ensure that your factory calibrati
 <center>
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepEightPrepared(), click: function() { $root.dualSetupCheckLevel(0); $root.stepEightPrepared(true) }">{{ _('Prepare') }}</button><br><br>
 <p style="">
-    Once the printer has stopped moving, use your hand to slide both extruders towards the build surface. If the nozzle of Extruder 1 hits the glass, do not force the extruder any further. 
+    Once the printer has stopped moving, use your hand to slide both extruders towards the build surface. If the T1 nozzle touches the glass, do not move the T1 extruder any further. 
 </p>
 <p >
     <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current Extruder 1 starting height? Click the photos to zoom in.</span>
@@ -803,15 +808,15 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
     </div><br>
 
 In this step, we will physically adjust the height of Extruder 1 in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
-<br><br>This adjustment process is fairly involved, and can take some time - your patience will be rewarded in the future with better, easier Dual Extruder prints.<br><br>
+<br><br>This adjustment process involves mechanical calibration between both extruders, and can take some time. However, following the instructions carefully will reward you with high quality dual-material prints.<br><br>
 
-<strong>Before proceeding, clean the tips of both nozzles to ensure proper height adjustment.</strong><br><br>
+<strong>Before proceeding, remove any material from the tips of both nozzles to ensure accurate height adjustment.</strong><br><br>
 
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
 
-Once Extruder 1 is below 50°C, loosen the clamping bolt securing the Extruder 1 hotend, push it up into the mounting plate as far as possible, and then loosely secure the clamping bolt.<br><br>
+Wait for the T1 extruder to cool below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt.<br><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
 </div>
@@ -820,20 +825,21 @@ Once Extruder 1 is below 50°C, loosen the clamping bolt securing the Extruder 1
 </div><br>
 <center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust(1), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
 
-Make sure that all components (Extruders 0 and 1 and the Print Bed) are cool before touching the printer.<br><br>
+Ensure that all components (Extruders 0 and 1 and the Print Bed) are cool before touching any of the printer’s components.
+<br><br>
 
-During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (Extruder 0) and the build plate.
+During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (T0) and the build plate. After reaching the proper bed height, you’ll return to the right extruder (T1) in order to ensure that its starting height is properly aligned.
 
 <p>
-    First, press the "1mm Up" button as you are watching the bed. You will see the bed move 1mm towards the nozzle. Slowly repeat this process until the build plate is within 1mm of the nozzle to prevent the build plate from colliding with the T0 nozzle.
+    First, press the "1mm Up" button as you are watching the bed. You will see the bed move 1mm towards the nozzle. Slowly repeat this process until the build plate is within 1mm of the nozzle to prevent the build plate from colliding with the nozzle.
 </p>
 
 <p>
-   Now you can put the blue feeler gauge between the T0 nozzle and the build plate. Use the "0.1 mm up button" to bring the build plate even closer to the nozzle. As soon as sense feel the feeler gauge is stuck between the nozzle and build plate, use the ".1mm down button" to move the bed back down until the feeler gauge moves freely.
+    Now place the blue feeler gauge between the nozzle and the build plate., then click the "0.1 mm up” button to bring the build plate even closer to the T0 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the ".1mm down button" once to move the bed down until the feeler gauge moves freely.
 </p>
 
 <p>
-    Next, use the "0.01 mm up” button to move the bed up until you until you start to feel resistance while sliding the feeler gauge between the build plate and nozzle.
+    Next, click the "0.01 mm up” button to move the bed up until you until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle.
 </p>
 <h4>Bed Height Buttons</h4>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
@@ -1176,22 +1182,24 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 <div data-bind="visible: loginState.isUser && setupStep()==='12'">
 Here we'll print a simple pattern to determine if your X and Y offsets are close enough to print.  If you wish to skip this step and calibrate the offsets manually, click "Skip Simple Test".  Otherwise, click "Print Simple Test" to begin.
 
-
+<br><br>
+<center>
 <button class="btngoBig" data-bind="click: function() { $root.goTo('14') }">Skip Simple Test</button><br><br>
-<button class="btnstay" data-bind="click: function() { $root.printWiggle('simple') }">Print Simple Test</button><br><br>
-
+<button class="btnstay" data-bind="click: function() { $root.printWiggle('simple') }, enable: !$root.stepTwelveSimpleClicked()">Print Simple Test</button><br><br>
+</center>
 
 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /><br><br><br>
 
 
 
-The two boxes that print should not intersect anywhere except at the "tail" in the bottom left corner.  If they do not intersect, your X and Y offsets are close enough to begin Dual printing now:
+The two boxes that print should not intersect anywhere except at the "tail" in the bottom left corner.  If they do not intersect, your X and Y offsets are close enough to begin Dual printing now:<br><br>
 
+<center>
+<button class="btngoBig" data-bind="click: function() { $root.goTo('16') }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center><br><br><br>
 
-<button class="btngoBig" data-bind="click: function() { $root.goTo('16') }">Begin Dual Printing</button><br><br>
-
-If the two boxes intersect, you'll need to adjust your X and Y offsets:
-<button class="btngoBig" data-bind="click: function() { $root.goTo('14') }">Adjust X and Y Offsets</button>
+If the two boxes intersect, you'll need to adjust your X and Y offsets:<br><br>
+<center>
+<button class="btngoBig" data-bind="click: function() { $root.goTo('14') }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
 
 
 
