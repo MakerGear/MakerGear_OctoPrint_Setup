@@ -720,9 +720,28 @@ $(function() {
 				]);
 			}
 			if (dualRightNozzleAdjustStep === 3){
-				// OctoPrint.control.sendGcode(["T0"
-				// ]);
+				OctoPrint.control.sendGcode(["G28 Z",
+					"M84"
+				]);
 				self.goTo("10");
+			}
+			if (dualRightNozzleAdjustStep === 'simple'){
+				OctoPrint.control.sendGcode(["M218 T1 Z0",
+					"M500",
+					"M605 S0",
+					"T0",
+					"G28 X",
+					"T1",
+					"G28 X",
+					"M605 S1",
+					"G28",
+					"T1",
+					"G1 F2000 X100 Y125 Z50 E0.001",
+					"G1 F1000 Z0"
+				]);
+				OctoPrint.printer.extrude(10);
+				self.cooldown();
+
 			}
 
 
@@ -741,17 +760,20 @@ $(function() {
 			}
 		},this);
 		self.sawBinPrinted = ko.observable(false);
+		self.chosenSawBin = ko.observable(0);
 
-		self.printSawBinConfirm = function(){
-			if (self.skipConfirm() == false){
+		self.printSawBinConfirm = function(chosenBin){
+			if (chosenBin !== undefined){
+				self.chosenSawBin(chosenBin);
+			}
+			if (self.skipConfirm() == false && self.calibrationStep() !== 2){
 				self.printSawBinDialog.modal("show");
 			} else {
-				self.printSawBin();
+				self.pickSawBin();
 			}
 		};
 
 		self.printSawBin = function(){
-
 			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
@@ -804,13 +826,20 @@ $(function() {
 		};
 
 		self.pickSawBin = function(chosenMatch){
+			if (chosenMatch === undefined){
+				chosenMatch = self.chosenSawBin();
+			}
 			if (self.calibrationAxis()=="X"){
+				if (chosenMatch == 0){
+					self.printSawBin();
+				}
 				if (chosenMatch == 1){
 					console.log("PickSawBin 1, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 				if (chosenMatch == 2){
 					console.log("PickSawBin 2, X.");
@@ -818,6 +847,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 				if (chosenMatch == 3){
 					console.log("PickSawBin 3, X.");
@@ -829,7 +859,10 @@ $(function() {
 					if (self.calibrationStep() === 3){
 						self.calibrationAxis("Y");
 						self.calibrationStep(0);
+						self.sawBinPrinted(false);
 						self.goTo("15");
+					} else{
+						self.printSawBin();
 					}
 				}
 				if (chosenMatch == 4){
@@ -838,6 +871,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 				if (chosenMatch == 5){
 					console.log("PickSawBin 5, X.");
@@ -845,14 +879,19 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 			} else if (self.calibrationAxis()=="Y"){
+				if (chosenMatch == 0){
+					self.printSawBin();
+				}
 				if (chosenMatch == 1){
 					console.log("PickSawBin 1, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 				if (chosenMatch == 2){
 					console.log("PickSawBin 2, Y.");
@@ -860,6 +899,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 				if (chosenMatch == 3){
 					console.log("PickSawBin 3, Y.");
@@ -870,7 +910,12 @@ $(function() {
 					self.calibrationStep(self.calibrationStep()+1);
 					if (self.calibrationStep() === 3){
 						self.calibrationStep(0);
+						self.sawBinPrinted(false);
 						self.goTo("16");
+						self.cooldown();
+						OctoPrint.control.sendGcode(["M84"]);
+					} else{
+						self.printSawBin();
 					}
 				}
 				if (chosenMatch == 4){
@@ -879,6 +924,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 				if (chosenMatch == 5){
 					console.log("PickSawBin 5, Y.");
@@ -886,9 +932,10 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
+					self.printSawBin();
 				}
 			}
-			self.sawBinPrinted(false);
+			self.chosenSawBin(0);
 		};
 
 
@@ -1287,11 +1334,13 @@ $(function() {
 				console.log("resetStep targetStep = 8");
 				self.stepEightPrepared(false);
 				self.extOneNeedsPhysical(false);
+				self.cooldown();
 			}
 			if (targetStep === 9){
 				console.log("targetStep = 9");
 				self.stepNineAtPosition(false);
 				self.stepNineExtrudersSwitched(false);
+				self.cooldown();
 			}
 			if (targetStep === 10){
 				console.log("resetStep targetStep = 10");

@@ -54,6 +54,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.tooloffsetline = ""
 		self.zoffsetline = ""
 		self.pluginVersion = ""
+		self.ip = ""
 
 
 

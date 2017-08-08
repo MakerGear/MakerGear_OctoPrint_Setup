@@ -47,9 +47,9 @@ This will enable the SSH service on the printer host computer.<br><br>
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button><br>
 This will disable the SSH service on the printer host computer.<br><br>
-
+{# 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('counterTest'), $root.showCommandResponse() }">COUNTER TEST</button><br>
-<br><br>
+<br><br> #}
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Forget Wifi</button><br>
 This will disconnect the printer from your current network and enable the default printer Access Point.<br><br>

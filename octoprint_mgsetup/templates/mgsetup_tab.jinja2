@@ -47,7 +47,7 @@
         You are connected to the Internet - please proceed to Quick Check 
     </p></div>
 <hr />
-                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.goTo('1'); window.scroll(0,0) }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
+                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.goTo('1'); window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
 <hr />
 <br />
                 <center> <button style="width:150px;height:100px;" class="btngo"  onClick="window.open('https://makergear.zendesk.com/hc/en-us/categories/115000563646-M3','_blank','menubar=yes,resizable=yes,height=520,width=740'); return false;" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button></center>
@@ -76,14 +76,14 @@ First you need to ensure that your factory settings are correct. Click <strong>P
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepOnePrepared(), click: function() { $root.setupCheckLevel(0); $root.stepOnePrepared(1) }">{{ _('Prepare') }}</button><br><br>
 <p style="">
 <div data-bind="visible: $root.isDual()">
-Once the printer has stopped moving, use your hand to slide the extruder towards the build surface. If the T0 nozzle touches the glass, do not force the T0 extruder any further.
+Once the printer has stopped moving, use your hand to slide the Extruder towards the build surface. If the T0 nozzle touches the glass, do not force the T0 extruder any further.
 </div>
 <div data-bind="visible: !$root.isDual()">
-    Once the printer has stopped moving, use your hand to slide the extruder towards the build surface. If the nozzle hits the glass, do not force the extruder any further. 
+    Once the printer has stopped moving, use your hand to slide the Left Extruder (T0) towards the build surface. If the nozzle hits the glass, do not force the extruder any further. 
 </div>
 </p>
 <p >
-    <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current extruder starting height? Click the photos to zoom in.</span>
+    <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current Extruder starting height? Click the photos to zoom in.</span>
 </p>
 </center>
 <table>
@@ -94,11 +94,11 @@ Once the printer has stopped moving, use your hand to slide the extruder towards
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('3'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5mm or less)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('3'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
  <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5mm)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
 </table>
@@ -123,18 +123,23 @@ Once the printer has stopped moving, use your hand to slide the extruder towards
 Here we will adjust the initial starting height of the printer.  Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
 
 <center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight(0) ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
-During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass.
+During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
 
 <p>
-    First, press the "1mm Up" button as you are watching the bed. You will see the bed move 1mm towards the nozzle. You will need to slowly repeat this process until the glass is within 1mm of the nozzle. Be careful not to hit the nozzle with the build platform!
+    First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle to prevent the build plate from colliding with the nozzle.
 </p>
 
 <p>
-    Now you can put the blue feeler gauge between the nozzle and the glass. Use the ".1mm up button" to bring the glass even close to the nozzle. As soon as you feel the feeler gauge get stuck, use the ".1mm down button" to move the bed back down (the feeler gauge should move freely)
+<div data-bind="visible: !$root.isDual()">
+    Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+</div>
+<div data-bind="visible: $root.isDual()">
+    Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the T0 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+</div>
 </p>
 
 <p>
-    Next, use the ".01 up button" to move the bed up until you until you start to feel resistance while sliding the feeler gauge between the glass and nozzle. 
+    Next, click the "0.01 mm Up” button to move the bed up until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle.”
 </p>
 
 <div class="fileupload-new thumbnail" style="width: 95%; ">
@@ -150,30 +155,30 @@ Current Z Position : <span data-bind="text: $root.ZPos"></span>
 
 <h4>Bed Height Buttons</h4>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 1mm</h1>
+        <h1>Z 1 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
-        </div>
-    </div>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.1mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1 mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.01mm</h1>
+        <h1>Z 0.1 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1 mm Down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 0.01 mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01 mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01 mm Down
         </div>
     </div>
 
@@ -268,15 +273,21 @@ Feed the tip of your filament up through the black filament guide and the clear 
 </video>
 <br /><br />
 
-Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed you should feel it being pulled into the extruder. 
+Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
 
-<p style="text-align:center; font-size:25px;line-height:25px;">
-    <!--Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>-->
-    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> /  Target Temperature: <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-</p>
+<div style="margin:auto; width: 50%">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 
 <br>
-<center><button title="Extrude 75mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament(); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
+<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament(); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
 <br>
 Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
 
@@ -322,25 +333,25 @@ Once filament is consistently extruding, click to proceed:<br>
 </p>
 
 <p>
-    In this step you will print a small pattern on the build platform. We'll call this pattern a <em>Zigzag pattern</em> in the future. The Zigzag pattern will help you to verify your starting height. 
+    During this step, you will print a small Zigzag pattern that will help you to gauge, adjust, and perfect your starting height (also known as "Z Offset"). 
 </p>
 
 <p>
-    When you click "Print Zigzag Pattern" the printer will perform the following actions
+    Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
 </p>
 
 <ol>
-    <li>Wait for the Extruder and build platform to reach their target temperatures. (The printer will not move while it waits. You can see the actual temperatures in red and the target temperatures in black below the "Print Zigzag Pattern" button)
-    <li>Move to its home position
-    <li>Move to its printing position
-    <li>Print a small amount of material off the side of the bed
-    <li>Print a Zigzag pattern in the middle of the bed
-    <li>Move to its final position
+    <li>Heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.
+    <li>Move components to their home positions.
+    <li>Move extruder to its purge position.
+    <li>Purge and wipe the extruder on the lower right-hand corner of the build plate.
+    <li>Print a Zigzag pattern on the center of the build plate.
+    <li>Move components to their final position.
 </ol>
 
 
 <p>
-    When you are ready, click "Print Zigzag Pattern"
+    When you are ready to begin this process, click "Print Zigzag Pattern":
 </p>
 <br>
 
@@ -348,10 +359,16 @@ Once filament is consistently extruding, click to proceed:<br>
 
 
 
-<p style="text-align:center; font-size:25px;line-height:25px;">
+<div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-</p>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 
 Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  How the Zigzag pattern comes off the bed tells us if the bed is level at this position:<br><br>
 
@@ -448,9 +465,9 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 <div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
             <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.04); $root.enableLockedButton(10000) }">Adjust by 0.04mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.02); $root.enableLockedButton(10000) }">Adjust by 0.02mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.01); $root.enableLockedButton(10000) }">Adjust by 0.01mm and Print</button></center>            
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
 
         </td>
 
@@ -458,9 +475,9 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
             <div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
             <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.04); $root.enableLockedButton(10000) }">Adjust by 0.04mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.02); $root.enableLockedButton(10000) }">Adjust by 0.02mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.01); $root.enableLockedButton(10000) }">Adjust by 0.01mm and Print</button></center>  
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle(10,0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
             <!--Too Close-->
         </td>
     <tr>
@@ -496,10 +513,16 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepFiveBeginCornerCheckClicked(), click: function() { printWiggle('all'); $root.stepFiveBeginCornerCheckClicked(true) }">{{ _('Begin Corner Check') }}</button>
 <br>
 <br />
-<p style="text-align:center; font-size:25px;line-height:25px;">
+<div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-</p>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 <p>
     After all four Zigzag patterns have printed, remove each one.
 </p>
@@ -578,10 +601,16 @@ Here you will be able to print Zigzag patterns in each corner and then adjust th
 
 
 
-<p style="text-align:center; font-size:25px;line-height:25px;">
+<div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-</p>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 
 
 Once the printer has stopped moving, use the four Zigzag pattern Position buttons to print in each corner, starting with the corner that was most different from the others in the Four Zigzag pattern print.  After each print, inspect the Zigzag pattern and adjust the bed accordingly:<br><br>
@@ -716,9 +745,9 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
         <em>Videos / Links to using OctoPrint</em>
     </p>
     -->
-    <h1 style="text-align:left;">Configuration for Further Use</h1>
+{#     <h1 style="text-align:left;">Configuration for Further Use</h1>
 
-    Now that your initial setup is complete, you can change the first tab that is shown when you connect to the Temperature tab for immediate access.  This can be changed in the Settings: <a href="#settings_plugin_mgsetup" data-bind="click: function() { $root.showSettings('settings_plugin_mgsetup'); }">click here to go to the MakerGear Setup settings "tab"</a>.<br><br><br>
+    Now that your initial setup is complete, you can change the first tab that is shown when you connect to the Temperature tab for immediate access.  This can be changed in the Settings: <a href="#settings_plugin_mgsetup" data-bind="click: function() { $root.showSettings('settings_plugin_mgsetup'); }">click here to go to the MakerGear Setup settings "tab"</a>.<br><br><br> #}
 
     <div data-bind="visible: $root.isDual">
     <h1 style="text-align:left;">M3 Independent Dual (M3-ID) Setup</h1>
@@ -780,11 +809,11 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('10'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5mm or less)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('10'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
  <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
-        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5mm)') }}</button>
+        <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
 </table>
@@ -811,10 +840,16 @@ In this step, we will physically adjust the height of Extruder 1 in the mounting
 <br><br>This adjustment process involves mechanical calibration between both extruders, and can take some time. However, following the instructions carefully will reward you with high quality dual-material prints.<br><br>
 
 <strong>Before proceeding, remove any material from the tips of both nozzles to ensure accurate height adjustment.</strong><br><br>
-
+<div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 
 Wait for the T1 extruder to cool below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt.<br><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
@@ -823,55 +858,55 @@ Wait for the T1 extruder to cool below 50°C, then loosen the clamping bolt that
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
 </div><br>
-<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust(1), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
 
 Ensure that all components (Extruders 0 and 1 and the Print Bed) are cool before touching any of the printer’s components.
 <br><br>
 
-During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (T0) and the build plate. After reaching the proper bed height, you’ll return to the right extruder (T1) in order to ensure that its starting height is properly aligned.
+{# During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (T0) and the build plate. After reaching the proper bed height, you’ll return to the right extruder (T1) in order to ensure that its starting height is properly aligned.
 
 <p>
-    First, press the "1mm Up" button as you are watching the bed. You will see the bed move 1mm towards the nozzle. Slowly repeat this process until the build plate is within 1mm of the nozzle to prevent the build plate from colliding with the nozzle.
+    First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle to prevent the build plate from colliding with the nozzle.
 </p>
 
 <p>
-    Now place the blue feeler gauge between the nozzle and the build plate., then click the "0.1 mm up” button to bring the build plate even closer to the T0 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the ".1mm down button" once to move the bed down until the feeler gauge moves freely.
+    Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the T1 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
 </p>
 
 <p>
-    Next, click the "0.01 mm up” button to move the bed up until you until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle.
+    Next, click the "0.01 mm Up” button to move the bed up until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle.
 </p>
 <h4>Bed Height Buttons</h4>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 1mm</h1>
+        <h1>Z 1 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1 && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button>1mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1 && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button>1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1mm down
-        </div>
-    </div>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.1mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1 mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.01mm</h1>
+        <h1>Z 0.1 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1 mm Down
+        </div>
+    </div>
+    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+        <h1>Z 0.01 mm</h1>
+        <div>
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01 mm Up
+        </div>
+        <div>
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01 mm Down
         </div>
     </div>
 <br><br>
 Once the feeler gauge catches between the nozzle and bed, click "Switch Extruders" to start adjusting the Extruder 1 height:
-<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(2), $root.stepNineExtrudersSwitched(true) }">Switch Extruders<br /></button></center><br><br>
+<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(2), $root.stepNineExtrudersSwitched(true) }">Switch Extruders<br /></button></center> #}<br><br>
 <ol>
     <li>Now move the feeler gauge under the tip of the T1 nozzle.
     <li>Loosen the T1 clamping bolt until the T1 hot end slides downward touches the bed.
@@ -884,7 +919,7 @@ Once the feeler gauge catches between the nozzle and bed, click "Switch Extruder
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
 </div><br><br>
 <strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && $root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(3); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br /></button></center>
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust(3); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br /></button></center>
 </div>
 
 {#      88     ,a8888a,     
@@ -965,15 +1000,21 @@ Next insert the filament into the hole on top of the right extruder, located bet
 </video>
 <br /><br />
 
-Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees, click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get it started. Once the filament has started to feed you should feel it being pulled into the extruder. 
+Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees, click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get it started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
 
-<p style="text-align:center; font-size:25px;line-height:25px;">
-    <!--Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>-->
-    Extruder Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> /  Target Temperature: <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
-</p>
+<div style="margin:auto; width: 50%">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 
 <br>
-<center><button title="Extrude 75mm of Filament" class="btnstay" data-bind="enable: $root.stepTenStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Feed Filament</button></center>
+<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepTenStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Feed Filament</button></center>
 <br>
 Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
 
@@ -1043,10 +1084,16 @@ Once filament is consistently extruding from the tip of the nozzle, click “Nex
 
 
 
-<p style="text-align:center; font-size:25px;line-height:25px;">
+<div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
-</p>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 
 Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  How the Zigzag pattern comes off the bed tells us if the bed is level at this position:<br><br>
 
@@ -1143,9 +1190,9 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 <div data-bind="visible: $root.stepElevenShowFineAdjustments()==false"><br>
             <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
-            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',-0.04); $root.enableLockedButton(10000) }">Adjust by 0.04mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',-0.02); $root.enableLockedButton(10000) }">Adjust by 0.02mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',-0.01); $root.enableLockedButton(10000) }">Adjust by 0.01mm and Print</button></center>            
+            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',-0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',-0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',-0.01); $root.enableLockedButton(10000) }">Adjust by 0.01 mm and Print</button></center>            
 
         </td>
 
@@ -1153,9 +1200,9 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
             <div data-bind="visible: $root.stepElevenShowFineAdjustments()==false"><br>
             <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
-            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',0.04); $root.enableLockedButton(10000) }">Adjust by 0.04mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',0.02); $root.enableLockedButton(10000) }">Adjust by 0.02mm and Print</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',0.01); $root.enableLockedButton(10000) }">Adjust by 0.01mm and Print</button></center>  
+            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggle('T1-2',0.01); $root.enableLockedButton(10000) }">Adjust by 0.01 mm and Print</button></center>  
             <!--Too Close-->
         </td>
     <tr>
@@ -1183,11 +1230,20 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 Here we'll print a simple pattern to determine if your X and Y offsets are close enough to print.  If you wish to skip this step and calibrate the offsets manually, click "Skip Simple Test".  Otherwise, click "Print Simple Test" to begin.
 
 <br><br>
-<center>
-<button class="btngoBig" data-bind="click: function() { $root.goTo('14') }">Skip Simple Test</button><br><br>
-<button class="btnstay" data-bind="click: function() { $root.printWiggle('simple') }, enable: !$root.stepTwelveSimpleClicked()">Print Simple Test</button><br><br>
+<center><button class="btnstay" data-bind="click: function() { $root.printWiggle('simple') }, enable: !$root.stepTwelveSimpleClicked()">Print Simple Test</button>
+<br><br>
+<button class="btngo" data-bind="click: function() { $root.goTo('14') }">Skip Simple Test</button><br><br>
 </center>
-
+<br><br><div style="margin:auto; width: 50%">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div><br><br>
 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /><br><br><br>
 
 
@@ -1241,17 +1297,26 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 Now we'll print a special calibration pattern to ensure proper X-axis calibration between both extruders.<br><br>
 All patterns will wait until the Print Bed and both Extruders are up to temperature, so may take a few minutes to start the first pattern:<br>
+<div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 Once the pattern has been printed, identify and choose from positions 1 – 5 to identify the area where the points and gaps are most closely aligned. The ideal result is to have these point/gap features perfectly aligned at position number 3 — if positions 1, 2, 4, or 5 are selected, we'll automatically adjust the X offset for you and have you print the same pattern again.<br><br>
 Once you’ve reached your target (alignment at position 3), we'll complete the same process two more times, using finer tolerances each time.<br><br>
-Click "Print X-Axis Pattern 1” when you are ready to begin.
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 1</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 2</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 3</button></center><br>
+Click "Print First Pattern” when you are ready to begin.
+<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print First Pattern</button>
+{# <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 2</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 3</button> #}</center><br>
 
-
+<div data-bind="visible: $root.calibrationStep() === 0">You're on Pattern 1, Coarse Adjustment.</div>
+<div data-bind="visible: $root.calibrationStep() === 1">You're on Pattern 2, Medium Adjustment.</div>
+<div data-bind="visible: $root.calibrationStep() === 2">You're on Pattern 3, Fine Adjustment.</div>
 <center>
 <div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
         {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14' && $root.calibrationStep() < 1" /> #}
@@ -1262,7 +1327,7 @@ Click "Print X-Axis Pattern 1” when you are ready to begin.
 {# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span> #}
 <span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > -1"></span>
 </center><br><br>
-<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button></center>
+<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button></center>
 
 
 
@@ -1304,20 +1369,30 @@ Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and 
 
 Now we'll print a special calibration pattern to ensure proper Y-axis calibration between both extruders.<br><br>
 All patterns will wait until the Print Bed and both Extruders are up to temperature, so may take a few minutes to start the first pattern:<br>
+<div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    </div>
+</div>
 Once the pattern has been printed, identify and choose from positions 1 – 5 to identify the area where the points and gaps are most closely aligned. The ideal result is to have these point/gap features perfectly aligned at position number 3 — if positions 1, 2, 4, or 5 are selected, we'll automatically adjust the Y offset for you and have you print the same pattern again.<br><br>
 Once you’ve reached your target (alignment at position 3), we'll complete the same process two more times, using finer tolerances each time.<br><br>
-Click "Print Y-Axis Pattern 1” when you are ready to begin.
+Click "Print First Pattern” when you are ready to begin.
 <br><br><center>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('Y'),  $root.printSawBinConfirm() }">Print Y-Axis Pattern 1</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 2</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 3</button></center><br>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('Y'),  $root.printSawBinConfirm() }">Print First Pattern</button>
+{# <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 2</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 3</button> #}</center><br>
 <br>
 <center>
 {# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span> #}
 <span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > -1"></span></center><br>
+<div data-bind="visible: $root.calibrationStep() === 0">You're on Pattern 1, Coarse Adjustment.</div>
+<div data-bind="visible: $root.calibrationStep() === 1">You're on Pattern 2, Medium Adjustment.</div>
+<div data-bind="visible: $root.calibrationStep() === 2">You're on Pattern 3, Fine Adjustment.</div>
 <div>
 
 <div style="width: 100%; margin:auto;vertical-align: middle; " data-bind="visible: $root.isDual">
@@ -1326,11 +1401,11 @@ Click "Print Y-Axis Pattern 1” when you are ready to begin.
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() > -1" />
         </div>
 <div style="display: inline-block; width:20%; vertical-align: middle; ">
-<button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
-<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button>
-<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button>
-<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button>
-<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button>
+<button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button>
+<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button>
 </div>
 </div>
 </div><br><br>
@@ -1493,9 +1568,13 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 
 <div id="dialog" title="Pattern Confirmation" class="modal hide fade medium">
     <div style="width:95%; height:95%; margin:auto; "><p><br>
-    <center>Please make sure that your Print Bed is clear before printing this Calibration Pattern.</center><br><br>
-    <button style="float: left; width: 35%;" data-bind="click: function() { $root.printSawBinDialog.modal('hide'); $root.skipConfirm(false) }">Cancel Pattern</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.printSawBin(); $root.printSawBinDialog.modal('hide') }">Bed Is Clear - Print</button><br><br>
-    <div style="float:right"><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me again.</div><br>
+    <center>Please make sure that your Print Bed is clear before printing this Calibration Pattern.<br>
+<div data-bind="visible: $root.calibrationStep() === 0">This will print Pattern 1, Coarse Adjustment.</div>
+<div data-bind="visible: $root.calibrationStep() === 1">This will print Pattern 2, Medium Adjustment.</div>
+<div data-bind="visible: $root.calibrationStep() === 2">This will print Pattern 3, Fine Adjustment.</div>
+    </center><br><br>
+    <button style="float: left; width: 35%;" data-bind="click: function() { $root.printSawBinDialog.modal('hide'); $root.skipConfirm(false) }">Cancel Pattern</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.pickSawBin(); $root.printSawBinDialog.modal('hide') }">Bed Is Clear - Print</button><br><br>
+    {# <div style="float:right"><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me again.</div><br> #}
 
     </div><br>
 </div>
