@@ -67,10 +67,10 @@
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" />
     </div><br>
-<center>Before proceeding, please make sure that you have read and completed all of the tasks in the manual that came with your printer. </center>
+
 <h1 style="text-align:left;">Starting Height Check</h1>
 <p style="text-align:left;">
-First you need to ensure that your factory settings are correct. Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
+During the next few steps, you will verify the printer's starting height. First, we'll use a simple visual test to perform a saftey check. Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
 </p>
 <center>
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepOnePrepared(), click: function() { $root.setupCheckLevel(0); $root.stepOnePrepared(1) }">{{ _('Prepare') }}</button><br><br>
@@ -104,6 +104,9 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
 </table>
 </div>
 
+
+
+
 {#     ad888888b,    #}
 {#    d8"     "88    #}
 {#            a8P    #}
@@ -120,13 +123,13 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
     </div><br>
 <h1>Adjust Starting Height </h1>
 
-Here we will adjust the initial starting height of the printer.  Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
+Here we will adjust the rough starting height of the printer (in a future step we will fine-tune your starting height).  Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
 
 <center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight(0) ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
 During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
-
+ When this step is completed you should be able to slide the blue feeler gauge between the nozzle and glass with very little resistance
 <p>
-    First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle to prevent the build plate from colliding with the nozzle.
+    First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle. NOTE: In order to prevent the nozzle from colliding with the build plate, you should not use the "1 mm Up" button when the nozzle is within 1 mm of the build plate. The "1 mm Up" button may become disabled to prevent collision - in this case use the "0.1 mm Up" button to continue. 
 </p>
 
 <p>
@@ -134,13 +137,14 @@ During this step, you'll use the <strong>Bed Height Buttons</strong> below to ad
     Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
 </div>
 <div data-bind="visible: $root.isDual()">
-    Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the T0 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+    Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the T0 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button  to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
 </div>
 </p>
 
 <p>
-    Next, click the "0.01 mm Up” button to move the bed up until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle.”
+    Next, click the "0.01 mm Up” button to move the bed up until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle. Once this is completed, click "Save New Starting Height"
 </p>
+
 
 <div class="fileupload-new thumbnail" style="width: 95%; ">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/13.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" /><center>
@@ -160,7 +164,7 @@ Current Z Position : <span data-bind="text: $root.ZPos"></span>
             <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1 mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button> 1 mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
@@ -169,16 +173,16 @@ Current Z Position : <span data-bind="text: $root.ZPos"></span>
             <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1 mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button> .1 mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.01 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01 mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button> .01 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01 mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button> .01 mm Down
         </div>
     </div>
 
@@ -214,7 +218,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
 
 
 <p>
-    Now you need to load filament into your printer. 
+    Now you need to load filament into your extruder. 
     When you click "Prepare" the printer will perform the following actions:
 </p>
 
@@ -243,7 +247,8 @@ Now we’ll prepare to load filament, if you have not already, while waiting for
 <br><br>
 
 
-Place the PLA filament spool on the spool holder so that the loose end points up toward the filament guide.  Cut the end of the filament so that the tip is flat.
+
+Place the PLA filament spool on the spool holder so that the loose end points direclty upwards into the filament guide. You may need to flip your spool in order to acheive the proper orientation. Cut the end of the filament so that the tip is flat.
 
 <br /><br />
 
@@ -301,7 +306,7 @@ Push the filament guide tube down into the plastic extruder hole.
     </p>
 </video>
 
-Once filament is consistently extruding, click to proceed:<br>
+Once filament is consistently extruding, click to "Next Step" proceed:<br>
 <center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button></center>
 </div>
 
@@ -370,7 +375,7 @@ Once filament is consistently extruding, click to proceed:<br>
     </div>
 </div>
 
-Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  How the Zigzag pattern comes off the bed tells us if the bed is level at this position:<br><br>
+Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The  Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
 
 
    
@@ -382,7 +387,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
     </p>
     </video>
 
-
+<br />
 
 
 <p >
@@ -435,7 +440,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
         </td>
 
         <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-                If the Zigzag pattern peels-off as an even strand made with no small section of connected segments at the end, <strong>the Starting Height is too low</strong>. Click below to adjust the starting height and print a new zigzag. 
+                If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Starting Height is too low</strong>. Click below to adjust the starting height and print a new zigzag. 
            <!-- <br />
             <br />
 
@@ -613,7 +618,7 @@ Here you will be able to print Zigzag patterns in each corner and then adjust th
 </div>
 
 
-Once the printer has stopped moving, use the four Zigzag pattern Position buttons to print in each corner, starting with the corner that was most different from the others in the Four Zigzag pattern print.  After each print, inspect the Zigzag pattern and adjust the bed accordingly:<br><br>
+Once the printer has stopped moving, use the four Zigzag pattern position buttons to print in each corner, starting with the corner that was most different from the others in the Four Zigzag pattern print.  After each print, inspect the Zigzag pattern and adjust the bed accordingly:<br><br>
 
 
 
@@ -648,6 +653,13 @@ A quarter-turn should be the largest adjustment made between tests.<br><br>
 Note: All positions wait for the bed and hotend temperatures to stabilize before starting, so it may take a moment to begin printing.<br><br>
 
 
+<img src="/plugin/mgsetup/static/img/10.jpg">
+<p>A perfectly leveled corner will result in corner Zigzag pattern that peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments. If your zigzag is close to this, your corner is set and needs no further adjustment.
+</p>
+
+
+
+
 {# <div style="position:relative;height: 454px;width: 95%; background-image: url('/plugin/mgsetup/static/img/cornerlabels.png'); background-repeat: no-repeat round; background-position: center;">
        
     <button class="btnstay bottomleft" data-bind="enable: $root.stepSixPrepared() && $root.lockButton() , click: function() {$root.printWiggle(20); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 1</button>
@@ -666,12 +678,10 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 </div>
 <button class="btnstay" style="width:80%;" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggle('all'); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">All</button><br><br>
 
+<p>
 
-<img src="/plugin/mgsetup/static/img/10.jpg">
-<p>A perfectly leveled corner will result in corner Zigzag pattern that peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments. If your zigzag is close to this, your corner is set and needs no further adjustment. When all 4 patterens are correct, you can proceed.
+ When all 4 Zigzag patterns are the same, you can proceed.
 </p>
-
-
 
 <button class="btngoBig" data-bind="enable: $root.stepSixWigglePrinted(), click: function() { $root.goTo('7'); window.scroll(0,0) }">Next Step</button>
 </center>
@@ -692,14 +702,18 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='7'" />
     </div><br>
+
+<!--
 <span data-bind="visible: !$root.isDual()"><h1 style="text-align:left;">Quick Check Complete</h1></span>
 <span data-bind="visible: $root.isDual()"><h1 style="text-align:left;">Left Extruder Check Complete</h1></span>
 <span data-bind="visible: !$root.isDual()">Congratulations, your M3 is ready to start printing!
+
+
     Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.</span><br>
     <center>
         <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}, visible: !$root.isDual()">Cooldown</button>
     </center>
-
+-->
 
     <h1 style="text-align:left;">Your First Print</h1>
     <!--
@@ -710,27 +724,29 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
     <p> 
         In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. (You can leave all the settings at their default values.)
-        <img src="/plugin/mgsetup/static/img/stl.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+        <img src="/plugin/mgsetup/static/img/stl.png" style="display:block;width::50%;margin-left:auto;margin-right:auto; margin-top:21px;">
             <br/>
-        <img src="/plugin/mgsetup/static/img/slice.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+        <img src="/plugin/mgsetup/static/img/slice.png" style="display:block;width::50%;margin-left:auto;margin-right:auto;margin-top:21px;"">
 
     </p>
 
 
-    <p>
+    <p style="margin-top:21px;">
         You will see a progress bar, and once the GCode has been generated, you should see 'mgkeychain.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
     </p>
-    <img src="/plugin/mgsetup/static/img/gcode.png" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+    <img src="/plugin/mgsetup/static/img/gcode.png" style="display:block;width::50%;margin-left:auto;margin-right:auto;margin-top:21px;"">
 
 
-    <p>
+    <p style="margin-top:21px;">
         Your printer will make sure that the extruder/bed are heated correctly, and then start to print the keychain.  You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
     </p>
 
-    <p>
+
+    <p style="margin-top:21px;" data-bind="visible: !$root.isDual()">
         Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us/categories/115000563646-M3" target="_blank">M3 Knowledge Base</a>.
 
     </p>
+
 
 
     <!--
@@ -788,13 +804,20 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 </div><br>
 <h1 style="text-align:left;">Extruder 1 Starting Height Check</h1>
 <p style="text-align:left;">
-Now we will check your right extruder (T1) to ensure that your factory calibration settings are correct. Click <strong>Prepare</strong> to move the printer to its testing position.
+
+During the next few steps, you will verify the right extruder's (T1) starting height. First, we'll use a simple visual test to perform a saftey check.   Click <strong>Prepare</strong> to move the printer to its testing position.
 <br><br>
+
+
+
+
+
+
 </p>
 <center>
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepEightPrepared(), click: function() { $root.dualSetupCheckLevel(0); $root.stepEightPrepared(true) }">{{ _('Prepare') }}</button><br><br>
 <p style="">
-    Once the printer has stopped moving, use your hand to slide both extruders towards the build surface. If the T1 nozzle touches the glass, do not move the T1 extruder any further. 
+    Once the printer has stopped moving, use your hand to slide T1 towards the build surface. If the T1 nozzle touches the glass, do not move the T1 extruder any further. 
 </p>
 <p >
     <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current Extruder 1 starting height? Click the photos to zoom in.</span>
@@ -839,7 +862,11 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
 In this step, we will physically adjust the height of Extruder 1 in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
 <br><br>This adjustment process involves mechanical calibration between both extruders, and can take some time. However, following the instructions carefully will reward you with high quality dual-material prints.<br><br>
 
-<strong>Before proceeding, remove any material from the tips of both nozzles to ensure accurate height adjustment.</strong><br><br>
+<strong>Before proceeding, remove any material from the tip of the T1 nozzles to ensure accurate height adjustment.</strong><br><br>
+
+<strong style="color:red;">Before you touch or adjust anything, make sure that the build plate and Extruder 1 are at room temperature.</strong><br><br>
+
+
 <div style="margin:auto; width: 50%">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
@@ -941,7 +968,7 @@ Once the feeler gauge catches between the nozzle and bed, click "Switch Extruder
 
 
 <p>
-    Now you need to load filament into your printer. 
+    Now you need to load filament into your extruder. 
     When you click "Prepare" the printer will perform the following actions:
 </p>
 
@@ -970,7 +997,7 @@ Now we’ll prepare to load filament, if you have not already, while waiting for
 <br><br>
 
 
-Place the PLA filament spool on the spool holder so that the loose end points up toward the filament guide.  Cut the end of the filament so that the tip is flat.
+Place the PLA filament spool on the spool holder so that the loose end points direclty upwards into the filament guide. You may need to flip your spool in order to acheive the proper orientation. Cut the end of the filament so that the tip is flat.
 
 <br /><br />
 
