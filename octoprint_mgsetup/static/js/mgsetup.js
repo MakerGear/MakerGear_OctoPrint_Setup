@@ -63,6 +63,21 @@ $(function() {
 		self.displayTool1TempTarget = ko.observable(undefined);
 		self.displayBedTemp(self.temperatures.bedTemp.actual);
 		self.displayBedTempTarget(self.temperatures.bedTemp.target);
+
+		self.untouchable = ko.computed(function(){
+			if (self.temperatures.bedTemp !== undefined && self.temperatures.bedTemp.target() !== undefined && self.temperatures.tools()[0] !== undefined && self.temperatures.tools()[0].target() !== undefined ){
+
+				if (parseFloat(self.temperatures.bedTemp.actual()) > 50 || parseFloat(self.temperatures.tools()[0].actual()) > 50 || (self.temperatures.tools()[1].actual() !== undefined && parseFloat(self.temperatures.tools()[1].actual()) > 50)){
+					//console.log("untouchable");
+					return true;
+				} else{
+					//console.log("touchable");
+					return false;
+				}
+			}
+		},this);
+
+
 		self.tools = ko.observableArray([]);
 		self.tools(self.temperatures.tools());
 
@@ -892,7 +907,7 @@ $(function() {
 				}
 			}
 			self.sawBinPrinted(true);
-
+			self.enableLockedButton(10000);
 		};
 
 		self.pickSawBin = function(chosenMatch){
@@ -1129,13 +1144,16 @@ $(function() {
 				self.hasHistory(false);
 			}
 			if(self.setupStepFuture.length>0){
-				self.hasFuture(true);
+				self.setupStepFuture = [];
+				self.hasFuture(false);
 			}
 			else {
 				self.hasFuture(false);
 			}
 			self.resetStep(targetStep);
 		};
+
+
 
 		self.stepBack = function (){
 
@@ -1491,11 +1509,16 @@ $(function() {
 			}
 			self.support_widget = $("#mgsetup_support_widget");
 			self.command_response_popup = $("#command_response_popup");
-			self.printSawBinDialog = $("#dialog");
+			self.printSawBinDialog = $("#dialog-sawbin");
+			self.preflightDialog = $("#dialog-preflight");
 			//self.checkGoogle();
 			if (self.isOperational()){
 				self.requestEeprom();
 			}
+
+
+
+
 			console.log(self.settings);
 			console.log(self.userSettings);
 			self.targetName = "MakerGear " + self.hostname();

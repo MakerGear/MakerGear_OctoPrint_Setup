@@ -16,7 +16,10 @@
            <input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.firstTab " />  This will set either the MakerGear Setup or Temperature tab as the first, primary tab.  After changing this, please Restart OctoPrint and Refresh the page to show the change.
         </div>
     </div>
-</form>
+</form><br><br>
+Webcam controls; Enable will set to default, Disable will disable and prevent black box on Control tab:
+<button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('/webcam/?action=stream') }">Enable Webcam</button><button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('') }">Disable Webcam</button>
+<br><br>
 
 New Netconnectd Access Point Password:
 <input data-bind="textInput: $root.newNetconnectdPassword" /><br>
