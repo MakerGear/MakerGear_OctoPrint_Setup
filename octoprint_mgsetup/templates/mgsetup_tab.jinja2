@@ -864,7 +864,7 @@ In this step, we will physically adjust the height of Extruder 1 in the mounting
 
 <strong>Before proceeding, remove any material from the tip of the T1 nozzles to ensure accurate height adjustment.</strong><br><br>
 
-<strong style="color:red;">Before you touch or adjust anything, make sure that the build plate and Extruder 1 are at room temperature.</strong><br><br>
+
 
 
 <div style="margin:auto; width: 50%">
@@ -878,16 +878,16 @@ In this step, we will physically adjust the height of Extruder 1 in the mounting
     </div>
 </div>
 
-Wait for the T1 extruder to cool below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt.<br><br>
+Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt. Now click "Move to Position" to move the build plate to the correct position.<br><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
 </div>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
 </div><br>
-<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
+<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
 
-Ensure that all components (Extruders 0 and 1 and the Print Bed) are cool before touching any of the printer’s components.
+Ensure that all components (Extruders 0 and 1 and the Built Plate) are at room temperature before touching any of the printer’s components.
 <br><br>
 
 {# During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (T0) and the build plate. After reaching the proper bed height, you’ll return to the right extruder (T1) in order to ensure that its starting height is properly aligned.
@@ -936,7 +936,7 @@ Once the feeler gauge catches between the nozzle and bed, click "Switch Extruder
 <br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(2), $root.stepNineExtrudersSwitched(true) }">Switch Extruders<br /></button></center> #}<br><br>
 <ol>
     <li>Now move the feeler gauge under the tip of the T1 nozzle.
-    <li>Loosen the T1 clamping bolt until the T1 hot end slides downward touches the bed.
+    <li>Loosen the T1 clamping bolt until the T1 hot end slides downward and touches the bed.
     <li>Secure the T1 clamping bolt.
 </ol><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">

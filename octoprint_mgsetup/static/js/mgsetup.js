@@ -224,10 +224,19 @@ $(function() {
 	//                                                88                                                                                                                    
 
 		self.printWiggle = function (wigglePosition, inputWiggleHeight) {
+
+
 			self.wiggleHeightAdjust = 0.1;
 			console.log(wigglePosition);
 			console.log(inputWiggleHeight);
 			console.log(self.wiggleHeightAdjust);
+
+				
+			OctoPrint.control.sendGcode(["M300 S1040 P250",
+			"M300 S1312 P250", 
+			"M300 S1392 P250"
+			]);
+
 			//console.log(typeof(self.ZWiggleHeight()));
 			if (wigglePosition == undefined){
 				new PNotify({
@@ -247,6 +256,7 @@ $(function() {
 				//just to keep this from being empty...
 			}
 			if (wigglePosition === 1){
+
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				console.log(parameters.wiggleHeight);
@@ -291,11 +301,15 @@ $(function() {
 				self.WiggleReady(false);
 			}
 			if (wigglePosition === "all"){
+
+
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
 			} 
 			if (wigglePosition === 10){ //same as position 1 but without homing
+				
+
 				console.log(wigglePosition);
 				console.log(inputWiggleHeight);
 				console.log(self.wiggleHeightAdjust);
@@ -353,10 +367,19 @@ $(function() {
 			} else if (targetTool == "tool1"){
 				OctoPrint.control.sendGcode(["T1"]);
 			}
+
+			OctoPrint.control.sendGcode(["M300 S1040 P1000"]);
+
 			OctoPrint.printer.extrude(75, {"tool":targetTool});
 		};
 
 		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
+
+
+			OctoPrint.control.sendGcode(["M300 S1040 P250",
+			"M300 S1312 P250", 
+			"M300 S1392 P250"
+			]);
 
 			if (targetTemperature == undefined){
 				temperature = 220;
@@ -367,6 +390,7 @@ $(function() {
 				hotend = targetHotend;
 			}
 			if (hotend == "T0"){
+
 				OctoPrint.control.sendGcode(["G28 Z",
 					"G28 Y X",
 					"G1 X20",
@@ -394,6 +418,11 @@ $(function() {
 		self.setupCheckLevel = function (checkLevelStep) { //this is where the magic starts, folks
 			self.ZPosFresh(false);
 			if (checkLevelStep == "0") {
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
+
 				OctoPrint.control.sendGcode(["T0",
 				"M605 S1",
 				"G28",
@@ -404,6 +433,10 @@ $(function() {
 				]);//changed to X217 for Demeter
 			}
 			if (checkLevelStep == "1") {
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
 				OctoPrint.control.sendGcode(["T0",
 				"G28",
 				"G1 F2000 X205 Y125",
@@ -415,6 +448,10 @@ $(function() {
 //				OctoPrint.control.sendGcode("G1 F1400 X195 Y125");
 			}
 			if (checkLevelStep == "2") {
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
 				OctoPrint.control.sendGcode(["T0",
 				"G1 F1400 Z2",
 				"G1 F2000 X20 Y220",
@@ -424,6 +461,10 @@ $(function() {
 //				OctoPrint.control.sendGcode("G1 F1400 Z0.2");
 			}
 			if (checkLevelStep == "3") {
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
 				OctoPrint.control.sendGcode(["T0",
 				"G1 F1400 Z2",
 				"G1 F2000 X20 Y20",
@@ -433,6 +474,10 @@ $(function() {
 //				OctoPrint.control.sendGcode("G1 F1400 Z-0.05");
 			}
 			if (checkLevelStep == "4") { //for Dual
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
 				OctoPrint.control.sendGcode(["G28",
 					"T0",
 					"G1 F2000 X217 Y125",
@@ -503,6 +548,12 @@ $(function() {
 			self.ZPosFresh(false);
 			self.requestEeprom();
 			if (startingHeightStep == "0") {
+
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
+
 				OctoPrint.control.sendGcode(["T0",
 				"G28",
 				"G1 F1400 X100 Y125 Z50",
@@ -669,6 +720,10 @@ $(function() {
 		self.dualSetupCheckLevel = function(dualCheckLevelStep){
 
 			if (dualCheckLevelStep === 0){
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
 				OctoPrint.control.sendGcode(["M218 T1 Z0",
 					"M500",
 					"G28 X",
@@ -690,7 +745,15 @@ $(function() {
 
 		self.dualRightNozzleAdjust = function(dualRightNozzleAdjustStep){
 
+
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
+
+
 			if (dualRightNozzleAdjustStep === 0){
+
 				OctoPrint.control.sendGcode(["M218 T1 Z0",
 					"M500",
 					"G28 X",
@@ -763,6 +826,8 @@ $(function() {
 		self.chosenSawBin = ko.observable(0);
 
 		self.printSawBinConfirm = function(chosenBin){
+			
+
 			if (chosenBin !== undefined){
 				self.chosenSawBin(chosenBin);
 			}
@@ -774,6 +839,11 @@ $(function() {
 		};
 
 		self.printSawBin = function(){
+			OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250"
+				]);
+			
 			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
@@ -1777,6 +1847,9 @@ $(function() {
 			self.ZPosFresh(false);
 			OctoPrint.printer.jog(data);
 			OctoPrint.control.sendGcode("M114");
+			var pitch = (10 / distance)  + 100;
+			var speed =  (195.2 *  distance) + 161
+			OctoPrint.control.sendGcode(["M300 S" + pitch + " P" + speed]);
 			//self._logger.info("M114 supposed to be sent...");
 		};
 		
