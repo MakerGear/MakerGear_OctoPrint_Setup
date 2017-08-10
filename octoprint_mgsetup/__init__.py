@@ -55,6 +55,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.zoffsetline = ""
 		self.pluginVersion = ""
 		self.ip = ""
+		self.firmwareline = ""
 
 
 
@@ -261,6 +262,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
 			self._logger.info(str(self.nextReminder))
 			#if (self.internetConnection == False ):
 			self.checkInternet(3,5, 'none')
@@ -394,7 +396,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.position_state = "stale"
 
 	def process_z_offset(self, comm, line, *args, **kwargs):
-		if "M206" not in line and "M218" not in line:
+		if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line:
 			return line
 
 		# logging.getLogger("octoprint.plugin." + __name__ + "process_z_offset triggered")
@@ -408,6 +410,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.tooloffsetline = line
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
 		#__plugin_implementation__._logger.info(line)
+
+		if "FIRMWARE_NAME" in line:
+			self._logger.info("plugin version - firmware reports itself as: ")
+			self.firmwareline = line
+			self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = line))
 		return line
 
 	def resetRegistration(self):

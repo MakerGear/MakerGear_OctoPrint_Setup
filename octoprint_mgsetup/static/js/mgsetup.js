@@ -119,6 +119,7 @@ $(function() {
 		self.newNetconnectdPassword = ko.observable("");
 		self.unlockAdvanced = ko.observable(false);
 		self.pluginVersion = ko.observable("");
+		self.firmwareline = ko.observable("");
 
 		// Quick Check Process starting/default values:
 		self.ZWiggleHeight = ko.observable(0.20);
@@ -238,6 +239,28 @@ $(function() {
 	//                                                88                                                                                                                    
 	//                                                88                                                                                                                    
 
+		self.storeWigglePosition = ko.observable(undefined);
+		self.storeInputWiggleHeight = ko.observable(undefined);
+		self.hasInputWiggleHeight = ko.observable(false);
+
+		self.printWiggleConfirm = function(wigglePosition, inputWiggleHeight){
+			console.log("printWiggleConfirm triggered");
+			if (wigglePosition !== undefined){
+				self.storeWigglePosition(wigglePosition);
+			}
+			if (inputWiggleHeight !== undefined){
+				self.storeInputWiggleHeight(inputWiggleHeight);
+				self.hasInputWiggleHeight(true);
+			} else {
+				self.hasInputWiggleHeight(false);
+				self.storeInputWiggleHeight(undefined);
+			}
+			self.printWiggleDialog.modal("show");
+
+
+
+		};
+
 		self.printWiggle = function (wigglePosition, inputWiggleHeight) {
 
 
@@ -254,18 +277,20 @@ $(function() {
 
 			//console.log(typeof(self.ZWiggleHeight()));
 			if (wigglePosition == undefined){
-				new PNotify({
-					title: "what",
-					text: "wigglePosition undefined - not sure how you got here, but, uh, don't do it again, please",
-					type: "error",
-					//hide: self.settingsViewModel.settings.plugins.M117PopUp.autoClose()
-				});
+				wigglePosition = self.storeWigglePosition();
 			}
 			if (inputWiggleHeight !== undefined){
 				self.ZWiggleHeight(parseFloat((parseFloat(self.ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
 				//self.T1ZWiggleHeight(parseFloat((parseFloat(self.T1ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
 				console.log("ZWiggleHeight adjusted: "+self.ZWiggleHeight());
 				//console.log(typeof(self.ZWiggleHeight()));
+			}
+
+			if (inputWiggleHeight === undefined){
+				if (self.hasInputWiggleHeight()){
+					inputWiggleHeight = self.storeInputWiggleHeight();
+				}
+
 			}
 			if (wigglePosition === 0){
 				//just to keep this from being empty...
@@ -1511,6 +1536,7 @@ $(function() {
 			self.command_response_popup = $("#command_response_popup");
 			self.printSawBinDialog = $("#dialog-sawbin");
 			self.preflightDialog = $("#dialog-preflight");
+			self.printWiggleDialog = $("#dialog-wiggle");
 			//self.checkGoogle();
 			if (self.isOperational()){
 				self.requestEeprom();
@@ -1747,6 +1773,9 @@ $(function() {
 				//self.printerViewString("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
 				console.log(self.printerViewString());
 
+			}
+			if (data.firmwareline !== undefined){
+				self.firmwareline(data.firmwareline);
 			}
 		};
 
