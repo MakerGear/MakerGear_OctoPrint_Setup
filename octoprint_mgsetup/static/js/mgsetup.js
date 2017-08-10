@@ -256,10 +256,18 @@ $(function() {
 				self.storeInputWiggleHeight(undefined);
 			}
 			self.printWiggleDialog.modal("show");
+		};
+
+		self.printWiggleCancel = function(){
+
+
+
 
 
 
 		};
+
+
 
 		self.printWiggle = function (wigglePosition, inputWiggleHeight) {
 
@@ -296,6 +304,9 @@ $(function() {
 				//just to keep this from being empty...
 			}
 			if (wigglePosition === 1){
+				if (self.setupStep() === '4'){
+					self.stepFourFirstWiggleClicked(true);
+				}
 
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
@@ -341,7 +352,9 @@ $(function() {
 				self.WiggleReady(false);
 			}
 			if (wigglePosition === "all"){
-
+				if (self.setupStep === '5' ){
+					self.stepFiveBeginCornerCheckClicked(true);
+				}
 
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
@@ -378,6 +391,10 @@ $(function() {
 
 			}
 			if (wigglePosition === "T1"){
+				if (self.setupStep() === '11'){
+					self.stepElevenFirstWiggleClicked(true);
+				}
+
 				var context = {};
 				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 1};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);

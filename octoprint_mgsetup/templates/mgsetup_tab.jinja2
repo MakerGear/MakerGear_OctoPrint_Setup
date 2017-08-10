@@ -65,6 +65,7 @@
 {#        88    #}
 {#        88    #}
 {#        88    #}
+
 {# STARTING HEIGHT CHECK #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='1'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
@@ -136,6 +137,7 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
 {#     a8P'          #}
 {#    d8"            #}
 {#    88888888888    #}
+
 {# Adjust Starting Height #}
 
 <div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser  && setupStep()==='2'">
@@ -248,6 +250,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
 {#            "8b    #}
 {#    Y8,     a88    #}
 {#     "Y888888P'    #}
+
 {# Filament Loading #}
 
 <div id="eleven" data-bind="visible: loginState.isUser && setupStep()==='3'">
@@ -365,6 +368,7 @@ Once filament is consistently extruding, click to "Next Step" proceed:<br>
 {#    8888888888888  #}
 {#             88    #}
 {#             88    #}
+
 {# Verify Starting Height (Wiggle) #}
 
 <div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='4'">
@@ -412,7 +416,7 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 </p>
 <br>
 
-<center><button class="btnstay" data-bind="enable: !$root.stepFourFirstWiggleClicked(), click: function() { $root.printWiggleConfirm(1); $root.stepFourFirstWiggleClicked(true); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+<center><button class="btnstay" data-bind="enable: !$root.stepFourFirstWiggleClicked(), click: function() { $root.printWiggleConfirm(1); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
 
 
@@ -555,6 +559,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 {#             d8  #}
 {#    Y8a     a8P  #}
 {#     "Y88888P"   #}
+
 {# Heated Corner Check (wiggles) #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='5'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
@@ -567,7 +572,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
     <p>
         Click “Begin Corner Check” to print a Zigzag pattern on each corner of your build surface. 
     </p>
-<button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepFiveBeginCornerCheckClicked(), click: function() { printWiggleConfirm('all'); $root.stepFiveBeginCornerCheckClicked(true) }">{{ _('Begin Corner Check') }}</button>
+<button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepFiveBeginCornerCheckClicked(), click: function() { printWiggleConfirm('all') }">{{ _('Begin Corner Check') }}</button>
 <br>
 <br />
 <div style="margin:auto; width: 50%">
@@ -639,6 +644,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 {#    88       d8    #}
 {#    88a     a8P    #}
 {#     "Y88888P"     #}
+
 {# Heated Leveling (wiggles) #}
 
 <div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='6'">
@@ -748,6 +754,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 {#      ,8P'        #}
 {#     d8"          #}
 {#    8P'           #}
+
 {# Done #}
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='7'">
@@ -852,6 +859,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
     d8"     "8b  
     Y8a     a8P  
      "Y88888P"   #}
+
 {# Cold Starting Height Check - EXT1 #}
 
 
@@ -1144,6 +1152,7 @@ Once filament is consistently extruding from the tip of the nozzle, click “Nex
         88      88  
         88      88  
         88      88  #}
+
 {# EEPROM Adjust EXT1 Hotend Offset #}
 <div data-bind="visible: loginState.isUser && setupStep()==='11'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
@@ -1184,7 +1193,7 @@ Once filament is consistently extruding from the tip of the nozzle, click “Nex
 </p>
 <br>
 
-<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('T1'); $root.stepElevenFirstWiggleClicked(true); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('T1'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
 
 
@@ -1329,6 +1338,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
         88   a8P'        
         88  d8"          
         88  88888888888  #}
+
 {# Print Something with EXT1 Only #}
 <div data-bind="visible: loginState.isUser && setupStep()==='12'">
 Here we'll print a simple pattern to determine if your X and Y offsets are close enough to print.  If you wish to skip this step and calibrate the offsets manually, click "Skip Simple Test".  Otherwise, click "Print Simple Test" to begin.
@@ -1372,6 +1382,7 @@ If the two boxes intersect, you'll need to adjust your X and Y offsets:<br><br>
         88          "8b  
         88  Y8,     a88  
         88   "Y888888P'  #}
+
 {# Print with Both Extruders - MG Keychain ? #}
 <div data-bind="visible: loginState.isUser && setupStep()==='13'">
 Same as 12, but have the instructions have the user run a presliced .gcode file to print with both extruders, some model that will show if the X and Y offsets are close enough for general printing, or if the user needs to calibrate.  Kyle likes ooze shield for this.
@@ -1393,6 +1404,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
         88  8888888888888  
         88           88    
         88           88    #}
+
 {# Imperfection in Both Prints Requires X/Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='14'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
@@ -1466,6 +1478,7 @@ Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and 
         88           d8  
         88  Y8a     a8P  
         88   "Y88888P"   #}
+
 {# Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='15'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
