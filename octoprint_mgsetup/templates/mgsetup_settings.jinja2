@@ -62,6 +62,9 @@ This will Reset the Registration on this printer.<br><br>
  <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('patch'), $root.showCommandResponse() }">Patch</button><br>
 One-time pre-ship patch.<br><br> 
 
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button><br>
+Patch to create system log symlinks allowing easy OctoPrint access.<br><br> 
+
 <div id="command_response_popup" class="modal hide fade">
 <center>Command Response:</center><br>
 <center><textarea data-bind="text: $root.commandResponse" style="width:90%;"></textarea></center><br>
