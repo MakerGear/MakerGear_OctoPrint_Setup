@@ -297,6 +297,10 @@ $(function() {
 			if (inputWiggleHeight === undefined){
 				if (self.hasInputWiggleHeight()){
 					inputWiggleHeight = self.storeInputWiggleHeight();
+					self.ZWiggleHeight(parseFloat((parseFloat(self.ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
+					//self.T1ZWiggleHeight(parseFloat((parseFloat(self.T1ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
+					console.log("ZWiggleHeight adjusted: "+self.ZWiggleHeight());
+					//console.log(typeof(self.ZWiggleHeight()));
 				}
 
 			}
@@ -352,7 +356,7 @@ $(function() {
 				self.WiggleReady(false);
 			}
 			if (wigglePosition === "all"){
-				if (self.setupStep === '5' ){
+				if (self.setupStep() === '5' ){
 					self.stepFiveBeginCornerCheckClicked(true);
 				}
 

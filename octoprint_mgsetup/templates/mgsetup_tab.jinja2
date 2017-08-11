@@ -77,9 +77,14 @@
 During the next few steps, you will verify the printer's starting height. First, we'll use a simple visual test to perform a saftey check. Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
 </p>
 
-<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.untouchable()">
-<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br>
-<div style="margin:auto; width: 50%">
+<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2); display:block; " data-bind="visible:$root.untouchable()">
+<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br><br>
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
@@ -88,6 +93,7 @@ During the next few steps, you will verify the printer's starting height. First,
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
@@ -111,15 +117,24 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
 <table>
     <tr>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/6.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/6.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a>
+<div data-bind="visible:!$root.isDual()">
+<a href="/plugin/mgsetup/static/img/6.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/6.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<div data-bind="visible:$root.isDual()">
+<a href="/plugin/mgsetup/static/img/15.png" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/15.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a>
+<div data-bind="visible:!$root.isDual()">
+<a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<div data-bind="visible:$root.isDual()">
+<a href="/plugin/mgsetup/static/img/17.png" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/17.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('3'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
- <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a>
+<div data-bind="visible:!$root.isDual()">
+<a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<div data-bind="visible:$root.isDual()">
+<a href="/plugin/mgsetup/static/img/19.png" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/19.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
@@ -148,8 +163,13 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
 
 Here we will adjust the rough starting height of the printer (in a future step we will fine-tune your starting height).  Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
 <div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.untouchable()">
-<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br>
-<div style="margin:auto; width: 50%">
+<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br><br>
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
@@ -158,6 +178,7 @@ Here we will adjust the rough starting height of the printer (in a future step w
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
@@ -329,15 +350,21 @@ Feed the tip of your filament up through the black filament guide and the clear 
 
 Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
 
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 
 <br>
@@ -420,15 +447,21 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 
 
 
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 
 Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The  Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
@@ -575,15 +608,21 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepFiveBeginCornerCheckClicked(), click: function() { printWiggleConfirm('all') }">{{ _('Begin Corner Check') }}</button>
 <br>
 <br />
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 <p>
     After all four Zigzag patterns have printed, remove each one.
@@ -601,36 +640,33 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 <table class="choiceTable">
     <tr>
         <td>
-<a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step3"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" /></a>
+<a href="/plugin/mgsetup/static/img/5-1.png" data-lightbox="step3"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5-1.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" /></a>
         </td>
         <td>
-<a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step3"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" /></a>
+<a href="/plugin/mgsetup/static/img/5-2.png" data-lightbox="step3"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5-2.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" /></a>
         </td>
         <td>
- <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step3"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" /></a>
+ <a href="/plugin/mgsetup/static/img/5-3.png" data-lightbox="step3"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5-3.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" /></a>
         </td>
     </tr>
     <tr>
         <td>
-            <strong>A perfectly leveled corner</strong> will result in corner Zigzag pattern that peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments.
+            All four zigzag patterns look the same (each pattern should be within 2 strands of each other).
             <br />
             <br />
             <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
         </td>
-        <td>
-             <strong>A corner is too low</strong> if a corner Zigzag pattern peels-off an even strand made entirely of zig zags, with no small section of connected segments at the end.
-        </td>
-        <td>
-            <strong>A corner is too high</strong> is the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected.
+        <td colspan="2">
+             One or more of the patterns looks different from the other patterns.
          
         </td>
     </tr>
     <tr>
         <td class="buttonCell">
-             <center><button   style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('7'); window.scroll(0,0) }">{{ _('All four Zigzag patterns peeled off the bed correctly.') }}</button></center>
+             <center><button   style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('7'); window.scroll(0,0) }">{{ _('All four Zigzag patterns peeled off the same.') }}</button></center>
         </td>
         <td colspan="2" class="buttonCell">
-            <center><button style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('6'); window.scroll(0,0) }">{{ _('One or more of the Zigzag patterns was not correct.') }}</button></center>
+            <center><button style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('6'); window.scroll(0,0) }">{{ _('One or more of the Zigzag patterns was different from the others.') }}</button></center>
         </td>
     </tr>
 </table>
@@ -664,15 +700,21 @@ Here you will be able to print Zigzag patterns in each corner and then adjust th
 
 
 
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 
 
@@ -879,8 +921,13 @@ During the next few steps, you will verify the Right Extruder's (T1) starting he
 
 
 </p><div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.untouchable()">
-<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br>
-<div style="margin:auto; width: 50%">
+<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br><br>
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
@@ -889,6 +936,7 @@ During the next few steps, you will verify the Right Extruder's (T1) starting he
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
@@ -906,15 +954,15 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
 <table>
     <tr>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/6.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/6.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+<a href="/plugin/mgsetup/static/img/16.png" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/16.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+<a href="/plugin/mgsetup/static/img/18.png" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/18.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('10'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
- <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+ <a href="/plugin/mgsetup/static/img/20.png" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/20.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
@@ -947,8 +995,13 @@ In this step, we will physically adjust the height of the Right Extruder (T1) in
 
 
 <div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.setupStep()==='9'">
-Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br>
-<div style="margin:auto; width: 50%">
+Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
@@ -957,6 +1010,7 @@ Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br>
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
@@ -1114,15 +1168,21 @@ Next insert the filament into the hole on top of the right extruder, located bet
 
 Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees, click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get it started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
 
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 
 <br>
@@ -1197,15 +1257,21 @@ Once filament is consistently extruding from the tip of the nozzle, click “Nex
 
 
 
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 
 Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  How the Zigzag pattern comes off the bed tells us if the bed is level at this position:<br><br>
@@ -1341,33 +1407,41 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 {# Print Something with EXT1 Only #}
 <div data-bind="visible: loginState.isUser && setupStep()==='12'">
-Here we'll print a simple pattern to determine if your X and Y offsets are close enough to print.  If you wish to skip this step and calibrate the offsets manually, click "Skip Simple Test".  Otherwise, click "Print Simple Test" to begin.
+Now we’ll print a square pattern in order to determine the level of calibration between both extruders along the X and Y axes.
+
+After printing the pattern, you’ll examine it on the build plate: the perimeters of the pattern should be perfectly aligned, and should not overlap except at the purge lines, which are located at the lower left-hand corner of the pattern.
 
 <br><br>
 <center><button class="btnstay" data-bind="click: function() { $root.printWiggleConfirm('simple') }, enable: !$root.stepTwelveSimpleClicked()">Print Simple Test</button>
 <br><br>
-<button class="btngo" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }">Skip Simple Test</button><br><br>
+<button class="btngo" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }">Skip to Calibration Adjustment</button><br><br>
 </center>
-<br><br><div style="margin:auto; width: 50%">
+<br><br><div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div><br><br>
 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /><br><br><br>
 
 
 
-The two boxes that print should not intersect anywhere except at the "tail" in the bottom left corner.  If they do not intersect, your X and Y offsets are close enough to begin Dual printing now:<br><br>
+If the two squares do not overlap, click “Begin Dual Printing”:<br><br>
 
 <center>
 <button class="btngoBig" data-bind="click: function() { $root.goTo('16'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center><br><br><br>
 
-If the two boxes intersect, you'll need to adjust your X and Y offsets:<br><br>
+If the two squares overlap, click “Adjust X and Y Offsets” to proceed:<br><br>
 <center>
 <button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
 
@@ -1413,15 +1487,21 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 Now we’ll print a calibration pattern with both extruders in order to determine the level of calibration between both extruders along the X axis.<br><br>
 It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:<br>
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 Once both extruders have printed the pattern, choose from positions 1 – 5 to identify the area where the points from each extruder’s pattern are most closely aligned. The ideal result will show perfectly-aligned features position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the X offset before prompting you print the same pattern again.
 <br><br>
@@ -1487,15 +1567,21 @@ Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and 
 
 Now we’ll print a calibration pattern with both extruders in order to determine the level of calibration between both extruders along the Y axis.<br><br>
 It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:<br>
-<div style="margin:auto; width: 50%">
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
     Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
     <div data-bind="visible: !$root.isDual()">
     Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
     </div>
     <div data-bind="visible: $root.isDual()">
     Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
     </div>
+</div>
 </div>
 Once both extruders have printed the pattern, choose from positions 1 – 5 to identify the area where the points from each extruder’s pattern are most closely aligned. The ideal result will show perfectly-aligned features position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the Y offset before prompting you print the same pattern again.
 <br><br>
