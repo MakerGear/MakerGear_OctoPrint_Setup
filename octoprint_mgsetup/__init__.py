@@ -393,8 +393,27 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def updateLocalFirmware(self):
 		self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
-		self.getLocalFirmwareVersion()
 
+		self._logger.info("extruders: "+str(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"]))
+		if (self._printer_profile_manager.get_all()["_default"]["extruder"]["count"] == 2):
+			try:
+				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.dual.h','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+				self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
+			except IOError as e:
+				self._logger.info("Tried to copy Dual configuration but encountered an error!")
+				self._logger.info("Error: "+str(e))
+		else:
+			try:
+				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.single.h','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+				self._logger.info("Copied the Single configuration to Configuration_makergear.h")
+			except IOError as e:
+				self._logger.info("Tried to copy Single configuration but encountered an error!")
+				self._logger.info("Error: "+str(e))
+
+
+		# settings.printerProfiles.currentProfileData().extruder.count()
+		self.getLocalFirmwareVersion()
+# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
 
 	def writeNetconnectdPassword(self, newPassword):
 		subprocess.call("/home/pi/.octoprint/scripts/changeNetconnectdPassword.sh "+newPassword['password'], shell=True)
@@ -480,14 +499,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._execute("/home/pi/.octoprint/scripts/expandFilesystem.sh")
 			self._logger.info("Filesystem expanded - will reboot now.")
 		elif action["action"] == 'resetRegistration':
-			self.resetRegistration()
 			self._logger.info("Registration reset!")
+			self.resetRegistration()
 		elif action["action"] == 'patch':
-			self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh")
 			self._logger.info("Patch started.")
+			self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh")
 		elif action["action"] == 'updateFirmware':
-			self.updateLocalFirmware()
 			self._logger.info("Update Firmware started.")
+			self.updateLocalFirmware()
 
 
 	def turnSshOn(self):
