@@ -278,10 +278,7 @@ $(function() {
 			console.log(self.wiggleHeightAdjust);
 
 				
-			OctoPrint.control.sendGcode(["M300 S1040 P250",
-			"M300 S1312 P250", 
-			"M300 S1392 P250"
-			]);
+
 
 			//console.log(typeof(self.ZWiggleHeight()));
 			if (wigglePosition == undefined){
@@ -429,7 +426,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["T1"]);
 			}
 
-			OctoPrint.control.sendGcode(["M300 S1040 P1000"]);
+			OctoPrint.control.sendGcode(["M300 S1040 P700"]);
 
 			OctoPrint.printer.extrude(75, {"tool":targetTool});
 		};
@@ -437,10 +434,7 @@ $(function() {
 		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
 
 
-			OctoPrint.control.sendGcode(["M300 S1040 P250",
-			"M300 S1312 P250", 
-			"M300 S1392 P250"
-			]);
+
 
 			if (targetTemperature == undefined){
 				temperature = 220;
@@ -452,19 +446,37 @@ $(function() {
 			}
 			if (hotend == "T0"){
 
-				OctoPrint.control.sendGcode(["G28 Z",
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28 Z",
 					"G28 Y X",
 					"G1 X20",
 					"M104 T0 S220",
-					"M140 S70"
+					"M140 S70",
+					"M104 T0 S220",
+					"M140 S70",
+					"M109 S220 T0",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
 				]);
 			} else if (hotend == "T1"){
-				OctoPrint.control.sendGcode(["G28 Z",
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28 Z",
 					"G28 Y X",
 					"G1 X20 Y100",
 					"M104 T1 S220",
 					"M140 S70",
-					"T1"
+					"M109 S220 T1",
+					"T1",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
 				]);
 			}
 		};
@@ -479,67 +491,83 @@ $(function() {
 		self.setupCheckLevel = function (checkLevelStep) { //this is where the magic starts, folks
 			self.ZPosFresh(false);
 			if (checkLevelStep == "0") {
+
+
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
-
-				OctoPrint.control.sendGcode(["T0",
+				"M300 S1392 P250",
+				"T0",
 				"M605 S1",
 				"G28",
 				"G1 F2000 X217 Y125",
 				"G1 F1400 Z0.25",
 				"G4 P1000",
-				"M84 X"
+				"M84 X",
+				"M400",
+				"M300 S1392 P250",
+				"M300 S1312 P250", 
+				"M300 S1040 P250"
 				]);//changed to X217 for Demeter
 			}
 			if (checkLevelStep == "1") {
+
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
-				OctoPrint.control.sendGcode(["T0",
+				"M300 S1392 P250",
+				"T0",
 				"G28",
 				"G1 F2000 X205 Y125",
 				"G1 F1400 Z1",
-				"G1 F1400 X195 Y125"
+				"G1 F1400 X195 Y125",
+				"M400",
+				"M300 S1392 P250",
+				"M300 S1312 P250", 
+				"M300 S1040 P250"
 				]);
 //				OctoPrint.control.sendGcode("G1 F2000 X205 Y125");
 //				OctoPrint.control.sendGcode("G1 F1400 Z1");
 //				OctoPrint.control.sendGcode("G1 F1400 X195 Y125");
 			}
 			if (checkLevelStep == "2") {
+
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
-				OctoPrint.control.sendGcode(["T0",
+				"M300 S1392 P250",
+				"T0",
 				"G1 F1400 Z2",
 				"G1 F2000 X20 Y220",
-				"G1 F1400 Z0.2"
+				"G1 F1400 Z0.2",
+				"M400",
+				"M300 S1392 P250",
+				"M300 S1312 P250", 
+				"M300 S1040 P250"
 				]);
 //				OctoPrint.control.sendGcode("G1 F2000 X20 Y220");
 //				OctoPrint.control.sendGcode("G1 F1400 Z0.2");
 			}
 			if (checkLevelStep == "3") {
+
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
-				OctoPrint.control.sendGcode(["T0",
+				"M300 S1392 P250",
+				"T0",
 				"G1 F1400 Z2",
 				"G1 F2000 X20 Y20",
-				"G1 F1400 Z-0.05"
+				"G1 F1400 Z-0.05",
+				"M400",
+				"M300 S1392 P250",
+				"M300 S1312 P250", 
+				"M300 S1040 P250"
 				]);
 //				OctoPrint.control.sendGcode("G1 F2000 X20 Y20");
 //				OctoPrint.control.sendGcode("G1 F1400 Z-0.05");
 			}
 			if (checkLevelStep == "4") { //for Dual
+
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
-				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
-				OctoPrint.control.sendGcode(["G28",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28",
 					"T0",
 					"G1 F2000 X217 Y125",
 					"G1 F1400 Z0.25",
@@ -547,7 +575,11 @@ $(function() {
 					"M84 X",
 					"T1",
 					"G4 P1000",
-					"M84 X"]);
+					"M84 X",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"]);
 			}
 			OctoPrint.control.sendGcode("M114");
 		};
@@ -612,14 +644,16 @@ $(function() {
 
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
-
-				OctoPrint.control.sendGcode(["T0",
+				"M300 S1392 P250",
+				"T0",
 				"G28",
 				"G1 F1400 X100 Y125 Z50",
 				"G1 F1400 Z5",
-				"M114"
+				"M114",
+				"M400",
+				"M300 S1392 P250",
+				"M300 S1312 P250", 
+				"M300 S1040 P250"
 				]);
 				//new PNotify({
 				//	title: 'Starting Height Check',
@@ -781,11 +815,11 @@ $(function() {
 		self.dualSetupCheckLevel = function(dualCheckLevelStep){
 
 			if (dualCheckLevelStep === 0){
+
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
-				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
-				OctoPrint.control.sendGcode(["M218 T1 Z0",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"M218 T1 Z0",
 					"M500",
 					"G28 X",
 					"T0",
@@ -798,6 +832,10 @@ $(function() {
 					"G1 F1000 Z0.25",
 					"G4 P1000",
 					"M84 X",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
 				]);
 			}
 		};
@@ -807,28 +845,35 @@ $(function() {
 		self.dualRightNozzleAdjust = function(dualRightNozzleAdjustStep){
 
 
-				OctoPrint.control.sendGcode(["M300 S1040 P250",
-				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
+
 
 
 			if (dualRightNozzleAdjustStep === 0){
 
-				OctoPrint.control.sendGcode(["M218 T1 Z0",
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"M218 T1 Z0",
 					"M500",
 					"G28 X",
 					"T0",
 					"G28 X",
 					"T0",
 					"G28",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
 				]);
 				OctoPrint.printer.extrude(10);
 				self.cooldown();
 			}
 
 			if (dualRightNozzleAdjustStep === 1){
-				OctoPrint.control.sendGcode(["T1",
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"T1",
 					"G92 E0",
 					"G1 F200 E-0.5",
 					"G92 E0",
@@ -836,7 +881,11 @@ $(function() {
 					"G28 X",
 					"G28",
 					"G1 F2000 X100 Y125 Z10",
-					"G1 F1400 Z2"
+					"G1 F1400 Z2",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
 				]);
 			}
 			if (dualRightNozzleAdjustStep === 2){
@@ -850,7 +899,10 @@ $(function() {
 				self.goTo("10");
 			}
 			if (dualRightNozzleAdjustStep === 'simple'){
-				OctoPrint.control.sendGcode(["M218 T1 Z0",
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"M218 T1 Z0",
 					"M500",
 					"M605 S0",
 					"T0",
@@ -861,7 +913,11 @@ $(function() {
 					"G28",
 					"T1",
 					"G1 F2000 X100 Y125 Z50 E0.001",
-					"G1 F1000 Z0"
+					"G1 F1000 Z0",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
 				]);
 				OctoPrint.printer.extrude(10);
 				self.cooldown();
@@ -900,10 +956,7 @@ $(function() {
 		};
 
 		self.printSawBin = function(){
-			OctoPrint.control.sendGcode(["M300 S1040 P250",
-				"M300 S1312 P250", 
-				"M300 S1392 P250"
-				]);
+
 			
 			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
 			if (self.calibrationAxis()=="X"){
