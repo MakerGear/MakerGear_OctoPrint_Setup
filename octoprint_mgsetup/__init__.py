@@ -56,6 +56,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.pluginVersion = ""
 		self.ip = ""
 		self.firmwareline = ""
+		self.localfirmwareline = ""
 
 
 
@@ -212,6 +213,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info(e)
 		except:
 			raise
+		self.getLocalFirmwareVersion()
 
 	def get_template_configs(self):
 		self._logger.info("MGSetup get_template_configs triggered.")
@@ -224,7 +226,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_settings_defaults(self):
 		self._logger.info("MGSetup get_settings_defaults triggered.")
-		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "refactor")
+		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "refactor", localFirmwareVersion = "")
 
 	def get_settings_restricted_paths(self):
 		self._logger.info("MGSetup get_settings_restricted_paths triggered.")
@@ -336,13 +338,16 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
 					#_log_stderr(*lines)
 					all_stderr += list(lines)
+					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
 
 				lines = p.stdout.readlines(timeout=0.5)
 				if lines:
 					lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
 					#_log_stdout(*lines)
 					all_stdout += list(lines)
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = lines))
+					self._logger.info(lines)
+					self._logger.info(all_stdout)
+					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
 
 		finally:
 			p.close()
@@ -370,6 +375,25 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#p = subprocess.call("/home/pi/.octoprint/scripts/counter.sh", shell=True)
 		#while p.poll():
 		#	self._logger.info(p.readline())
+
+
+	def getLocalFirmwareVersion(self):
+		self._logger.info("local firmware reports itself as: ")
+		if os.path.isfile('/home/pi/m3firmware/src/Marlin/Version.h'):
+			with open('/home/pi/m3firmware/src/Marlin/Version.h', 'r') as f:
+					self.filelines = f.readlines()
+					self._logger.info(self.filelines[37])
+					pattern = r'".+"'
+					matchedline = re.search(pattern,self.filelines[37]).group()
+					self._logger.info(matchedline)
+					self._settings.set(["localFirmwareVersion"],matchedline)
+					self._settings.save()
+					self.localfirmwareline = matchedline
+					self._plugin_manager.send_plugin_message("mgsetup", dict(localfirmwareline = self.localfirmwareline))
+
+	def updateLocalFirmware(self):
+		self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
+		self.getLocalFirmwareVersion()
 
 
 	def writeNetconnectdPassword(self, newPassword):
@@ -461,6 +485,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'patch':
 			self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh")
 			self._logger.info("Patch started.")
+		elif action["action"] == 'updateFirmware':
+			self.updateLocalFirmware()
+			self._logger.info("Update Firmware started.")
 
 
 	def turnSshOn(self):

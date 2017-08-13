@@ -1767,6 +1767,7 @@ $(function() {
 			}
 			if (data.commandError != undefined){
 				console.log(data.commandError);
+				self.commandResponse(self.commandResponse()+data.commandError);
 			}
 			if (data.pleaseRemind != undefined){
 				self.remindPlease(true);
