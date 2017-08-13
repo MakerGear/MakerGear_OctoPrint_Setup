@@ -446,16 +446,15 @@ $(function() {
 			}
 			if (hotend == "T0"){
 
-				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				OctoPrint.control.sendGcode([
+					"M104 T0 S220",
+					"M140 S70",
+					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
 					"G1 X20",
-					"M104 T0 S220",
-					"M140 S70",
-					"M104 T0 S220",
-					"M140 S70",
 					"M109 S220 T0",
 					"M400",
 					"M300 S1392 P250",
@@ -463,14 +462,15 @@ $(function() {
 					"M300 S1040 P250"
 				]);
 			} else if (hotend == "T1"){
-				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				OctoPrint.control.sendGcode([
+					"M104 T1 S220",
+					"M140 S70",
+					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
 					"G1 X20 Y100",
-					"M104 T1 S220",
-					"M140 S70",
 					"M109 S220 T1",
 					"T1",
 					"M400",
