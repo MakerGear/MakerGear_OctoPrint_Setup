@@ -33,23 +33,29 @@
 <center>
     <h3>Welcome to the MakerGear M3 Quick Start Plugin!</h3>
     <br><br></center>
-    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>
+
+
     <div data-bind="visible: ($root.googleGood()===-1)"><p>    We're currently checking your Internet Connection Status.</p>
     </div>
     <div data-bind="visible: $root.googleGood()===0"> 
-    <p>
-        You are <span style="color:red"> NOT </span> connected to the Internet. Please connect an Ethernet cable or use the "Wireless Configuration" button below to connect your M3 3D Printer to an Internet enabled network.
-                    <center><button style="width:150px;height:100px;" class="btngo" data-bind="visible: loginState.isUser, click: function() {$root.showSettings()}">
-                    <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/wifiWhite.png', 'width': '50px',} , visible: loginState.isUser && (setupStep()==='0')" />
-                    <br />Wireless Configuration</button></center>
-                    <br />
-        <button data-bind="click: function() { $root.checkGoogle() }"> Check Internet Connection Again</button><br>
-    </p>
-      </div> 
-    <div data-bind="visible: $root.googleGood()===1"><p>
-        You are connected to the Internet - please proceed to Quick Check 
-    </p></div>
+        <p>
+            You are <span style="color:red"> NOT </span> connected to the Internet. Please connect an Ethernet cable or use the "Wireless Configuration" button below to connect your M3 3D Printer to an Internet enabled network.
+                        <center><button style="width:150px;height:100px;" class="btngo" data-bind="visible: loginState.isUser, click: function() {$root.showSettings()}">
+                        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/wifiWhite.png', 'width': '50px',} , visible: loginState.isUser && (setupStep()==='0')" />
+                        <br />Wireless Configuration</button></center>
+                        <br />
+            <button data-bind="click: function() { $root.checkGoogle() }"> Check Internet Connection Again</button><br>
+        </p>
+    </div> 
+    <div data-bind="visible: $root.googleGood()===1">
+        <p>
+            You are connected to the Internet - please proceed to Quick Check 
+        </p>
+    </div>
 <hr />
+
+    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>
+    
                 <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
 <hr />
 <br />
@@ -74,7 +80,7 @@
 
 <h1 style="text-align:left;">Starting Height Check</h1>
 <p style="text-align:left;">
-During the next few steps, you will verify the printer's starting height. First, we'll use a simple visual test to perform a saftey check. Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
+During the next few steps, you will verify the printer's starting height. First, we'll use a simple visual test to perform a safety check. Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
 </p>
 
 <div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2); display:block; " data-bind="visible:$root.untouchable()">
@@ -190,7 +196,7 @@ During this step, you'll use the <strong>Bed Height Buttons</strong> below to ad
 <div data-bind="visible: $root.isDual()">
 During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the Left Extruder (T0) nozzle and the glass build plate.
 </div>
- When this step is completed you should be able to slide the blue feeler gauge between the nozzle and glass with very little resistance
+ When this step is completed you should be able to slide the blue feeler gauge between the nozzle and glass with very little resistance.
 <p>
     First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle. NOTE: In order to prevent the nozzle from colliding with the build plate, you should not use the "1 mm Up" button when the nozzle is within 1 mm of the build plate. The "1 mm Up" button may become disabled to prevent collision - in this case use the "0.1 mm Up" button to continue. 
 </p>
@@ -318,7 +324,7 @@ Now we’ll prepare to load filament, if you have not already, while waiting for
 
 
 
-Place the PLA filament spool on the spool holder so that the loose end points direclty upwards into the filament guide. You may need to flip your spool in order to acheive the proper orientation. Cut the end of the filament so that the tip is flat.
+Place the PLA filament spool on the spool holder so that the loose end points directly upwards into the filament guide. You may need to flip your spool in order to achieve the proper orientation. Cut the end of the filament so that the tip is flat.
 
 <br /><br />
 
@@ -421,7 +427,7 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 </p>
 
 <p>
-    During this step, you will print a small Zigzag pattern that will help you to gauge, adjust, and perfect your starting height (also known as "Z Offset"). 
+    During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your starting height (also known as "Z Offset"). 
 </p>
 
 <p>
@@ -429,7 +435,7 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 </p>
 
 <ol>
-    <li>Heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.
+    <li>Start to heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.
     <li>Move components to their home positions.
     <li>Move extruder to its purge position.
     <li>Purge and wipe the extruder on the lower right-hand corner of the build plate.
@@ -603,7 +609,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
         In this step you will check if your build surface is level by verifying the vertical alignment of all four corners of your build surface. 
     </p>
     <p>
-        Click “Begin Corner Check” to print a Zigzag pattern on each corner of your build surface. 
+        Click “Begin Corner Check” to print four Zigzag patterns, one on each corner of your build surface. 
     </p>
 <button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepFiveBeginCornerCheckClicked(), click: function() { printWiggleConfirm('all') }">{{ _('Begin Corner Check') }}</button>
 <br>
@@ -625,7 +631,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 </div>
 </div>
 <p>
-    After all four Zigzag patterns have printed, remove each one.
+    After all four Zigzag patterns have printed, remove each one using your tweezers.
 </p>
 <hr />
 <h1 style="">LOOK CAREFULLY </h1>
@@ -654,19 +660,20 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
             All four zigzag patterns look the same (each pattern should be within 2 strands of each other).
             <br />
             <br />
-            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+            <strong>NOTE:</strong> Your zigzag patterns might not match the picture above perfectly - the most important thing is that all four patterens are the same. 
         </td>
         <td colspan="2">
              One or more of the patterns looks different from the other patterns.
+            <strong>NOTE:</strong> If you're not sure, or if you had any problems printing the zigzag patterns, click the button below. 
          
         </td>
     </tr>
     <tr>
         <td class="buttonCell">
-             <center><button   style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('7'); window.scroll(0,0) }">{{ _('All four Zigzag patterns peeled off the same.') }}</button></center>
+             <center><button   style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('7'); window.scroll(0,0) }">{{ _('All four Zigzag patterns are the same.') }}</button></center>
         </td>
         <td colspan="2" class="buttonCell">
-            <center><button style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('6'); window.scroll(0,0) }">{{ _('One or more of the Zigzag patterns was different from the others.') }}</button></center>
+            <center><button style="min-height:50px;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepFiveBeginCornerCheckClicked(), click: function() { $root.goTo('6'); window.scroll(0,0) }">{{ _('One or more of the Zigzag patterns is different from the others.') }}</button></center>
         </td>
     </tr>
 </table>
@@ -718,7 +725,7 @@ Here you will be able to print Zigzag patterns in each corner and then adjust th
 </div>
 
 
-Once the printer has stopped moving, use the four Zigzag pattern position buttons to print in each corner, starting with the corner that was most different from the others in the Four Zigzag pattern print.  After each print, inspect the Zigzag pattern and adjust the bed accordingly:<br><br>
+Once the printer has stopped moving, use the four Zigzag pattern position buttons to print in each corner, starting with the corner that was most different from the others in the Four Zigzag pattern print.  After each print, remove the Zigzag pattern with your tweezers. Inspect the Zigzag pattern and use your 2mm allen key to adjust the bed accordingly, as shown below:<br><br>
 
 
 
@@ -754,7 +761,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
 
 <img src="/plugin/mgsetup/static/img/10.jpg">
-<p>A perfectly leveled corner will result in corner Zigzag pattern that peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments. If your zigzag is close to this, your corner is set and needs no further adjustment.
+<p> You should make the fewest number of adjustments required to make all four of your Zigzag patternes look the same. If all of the corners are different, or you are unsure, set each pattern so that it peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments.
 </p>
 
 <center>
@@ -866,7 +873,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 <h1 style="text-align:left;">Extruder 1 Starting Height Check</h1>
 <p style="text-align:left;">
 
-During the next few steps, you will verify the Right Extruder's (T1) starting height. First, we'll use a simple visual test to perform a saftey check.   Click <strong>Prepare</strong> to move the printer to its testing position.
+During the next few steps, you will verify the Right Extruder's (T1) starting height. First, we'll use a simple visual test to perform a safety check.   Click <strong>Prepare</strong> to move the printer to its testing position.
 <br><br>
 
 
@@ -1047,7 +1054,7 @@ Now we’ll prepare to load filament, if you have not already, while waiting for
 <br><br>
 
 
-Place the PLA filament spool on the spool holder so that the loose end points direclty upwards into the filament guide. You may need to flip your spool in order to acheive the proper orientation. Cut the end of the filament so that the tip is flat.
+Place the PLA filament spool on the spool holder so that the loose end points directly upwards into the filament guide. You may need to flip your spool in order to achieve the proper orientation. Cut the end of the filament so that the tip is flat.
 
 <br /><br />
 
@@ -1343,8 +1350,8 @@ After printing the pattern, you’ll examine it on the build plate: the perimete
     </div>
 </div>
 </div><br><br>
+<!--
 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /><br><br><br>
-
 
 
 If the two squares do not overlap, click “Begin Dual Printing”:<br><br>
@@ -1355,6 +1362,67 @@ If the two squares do not overlap, click “Begin Dual Printing”:<br><br>
 If the two squares overlap, click “Adjust X and Y Offsets” to proceed:<br><br>
 <center>
 <button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
+-->
+
+
+<table>
+    <tr>
+        <td style="width:45%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+            <a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /></a>
+ 
+        </td>
+
+        <td style="width:45%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+            <a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /></a>
+ 
+        </td>
+ 
+
+
+
+    </tr>
+
+
+
+
+    <tr>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+           The two patterns do not intersect and have even spacing
+
+
+             
+        </td>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+               The two patterns intersect or have uneven spacing
+
+        </td>
+
+    </tr>
+
+    <tr>
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            
+         <center><button class="btngoBig" data-bind="click: function() { $root.goTo('16'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center>
+
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+
+<center><button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
+
+
+        </td>
+
+    <tr>
+
+</table>
+
+
 
 
 
@@ -1394,10 +1462,24 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <div data-bind="visible: loginState.isUser && setupStep()==='14'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14'" />
-    </div><br>
+    </div><br><br>
+    <p>
+    In this step we will calibrate the the distance between the 2 extruders on the X axis. To do this we will use both extruders to  print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the X axis is completely calibrated.
+    </p>
 
-Now we’ll print a calibration pattern with both extruders in order to determine the level of calibration between both extruders along the X axis.<br><br>
-It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:<br>
+
+
+        Click "Print First Pattern” when you are ready to begin.
+        <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print First Pattern</button>
+        {# <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 2</button>
+        <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 3</button> #}</center><br>
+
+
+
+    <p>
+        It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:<br>
+    </p>
+
 <div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
 <div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
@@ -1414,16 +1496,20 @@ It may take a few minutes for each pattern to begin printing, as the printer wil
     </div>
 </div>
 </div>
-Once both extruders have printed the pattern, choose from positions 1 – 5 to identify the area where the points from each extruder’s pattern are most closely aligned. The ideal result will show perfectly-aligned features position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the X offset before prompting you print the same pattern again.
-<br><br>
-Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time.<br><br>
-Click "Print First Pattern” when you are ready to begin.
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print First Pattern</button>
-</center><br>
 
-<div data-bind="visible: $root.calibrationStep() === 0">Pattern 1: Coarse Adjustment</div>
-<div data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
-<div data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
+<p>
+    Once both extruders have printed the pattern, choose from positions 1 – 5 to identify which set of 'sawteeth' are most closely aligned. 
+    The ideal result will show perfectly-aligned features for position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the X offset before prompting you print the same pattern again.
+</p>
+<p>
+    Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time. After completing the third procedure, you will automatically be sent ot the next step.
+</p>
+
+
+
+<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 0">Pattern 1: Coarse Adjustment</div>
+<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
+<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
 <center>
 <div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
         {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14' && $root.calibrationStep() < 1" /> #}
@@ -1435,6 +1521,7 @@ Click "Print First Pattern” when you are ready to begin.
 <span data-bind="text: 'At which position (1-5) are the vertical lines most closely aligned?', visible: $root.calibrationStep() > -1"></span>
 </center><br><br>
 <center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button></center>
+
 
 </div>
 {#      88  8888888888   
@@ -1451,9 +1538,20 @@ Click "Print First Pattern” when you are ready to begin.
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15'" />
     </div><br>
+    <p>
+    In this step we will calibrate the the distance between the 2 extruders on the Y axis. To do this we will use both extruders to  print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the Y axis is completely calibrated.
+    </p>
 
-Now we’ll print a calibration pattern with both extruders in order to determine the level of calibration between both extruders along the Y axis.<br><br>
-It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:<br>
+    Click "Print First Pattern” when you are ready to begin.
+    <br><br><center>
+    <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('Y'),  $root.printSawBinConfirm() }">Print First Pattern</button>
+    {# <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 2</button>
+    <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 3</button> #}</center><br>
+
+    <p>
+    It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:
+    </p>
+
 <div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
 <div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
@@ -1470,21 +1568,24 @@ It may take a few minutes for each pattern to begin printing, as the printer wil
     </div>
 </div>
 </div>
-Once both extruders have printed the pattern, choose from positions 1 – 5 to identify the area where the points from each extruder’s pattern are most closely aligned. The ideal result will show perfectly-aligned features position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the Y offset before prompting you print the same pattern again.
-<br><br>
-Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time.<br><br>
-Click "Print First Pattern” when you are ready to begin.
-<br><br><center>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('Y'),  $root.printSawBinConfirm() }">Print First Pattern</button>
-{# <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 2</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print Y-Axis Pattern 3</button> #}</center><br>
+
+<p>
+    Once both extruders have printed the pattern, choose from positions 1 – 5 to identify which set of 'sawteeth' are most closely aligned. 
+    The ideal result will show perfectly-aligned features for position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the Y offset before prompting you print the same pattern again.
+</p>
+<p>
+    Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time. After completing the third procedure, you will automatically be sent ot the next step.
+</p>
+
+
+
 <br>
 <center>
 {# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span> #}
 <span data-bind="text: 'At which position (1-5) are the horizontal lines most closely aligned?', visible: $root.calibrationStep() > -1"></span></center><br>
-<div data-bind="visible: $root.calibrationStep() === 0">Pattern 1: Coarse Adjustment</div>
-<div data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
-<div data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
+<div style="font-size:20px;" data-bind="visible: $root.calibrationStep() === 0">Pattern 1: Coarse Adjustment</div>
+<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
+<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
 <div>
 
 <div style="width: 100%; margin:auto;vertical-align: middle; " data-bind="visible: $root.isDual">
