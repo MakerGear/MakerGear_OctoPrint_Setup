@@ -120,21 +120,21 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
 <div data-bind="visible:!$root.isDual()">
 <a href="/plugin/mgsetup/static/img/6.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/6.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
 <div data-bind="visible:$root.isDual()">
-<a href="/plugin/mgsetup/static/img/15.png" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/15.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<a href="/plugin/mgsetup/static/img/15.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/15.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <div data-bind="visible:!$root.isDual()">
 <a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
 <div data-bind="visible:$root.isDual()">
-<a href="/plugin/mgsetup/static/img/17.png" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/17.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<a href="/plugin/mgsetup/static/img/17.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/17.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('3'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <div data-bind="visible:!$root.isDual()">
 <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
 <div data-bind="visible:$root.isDual()">
-<a href="/plugin/mgsetup/static/img/19.png" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/19.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<a href="/plugin/mgsetup/static/img/19.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/19.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
@@ -757,20 +757,6 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 <p>A perfectly leveled corner will result in corner Zigzag pattern that peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments. If your zigzag is close to this, your corner is set and needs no further adjustment.
 </p>
 
-
-
-
-{# <div style="position:relative;height: 454px;width: 95%; background-image: url('/plugin/mgsetup/static/img/cornerlabels.png'); background-repeat: no-repeat round; background-position: center;">
-       
-    <button class="btnstay bottomleft" data-bind="enable: $root.stepSixPrepared() && $root.lockButton() , click: function() {$root.printWiggleConfirm(20); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 1</button>
-    <button class="btnstay bottomright" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(3); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 2</button>
-    <button class="btnstay topright" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(4); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 3</button>
-    <button class="btnstay topleft" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(5); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 4</button>
-
-
-    </div>
-<br><br><br> #}
-
 <center>
 <img src="/plugin/mgsetup/static/img/cornerlabels.png"><br><br>
 <div style="width:80%">
@@ -804,24 +790,9 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='7'" />
     </div><br>
 
-<!--
-<span data-bind="visible: !$root.isDual()"><h1 style="text-align:left;">Quick Check Complete</h1></span>
-<span data-bind="visible: $root.isDual()"><h1 style="text-align:left;">Left Extruder Check Complete</h1></span>
-<span data-bind="visible: !$root.isDual()">Congratulations, your M3 is ready to start printing!
-
-
-    Note that your printer is still hot from testing; if you are done with your printer, click below to turn off heaters. If you're ready to get started printing, you can leave the heaters on.</span><br>
-    <center>
-        <button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}, visible: !$root.isDual()">Cooldown</button>
-    </center>
--->
 
     <h1 style="text-align:left;">Your First Print</h1>
-    <!--
-    <p>
-        <em>How to print Video</em>
-    </p>
--->
+
 
     <p> 
         In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. (You can leave all the settings at their default values.)
@@ -853,23 +824,6 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
     </p>
 
-
-
-    <!--
-    <p>
-    
-        <em>Explanation of STL, Slicing and Gcode</em>
-    </p>
-
-
-    <p>
-    
-        <em>Videos / Links to using OctoPrint</em>
-    </p>
-    -->
-{#     <h1 style="text-align:left;">Configuration for Further Use</h1>
-
-    Now that your initial setup is complete, you can change the first tab that is shown when you connect to the Temperature tab for immediate access.  This can be changed in the Settings: <a href="#settings_plugin_mgsetup" data-bind="click: function() { $root.showSettings('settings_plugin_mgsetup'); }">click here to go to the MakerGear Setup settings "tab"</a>.<br><br><br> #}
 
     <div data-bind="visible: $root.isDual">
     <h1 style="text-align:left;">M3 Independent Dual (M3-ID) Setup</h1>
@@ -954,15 +908,15 @@ TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO
 <table>
     <tr>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/16.png" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/16.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+<a href="/plugin/mgsetup/static/img/16.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/16.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/18.png" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/18.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+<a href="/plugin/mgsetup/static/img/18.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/18.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('10'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
- <a href="/plugin/mgsetup/static/img/20.png" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/20.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+ <a href="/plugin/mgsetup/static/img/20.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/20.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
@@ -1029,50 +983,7 @@ Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that s
 Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room temperature before touching any of the printer’s components.
 <br><br>
 
-{# During this step you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the left nozzle (T0) and the build plate. After reaching the proper bed height, you’ll return to the right extruder (T1) in order to ensure that its starting height is properly aligned.
-
-<p>
-    First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle to prevent the build plate from colliding with the nozzle.
-</p>
-
-<p>
-    Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the T1 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
-</p>
-
-<p>
-    Next, click the "0.01 mm Up” button to move the bed up until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle.
-</p>
-<h4>Bed Height Buttons</h4>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 1 mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser()&& $root.ZPos() > 1 && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button>1 mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button>1 mm Down
-        </div>
-    </div>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.1 mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1 mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button>.1 mm Down
-        </div>
-    </div>
-    <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
-        <h1>Z 0.01 mm</h1>
-        <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button>.01 mm Up
-        </div>
-        <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button>.01 mm Down
-        </div>
-    </div>
 <br><br>
-Once the feeler gauge catches between the nozzle and bed, click "Switch Extruders" to start adjusting the Extruder 1 height:
-<br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition() && !$root.stepNineExtrudersSwitched(), click: function() { $root.dualRightNozzleAdjust(2), $root.stepNineExtrudersSwitched(true) }">Switch Extruders<br /></button></center> #}<br><br>
 <ol>
     <li>Now move the feeler gauge under the tip of the T1 nozzle.
     <li>Loosen the T1 clamping bolt until the T1 hot end slides downward and touches the bed.
@@ -1508,8 +1419,7 @@ Once both extruders have printed the pattern, choose from positions 1 – 5 to i
 Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time.<br><br>
 Click "Print First Pattern” when you are ready to begin.
 <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print First Pattern</button>
-{# <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 2</button>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 3</button> #}</center><br>
+</center><br>
 
 <div data-bind="visible: $root.calibrationStep() === 0">Pattern 1: Coarse Adjustment</div>
 <div data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
@@ -1525,29 +1435,6 @@ Click "Print First Pattern” when you are ready to begin.
 <span data-bind="text: 'At which position (1-5) are the vertical lines most closely aligned?', visible: $root.calibrationStep() > -1"></span>
 </center><br><br>
 <center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button></center>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{# X/Y Offset Calibration - print sawtooth bin, ask user which bin is closest to having the sawtooth centered.
-
-If not middle bin, offset by the bin that is selected and print again.  Repeat until middle bin is selected.
-
-Once middle bin is selected, switch to sawtooth-sawtooth 0.1 offset pattern and repeat the process.  Then switch to 0.05mm offset pattern and repeat.
- #}
 
 </div>
 {#      88  8888888888   
@@ -1615,19 +1502,9 @@ Click "Print First Pattern” when you are ready to begin.
 </div>
 </div><br><br>
 
-{# <button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button>
-<br><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button> #}
+
 </div>
 <br><br><br>
-
-{# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span><span data-bind="text: 'Which sawtooth set is closest to having the verticals perfectly centered?', visible: $root.calibrationStep() > 0"></span>
-<br><br> #}
-{# <button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(3), $root.sawBinPrinted(false) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.sawBinPrinted(), click: function() { $root.pickSawBin(5) }">5</button>
- #}
-
 
 
 

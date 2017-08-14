@@ -83,10 +83,10 @@ $(function() {
 
 		self.isDual = ko.pureComputed(function(){
 			if (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
-				console.log("We're a Dual!");
+				if(!self.hideDebug()){console.log("We're a Dual!");}
 				return true;
 			} else {
-				console.log("We're a Single!");
+				if(!self.hideDebug()){console.log("We're a Single!");}
 				return false;
 			}
 		},this); //stand-in for setting dual vs. single - set to true for now/testing - TODO - change this to actually check/reflect dual state
@@ -140,12 +140,11 @@ $(function() {
 				self.originalZOffset = parseFloat(match[6]);
 				self.ZOffset(self.originalZOffset);
 			}
-			console.log(self.zoffsetline().keys());
-			console.log("hey");
+			if(!self.hideDebug()){console.log(self.zoffsetline().keys());}
 				//alert('M206 loaded; Z Home Offset: '+self.originalZOffset.toString());
 		}
 		,this);
-		console.log(self.zoffsetline());
+		if(!self.hideDebug()){console.log(self.zoffsetline());}
 		self.eepromData = ko.observableArray([]);
 		self.coldLevelCheckPosition = ko.observable(0);
 		self.stepOnePrepared = ko.observable(false); //implemented, good
@@ -184,7 +183,7 @@ $(function() {
 		self.testtest = ([1,2,3,"test"]);
 		self.testDisplayValue = ko.observable(parseFloat(self.displayBedTemp)); 
 
-		console.log(self.loginState);
+		if(!self.hideDebug()){console.log(self.loginState);}
 
 		// Support/Activation/Registration relevant:
 		self.unlockSupport = ko.observable(false);
@@ -244,7 +243,7 @@ $(function() {
 		self.hasInputWiggleHeight = ko.observable(false);
 
 		self.printWiggleConfirm = function(wigglePosition, inputWiggleHeight){
-			console.log("printWiggleConfirm triggered");
+			if(!self.hideDebug()){console.log("printWiggleConfirm triggered");}
 			if (wigglePosition !== undefined){
 				self.storeWigglePosition(wigglePosition);
 			}
@@ -258,24 +257,13 @@ $(function() {
 			self.printWiggleDialog.modal("show");
 		};
 
-		self.printWiggleCancel = function(){
-
-
-
-
-
-
-		};
-
-
 
 		self.printWiggle = function (wigglePosition, inputWiggleHeight) {
 
-
 			self.wiggleHeightAdjust = 0.1;
-			console.log(wigglePosition);
-			console.log(inputWiggleHeight);
-			console.log(self.wiggleHeightAdjust);
+			if(!self.hideDebug()){console.log(wigglePosition);}
+			if(!self.hideDebug()){console.log(inputWiggleHeight);}
+			if(!self.hideDebug()){console.log(self.wiggleHeightAdjust);}
 
 				
 			OctoPrint.control.sendGcode(["M300 S1040 P250",
@@ -290,7 +278,7 @@ $(function() {
 			if (inputWiggleHeight !== undefined){
 				self.ZWiggleHeight(parseFloat((parseFloat(self.ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
 				//self.T1ZWiggleHeight(parseFloat((parseFloat(self.T1ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
-				console.log("ZWiggleHeight adjusted: "+self.ZWiggleHeight());
+				if(!self.hideDebug()){console.log("ZWiggleHeight adjusted: "+self.ZWiggleHeight());}
 				//console.log(typeof(self.ZWiggleHeight()));
 			}
 
@@ -299,7 +287,7 @@ $(function() {
 					inputWiggleHeight = self.storeInputWiggleHeight();
 					self.ZWiggleHeight(parseFloat((parseFloat(self.ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
 					//self.T1ZWiggleHeight(parseFloat((parseFloat(self.T1ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
-					console.log("ZWiggleHeight adjusted: "+self.ZWiggleHeight());
+					if(!self.hideDebug()){console.log("ZWiggleHeight adjusted: "+self.ZWiggleHeight());}
 					//console.log(typeof(self.ZWiggleHeight()));
 				}
 
@@ -314,7 +302,7 @@ $(function() {
 
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
-				console.log(parameters.wiggleHeight);
+				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
 //				OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
@@ -326,7 +314,7 @@ $(function() {
 			if (wigglePosition === 2){
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 20, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
-				console.log(parameters.wiggleHeight);
+				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
 			}
@@ -367,16 +355,16 @@ $(function() {
 			if (wigglePosition === 10){ //same as position 1 but without homing
 				
 
-				console.log(wigglePosition);
-				console.log(inputWiggleHeight);
-				console.log(self.wiggleHeightAdjust);
-				console.log(self.ZWiggleHeight());
-				console.log(typeof(self.ZWiggleHeight()));
-				console.log(typeof(self.wiggleHeightAdjust));
-				console.log(parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust));
+				if(!self.hideDebug()){console.log(wigglePosition);}
+				if(!self.hideDebug()){console.log(inputWiggleHeight);}
+				if(!self.hideDebug()){console.log(self.wiggleHeightAdjust);}
+				if(!self.hideDebug()){console.log(self.ZWiggleHeight());}
+				if(!self.hideDebug()){console.log(typeof(self.ZWiggleHeight()));}
+				if(!self.hideDebug()){console.log(typeof(self.wiggleHeightAdjust));}
+				if(!self.hideDebug()){console.log(parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust));}
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
-				console.log(parameters.wiggleHeight);
+				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
@@ -632,9 +620,9 @@ $(function() {
 				if (self.ZPosFresh){
 					//self.newZOffset = parseFloat(self.ZPos())-(parseFloat(self.ZOffset()));
 					self.newZOffset = (parseFloat(self.ZOffset())-parseFloat(self.ZPos()));
-					console.log(self.newZOffset);
-					console.log(self.ZOffset());
-					console.log(self.ZPos());
+					if(!self.hideDebug()){console.log(self.newZOffset);}
+					if(!self.hideDebug()){console.log(self.ZOffset());}
+					if(!self.hideDebug()){console.log(self.ZPos());}
 					//alert(self.newZOffset + " " + self.ZPos() + " " + self.ZOffset());
 					self.ZOffString = "M206 Z"+self.newZOffset.toString();
 					OctoPrint.control.sendGcode([self.ZOffString,
@@ -653,16 +641,16 @@ $(function() {
 				self.newZOffset = (parseFloat(self.ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
 				if (self.newZOffset.toString() == "NaN") {
 					self.notify("Offset Setting Error","There was an error when setting the Z Offset.  Please refresh the page and try again.  Support values: self.newZOffset="+self.newZOffset.toString()+" ; self.ZOffset="+self.ZOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
-					console.log("Offset setting error:");
-					console.log("self.newZOffset = "+self.newZOffset.toString());
-					console.log("self.ZOffset = "+self.ZOffset().toString());
-					console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());
+					if(!self.hideDebug()){console.log("Offset setting error:");}
+					if(!self.hideDebug()){console.log("self.newZOffset = "+self.newZOffset.toString());}
+					if(!self.hideDebug()){console.log("self.ZOffset = "+self.ZOffset().toString());}
+					if(!self.hideDebug()){console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());}
 					return;
 				}
 				//self.newZOffset = self.newZOffset + 0.1 ;
 				self.ZOffString = "M206 Z"+self.newZOffset.toString();
-				console.log(self.newZOffset.toString());
-				console.log(self.ZOffString);
+				if(!self.hideDebug()){console.log(self.newZOffset.toString());}
+				if(!self.hideDebug()){console.log(self.ZOffString);}
 				OctoPrint.control.sendGcode([self.ZOffString,
 					"M500"					
 				]);
@@ -682,16 +670,16 @@ $(function() {
 				self.newZOffset = (parseFloat(self.tool1ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
 				if (self.newZOffset.toString() == "NaN") {
 					self.notify("Offset Setting Error","There was an error when setting the Z Offset.  Please refresh the page and try again.  Support values: self.newZOffset="+self.newZOffset.toString()+" ; self.ZOffset="+self.ZOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
-					console.log("Offset setting error:");
-					console.log("self.newZOffset = "+self.newZOffset.toString());
-					console.log("self.tool1ZOffset = "+self.tool1ZOffset().toString());
-					console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());
+					if(!self.hideDebug()){console.log("Offset setting error:");}
+					if(!self.hideDebug()){console.log("self.newZOffset = "+self.newZOffset.toString());}
+					if(!self.hideDebug()){console.log("self.tool1ZOffset = "+self.tool1ZOffset().toString());}
+					if(!self.hideDebug()){console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());}
 					return;
 				}
 				//self.newZOffset = self.newZOffset + 0.1 ;
 				self.ZOffString = "M218 T1 Z"+self.newZOffset.toString();
-				console.log(self.newZOffset.toString());
-				console.log(self.ZOffString);
+				if(!self.hideDebug()){console.log(self.newZOffset.toString());}
+				if(!self.hideDebug()){console.log(self.ZOffString);}
 				OctoPrint.control.sendGcode([self.ZOffString,
 					"M500"					
 				]);
@@ -905,7 +893,7 @@ $(function() {
 				"M300 S1392 P250"
 				]);
 			
-			console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
+			if(!self.hideDebug()){console.log("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");}
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
 					if (self.stepFourteenToHome()){
@@ -965,7 +953,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 1){
-					console.log("PickSawBin 1, X.");
+					if(!self.hideDebug()){console.log("PickSawBin 1, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
@@ -973,7 +961,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 2){
-					console.log("PickSawBin 2, X.");
+					if(!self.hideDebug()){console.log("PickSawBin 2, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
@@ -981,7 +969,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 3){
-					console.log("PickSawBin 3, X.");
+					if(!self.hideDebug()){console.log("PickSawBin 3, X.");}
 					// self.newT1XOffset = ((self.tool1XOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 					// 	"M500",
@@ -997,7 +985,7 @@ $(function() {
 					}
 				}
 				if (chosenMatch == 4){
-					console.log("PickSawBin 4, X.");
+					if(!self.hideDebug()){console.log("PickSawBin 4, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(-1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
@@ -1005,7 +993,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 5){
-					console.log("PickSawBin 5, X.");
+					if(!self.hideDebug()){console.log("PickSawBin 5, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(-2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
@@ -1017,7 +1005,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 1){
-					console.log("PickSawBin 1, Y.");
+					if(!self.hideDebug()){console.log("PickSawBin 1, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
@@ -1025,7 +1013,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 2){
-					console.log("PickSawBin 2, Y.");
+					if(!self.hideDebug()){console.log("PickSawBin 2, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
@@ -1033,7 +1021,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 3){
-					console.log("PickSawBin 3, Y.");
+					if(!self.hideDebug()){console.log("PickSawBin 3, Y.");}
 					// self.newT1YOffset = ((self.tool1YOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 					// 	"M500",
@@ -1050,7 +1038,7 @@ $(function() {
 					}
 				}
 				if (chosenMatch == 4){
-					console.log("PickSawBin 4, Y.");
+					if(!self.hideDebug()){console.log("PickSawBin 4, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(-1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
@@ -1058,7 +1046,7 @@ $(function() {
 					self.printSawBin();
 				}
 				if (chosenMatch == 5){
-					console.log("PickSawBin 5, Y.");
+					if(!self.hideDebug()){console.log("PickSawBin 5, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(-2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
@@ -1078,19 +1066,6 @@ $(function() {
 // if no, user selects closest bin, we center on bin and then print bins again
 
 // to center - if bin 1, add (2*offset); if bin 2, add (1*offset); bin 3, (0*offset); bin 4, (-1*offset); bin 5, (-2*offset) to M218 T1 X offset
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 																			 
@@ -1165,7 +1140,7 @@ $(function() {
 			url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "adminAction", {"action":targetAction})
 				.done(function(response) {
-					console.log(response);
+					if(!self.hideDebug()){console.log(response);}
 				});
 		};
 
@@ -1256,32 +1231,6 @@ $(function() {
 				.done(function(response) {
 				//console.log(response);
 				});
-
-			// if (self.loginState.isUser()){
-			// 	OctoPrint.util.testUrl("http://www.google.com", {"response": "true"})
-			// 		.done(function(response) {
-			// 			if (response.result) {
-			// 				console.log(response);
-   //      	            // check passed
-   //          	       // alert("connected to google!")
-			// 				self.googleChecks(self.googleChecks()+1);
-			// 				if (response.status!==0 && response.status < 300){
-			// 					self.googleGood(1);
-			// 				}
-			// 			} else {
-			// 			//check failed
-			// 				if (self.googleChecks()>4){
-			// 				self.googleGood(0);
-			// 				} else {
-			// 					window.setTimeout(function() {self.checkGoogle()},3000);
-			// 					console.log("Google Check: "+str(self.googleChecks()));
-
-			// 				}
-			// 			}
-			// 		});
-			// } else {
-			// 	//window.setTimeout(function() {self.checkGoogle()},5000);
-			// }
 		};
 
 		self.notify = function (title,message,type,hide){
@@ -1389,7 +1338,7 @@ $(function() {
 				})
 				.fail(function(response){
 					alert("Something went wrong.  Please check all fields and try again, or contact Support@MakerGear.com .  Error: "+response.status+" "+response.statusText);
-					console.log(response);
+					if(!self.hideDebug()){console.log(response);}
 				});
 		};
 
@@ -1432,82 +1381,83 @@ $(function() {
 
 
 			if (targetStep === 0){
-				console.log("resetStep targetStep = 0");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 0");}
 			}
 			if (targetStep === 1){
-				console.log("resetStep targetStep = 1");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 1");}
 				self.stepOnePrepared(false);
 			}
 			if (targetStep === 2){
-				console.log("resetStep targetStep = 2");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 2");}
 				self.stepTwoPrepared(false);
 				self.stepTwoStartingHeightSaved(false);
 			}
 			if (targetStep === 3){
-				console.log("resetStep targetStep = 3");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 3");}
 				self.stepThreeStartHeatingClicked(false);
 			}
 			if (targetStep === 4){
-				console.log("resetStep targetStep = 4");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 4");}
 				self.stepFourShowFineAdjustments(false);
 				self.stepFourFirstWiggleClicked(false);
 			}
 			if (targetStep === 5){
-				console.log("resetStep targetStep = 5");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 5");}
 				self.stepFiveBeginCornerCheckClicked(false);
 			}
 			if (targetStep === 6){
-				console.log("resetStep targetStep = 6");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 6");}
 				self.stepSixPrepared(false);
 				self.stepSixWigglePrinted(false);
 			}
 			if (targetStep === 7){
-				console.log("resetStep targetStep = 7");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 7");}
 			}
 			if (targetStep === 8){
-				console.log("resetStep targetStep = 8");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 8");}
 				self.stepEightPrepared(false);
 				self.extOneNeedsPhysical(false);
 				self.cooldown();
 			}
 			if (targetStep === 9){
-				console.log("targetStep = 9");
+				if(!self.hideDebug()){console.log("targetStep = 9");}
 				self.stepNineAtPosition(false);
 				self.stepNineExtrudersSwitched(false);
 				self.cooldown();
 			}
 			if (targetStep === 10){
-				console.log("resetStep targetStep = 10");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 10");}
 				self.stepTenStartHeatingClicked(false);
 				self.stepTenFirstWiggleClicked(false); //vestigial?
 			}
 			if (targetStep === 11){
-				console.log("resetStep targetStep = 11");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 11");}
 				self.stepElevenFirstWiggleClicked(false);
 				self.stepElevenShowFineAdjustments(false);
 			}
 			if (targetStep === 12){
-				console.log("resetStep targetStep = 12");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 12");}
+				self.stepTwelveSimpleClicked(false);
 			}
-			if (targetStep === 12){
-				console.log("resetStep targetStep = 13");
+			if (targetStep === 13){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 13");}
 			}
 			if (targetStep === 14){
-				console.log("resetStep targetStep = 14");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 14");}
 				self.skipConfirm(false);
 				self.calibrationStep(0);
 				self.calibrationAxis("X");
 				self.sawBinPrinted(false);
 			}
 			if (targetStep === 15){
-				console.log("resetStep targetStep = 15");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 15");}
 				self.skipConfirm(false);
 				self.calibrationStep(0);
 				self.calibrationAxis("Y");
 				self.sawBinPrinted(false);
 			}
 			if (targetStep === 16){
-				console.log("resetStep targetStep = 16");
+				if(!self.hideDebug()){console.log("resetStep targetStep = 16");}
 			}
 
 		};
@@ -1526,14 +1476,14 @@ $(function() {
  // 88888888888        `8'        88888888888  88      `888       88        "Y88888P"   
 
 		self.onStartup = function () {
-			console.log("onStartup triggered.");
+			if(!self.hideDebug()){console.log("onStartup triggered.");}
 			self.requestData();
 		};
 
 		self.onStartupComplete = function() {
-			console.log("onStartupComplete triggered.");
+			if(!self.hideDebug()){console.log("onStartupComplete triggered.");}
 			//console.log(self.temperatures.tools());
-			console.log(self.oldZOffset);
+			if(!self.hideDebug()){console.log(self.oldZOffset);}
 			//self.updateCuraProfiles();
 			self.displayToolTemp(self.temperatures.tools()[0].actual);
 			self.displayToolTempTarget(self.temperatures.tools()[0].target);
@@ -1566,8 +1516,8 @@ $(function() {
 
 
 
-			console.log(self.settings);
-			console.log(self.userSettings);
+			if(!self.hideDebug()){console.log(self.settings);}
+			if(!self.hideDebug()){console.log(self.userSettings);}
 			self.targetName = "MakerGear " + self.hostname();
 			self.settings.appearance_name(self.targetName);
 			//OctoPrint.settings.save({appearance: {name:self.targetName}});
@@ -1599,30 +1549,10 @@ $(function() {
 			}
 			self.apiKey(self.settings.api_key());
 
-			//console.log(parseFloat(self.displayBedTemp));
-			//console.log(parseFloat(self.displayToolTemp));
-
-			/*self.tempsDangerous = function() {
-
-				if (parseFloat(self.displayBedTemp()) > 40 || parseFloat(self.displayToolTemp()) > 50){
-					return 'red';
-				} else {
-					return 'green';
-				}
-
-			};*/
-			//OctoPrint.settings.save({settings: {allViewModels: {ControlViewModel: {} }}})
-			// console.log(self.settings.printerProfiles.currentProfileData().extruder.count());
-			// if (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
-			// 	self.isDual(true);
-			// 	console.log("We're a Dual!");
-			// }
-
-			// console.log(document.location.host);
 		};
 
 		self.onEventClientOpened = function() {
-			console.log("onEventClientOpened triggered.");
+			if(!self.hideDebug()){console.log("onEventClientOpened triggered.");}
 			if (self.isOperational()) {
 				self.requestEeprom();
 				OctoPrint.control.sendGcode("M114");
@@ -1634,29 +1564,29 @@ $(function() {
 		};
 
 		self.onUserLoggedIn = function (data){
-			console.log("onUserLoggedIn triggered.");
+			if(!self.hideDebug()){console.log("onUserLoggedIn triggered.");}
 			if (self.googleGood()===-1 || self.googleGood()===0){
 				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
 			OctoPrint.settings.get();
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 			if (Array.isArray(self.serialNumber())){
-				console.log("Serial number is an array, grabbing the first entry for serialNumber() .");
+				if(!self.hideDebug()){console.log("Serial number is an array, grabbing the first entry for serialNumber() .");}
 				self.serialNumber(self.serialNumber()[0]);
 			}
 		};
 
 		self.onAfterBinding = function() {
-			console.log("onAfterBinding triggered.");
+			if(!self.hideDebug()){console.log("onAfterBinding triggered.");}
 			//self.support_widget = $("#mgsetup_support_widget");
 		};
 
 		self.onEventSettingsUpdated = function (payload) {
-			console.log("onEventSettingsUpdated triggered.");
+			if(!self.hideDebug()){console.log("onEventSettingsUpdated triggered.");}
 			// the webcam url might have changed, make sure we replace it now if the tab is focused
 			//self._enableWebcam();
 			self.requestData();
-			console.log(self.settings);
+			if(!self.hideDebug()){console.log(self.settings);}
 			//self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
 			self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
@@ -1681,7 +1611,7 @@ $(function() {
 		};
 
 		self.onEventPositionUpdate = function (payload) {
-			console.log("onEventPositionUpdate triggered.");
+			if(!self.hideDebug()){console.log("onEventPositionUpdate triggered.");}
 			if (parseFloat(payload["z"])!==parseFloat(self.ZPos)){
 				//alert(payload["z"]);
 				self.currentZPosition = parseFloat(payload["z"]);
@@ -1691,7 +1621,7 @@ $(function() {
 		};
 
 		self.onEventRegisteredMessageReceived = function(payload) {
-			console.log("onEventRegisteredMessageReceived triggered.");
+			if(!self.hideDebug()){console.log("onEventRegisteredMessageReceived triggered.");}
 			if (payload.key in self.feedbackControlLookup) {
 				var outputs = self.feedbackControlLookup[payload.key];
 				_.each(payload.outputs, function(value, key) {
@@ -1703,7 +1633,7 @@ $(function() {
 		};
 
 		self.onDataUpdaterPluginMessage = function(plugin, data) {
-			console.log("onDataUpdaterPluginMessage triggered.");
+			if(!self.hideDebug()){console.log("onDataUpdaterPluginMessage triggered.");}
 			if (plugin != "mgsetup") {
 				// console.log('Ignoring '+plugin);
 				return;
@@ -1716,7 +1646,7 @@ $(function() {
 					//console.log(result[1]);
 					self.ZOffset(parseFloat(result[1]));
 					//console.log(data.zoffsetline);
-					console.log(result);
+					if(!self.hideDebug()){console.log(result);}
 				}
 				self.zoffsetline(data.zoffsetline);
 			}
@@ -1724,16 +1654,16 @@ $(function() {
 				var re = /([XYZ])-?\d+\.\d+/g;
 				while (result = re.exec(data.tooloffsetline)){
 					//var result = re.exec(data.tooloffsetline);
-					console.log(result);
+					if(!self.hideDebug()){console.log(result);}
 					if (result[1]==="X"){
 						self.tool1XOffset(parseFloat(result[0].substr(1)));
-						console.log("Tool 1 X Offset: "+(result[0].substr(1)));
+						if(!self.hideDebug()){console.log("Tool 1 X Offset: "+(result[0].substr(1)));}
 					} else if (result[1]==="Y"){
 						self.tool1YOffset(parseFloat(result[0].substr(1)));
-						console.log("Tool 1 Y Offset: "+(result[0].substr(1)));
+						if(!self.hideDebug()){console.log("Tool 1 Y Offset: "+(result[0].substr(1)));}
 					} else if (result[1]==="Z"){
 						self.tool1ZOffset(parseFloat(result[0].substr(1)));
-						console.log("Tool 1 Z Offset: "+(result[0].substr(1)));
+						if(!self.hideDebug()){console.log("Tool 1 Z Offset: "+(result[0].substr(1)));}
 					}
 					//self.tool1XOffset(parseFloat(result[0]));
 					//var result = re.exec(data.tooloffsetline);
@@ -1747,8 +1677,8 @@ $(function() {
 			}
 			//self.tooloffsetline(data.tooloffsetline);
 			self.hostname(data.hostname);
-			console.log("onDataUpdaterPluginMessage content:");
-			console.log(data);
+			if(!self.hideDebug()){console.log("onDataUpdaterPluginMessage content:");}
+			if(!self.hideDebug()){console.log(data);}
 			if (data == "activation failed"){
 
 				alert("Activation Failed - Please check your entered key and try again.");
@@ -1766,14 +1696,14 @@ $(function() {
 				self.commandResponse(self.commandResponse()+data.commandResponse);
 			}
 			if (data.commandError != undefined){
-				console.log(data.commandError);
+				if(!self.hideDebug()){console.log(data.commandError);}
 				self.commandResponse(self.commandResponse()+data.commandError);
 			}
 			if (data.pleaseRemind != undefined){
 				self.remindPlease(true);
 				if (self.remindPlease()===true){
 					window.setTimeout(function() {self.showSupport()},10000);
-					console.log("Reminding.");
+					if(!self.hideDebug()){console.log("Reminding.");}
 				}
 			}
 			if (data.internetConnection != undefined){
@@ -1791,9 +1721,9 @@ $(function() {
 					self.ipPort(((document.location.host).split(":")[1]).toString());
 					self.hostnameJS(((document.location.host).split(":")[0]).toString());
 				}
-				console.log("IP: "+self.ipAddress().toString()+" ; Port: "+self.ipPort()+" ; JS Hostname: "+self.hostnameJS());
+				if(!self.hideDebug()){console.log("IP: "+self.ipAddress().toString()+" ; Port: "+self.ipPort()+" ; JS Hostname: "+self.hostnameJS());}
 				//self.printerViewString("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
-				console.log(self.printerViewString());
+				if(!self.hideDebug()){console.log(self.printerViewString());}
 
 			}
 			if (data.firmwareline !== undefined){
@@ -1824,52 +1754,6 @@ $(function() {
 
 		self.fromCurrentData = function (data) {
 			self._processStateData(data.state);
-
-			//if (self.waitingForM()===true){
-				/*_.each(data.logs, function (line) {
-					// M206 Home offset
-					if (self.eepromData().length>4){
-						self.eepromData([]);
-						self.requestEeprom();
-						return;
-					}*/
-					/*match = self.eepromM206RegEx.exec(line);
-						if (match) {
-							self.eepromData.push({
-								dataType: 'M206 X',
-								position: 21,
-								origValue: match[2],
-								value: match[2],
-								description: 'X Home offset (mm)'
-							});
-							self.eepromData.push({
-								dataType: 'M206 Y',
-								position: 22,
-								origValue: match[4],
-								value: match[4],
-								description: 'Y Home offset (mm)'
-							});
-							self.eepromData.push({
-								dataType: 'M206 Z',
-								position: 23,
-								origValue: match[6],
-								value: match[6],
-								description: 'Z Home offset (mm)'
-							});
-							if (self.eepromData()[2].dataType ==="M206 Z"){
-								console.log(self.eepromData());	
-								//alert('M206 loaded; Z Home Offset: '+self.eepromData()[2].value);
-								if (self.originalZOffset !== "undefined"){
-									self.originalZOffset = parseFloat(self.eepromData()[2].value);
-									self.ZOffset(self.originalZOffset);
-								}
-								//alert('M206 loaded; Z Home Offset: '+self.originalZOffset.toString());
-							}
-							
-						}*/
-				//});
-				//self.waitingForM(false);
-			//}
 		};
 
 		self.fromHistoryData = function (data) {
