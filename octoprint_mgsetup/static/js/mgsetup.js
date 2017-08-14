@@ -67,7 +67,7 @@ $(function() {
 		self.untouchable = ko.computed(function(){
 			if (self.temperatures.bedTemp !== undefined && self.temperatures.bedTemp.target() !== undefined && self.temperatures.tools()[0] !== undefined && self.temperatures.tools()[0].target() !== undefined ){
 
-				if (parseFloat(self.temperatures.bedTemp.actual()) > 50 || parseFloat(self.temperatures.tools()[0].actual()) > 50 || (self.temperatures.tools()[1].actual() !== undefined && parseFloat(self.temperatures.tools()[1].actual()) > 50)){
+				if (parseFloat(self.temperatures.bedTemp.actual()) > 50 || parseFloat(self.temperatures.tools()[0].actual()) > 50 || (self.temperatures.tools()[1] !== undefined && parseFloat(self.temperatures.tools()[1].actual()) > 50)){
 					//console.log("untouchable");
 					return true;
 				} else{
@@ -1774,8 +1774,12 @@ $(function() {
 			if (data.ip != undefined){
 				self.ipAddress(data.ip);
 				if ((document.location.host) != undefined){
-					self.ipPort(((document.location.host).split(":")[1]).toString());
-					self.hostnameJS(((document.location.host).split(":")[0]).toString());
+					if (((document.location.host).split(":")[1]) != undefined){
+						self.ipPort(((document.location.host).split(":")[1]).toString());
+					}
+					if (((document.location.host).split(":")[0]) != undefined){
+						self.hostnameJS(((document.location.host).split(":")[0]).toString());
+					}
 				}
 				if(!self.hideDebug()){console.log("IP: "+self.ipAddress().toString()+" ; Port: "+self.ipPort()+" ; JS Hostname: "+self.hostnameJS());}
 				//self.printerViewString("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
@@ -1964,7 +1968,7 @@ $(function() {
 		["loginStateViewModel","settingsViewModel","temperatureViewModel","userSettingsViewModel"],
 
 		// Finally, this is the list of selectors for all elements we want this view model to be bound to.
-		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings"]
+		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance"]
 		//["#tab_plugin_mgsetup"]
 	]);
 });

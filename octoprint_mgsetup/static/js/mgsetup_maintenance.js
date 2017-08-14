@@ -19,7 +19,7 @@ $(function() {
 		["loginStateViewModel","settingsViewModel","temperatureViewModel","userSettingsViewModel"],
 
 		// Finally, this is the list of selectors for all elements we want this view model to be bound to.
-		["#tab_plugin_mgsetup_maintenance"]
+		// ["#tab_plugin_mgsetup_maintenance"]
 		//["#tab_plugin_mgsetup"]
 	]);
 });
