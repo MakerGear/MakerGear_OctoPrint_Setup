@@ -74,9 +74,11 @@
 
 {# STARTING HEIGHT CHECK #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='1'">
+
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" />
     </div><br>
+
 
 <h1 style="text-align:left;">Starting Height Check</h1>
 <p style="text-align:left;">
@@ -743,7 +745,9 @@ If the entire Zigzag pattern was completely stuck to the bed, the bed leveling s
 
 <hr />
 
+
 If the entire Zigzag pattern was loose or not adhered to the bed at all, the bed leveling screw needs to be tightened by turning it clockwise, to raise the bed at this position.<br><br>
+
 
 
    <video controls id="cw" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true', poster:'/plugin/mgsetup/static/img/cwposter.jpg'}, if:  setupStep() === '6'" onclick="this.paused ? this.play() : this.pause();" >

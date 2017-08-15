@@ -142,9 +142,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# self._logger.info(self._printer_profile_manager.get_current())
 		self._logger.info(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"])
 		
-
-
-
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 			os.makedirs('/home/pi/.octoprint/scripts/gcode')
 		except OSError:
@@ -206,6 +203,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Patch.sh doesn't exist?")
 		except:
 			raise
+		try:
+			os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/logpatch.sh", 0755)
+		except OSError:
+			self._logger.info("logpatch.sh doesn't exist?")
+		except:
+			raise
+
 
 		try:
 			self.ip = str(([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]))
@@ -507,6 +511,53 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'updateFirmware':
 			self._logger.info("Update Firmware started.")
 			self.updateLocalFirmware()
+		elif action["action"] == 'logpatch':
+			# "/home/pi/OctoPrint/venv/bin/OctoPrint_Mgsetup/octoprint_mgsetup/static/patch/logpatch.sh"
+			# self._execute("/home/pi/OctoPrint/venv/bin/OctoPrint-Mgsetup/octoprint_mgsetup/static/patch/logpatch.sh")
+			# self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/logpatch.sh")
+			self._logger.info("Logpatch started.")
+			if not os.path.isfile("/home/pi/.octoprint/logs/dmesg"):
+				if os.path.isfile("/var/log/dmesg"):
+					try:
+						os.symlink("/var/log/dmesg","/home/pi/.octoprint/logs/dmesg")
+					except OSError:
+						if os.path.isfile("/var/log/dmesg"):
+							raise
+			if not os.path.isfile("/home/pi/.octoprint/logs/messages"):
+				if os.path.isfile("/var/log/messages"):
+					try:
+						os.symlink("/var/log/messages","/home/pi/.octoprint/logs/messages")
+					except OSError:
+						if os.path.isfile("/var/log/messages"):
+							raise
+			if not os.path.isfile("/home/pi/.octoprint/logs/syslog"):
+				if os.path.isfile("/var/log/syslog"):
+					try:
+						os.symlink("/var/log/syslog","/home/pi/.octoprint/logs/syslog")
+					except OSError:
+						if os.path.isfile("/var/log/syslog"):
+							raise
+			if not os.path.isfile("/home/pi/.octoprint/logs/syslog.1"):
+				if os.path.isfile("/var/log/syslog.1"):
+					try:
+						os.symlink("/var/log/syslog.1","/home/pi/.octoprint/logs/syslog.1")
+					except OSError:
+						if os.path.isfile("/var/log/syslog.1"):
+							raise
+			if not os.path.isfile("/home/pi/.octoprint/logs/netconnectd.log"):
+				if os.path.isfile("/var/log/netconnectd.log"):
+					try:
+						os.symlink("/var/log/netconnectd.log","/home/pi/.octoprint/logs/netconnectd.log")
+					except OSError:
+						if os.path.isfile("/var/log/netconnectd.log"):
+							raise
+			if not os.path.isfile("/home/pi/.octoprint/logs/netconnectd.log.1"):
+				if os.path.isfile("/var/log/netconnectd.log.1"):
+					try:
+						os.symlink("/var/log/netconnectd.log.1","/home/pi/.octoprint/logs/netconnectd.log.1")
+					except OSError:
+						if os.path.isfile("/var/log/netconnectd.log.1"):
+							raise
 
 
 	def turnSshOn(self):
