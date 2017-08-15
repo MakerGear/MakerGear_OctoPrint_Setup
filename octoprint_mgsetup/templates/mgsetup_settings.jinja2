@@ -79,7 +79,7 @@ One-time pre-ship patch.<br><br>
 
                        <br><br>
 Printer Firmware Version: <span data-bind="text: $root.firmwareline()"></span><br>
-Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span>
+Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span><br>
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button><br>
 Patch to create system log symlinks allowing easy OctoPrint access.<br><br> 
