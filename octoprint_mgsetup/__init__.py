@@ -397,14 +397,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("extruders: "+str(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"]))
 		if (self._printer_profile_manager.get_all()["_default"]["extruder"]["count"] == 2):
 			try:
-				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.dual.h','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
 				self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
 			except IOError as e:
 				self._logger.info("Tried to copy Dual configuration but encountered an error!")
 				self._logger.info("Error: "+str(e))
 		else:
 			try:
-				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.single.h','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
 				self._logger.info("Copied the Single configuration to Configuration_makergear.h")
 			except IOError as e:
 				self._logger.info("Tried to copy Single configuration but encountered an error!")

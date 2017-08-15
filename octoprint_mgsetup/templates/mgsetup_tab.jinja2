@@ -126,21 +126,21 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
 <div data-bind="visible:!$root.isDual()">
 <a href="/plugin/mgsetup/static/img/6.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/6.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
 <div data-bind="visible:$root.isDual()">
-<a href="/plugin/mgsetup/static/img/15.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/15.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<a href="/plugin/mgsetup/static/img/15.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/15.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <div data-bind="visible:!$root.isDual()">
 <a href="/plugin/mgsetup/static/img/4.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/4.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
 <div data-bind="visible:$root.isDual()">
-<a href="/plugin/mgsetup/static/img/17.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/17.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<a href="/plugin/mgsetup/static/img/17.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/17.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('3'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
 <div data-bind="visible:!$root.isDual()">
 <a href="/plugin/mgsetup/static/img/5.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/5.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
 <div data-bind="visible:$root.isDual()">
-<a href="/plugin/mgsetup/static/img/19.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/19.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
+<a href="/plugin/mgsetup/static/img/19.jpg" data-lightbox="step2"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/19.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" /></a></div>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepOnePrepared(), click: function() { $root.goTo('2'); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
@@ -802,7 +802,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
 
     <p> 
-        In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. (You can leave all the settings at their default values.)
+        In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. (You can leave all the settings at their default values.)
         <img src="/plugin/mgsetup/static/img/stl.png" style="display:block;width::50%;margin-left:auto;margin-right:auto; margin-top:21px;">
             <br/>
         <img src="/plugin/mgsetup/static/img/slice.png" style="display:block;width::50%;margin-left:auto;margin-right:auto;margin-top:21px;"">
@@ -911,19 +911,18 @@ During the next few steps, you will verify the Right Extruder's (T1) starting he
     <span style="text-align:left;font-size:20px;" >Which of the following options best describes your current Extruder 1 starting height? Click the photos to zoom in.</span>
 </p>
 </center>
-TODO: Replace these with pictures showing both extruders, focusing on EXT1. TODO!
 <table>
     <tr>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/16.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/16.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+<a href="/plugin/mgsetup/static/img/16.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/16.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle hits the bed <br />') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
-<a href="/plugin/mgsetup/static/img/18.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/18.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+<a href="/plugin/mgsetup/static/img/18.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/18.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('10'); $root.extOneNeedsPhysical(false); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a small gap(.5 mm or less)') }}</button>
         </td>
         <td style="width:33%;padding:10px;border:2px solid #ddd;">
- <a href="/plugin/mgsetup/static/img/20.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/20.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
+ <a href="/plugin/mgsetup/static/img/20.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/20.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" /></a>
         <button style="min-height:80px;width:100%;" id="control-yinc" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && stepEightPrepared(), click: function() { $root.goTo('9'); $root.extOneNeedsPhysical(true); $root.cooldown(); window.scroll(0,0) }">{{ _('The nozzle clears the bed with a large gap (more than .5 mm)') }}</button>
         </td>
     </tr>
@@ -1464,7 +1463,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14'" />
     </div><br><br>
     <p>
-    In this step we will calibrate the the distance between the 2 extruders on the X axis. To do this we will use both extruders to  print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the X axis is completely calibrated.
+    In this step we will calibrate the distance between the 2 extruders on the X axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the X axis is completely calibrated.
     </p>
 
 
@@ -1537,9 +1536,9 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <div data-bind="visible: loginState.isUser && setupStep()==='15'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15'" />
-    </div><br>
+    </div><br><br>
     <p>
-    In this step we will calibrate the the distance between the 2 extruders on the Y axis. To do this we will use both extruders to  print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the Y axis is completely calibrated.
+    In this step we will calibrate the distance between the 2 extruders on the Y axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the Y axis is completely calibrated.
     </p>
 
     Click "Print First Pattern” when you are ready to begin.

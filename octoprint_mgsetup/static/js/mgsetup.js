@@ -42,6 +42,9 @@ $(function() {
 		self.hasHistory = ko.observable(false);
 		self.hasFuture = ko.observable(false);
 		self.setupStep = ko.observable("0");
+		self.maintenancePage = ko.observable(0);
+		self.maintenanceThirteenPrepared = ko.observable(false);
+		self.maintenanceThirteenSaved = ko.observable(false);
 
 		//UI controls:
 		self.hideDebug = ko.observable(true);
@@ -388,6 +391,15 @@ $(function() {
 				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 1};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 			}
+			if (wigglePosition === "T1-maintenance"){
+				if (self.maintenancePage() === 11){
+					self.stepElevenFirstWiggleClicked(true);
+				}
+
+				var context = {};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 1};
+				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+			}
 			if (wigglePosition === "T1-2"){
 				var context = {};
 				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
@@ -417,6 +429,22 @@ $(function() {
 			OctoPrint.control.sendGcode(["M300 S1040 P700"]);
 
 			OctoPrint.printer.extrude(75, {"tool":targetTool});
+		};
+
+		self.retractFilament = function(targetTool) {
+
+			if (targetTool == undefined){
+				targetTool = "tool0";
+			}
+			if (targetTool == "tool0"){
+				OctoPrint.control.sendGcode(["T0"]);
+			} else if (targetTool == "tool1"){
+				OctoPrint.control.sendGcode(["T1"]);
+			}
+
+			OctoPrint.control.sendGcode(["M300 S1040 P700"]);
+
+			OctoPrint.printer.extrude(-75, {"tool":targetTool});
 		};
 
 		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
@@ -453,6 +481,55 @@ $(function() {
 				OctoPrint.control.sendGcode([
 					"M104 T1 S220",
 					"M140 S70",
+					"M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28 Z",
+					"G28 Y X",
+					"G1 X20 Y100",
+					"M109 S220 T1",
+					"T1",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
+				]);
+			}
+		};
+
+
+		self.sendMaintenancePreheat = function (targetHotend, targetTemperature) {
+
+
+
+
+			if (targetTemperature == undefined){
+				temperature = 220;
+			}
+			if (targetHotend == undefined){
+				hotend = "T0";
+			} else {
+				hotend = targetHotend;
+			}
+			if (hotend == "T0"){
+
+				OctoPrint.control.sendGcode([
+					"M104 T0 S220",
+					"M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28 Z",
+					"G28 Y X",
+					"G1 X20",
+					"M109 S220 T0",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
+				]);
+			} else if (hotend == "T1"){
+				OctoPrint.control.sendGcode([
+					"M104 T1 S220",
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
@@ -700,6 +777,34 @@ $(function() {
 				self.goTo("5");
 			}
 
+			if (startingHeightStep == "2-maintenance") {
+				self.newZOffset = (parseFloat(self.ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
+				if (self.newZOffset.toString() == "NaN") {
+					self.notify("Offset Setting Error","There was an error when setting the Z Offset.  Please refresh the page and try again.  Support values: self.newZOffset="+self.newZOffset.toString()+" ; self.ZOffset="+self.ZOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
+					if(!self.hideDebug()){console.log("Offset setting error:");}
+					if(!self.hideDebug()){console.log("self.newZOffset = "+self.newZOffset.toString());}
+					if(!self.hideDebug()){console.log("self.ZOffset = "+self.ZOffset().toString());}
+					if(!self.hideDebug()){console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());}
+					return;
+				}
+				//self.newZOffset = self.newZOffset + 0.1 ;
+				self.ZOffString = "M206 Z"+self.newZOffset.toString();
+				if(!self.hideDebug()){console.log(self.newZOffset.toString());}
+				if(!self.hideDebug()){console.log(self.ZOffString);}
+				OctoPrint.control.sendGcode([self.ZOffString,
+					"M500"					
+				]);
+				self.ZOffset(self.newZOffset);
+				self.requestEeprom();
+				//new PNotify({
+				//	title: 'Starting Height Adjustment',
+				//	text: "Starting Height Set to : "+self.newZOffset.toString(),
+				//	type: 'success',
+				//});
+				self.ZWiggleHeight(self.stockZWiggleHeight);
+				//self.setupStep("3");
+			}
+
 			if (startingHeightStep == "T1") {
 				self.newZOffset = (parseFloat(self.tool1ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
 				if (self.newZOffset.toString() == "NaN") {
@@ -728,6 +833,36 @@ $(function() {
 				//self.setupStep("3");
 				self.goTo("12");
 			}
+			if (startingHeightStep == "T1-maintenance") {
+				self.newZOffset = (parseFloat(self.tool1ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
+				if (self.newZOffset.toString() == "NaN") {
+					self.notify("Offset Setting Error","There was an error when setting the Z Offset.  Please refresh the page and try again.  Support values: self.newZOffset="+self.newZOffset.toString()+" ; self.ZOffset="+self.ZOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
+					if(!self.hideDebug()){console.log("Offset setting error:");}
+					if(!self.hideDebug()){console.log("self.newZOffset = "+self.newZOffset.toString());}
+					if(!self.hideDebug()){console.log("self.tool1ZOffset = "+self.tool1ZOffset().toString());}
+					if(!self.hideDebug()){console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());}
+					return;
+				}
+				//self.newZOffset = self.newZOffset + 0.1 ;
+				self.ZOffString = "M218 T1 Z"+self.newZOffset.toString();
+				if(!self.hideDebug()){console.log(self.newZOffset.toString());}
+				if(!self.hideDebug()){console.log(self.ZOffString);}
+				OctoPrint.control.sendGcode([self.ZOffString,
+					"M500"					
+				]);
+				self.tool1ZOffset(self.newZOffset);
+				self.requestEeprom();
+				//new PNotify({
+				//	title: 'Starting Height Adjustment',
+				//	text: "Starting Height Set to : "+self.newZOffset.toString(),
+				//	type: 'success',
+				//});
+				self.ZWiggleHeight(self.stockZWiggleHeight);
+				//self.setupStep("3");
+				// self.goTo("12");
+				self.stepElevenFirstWiggleClicked(false);
+			}
+
 
 			OctoPrint.control.sendGcode("M114");
 		};
@@ -741,7 +876,7 @@ $(function() {
 			if (checkPosition === 1){
 				OctoPrint.control.sendGcode(["T0",
 					"G1 F1000 Z5",
-					"G1 F2000 X20 Y20",
+					"G1 F2000 X20 Y50",
 					"G1 F1000 Z0"]);
 			}
 			if (checkPosition === 2){
@@ -759,7 +894,7 @@ $(function() {
 			if (checkPosition === 4){
 				OctoPrint.control.sendGcode(["T0",
 					"G1 F1000 Z5",
-					"G1 F2000 X20 Y220",
+					"G1 F2000 X20 Y200",
 					"G1 F1000 Z0"]);
 			}
 
@@ -889,6 +1024,14 @@ $(function() {
 				]);
 				self.goTo("10");
 			}
+			if (dualRightNozzleAdjustStep === '3-maintenance'){
+				OctoPrint.control.sendGcode(["G28 Z",
+					"M84"
+				]);
+				self.stepNineAtPosition(false);
+			}
+
+
 			if (dualRightNozzleAdjustStep === 'simple'){
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
@@ -1035,7 +1178,11 @@ $(function() {
 						self.calibrationAxis("Y");
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
-						self.goTo("15");
+						if (self.maintenancePage() === 14){
+							self.maintenancePage(15);
+						} else {
+							self.goTo("15");
+						}
 					} else{
 						self.printSawBin();
 					}
@@ -1429,6 +1576,7 @@ $(function() {
 
 
 		self.resetStep = function(targetStep) {
+			self.maintenancePage(0);
 			targetStep = parseInt(targetStep);
 			self.ZWiggleHeight(self.stockZWiggleHeight);
 			self.T1ZWiggleHeight(self.stockZWiggleHeight);
@@ -1604,7 +1752,10 @@ $(function() {
 				});
 			}
 			self.apiKey(self.settings.api_key());
-
+			//$( function() {
+			// $( "#maintenanceTabs" ).tabs();
+			//} );
+			$( "#maintenanceTabs" ).tabdrop();
 		};
 
 		self.onEventClientOpened = function() {
@@ -1649,6 +1800,7 @@ $(function() {
 			self.registered(self.settings.settings.plugins.mgsetup.registered());
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
 			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
+
 		};
 
 		self.onEventPrintStarted = function(){
