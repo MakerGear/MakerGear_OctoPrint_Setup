@@ -76,7 +76,7 @@
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='1'">
 
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" />
     </div><br>
 
 
@@ -165,7 +165,7 @@ Once the printer has stopped moving, use your hand to slide the Extruder towards
 
 <div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser  && setupStep()==='2'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" />
     </div><br>
 <h1>Adjust Starting Height </h1>
 
@@ -284,7 +284,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
 
 <div id="eleven" data-bind="visible: loginState.isUser && setupStep()==='3'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='3'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='3'" />
     </div><br>
 <h1 style="text-align:left">Extrude Filament</h1>
 
@@ -408,7 +408,7 @@ Once filament is consistently extruding, click to "Next Step" proceed:<br>
 
 <div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='4'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='4'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='4'" />
     </div><br>
 
 <h1 style="text-align:left">Verify Starting Height</h1>
@@ -612,7 +612,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 {# Heated Corner Check (wiggles) #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='5'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" />
     </div><br>
 <center><h1 style="text-align:left;">Heated Corner Check</h1>
     <p>
@@ -702,7 +702,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 <div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='6'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='6'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='6'" />
     </div><br>
 <br>
 
@@ -777,7 +777,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 </p>
 
 <center>
-<img src="/plugin/mgsetup/static/img/cornerlabels.png"><br><br>
+<img src="/plugin/mgsetup/static/img/cornerlabels.jpg"><br><br>
 <div style="width:80%">
 <button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton() , click: function() {$root.printWiggleConfirm(20); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 1</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(3); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 2</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(4); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 3</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(5); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 4</button>
 </div>
@@ -806,7 +806,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='7'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='7'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='7'" />
     </div><br>
 
 
@@ -880,7 +880,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='8'"><center>
 <div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" />
 </div></center><br>
 <h1 style="text-align:left;">Extruder 1 Starting Height Check</h1>
 <p style="text-align:left;">
@@ -955,7 +955,7 @@ During the next few steps, you will verify the Right Extruder's (T1) starting he
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='9'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
     </div><br>
 
 In this step, we will physically adjust the height of the Right Extruder (T1) in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
@@ -1030,7 +1030,7 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
 
 <div id="nine" data-bind="visible: loginState.isUser && setupStep()==='10'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" />
     </div><br>
 <h1 style="text-align:left">Extrude Filament on Extruder 1</h1>
 
@@ -1145,7 +1145,7 @@ Once filament is consistently extruding from the tip of the nozzle, click “Nex
 {# EEPROM Adjust EXT1 Hotend Offset #}
 <div data-bind="visible: loginState.isUser && setupStep()==='11'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='11'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='11'" />
     </div><br>
 
 <h1 style="text-align:left">Verify T1 Starting Height</h1>
@@ -1444,7 +1444,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 {# Imperfection in Both Prints Requires X/Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='14'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14'" />
     </div><br><br>
     <p>
     In this step we will calibrate the distance between the 2 extruders on the X axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the X axis is completely calibrated.
@@ -1496,7 +1496,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <center>
 <div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
         {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14' && $root.calibrationStep() < 1" /> #}
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-saw-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14' && $root.calibrationStep() > -1" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14' && $root.calibrationStep() > -1" />
 </div></center><br>
 <br>
 <center>
@@ -1519,7 +1519,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 {# Y Calibration #}
 <div data-bind="visible: loginState.isUser && setupStep()==='15'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15'" />
     </div><br><br>
     <p>
     In this step we will calibrate the distance between the 2 extruders on the Y axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the Y axis is completely calibrated.
@@ -1574,7 +1574,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <div style="width: 100%; margin:auto;vertical-align: middle; " data-bind="visible: $root.isDual">
 <div style="display: inline-block; width:75%">
         {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() < 1" /> #}
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() > -1" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15' && $root.calibrationStep() > -1" />
         </div>
 <div style="display: inline-block; width:20%; vertical-align: middle; ">
 <button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button>
@@ -1609,7 +1609,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
                    #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='16'">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.png', 'width': '100%',} , visible: loginState.isUser && setupStep()==='16'" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='16'" />
     </div><br>
 
     <h1 style="text-align:left;">Your First Print on T1</h1>
