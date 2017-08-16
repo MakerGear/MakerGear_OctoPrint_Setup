@@ -542,12 +542,20 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
             <br />
 
             <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. -->
+            <br />
+            <br />
+            <a href="/plugin/mgsetup/static/img/stringZigzag.jpg" data-lightbox="step8-1">Click here to see other examples of zigzags printed too low.</a>
+
+
 
         </td>
         <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
      
             If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
              <strong>the Starting Height is too high</strong>. Click below to adjust the starting height and print a new zigzag. 
+            <br />
+            <br />
+            <a href="/plugin/mgsetup/static/img/squishZigzag.jpg" data-lightbox="step8-2">Click here to see other examples of zigzags printed too high.</a>
 
 
 
@@ -1367,64 +1375,36 @@ If the two squares overlap, click “Adjust X and Y Offsets” to proceed:<br><b
 <button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
 -->
 
-
-<table>
+<table class="choiceTable">
     <tr>
-        <td style="width:45%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
-            <a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /></a>
- 
+        <td>
+                  <a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /></a>        </td>
+        <td>
+                            <a href="/plugin/mgsetup/static/img/simpleTestFail1.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail1.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /></a>
         </td>
-
-        <td style="width:45%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
-
-            <a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /></a>
- 
+        <td>
+                            <a href="/plugin/mgsetup/static/img/simpleTestFail2.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail2.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" /></a>
         </td>
- 
-
-
-
     </tr>
-
-
-
-
     <tr>
-
-        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-           The two patterns do not intersect and have even spacing
-
-
-             
-        </td>
-
-        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-               The two patterns intersect or have uneven spacing
+        <td>
+                       The two patterns do not intersect and have even spacing.
 
         </td>
+        <td colspan="2">
+                           The two patterns intersect or have uneven spacing. If you are not sure, pick this option.
 
+        </td>
     </tr>
-
     <tr>
-
-        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-            
+        <td class="buttonCell">
          <center><button class="btngoBig" data-bind="click: function() { $root.goTo('16'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center>
-
         </td>
-
-
-        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-
-<center><button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
-
-
+        <td colspan="2" class="buttonCell">
+        <center><button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
         </td>
-
-    <tr>
-
+    </tr>
 </table>
-
 
 
 
