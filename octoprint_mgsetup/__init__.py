@@ -230,7 +230,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_settings_defaults(self):
 		self._logger.info("MGSetup get_settings_defaults triggered.")
-		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "refactor", localFirmwareVersion = "")
+		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "master", localFirmwareVersion = "")
 
 	def get_settings_restricted_paths(self):
 		self._logger.info("MGSetup get_settings_restricted_paths triggered.")
