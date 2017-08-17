@@ -196,21 +196,29 @@ Here we will adjust the rough starting height of the printer (in a future step w
 During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
 </div>
 <div data-bind="visible: $root.isDual()">
-During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the Left Extruder (T0) nozzle and the glass build plate.
+    <p>
+        During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the Left Extruder (T0) nozzle and the glass build plate.
+    </p>
 </div>
- When this step is completed you should be able to slide the blue feeler gauge between the nozzle and glass with very little resistance.
-<p>
-    First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle. NOTE: In order to prevent the nozzle from colliding with the build plate, you should not use the "1 mm Up" button when the nozzle is within 1 mm of the build plate. The "1 mm Up" button may become disabled to prevent collision - in this case use the "0.1 mm Up" button to continue. 
-</p>
+    <p>
+         When this step is completed you should be able to slide the blue feeler gauge between the nozzle and glass with very little resistance.
+    </p>
+    <p>
+        First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle. NOTE: In order to prevent the nozzle from colliding with the build plate, you should not use the "1 mm Up" button when the nozzle is within 1 mm of the build plate. The "1 mm Up" button may become disabled to prevent collision - in this case use the "0.1 mm Up" button to continue. 
+    </p>
 
-<p>
+
 <div data-bind="visible: !$root.isDual()">
-    Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+    <p>
+        Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+    </p>
 </div>
 <div data-bind="visible: $root.isDual()">
+    <p>
     Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the T0 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button  to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+    </p>
 </div>
-</p>
+
 
 <p>
     Next, click the "0.01 mm Up” button to move the bed up until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle. Once this is completed, click "Save New Starting Height"
@@ -616,7 +624,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
     </div><br>
 <center><h1 style="text-align:left;">Heated Corner Check</h1>
     <p>
-        In this step you will check if your build surface is level by verifying the vertical alignment of all four corners of your build surface. 
+        In this step you will check if your build surface is level by verifying the vertical alignment of all four corners of your build surface. Make sure that all four of your bed clips are engaged, as shown in the M3 User Manual. 
     </p>
     <p>
         Click “Begin Corner Check” to print four Zigzag patterns, one on each corner of your build surface. 
