@@ -553,6 +553,12 @@ $(function() {
 			]);
 		};
 
+		self.stepOneConfirm = function(){
+			if(!self.hideDebug()){console.log("stepOneConfirm triggered");}
+			self.stepOneDialog.modal("show");
+		};
+
+
 		self.setupCheckLevel = function (checkLevelStep) { //this is where the magic starts, folks
 			self.ZPosFresh(false);
 			if (checkLevelStep == "0") {
@@ -573,6 +579,7 @@ $(function() {
 				"M300 S1312 P250", 
 				"M300 S1040 P250"
 				]);//changed to X217 for Demeter
+				self.stepOnePrepared(1);
 			}
 			if (checkLevelStep == "1") {
 
@@ -942,6 +949,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
+					"G28 Z",
 					"M218 T1 Z0",
 					"M500",
 					"G28 X",
@@ -1036,6 +1044,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
+					"G28 Z",
 					"M218 T1 Z0",
 					"M500",
 					"M605 S0",
@@ -1082,10 +1091,10 @@ $(function() {
 			if (chosenBin !== undefined){
 				self.chosenSawBin(chosenBin);
 			}
-			if (self.skipConfirm() == false && self.calibrationStep() !== 2){
-				self.printSawBinDialog.modal("show");
-			} else {
+			if (self.calibrationStep() === 2 && chosenBin === 3){
 				self.pickSawBin();
+			} else {
+				self.printSawBinDialog.modal("show");
 			}
 		};
 
@@ -1712,6 +1721,7 @@ $(function() {
 			self.printSawBinDialog = $("#dialog-sawbin");
 			self.preflightDialog = $("#dialog-preflight");
 			self.printWiggleDialog = $("#dialog-wiggle");
+			self.stepOneDialog = $("#dialog-stepOne");
 			//self.checkGoogle();
 			if (self.isOperational()){
 				self.requestEeprom();

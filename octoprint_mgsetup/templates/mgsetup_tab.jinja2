@@ -109,7 +109,7 @@ During the next few steps, you will verify the printer's starting height. First,
 
 
 <center>
-<button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepOnePrepared() && !$root.untouchable(), click: function() { $root.setupCheckLevel(0); $root.stepOnePrepared(1) }">{{ _('Prepare') }}</button><br><br>
+<button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepOnePrepared() && !$root.untouchable(), click: function() { $root.stepOneConfirm() }">{{ _('Prepare') }}</button><br><br>
 <p style="">
 <div data-bind="visible: $root.isDual()">
 Once the printer has stopped moving, use your hand to slide the Extruder towards the build surface. If the Left Extruder (T0) nozzle touches the glass, do not force the T0 extruder any further.
@@ -974,7 +974,7 @@ In this step, we will physically adjust the height of the Right Extruder (T1) in
 
 
 
-<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.setupStep()==='9'">
+<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.setupStep()==='9' && $root.untouchable()">
 Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
 <div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
 <div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
@@ -994,6 +994,22 @@ Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
 </div>
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
+</div>
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;" data-bind="visible: !$root.untouchable()">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+    </div>
+</div>
 </div><br>
 
 Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt. Now click "Move to Position" to move the build plate to the correct position.<br><br>
@@ -1104,7 +1120,7 @@ Next insert the filament into the hole on top of the right extruder, located bet
 <br /><br />
 
 Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees, click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get it started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
-
+<br>
 <div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
 <div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
@@ -1774,7 +1790,16 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 
     </div><br>
 </div>
+<div id="dialog-stepOne" title="Prepare Confirmation" class="modal hide fade medium">
+    <div style="width:95%; height:95%; margin:auto; "><p><br>
+    <center>Please make sure that your Print Bed is clear before performing this operation.<br>
 
+    </center><br><br>
+    <button style="float: left; width: 35%;" data-bind="click: function() { $root.stepOneDialog.modal('hide'); $root.skipConfirm(false) }">Cancel</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.setupCheckLevel(0); $root.stepOneDialog.modal('hide') }">Bed Is Clear - Prepare</button><br><br>
+    {# <div style="float:right"><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me again.</div><br> #}
+
+    </div><br>
+</div>
 <!-- Templates for custom controls -->
 <script type="text/html" id="customControls_containerTemplate_nameless">
     <div class="custom_section">

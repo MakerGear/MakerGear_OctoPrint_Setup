@@ -104,6 +104,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 #		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
 		octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
+		# self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
+		# self._logger.info(self.activeProfile)
+		# self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
 		
 
 
@@ -135,6 +138,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def on_after_startup(self):
 		self._logger.info("MGSetup on_after_startup triggered.")
 		self._logger.info("Hello Pablo!")
+		# self._logger.info("extruders: "+str(self._printer_profile_manager.get_current()))
+		# self._logger.info("extruders: "+str(self._settings.get(["printerProfiles","currentProfileData","extruder.count"])))
 		self.current_position = current_position
 		self._logger.info(self.newhost)
 		self.checkInternet(3,3,'none')
@@ -398,21 +403,31 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def updateLocalFirmware(self):
 		self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
 
-		self._logger.info("extruders: "+str(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"]))
-		if (self._printer_profile_manager.get_all()["_default"]["extruder"]["count"] == 2):
+		self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
+		self._logger.info("Profile: "+self.activeProfile)
+		self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
+		self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
+
+		# self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
+		# self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
+		if (self.extruderCount == 2):
 			try:
 				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
 				self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Dual configuration to Configuration_makergear.h"))
 			except IOError as e:
 				self._logger.info("Tried to copy Dual configuration but encountered an error!")
 				self._logger.info("Error: "+str(e))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Dual configuration but encountered an error!  Error: "+str(e)))
 		else:
 			try:
 				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
 				self._logger.info("Copied the Single configuration to Configuration_makergear.h")
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Single configuration to Configuration_makergear.h"))
 			except IOError as e:
 				self._logger.info("Tried to copy Single configuration but encountered an error!")
 				self._logger.info("Error: "+str(e))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Single configuration but encountered an error!  Error: "+str(e)))
 
 
 		# settings.printerProfiles.currentProfileData().extruder.count()
@@ -511,6 +526,22 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'updateFirmware':
 			self._logger.info("Update Firmware started.")
 			self.updateLocalFirmware()
+		elif action["action"] == 'showIfconfig':
+			self._logger.info("Showing ifconfig.")
+			self._execute("ifconfig")
+		elif action["action"] == 'ps':
+			self._logger.info("Showing ps.")
+			self._execute("ps -eF")
+		elif action["action"] == 'routen':
+			self._logger.info("Showing route -n.")
+			self._execute("route -n")
+		elif action["action"] == 'whead':
+			self._logger.info("Showing w | head -n1.")
+			self._execute("w | head -n1")
+		elif action["action"] == 'sshState':
+			self._logger.info("Showing sudo service ssh status.")
+			self._execute("sudo service ssh status")
+	
 		elif action["action"] == 'logpatch':
 			# "/home/pi/OctoPrint/venv/bin/OctoPrint_Mgsetup/octoprint_mgsetup/static/patch/logpatch.sh"
 			# self._execute("/home/pi/OctoPrint/venv/bin/OctoPrint-Mgsetup/octoprint_mgsetup/static/patch/logpatch.sh")
