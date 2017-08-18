@@ -138,7 +138,7 @@ print_bed_temperature: 70
 print_speed: 50
 print_temperature:
 - 250
-- 252
+- 1
 - false
 - false
 raft_airgap: 0.17
