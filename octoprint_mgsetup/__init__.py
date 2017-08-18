@@ -527,8 +527,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Update Firmware started.")
 			self.updateLocalFirmware()
 		elif action["action"] == 'showIfconfig':
-			self._logger.info("Showing ifconfig.")
+			self._logger.info("Showing ifconfig / netconnectcli status.")
 			self._execute("ifconfig")
+			self._execute("netconnectcli status")
 		elif action["action"] == 'ps':
 			self._logger.info("Showing ps.")
 			self._execute("ps -eF")

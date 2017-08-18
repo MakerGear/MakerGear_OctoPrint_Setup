@@ -80,8 +80,8 @@ This will Reset the Registration on this printer.<br><br>
 
 <hr />
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show ifconfig</button><br>
-This will Show the Current ifconfig.<br><br>
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show Network Info</button><br>
+This will Show the Current ifconfig and netconnect status.<br><br>
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('ps'), $root.showCommandResponse() }">Show ps</button><br>
 This will Show the Current running processes as reported by "ps -eF".<br><br>
