@@ -133,6 +133,7 @@ prevTime        = time.time()
 tapEnable       = False
 rebootHoldEnable      = False
 resetPasswordHoldEnable      = False
+sshHoldEnable      = False
 
 # Main loop
 while(True):
@@ -170,6 +171,7 @@ while(True):
 
         rebootHoldEnable = False          # 1 shot...don't repeat hold action
         resetPasswordHoldEnable = False
+        sshHoldEnable = False
         tapEnable  = False          # Don't do tap action on release
     elif (t - prevTime) >= tapTime: # Not rebootHoldTime.  tapTime elapsed?
       # Yes.  Debounced press or release...
@@ -179,9 +181,11 @@ while(True):
           tapEnable  = False        # Disable tap and hold
           rebootHoldEnable = False
           resetPasswordHoldEnable = False
+          sshHoldEnable = False
       else:                         # Button pressed
         tapEnable  = True           # Enable tap and hold actions
         rebootHoldEnable = True
         resetPasswordHoldEnable = True
+        sshHoldEnable = True
 
  
