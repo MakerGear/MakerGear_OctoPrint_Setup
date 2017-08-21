@@ -23,3 +23,5 @@ sudo truncate -s 0 /var/log/netconnectd.log
 sudo truncate -s 0 /var/log/netconnectd.log.1
 sudo truncate -s 0 /var/log/messages
 sudo truncate -s 0 /var/log/dmesg
+sudo rm ~/.bash_history
+sudo rm /root/.bash_history
