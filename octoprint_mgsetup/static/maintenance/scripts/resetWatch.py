@@ -15,6 +15,7 @@ GPIO.setwarnings(False)
 buttonPin    = 4
 rebootHoldTime     = 5     # Duration for button hold (shutdown)
 resetPasswordsHoldTime     = 55     # Duration for button hold (shutdown)
+sshHoldTime     = 115     # Duration for button hold (shutdown)
 tapTime      = .1  # Debounce time for button taps
 nextInterval = 0.0   # Time of next recurring operation
 
@@ -25,25 +26,18 @@ nextInterval = 0.0   # Time of next recurring operation
 #print( "M300 S110 P100", file=/dev/ttyS0)
 
 
-
-
-
-
-
-
-
-
 # Called when button is briefly tapped.  Invokes time/temperature script.
 def tap():
-  pass
+  
+  subprocess.call(["service", "octoprint", "restart"])
+  #pass
   #print("test")
-  #subprocess.call(["python", "timetemp.py"])
 
 
 # Called when button is held down.  Prints image, invokes shutdown process.
-def rebootHold():
+def shutdownHold():
   time.sleep(2)
-  #print("reboot")
+  #print("shutdown")
 
   ser = serial.Serial("/dev/ttyS0", 115200, timeout=1)
   ser.close()
@@ -93,7 +87,32 @@ def resetPasswordHold():
   os.chown("/etc/netconnectd.yaml", uidRoot, gidRoot)
   os.chown("/home/pi/.octoprint/config.yaml", uidPi, gidPi)
   os.chown("/home/pi/.octoprint/users.yaml", uidPi, gidPi)
-  subprocess.call(["shutdown", "-r", "now"])
+  subprocess.call(["shutdown", "-r", "-F", "now"])
+
+
+def sshOn():
+  time.sleep(2)
+  #print("reboot")
+
+  ser = serial.Serial("/dev/ttyS0", 115200, timeout=1)
+  ser.close()
+  ser.open()
+  ser.write("M300 S932 P400 \r\n")
+  ser.write("M300 S0 P400 \r\n")
+  ser.write("M300 S932 P400 \r\n")
+  ser.write("M300 S0 P400 \r\n")
+  ser.write("M300 S932 P400 \r\n")
+  ser.write("M300 S0 P400 \r\n")
+  ser.write("M300 S932 P400 \r\n")
+  ser.write("M300 S0 P400 \r\n")
+  ser.write("M300 S932 P400 \r\n")
+  ser.write("M300 S0 P400 \r\n")
+  ser.close()
+
+  subprocess.call("sync")
+  subprocess.call(["update-rc.d", "ssh", "enable"])
+  subprocess.call(["invoke-rc.d", "ssh", "start"])
+
 
 
 # Initialization
@@ -140,11 +159,14 @@ while(True):
           #   print("resetInternal")
 
         t           = time.time()
-        if (t - prevTime) >= resetPasswordsHoldTime:
-          #print("resetInternal")
+        if (t - prevTime) >= sshHoldTime:
+          #print("turn ssh on")
+          sshOn()
+        elif (t - prevTime) >= resetPasswordsHoldTime:
+          #print("reset passwords")
           resetPasswordHold()
         else :   
-          rebootHold()                      # Perform hold action (usu. shutdown)
+          shutdownHold()                      # Perform hold action (usu. shutdown)
 
         rebootHoldEnable = False          # 1 shot...don't repeat hold action
         resetPasswordHoldEnable = False
@@ -152,7 +174,7 @@ while(True):
     elif (t - prevTime) >= tapTime: # Not rebootHoldTime.  tapTime elapsed?
       # Yes.  Debounced press or release...
       if buttonState == True:       # Button released?
-        if tapEnable == True:       # Ignore if prior rebootHold()
+        if tapEnable == True:       # Ignore if prior shutdownHold()
           tap()                     # Tap triggered (button released)
           tapEnable  = False        # Disable tap and hold
           rebootHoldEnable = False
