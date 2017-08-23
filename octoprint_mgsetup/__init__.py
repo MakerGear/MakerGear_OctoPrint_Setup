@@ -107,7 +107,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
 		# self._logger.info(self.activeProfile)
 		# self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
-		
+		self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
+		self._logger.info("Hello")
 
 
 	def checkInternet(self, timeout, iterations, url):
@@ -402,7 +403,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def updateLocalFirmware(self):
 		self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
-
+		self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
+		self._logger.info("Hello")
 		self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
 		self._logger.info("Profile: "+self.activeProfile)
 		self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
