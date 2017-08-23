@@ -1,26 +1,27 @@
 #!/bin/sh
 
-sudo chown pi /home/pi/.octoprint/uploads/demos/stl/Bacteriophage.stl
-sudo chgrp pi /home/pi/.octoprint/uploads/demos/stl/Bacteriophage.stl
-
-
-sudo chown pi /home/pi/.octoprint/uploads/demos/stl/Flex_Rex.stl
-sudo chgrp pi /home/pi/.octoprint/uploads/demos/stl/Flex_Rex.stl
-
-
-sudo chown pi /home/pi/.octoprint/uploads/demos/pla/Bacteriophage_s3d.gcode
-sudo chgrp pi /home/pi/.octoprint/uploads/demos/pla/Bacteriophage_s3d.gcode
-
-
-sudo chown pi /home/pi/.octoprint/uploads/demos/pla/Flex_Rex_s3d.gcode
-sudo chgrp pi /home/pi/.octoprint/uploads/demos/pla/Flex_Rex_s3d.gcode
-
-
-
-
-sudo chown pi /home/pi/.octoprint/uploads/deleteme
-sudo chgrp pi /home/pi/.octoprint/uploads/deleteme
-
-sudo chown pi /home/pi/.octoprint/uploads/deleteme/*.*
-sudo chgrp pi /home/pi/.octoprint/uploads/deleteme/*.*
-
+sudo rm /var/log/syslog.*.gz
+sudo rm /var/log/messages.*
+sudo rm /var/log/netconnectd.log.*.gz
+sudo rm /var/log/daemon.*
+sudo rm /var/log/debu*
+sudo rm /var/log/haproxy*
+sudo rm /var/log/kern*
+sudo rm /var/log/user*
+sudo rm /var/log/auth*
+sudo rm /var/log/alternatives*
+sudo rm /var/log/boot*
+sudo rm /var/log/dpkg*
+sudo rm /var/log/webcamd*
+sudo rm /var/log/map_iface*
+sudo rm /var/log/bootstrap*
+sudo rm /var/log/messages.*
+sudo rm /var/log/netconnectd.log.old 
+sudo truncate -s 0 /var/log/syslog
+sudo truncate -s 0 /var/log/syslog.1
+sudo truncate -s 0 /var/log/netconnectd.log
+sudo truncate -s 0 /var/log/netconnectd.log.1
+sudo truncate -s 0 /var/log/messages
+sudo truncate -s 0 /var/log/dmesg
+sudo rm ~/.bash_history
+sudo rm /root/.bash_history
