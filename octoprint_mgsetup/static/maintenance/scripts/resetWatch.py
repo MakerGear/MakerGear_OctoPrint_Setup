@@ -29,7 +29,8 @@ nextInterval = 0.0   # Time of next recurring operation
 # Called when button is briefly tapped.  Invokes time/temperature script.
 def tap():
   
-  subprocess.call(["service", "octoprint", "restart"])
+  #subprocess.call(["service", "octoprint", "restart"])
+  subprocess.call(["/home/pi/oprint/bin/octoprint", "client", "command", "\"/api/job\"", "\"cancel\"", ])
   #pass
   #print("test")
 
