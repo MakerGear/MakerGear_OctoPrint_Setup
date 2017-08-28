@@ -30,9 +30,9 @@ nextInterval = 0.0   # Time of next recurring operation
 def tap():
   
   #subprocess.call(["service", "octoprint", "restart"])
-  subprocess.call(["/home/pi/oprint/bin/octoprint", "client", "command", "\"/api/job\"", "\"cancel\"", ])
+  subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/cancelPrint.sh',shell=True,stdout=subprocess.PIPE)
   #pass
-  #print("test")
+  #print("tap")
 
 
 # Called when button is held down.  Prints image, invokes shutdown process.
