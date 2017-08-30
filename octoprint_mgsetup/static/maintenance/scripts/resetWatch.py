@@ -76,7 +76,12 @@ def resetPasswordHold():
   shutil.copy("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml")
   shutil.copy("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml")
 
+  shutil.copy("/home/pi/.octoprint/scripts/interfaces", "/etc/network/interfaces")
+
+
+
   os.chmod("/etc/netconnectd.yaml", 0600)
+  os.chmod("/etc/network/interfaces", 0644)
   os.chmod("/home/pi/.octoprint/config.yaml", 0600)
   os.chmod("/home/pi/.octoprint/users.yaml", 0600)
 
@@ -86,6 +91,7 @@ def resetPasswordHold():
   gidPi = grp.getgrnam("pi").gr_gid
 
   os.chown("/etc/netconnectd.yaml", uidRoot, gidRoot)
+  os.chown("/etc/network/interfaces", uidRoot, gidRoot)
   os.chown("/home/pi/.octoprint/config.yaml", uidPi, gidPi)
   os.chown("/home/pi/.octoprint/users.yaml", uidPi, gidPi)
   subprocess.call(["shutdown", "-r", "-F", "now"])
