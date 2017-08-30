@@ -1952,7 +1952,8 @@ $(function() {
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
 			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
 
-			self.warnSshNotify();
+			window.setTimeout(function() {self.warnSshNotify()},5000);
+			// self.warnSshNotify();
 		};
 
 		self.onEventPrintStarted = function(){
