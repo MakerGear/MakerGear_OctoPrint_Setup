@@ -224,6 +224,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		except:
 			raise
 		self.getLocalFirmwareVersion()
+		self.adminAction(dict(action="sshState"))
 
 	def get_template_configs(self):
 		self._logger.info("MGSetup get_template_configs triggered.")
@@ -236,7 +237,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_settings_defaults(self):
 		self._logger.info("MGSetup get_settings_defaults triggered.")
-		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "master", localFirmwareVersion = "")
+		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "master", localFirmwareVersion = "", sshOn = False, warnSsh = True)
 
 	def get_settings_restricted_paths(self):
 		self._logger.info("MGSetup get_settings_restricted_paths triggered.")
@@ -501,10 +502,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#self.turnSshOn()
 			self._execute("/home/pi/.octoprint/scripts/startSsh.sh")
 			self._logger.info("SSH service started!")
+			self.adminAction(dict(action="sshState"))
 		elif action["action"] == 'turnSshOff':
 			#self.turnSshOff()
 			self._execute("/home/pi/.octoprint/scripts/stopSsh.sh")
 			self._logger.info("SSH service stopped!")
+			self.adminAction(dict(action="sshState"))
 		elif action["action"] == 'resetWifi':
 			#subprocess.call("/home/pi/.octoprint/scripts/resetWifi.sh")
 			self._execute("/home/pi/.octoprint/scripts/resetWifi.sh")
@@ -543,7 +546,16 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._execute("w | head -n1")
 		elif action["action"] == 'sshState':
 			self._logger.info("Showing sudo service ssh status.")
-			self._execute("sudo service ssh status")
+			sshState = self._execute("sudo service ssh status")
+			self._logger.info(sshState)
+			if 'enabled' in str(sshState[1]):
+				self._logger.info("enabled in sshState")
+				self._settings.set(['sshOn'], True)
+				self._settings.save()
+			else:
+				self._logger.info("enabled not in sshState")
+				self._settings.set(['sshOn'], False)
+				self._settings.save()
 	
 		elif action["action"] == 'logpatch':
 			# "/home/pi/OctoPrint/venv/bin/OctoPrint_Mgsetup/octoprint_mgsetup/static/patch/logpatch.sh"

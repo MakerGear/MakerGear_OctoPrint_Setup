@@ -239,9 +239,15 @@ G1 F360 E-1
 G90
 M82
 G92 E0
+{% if tohome == true %}
 G28 Z
 G1 F2000 X205 Y225
 M84
+{% endif %}
+{% if tohome == false %}
+G1 F2000 X205 Y150 Z100
+{% endif %}
+
 M400
 M300 S1392 P250
 M300 S1312 P250 

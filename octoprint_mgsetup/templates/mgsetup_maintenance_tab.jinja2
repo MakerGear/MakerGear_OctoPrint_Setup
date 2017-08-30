@@ -52,6 +52,8 @@ aaaa8888aaaa
     <div role="tabpanel" class="tab-pane" id="coldZ">
 <div><input type="radio" name="maintenancePageSelect" value=2 data-bind="checkedValue: 2, checked: maintenancePage, click: window.scroll(0,0)" /> Adjust Starting Height - Cold</div>
 <div><input type="radio" name="maintenancePageSelect" value=4 data-bind="checkedValue: 4, checked: maintenancePage, click: window.scroll(0,0)" /> Adjust Starting Height - Hot</div>
+<div><input type="radio" name="maintenancePageSelect" value=41 data-bind="checkedValue: 41, checked: maintenancePage, click: window.scroll(0,0)" /> Adjust Starting Height - Hot, Alternate Materials and Nozzle Size</div>
+<hr />
 <br><hr />
 
 {#     ad888888b,    #}
@@ -92,7 +94,7 @@ Here we will adjust the starting height of the printer with the feeler gauge.  C
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
 </div>
-<center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight(0) ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
+<center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight(00) ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
 <div data-bind="visible:!$root.isDual()">
 During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
 </div>
@@ -369,9 +371,227 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
 
+{# </div> #}
+
+{#            ,d8       88     #}
+{#          ,d888     ,d88     #}
+{#        ,d8" 88   888888     #}
+{#      ,d8"   88       88     #}
+{#    ,d8"     88       88     #}
+{#    8888888888888     88     #}
+{#             88       88     #}
+{#             88       88     #}
+{# Verify Starting Height (Wiggle) #}
+
+<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && maintenancePage()===41">
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===41" />
+    </div><br>
+
+<h1 style="text-align:left">Verify Starting Height</h1>
+
+
+
+
+
+<p>
+   
+    <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i><div data-bind="visible:!$root.isDual()">
+The printer's extruder and build platform are hot - do not touch them!
+</div>
+<div data-bind="visible: $root.isDual()">
+The printer's Left Extruder (T0) and build platform are hot - do not touch them! 
+</div>
+
+</p>
+
+<p>
+    During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your starting height (also known as "Z Offset") with a non-standard material or nozzle diameter.  Before starting the print, select your printer configuration:
+</p>
+
+<div class="thumbnail" style="margin:auto; width:60%"><br>
+<div style="margin:auto; width:90%">
+<input type="radio" name="customWiggleSelect" value="035absrounded" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.35mm Rounded Brass Nozzle, ABS
+<hr>
+<div><input type="radio" name="customWiggleSelect" value="025absflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, ABS</div>
+<div><input type="radio" name="customWiggleSelect" value="050absflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, ABS</div>
+<div><input type="radio" name="customWiggleSelect" value="075absflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, ABS</div>
+<hr>
+<div><input type="radio" name="customWiggleSelect" value="025plaflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, PLA</div>
+<div><input type="radio" name="customWiggleSelect" value="075plaflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, PLA</div>
+<hr>
+<div><input type="radio" name="customWiggleSelect" value="050psflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, PolySupport</div>
+<hr>
+</div>
 </div>
 
 
+
+
+<p>
+    Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
+</p>
+
+<ol>
+    <li>Start to heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.
+    <li>Move components to their home positions.
+    <li>Move extruder to its purge position.
+    <li>Purge and wipe the extruder on the lower right-hand corner of the build plate.
+    <li>Print a Zigzag pattern on the center of the build plate.
+    <li>Move components to their final position.
+</ol>
+
+
+<p>
+    When you are ready to begin this process, click "Print Zigzag Pattern":
+</p>
+<br>
+
+<center><button class="btnstay" data-bind="enable: !$root.stepFourFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+
+
+
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+    </div>
+</div>
+</div>
+
+Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
+
+
+   
+   <video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  maintenancePage() == 41" onclick="this.paused ? this.play() : this.pause();">
+    <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+    </video>
+
+<br />
+
+
+<p >
+    <strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
+</p>
+
+
+
+<table>
+    <tr>
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+            <a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===41" /></a>
+ 
+        </td>
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+            <a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===41" /></a>
+ 
+        </td>
+ 
+
+
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+             <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===41" /></a>
+         </td>
+ 
+    </tr>
+
+
+
+
+    <tr>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+            If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Starting Height</strong>. Click below to proceed to the next step. 
+            <br />
+
+
+
+
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+
+
+             
+        </td>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+                If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Starting Height is too low</strong>. Click below to adjust the starting height and print a new zigzag. 
+           <!-- <br />
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. -->
+
+        </td>
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+     
+            If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
+             <strong>the Starting Height is too high</strong>. Click below to adjust the starting height and print a new zigzag. 
+
+
+
+        </td>
+    </tr>
+
+    <tr>
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            
+            <center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance'); window.scroll(0,0); $root.stepFourFirstWiggleClicked(false) }">Save<br /></button></center>
+
+  <!--Too far-->
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+<div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
+
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            <div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
+            <!--Too Close-->
+        </td>
+    <tr>
+
+</table>
+<button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+
+<input type="checkbox" data-bind="checked: $root.stepFourShowFineAdjustments" /> Show Advanced Options.
+
+
+</div>
+
+
+
+
+</div>
 
 
 {#               
@@ -695,7 +915,7 @@ aaaa8888aaaa
                #}
     <div role="tabpanel" class="tab-pane" id="dualOffsets">
 	<div><input type="radio" name="maintenancePageSelect" value=9 data-bind="checkedValue: 9, checked: maintenancePage, click: window.scroll(0,0)" /> T1 Cold/Mechanical Height Adjustment</div>
-{#     <div><input type="radio" name="maintenancePageSelect" value=9 data-bind="checkedValue: 91, checked: maintenancePage, click: window.scroll(0,0)" /> T0 and T1 Cold/Mechanical Height Adjustment</div> #}
+    <div><input type="radio" name="maintenancePageSelect" value=9 data-bind="checkedValue: 91, checked: maintenancePage, click: window.scroll(0,0)" /> T0 and T1 Cold/Mechanical Height Adjustment</div>
 	<div><input type="radio" name="maintenancePageSelect" value=11 data-bind="checkedValue: 11, checked: maintenancePage, click: window.scroll(0,0)" /> T1 Hot/Firmware Z Offset</div>
     <div><input type="radio" name="maintenancePageSelect" value=14 data-bind="checkedValue: 14, checked: maintenancePage, click: window.scroll(0,0)" /> Dual X Offset Calibration</div>
     <div><input type="radio" name="maintenancePageSelect" value=15 data-bind="checkedValue: 15, checked: maintenancePage, click: window.scroll(0,0)" /> Dual Y Offset Calibration</div>
@@ -792,7 +1012,7 @@ Y8,    ,d88       88
 
 {# Physical T1 Height Adjustment - By Hand #}
 
-{# <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===91">
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===91">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
     </div><br>
@@ -828,7 +1048,7 @@ Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
 </div><br>
 
-Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt. Now click "Move to Position" to move the build plate to the correct position.<br><br>
+Ensure that both extruders are below 50°C, then loosen the clamping bolts that secure each hot end in their mounting plates.  Apply gentle pressure to slide each hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt.  Now click "Move to Position" to move the build plate to the correct position for adjusting the T0 hot end mounting position.<br><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
 </div>
@@ -836,16 +1056,16 @@ Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that s
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
 </div><br>
 
-<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
+<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple91a'), $root.stepNineAtPosition(true) }">Move T0 to Position<br /></button></center><br><br>
 
 Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room temperature before touching any of the printer’s components.
 <br><br>
 
 <br><br>
 <ol>
-    <li>Now move the feeler gauge under the tip of the T1 nozzle.
-    <li>Loosen the T1 clamping bolt until the T1 hot end slides downward and touches the bed.
-    <li>Secure the T1 clamping bolt.
+    <li>Now move the feeler gauge under the tip of the T0 nozzle.
+    <li>Loosen the T0 clamping bolt until the T0 hot end slides downward and touches the bed.
+    <li>Secure the T0 clamping bolt.
 </ol><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
@@ -854,8 +1074,15 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
 </div><br><br>
 <strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
-<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br /></button></center>
-</div> #}
+<br><br>
+Now that T0 is adjusted and fully secured, we will adjust T1.  Click "Move T1 to Position" to proceed.<br><br>
+
+<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple91b') }">Move T1 to Position<br /></button></center>
+
+<strong>You must recalibrate the Starting Height after this process.</strong>  Click below to perform either the Cold or Hot Starting Height Adjustment:<br><br>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0); maintenancePage(2) }">Cold Starting Height Adjustment<br /></button></center>
+<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0); maintenancePage(4) }">Hot Starting Height Adjustment<br /></button></center>
+</div>
 
     {#      88      88  
       ,d88    ,d88  

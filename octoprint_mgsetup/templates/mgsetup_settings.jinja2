@@ -50,10 +50,27 @@ This will enable the SSH service on the printer host computer.<br><br>
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button><br>
 This will disable the SSH service on the printer host computer.<br><br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button><br>
+This will Show the Current response from "sudo service ssh status".<br><br>
+
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">{{ _('Show SSH Enabled Warning') }}</label>
+        <div class="controls">
+           <input type="checkbox" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), checked: settings.settings.plugins.mgsetup.warnSsh" />
+        </div>
+    </div>
+</form>
+    <br><br>
+
+
+
+
 <hr />
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Forget Wifi</button><br>
-This will disconnect the printer from your current network and enable the default printer Access Point.<br><br>
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Reset Networking Configuration</button><br>
+This will disconnect the printer from your current network and enable the default printer Access Point, returning the printer to the original Networking state.<br><br>
 
 <hr />
 
@@ -92,8 +109,6 @@ This will Show the Current route as reported by "route -n".<br><br>
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('whead'), $root.showCommandResponse() }">Show w</button><br>
 This will Show the Current response from "w | head -n1".<br><br>
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button><br>
-This will Show the Current response from "sudo service ssh status".<br><br>
 
 
 <hr />

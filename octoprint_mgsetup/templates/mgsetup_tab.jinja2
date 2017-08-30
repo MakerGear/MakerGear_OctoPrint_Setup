@@ -191,7 +191,7 @@ Here we will adjust the rough starting height of the printer (in a future step w
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
 </div>
-<center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight(0) ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
+<center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight(0) ; $root.stepTwoPrepared(1) ; $root.enableLockedButton(15000) }">{{ _('Prepare') }}</button></center><br>
 <div data-bind="visible:!$root.isDual()">
 During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
 </div>
@@ -240,28 +240,28 @@ Current Z Position : <span data-bind="text: $root.ZPos"></span>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 1 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.ZPos() > 1, click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1 mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.ZPos() > 1 && $root.lockButton(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button> 1 mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.lockButton(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button> 1 mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.1 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1 mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.lockButton(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button> .1 mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.lockButton(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button> .1 mm Down
         </div>
     </div>
     <div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
         <h1>Z 0.01 mm</h1>
         <div>
-            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button> .01 mm Up
+            <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.lockButton(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button> .01 mm Up
         </div>
         <div>
-            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button> .01 mm Down
+            <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && $root.lockButton(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button> .01 mm Down
         </div>
     </div>
 
@@ -789,7 +789,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 <div style="width:80%">
 <button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton() , click: function() {$root.printWiggleConfirm(20); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 1</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(3); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 2</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(4); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 3</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(5); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 4</button>
 </div>
-<button class="btnstay" style="width:80%;" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm('all'); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">All</button><br><br>
+<button class="btnstay" style="width:80%;" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm('step6all'); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">All</button><br><br>
 
 <p>
 

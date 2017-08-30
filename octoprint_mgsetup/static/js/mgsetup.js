@@ -244,9 +244,15 @@ $(function() {
 		self.storeWigglePosition = ko.observable(undefined);
 		self.storeInputWiggleHeight = ko.observable(undefined);
 		self.hasInputWiggleHeight = ko.observable(false);
+		self.customWiggle = ko.observable(undefined);
+		self.customWiggleSelect = ko.observable(undefined);
 
 		self.printWiggleConfirm = function(wigglePosition, inputWiggleHeight){
 			if(!self.hideDebug()){console.log("printWiggleConfirm triggered");}
+			if(wigglePosition == "custom" && self.customWiggle() == undefined){
+				self.notify("Error - Please Select Configuration","Please select machine configuration before printing the first Zigzag","error");
+				return;
+			}
 			if (wigglePosition !== undefined){
 				self.storeWigglePosition(wigglePosition);
 			}
@@ -352,6 +358,11 @@ $(function() {
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
 			} 
+			if (wigglePosition === "step6all"){
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(1), tool: 0};
+				var context = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
+			} 
 			if (wigglePosition === 10){ //same as position 1 but without homing
 				
 
@@ -412,6 +423,18 @@ $(function() {
 				OctoPrint.control.sendGcodeScriptWithParameters("cross", context, parameters);
 				self.stepTwelveSimpleClicked(true);
 			}
+			if (wigglePosition === "custom"){
+				var context = {};
+				if (self.stepFourFirstWiggleClicked()){
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: self.customWiggle(), tool: 0};
+				} else {
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: self.customWiggle(), tool: 0};
+					self.stepFourFirstWiggleClicked(true);
+				}
+				// var parameters = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("customWiggle", context, parameters);
+			}
+
 
 		};
 
@@ -712,12 +735,41 @@ $(function() {
 		self.setupSetStartingHeight = function (startingHeightStep) {
 			self.ZPosFresh(false);
 			self.requestEeprom();
+			self.ZPos(5);
 			if (startingHeightStep == "0") {
 
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
 				"M300 S1392 P250",
 				"T0",
+				"G28",
+				"G1 F1400 X100 Y125 Z50",
+				"G1 F1400 Z5",
+				"M114",
+				"M400",
+				"M300 S1392 P250",
+				"M300 S1312 P250", 
+				"M300 S1040 P250"
+				]);
+				//new PNotify({
+				//	title: 'Starting Height Check',
+				//	text: "Moving to check the Starting Height",
+				//	type: 'success',
+				//	//hide: self.settingsViewModel.settings.plugins.M117PopUp.autoClose()
+				//	});
+			}
+			if (startingHeightStep == "00") { //for maintenance step
+
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250",
+				"M605 S0",
+				"T0",
+				"G28 X",
+				"T1",
+				"G28 X",
+				"T0",
+				"M605 S1",
 				"G28",
 				"G1 F1400 X100 Y125 Z50",
 				"G1 F1400 Z5",
@@ -1033,10 +1085,13 @@ $(function() {
 				self.goTo("10");
 			}
 			if (dualRightNozzleAdjustStep === '3-maintenance'){
-				OctoPrint.control.sendGcode(["G28 Z",
+				OctoPrint.control.sendGcode(["M400",
+					"G28 Z",
 					"M84"
 				]);
 				self.stepNineAtPosition(false);
+				//$('#maintenanceTabs').('#coldZ').tab('show')
+				$(".nav-tabs a[href='#coldZ']").click();
 			}
 
 
@@ -1056,6 +1111,53 @@ $(function() {
 					"G28",
 					"T1",
 					"G1 F2000 X100 Y155 Z50 E0.001",
+					"G1 F1000 Z0",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
+				]);
+				OctoPrint.printer.extrude(10);
+				self.cooldown();
+
+			}
+			if (dualRightNozzleAdjustStep === 'simple91a'){
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28 Z",
+					"M218 T1 Z0",
+					"M500",
+					"M605 S0",
+					"T0",
+					"G28 X",
+					"T1",
+					"G28 X",
+					"M605 S1",
+					"G28",
+					"T0",
+					"G1 F2000 X100 Y155 Z50 E0.001",
+					"G1 F1000 Z0",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
+				]);
+				OctoPrint.printer.extrude(10);
+				self.cooldown();
+
+			}
+			if (dualRightNozzleAdjustStep === 'simple91b'){
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G1 F2000 Z20",
+					"M605 S0",
+					"T0",
+					"G28 X",
+					"M605 S1",
+					"T1",
+					"G1 F2000 X100 Y155 Z20 E0.001",
 					"G1 F1000 Z0",
 					"M400",
 					"M300 S1392 P250",
@@ -1479,6 +1581,41 @@ $(function() {
 
 		};
 
+		self.warnSshNotify = function() {
+			if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh()){
+				//self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button class=\"btngo\" data-bind=\"click: function() { $root.showSettings('settings_plugin_mgsetup') ; console.log('everything is broken') }\">Mark as last read</a>","error",false);
+				title = "SSH Is Enabled";
+				message = "The SSH Service is currently Enabled.  We strongly recommend Disabling the SSH Service for normal operation.";
+				type = "error";
+				hide = false;
+				confirm = {
+					confirm: true, 
+					buttons: [{
+						text: gettext("Change Settings"),
+						click: function(notice) {
+							self.showSettings('settings_plugin_mgsetup');
+							notice.remove();
+						}
+					}, {
+						text: gettext("Close"),
+						click: function(notice) {
+							notice.remove();
+						}
+					}
+					]
+				};
+
+				new PNotify({
+					title: title,
+					text: message,
+					type: type,
+					hide: hide,
+					confirm: confirm
+				});
+			}
+		};
+
+
 		self.showSupport = function(input) {
 			if ((self.registered() === false) || (self.activated() === false)){
 				//self.support_widget.modal("show");
@@ -1766,6 +1903,9 @@ $(function() {
 			// $( "#maintenanceTabs" ).tabs();
 			//} );
 			$( "#maintenanceTabs" ).tabdrop();
+			// if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh()){
+			// 	self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button data-bind=\"click: function() { $root.showSettings() }\">Mark as last read</button>","error",false);
+			// }
 		};
 
 		self.onEventClientOpened = function() {
@@ -1795,6 +1935,7 @@ $(function() {
 
 		self.onAfterBinding = function() {
 			if(!self.hideDebug()){console.log("onAfterBinding triggered.");}
+			self.warnSshNotify();
 			//self.support_widget = $("#mgsetup_support_widget");
 		};
 
@@ -1811,6 +1952,7 @@ $(function() {
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
 			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
 
+			self.warnSshNotify();
 		};
 
 		self.onEventPrintStarted = function(){
