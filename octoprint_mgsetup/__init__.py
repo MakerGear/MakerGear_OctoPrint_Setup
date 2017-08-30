@@ -147,6 +147,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# self._logger.info(self._printer_profile_manager.get_all())
 		# self._logger.info(self._printer_profile_manager.get_current())
 		self._logger.info(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"])
+
+
+		subprocess.call("/home/pi/.octoprint/scripts/hosts.sh") #recreate hostsname.js for external devices/ print finder
 		
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 			os.makedirs('/home/pi/.octoprint/scripts/gcode')

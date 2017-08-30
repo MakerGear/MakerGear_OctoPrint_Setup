@@ -2,6 +2,7 @@
 import socket
 import fcntl
 import struct
+import time
 
 newhost =  socket.gethostname()
 
@@ -49,14 +50,16 @@ target = open("/home/pi/oprint/lib/python2.7/site-packages/octoprint_mgsetup/sta
 
 
 line1 = '''var hostName = \"'''+ newhost +'''\";
-	var ip = [\"'''+ wlanip[3] +'''\",\"'''+ ethip[3] +'''\"];
-	for (i = 0; i < ip.length; i++) 
-	{ 
- 	id1 = (\"ip\"+ip[i].toString());
- 	hostDiv = document.getElementById(id1);
- 	hostDiv.innerHTML = hostName;
-	}
-	'''
+var generate = '''+ str(time.time())+ ''';
+
+    var ip = [\"'''+ str(wlanip[3])+'''\",\"'''+ str(ethip[3]) +'''\"];
+    for (i = 0; i < ip.length; i++) 
+    { 
+    id1 = (\"ip\"+ip[i].toString());
+    hostDiv = document.getElementById(id1);
+    hostDiv.innerHTML = hostName;
+    }
+    '''
 
 
 
