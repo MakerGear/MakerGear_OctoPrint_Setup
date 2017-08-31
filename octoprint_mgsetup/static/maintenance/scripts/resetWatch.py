@@ -40,7 +40,7 @@ def tap():
     #print("cancel and Reset Start")
     subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/cancelPrint.sh',shell=True,stdout=subprocess.PIPE)
     #print("cancel and Reset Done ")
-  else:
+  #else:
     #print("don't reset thing")
 
 # Called when button is held down.  Prints image, invokes shutdown process.
