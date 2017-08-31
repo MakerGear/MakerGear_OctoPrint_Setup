@@ -28,12 +28,20 @@ nextInterval = 0.0   # Time of next recurring operation
 
 # Called when button is briefly tapped.  Invokes time/temperature script.
 def tap():
-  
-  #subprocess.call(["service", "octoprint", "restart"])
-  subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/cancelPrint.sh',shell=True,stdout=subprocess.PIPE)
-  #pass
-  #print("tap")
 
+  avrFlag = 0
+
+  #check if AVR dude is running, set flag if it is
+  for line in os.popen("pgrep -x \"avrdude\""):
+    avrFlag = 1
+    #print("avr flag is one")
+
+  if avrFlag == 0:
+    #print("cancel and Reset Start")
+    subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/cancelPrint.sh',shell=True,stdout=subprocess.PIPE)
+    #print("cancel and Reset Done ")
+  else:
+    #print("don't reset thing")
 
 # Called when button is held down.  Prints image, invokes shutdown process.
 def shutdownHold():
@@ -75,10 +83,7 @@ def resetPasswordHold():
   shutil.copy("/etc/netconnectd.yaml.backup", "/etc/netconnectd.yaml")
   shutil.copy("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml")
   shutil.copy("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml")
-
   shutil.copy("/home/pi/.octoprint/scripts/interfaces", "/etc/network/interfaces")
-
-
 
   os.chmod("/etc/netconnectd.yaml", 0600)
   os.chmod("/etc/network/interfaces", 0644)
