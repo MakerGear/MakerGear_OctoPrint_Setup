@@ -306,7 +306,7 @@ $(function() {
 					self.stepFourFirstWiggleClicked(true);
 				}
 
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 140, wiggleY: 190, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
@@ -325,19 +325,19 @@ $(function() {
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
 			}
 			if (wigglePosition === 3){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 170, wiggleY: 20, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 270, wiggleY: 20, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
 			if (wigglePosition === 4){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 170, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 270, wiggleY: 290, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}                       
 			if (wigglePosition === 5){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 290, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
@@ -354,12 +354,12 @@ $(function() {
 					self.stepFiveBeginCornerCheckClicked(true);
 				}
 
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 290, tohome: true, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
 			} 
 			if (wigglePosition === "step6all"){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(1), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 290, tohome: false, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
 			} 
@@ -373,7 +373,7 @@ $(function() {
 				if(!self.hideDebug()){console.log(typeof(self.ZWiggleHeight()));}
 				if(!self.hideDebug()){console.log(typeof(self.wiggleHeightAdjust));}
 				if(!self.hideDebug()){console.log(parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust));}
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 140, wiggleY: 190, tohome: false, wigglenumber: parseFloat(1), tool: 0};
 				var context = {};
 				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
@@ -426,9 +426,9 @@ $(function() {
 			if (wigglePosition === "custom"){
 				var context = {};
 				if (self.stepFourFirstWiggleClicked()){
-					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: self.customWiggle(), tool: 0};
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 140, wiggleY: 190, tohome: false, wigglenumber: self.customWiggle(), tool: 0};
 				} else {
-					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: self.customWiggle(), tool: 0};
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 140, wiggleY: 190, tohome: true, wigglenumber: self.customWiggle(), tool: 0};
 					self.stepFourFirstWiggleClicked(true);
 				}
 				// var parameters = {};

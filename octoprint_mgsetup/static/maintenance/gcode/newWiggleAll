@@ -24,11 +24,11 @@ G28 X
 T0
 G28
 {% endif %}
-G1 F1000 X205 Y{{ ypurge }} Z10
+G1 F1000 X305 Y100 Z10
 G1 F1000 Z{{ zpos }}
 G92 E0
 G1 F240 E{{ epurge }}
-G1 F240 X190 E{{ epurge + 2}}
+G1 F240 X290 E{{ epurge + 2}}
 G1 F360 E{{ epurge + 1}}
 G92 E0
 
@@ -84,7 +84,7 @@ G90
 M82
 G92 E0
 
-{% set xpos = 170 %}
+{% set xpos = 270 %}
 {% set ypos = 20 %}
 G1 F1000 Z10
 G1 F2500 X{{xpos}} Y{{ypos}} Z{{ zpos }}
@@ -136,8 +136,8 @@ G90
 M82
 G92 E0
 
-{% set xpos = 170 %}
-{% set ypos = 220 %}
+{% set xpos = 270 %}
+{% set ypos = 290 %}
 G1 F1000 Z10
 G1 F2500 X{{xpos}} Y{{ypos}} Z{{ zpos }}
 G1 E0.95
@@ -189,7 +189,7 @@ M82
 G92 E0
 
 {% set xpos = 20 %}
-{% set ypos = 220 %}
+{% set ypos = 290 %}
 G1 F1000 Z10
 G1 F2500 X{{xpos}} Y{{ypos}} Z{{ zpos }}
 G1 E0.95
@@ -241,11 +241,11 @@ M82
 G92 E0
 {% if tohome == true %}
 G28 Z
-G1 F2000 X205 Y225
+G1 F2000 X150 Y315
 M84
 {% endif %}
 {% if tohome == false %}
-G1 F2000 X205 Y150 Z100
+G1 F2000 X150 Y315 Z150
 {% endif %}
 
 M400

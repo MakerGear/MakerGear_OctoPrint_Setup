@@ -27,11 +27,11 @@ G28
 T{{tool}}
 {% endif %}
 T{{tool}}
-G1 F1000 X205 Y{{ ypurge }} Z10
+G1 F1000 X305 Y{{ ypurge }} Z10
 G1 F1000 Z{{ zpos }}
 G92 E0
 G1 F240 E{{ epurge }}
-G1 F240 X190 E{{ epurge + 2}}
+G1 F240 X290 E{{ epurge + 2}}
 
 
 G92 E0

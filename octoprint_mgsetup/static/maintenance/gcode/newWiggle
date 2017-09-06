@@ -82,16 +82,16 @@ G90
 M82
 G92 E0
 {% if wigglenumber <= 3 %}
-G1 F2000 X170 Y200
+G1 F2000 X150 Y320
 {% endif %}
 {% if wigglenumber == 4 %}
-G1 F2000 X20 Y240
+G1 F2000 X150 Y10
 {% endif %}
 {% if wigglenumber == 5 %}
-G1 F2000 X170 Y200
+G1 F2000 X150 Y10
 {% endif %}
 {% if wigglenumber >= 10 %}
-G1 F2000 X170 Y200
+G1 F2000 X150 Y320
 {% endif %}
 
 M400

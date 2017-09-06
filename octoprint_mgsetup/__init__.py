@@ -75,7 +75,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		octoprint.settings.Settings.get(octoprint.settings.settings(),["appearance", "components", "order", "tab"])
 		self.firstTab = self._settings.get(["firstTab"])
 		if self.firstTab:
-			self.firstTabName = "plugin_mgsetup"
+			self.firstTabName = "tab_plugin_mgsetup_maintenance"
 			# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "components", "order", "tab"],["plugin_mgsetup", "temperature", "control", "gcodeviewer", "terminal", "timelapse"],force=True)
 			octoprint.settings.Settings.add_overlay(octoprint.settings.settings(),dict(appearance=dict(components=dict(order=dict(tab=["plugin_mgsetup", "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 		else:
@@ -234,7 +234,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		return [
 			dict(type="navbar", custom_bindings=True),
 			dict(type="settings", custom_bindings=True),
-			dict(type="tab", template="mgsetup_tab.jinja2", div="tab_plugin_mgsetup"),
+			# dict(type="tab", template="mgsetup_tab.jinja2", div="tab_plugin_mgsetup"),
 			dict(type="tab", template="mgsetup_maintenance_tab.jinja2", div="tab_plugin_mgsetup_maintenance", name="MakerGear Maintenance")
 		]
 
