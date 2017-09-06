@@ -735,7 +735,7 @@ $(function() {
 		self.setupSetStartingHeight = function (startingHeightStep) {
 			self.ZPosFresh(false);
 			self.requestEeprom();
-			self.ZPos(5);
+			// self.ZPos(5);
 			if (startingHeightStep == "0") {
 
 				OctoPrint.control.sendGcode(["M300 S1040 P250",

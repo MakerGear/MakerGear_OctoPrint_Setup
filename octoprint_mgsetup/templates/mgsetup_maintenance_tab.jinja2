@@ -698,7 +698,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 <div style="width:80%">
 <button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton() , click: function() {$root.printWiggleConfirm(20); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 1</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(3); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 2</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(4); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 3</button><button class="btnstay" style="width:25%; display:inline-block; " data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm(5); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">Zigzag 4</button>
 </div>
-<button class="btnstay" style="width:80%;" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm('all'); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">All</button><br><br>
+<button class="btnstay" style="width:80%;" data-bind="enable: $root.stepSixPrepared() && $root.lockButton(), click: function() {$root.printWiggleConfirm('step6all'); $root.stepSixWigglePrinted(true); $root.enableLockedButton()} ">All</button><br><br>
 
 <p>
 
