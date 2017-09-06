@@ -241,11 +241,11 @@ M82
 G92 E0
 {% if tohome == true %}
 G28 Z
-G1 F2000 X150 Y315
+G1 F2000 X150 Y365
 M84
 {% endif %}
 {% if tohome == false %}
-G1 F2000 X150 Y315 Z150
+G1 F2000 X150 Y365 Z150
 {% endif %}
 
 M400
