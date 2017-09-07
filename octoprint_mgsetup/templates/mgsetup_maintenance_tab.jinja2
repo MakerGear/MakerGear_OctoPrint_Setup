@@ -94,7 +94,7 @@ Here we will adjust the starting height of the printer with the feeler gauge.  C
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
 </div>
-<center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight(00) ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
+<center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight('00') ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
 <div data-bind="visible:!$root.isDual()">
 During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
 </div>
