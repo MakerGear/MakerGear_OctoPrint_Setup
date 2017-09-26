@@ -65,7 +65,11 @@ This will Show the Current response from "sudo service ssh status".<br><br>
     <br><br>
 
 
+{# <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('lockFirmware'), $root.showCommandResponse() }">Lock Firmware</button><br>
+This will create a lock file in the firmware folder, which will prevent the firmware update from running.<br><br>
 
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('unlockFirmware'), $root.showCommandResponse() }">Unlock Firmware</button><br>
+This will delete the firmware lock file, allowing updating of the local firmware copy.<br><br> #}
 
 <hr />
 

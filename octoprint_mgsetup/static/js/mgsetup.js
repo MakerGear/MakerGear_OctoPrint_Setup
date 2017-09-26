@@ -875,8 +875,8 @@ $(function() {
 					return;
 				}
 				//self.newZOffset = self.newZOffset + 0.1 ;
-				self.ZOffString = "M218 T1 Z"+self.newZOffset.toString();
-				if(!self.hideDebug()){console.log(self.newZOffset.toString());}
+				self.ZOffString = "M218 T1 Z"+self.newZOffset.toFixed(2);
+				if(!self.hideDebug()){console.log(self.newZOffset.toFixed(2));}
 				if(!self.hideDebug()){console.log(self.ZOffString);}
 				OctoPrint.control.sendGcode([self.ZOffString,
 					"M500"					
@@ -890,8 +890,17 @@ $(function() {
 				//});
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("3");
+				if(Math.abs(self.tool1ZOffset())<=0.05){
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work without a raft.", "success");
+				} else if(Math.abs(self.tool1ZOffset())<=0.10){
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work with a raft.", "notice");
+				} else if(Math.abs(self.tool1ZOffset())>0.10){
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
+				}
+
 				self.goTo("12");
 			}
+
 			if (startingHeightStep == "T1-maintenance") {
 				self.newZOffset = (parseFloat(self.tool1ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
 				if (self.newZOffset.toString() == "NaN") {
@@ -903,8 +912,8 @@ $(function() {
 					return;
 				}
 				//self.newZOffset = self.newZOffset + 0.1 ;
-				self.ZOffString = "M218 T1 Z"+self.newZOffset.toString();
-				if(!self.hideDebug()){console.log(self.newZOffset.toString());}
+				self.ZOffString = "M218 T1 Z"+self.newZOffset.toFixed(2);
+				if(!self.hideDebug()){console.log(self.newZOffset.toFixed(2));}
 				if(!self.hideDebug()){console.log(self.ZOffString);}
 				OctoPrint.control.sendGcode([self.ZOffString,
 					"M500"					
@@ -920,6 +929,13 @@ $(function() {
 				//self.setupStep("3");
 				// self.goTo("12");
 				self.stepElevenFirstWiggleClicked(false);
+				if(Math.abs(self.tool1ZOffset())<=0.05){
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work without a raft.", "success");
+				} else if(Math.abs(self.tool1ZOffset())<=0.10){
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work with a raft.", "notice");
+				} else if(Math.abs(self.tool1ZOffset())>0.10){
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
+				}
 			}
 
 
@@ -1187,6 +1203,28 @@ $(function() {
 		self.sawBinPrinted = ko.observable(false);
 		self.chosenSawBin = ko.observable(0);
 
+
+		// For future sanity, some notes on how the X and Y offset adjustment works.  It's a bit convoluted, but is a delicate balance between simplicity and flexibility.
+		// The entire process revoles around printing a pattern with the two hotends, and having the user select the pattern feature where the pattern is closest to aligned; this is repeated until the central feature is selected,
+		// and then repeated with a pattern with smaller spacings twice.
+		// There are 5 potential choices - originaly, selecting 1,2,4 or 5 would adjust the axis offset and ask the user to reprint the same pattern, while selecting 3 would move to either the next pattern granularity or axis.
+		// On 9/26 we changed this behavior so that 2 and 4 also move to the next granularity, but _only_ if not the final granularity.
+
+		// Actual process - user clicks one of the buttons (1,2,3,4,5), which triggers printSawBinConfirm(2) or whatever number is selected.  printSawBinConfirm() takes in that number, saves it if actually provided, then either
+		// calls pickSawBin() if we're on calibrationStep() 2 and the chosenBin was 3, or pops up the printSawBinDialog to confirm with the user that the bed is clear and thus ready to print again.
+		// The printSawBinDialog has just two options - Cancel or Print; Print calls pickSawBin().
+
+		// pickSawBin() filters through the input based on if the calibrationAxis is X or Y, then on what bin was chosen, and then what calibrationStep is active.
+		// Behavior for X and Y, if the user selects 1,2,4, or 5, is the same - adjust the offset by that value, then call printSawBin; new version will also increment calibrationStep if 2 or 4 are selected.
+		// If bin is 3, increment calibrationStep; if calibrationStep is no 3, either finish the X adjustment process and move to the Y adjustment, or finish the Y adjustment process, depending on calibrationAxis();
+		// if calibrationStep is still below 3, printSawBin().
+
+		// printSawBin() prints whatever pattern is called for based on calibrationAxis and calibrationStep.
+
+
+
+
+
 		self.printSawBinConfirm = function(chosenBin){
 			
 
@@ -1276,6 +1314,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
+					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
 				if (chosenMatch == 3){
@@ -1304,6 +1343,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
+					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
 				if (chosenMatch == 5){
@@ -1332,6 +1372,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
+					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
 				if (chosenMatch == 3){
@@ -1357,6 +1398,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
+					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
 				if (chosenMatch == 5){
@@ -1619,7 +1661,7 @@ $(function() {
 		self.showSupport = function(input) {
 			if ((self.registered() === false) || (self.activated() === false)){
 				//self.support_widget.modal("show");
-				self.support_widget.modal({keyboard: false, backdrop: "static", show: true});
+				self.support_widget.modal({keyboard: true, backdrop: "static", show: true});
 			} else {
 				zE.activate();
 			}
@@ -1813,7 +1855,48 @@ $(function() {
 		};
 
 
+		self.urlLogin = function () {
+			if(window.location.hash) {
+				var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+				//alert (hash);
+				var vars = hash.split('&');
+				var key = {};
+				for (i=0; i<vars.length; i++) {
+					var tmp = vars[i].split('=');
+					key[tmp[0]] = tmp[1];
+				}
+				console.log(key["user"]);
+				console.log(key["pass"]);
+				if (key["user"] !== undefined && key["pass"] !== undefined){
+					OctoPrint.browser.login(key["user"], key["pass"], true)
+						.done(function(response){
+							console.log(response.message);
+							console.log(response.status);
+							console.log(response.statusText);
+							console.log(response);
+							console.log("logged in via URL");
+							location.reload();
+						})
+						.fail(function(response){
+							console.log(response.message);
+							console.log(response.status);
+							console.log(response.statusText);
+							console.log(response);
+							self.notify("URL Login Fail","There was an issue logging in with the credentials provided in the URL.  Check the credentials and try again, or login normally.","error");
+						});
+				}
+				console.log(hash);
+				console.log(key);
+				// if hash
+				history.replaceState(history.state,"","/");
+      // hash found
+			} else {
+      // No hash found
+			}
+		};
 
+
+		
 		
 
  // 88888888888  8b           d8  88888888888  888b      88  888888888888   ad88888ba   
@@ -1906,6 +1989,7 @@ $(function() {
 			// if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh()){
 			// 	self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button data-bind=\"click: function() { $root.showSettings() }\">Mark as last read</button>","error",false);
 			// }
+			window.setTimeout(function() {self.urlLogin()},500);
 		};
 
 		self.onEventClientOpened = function() {

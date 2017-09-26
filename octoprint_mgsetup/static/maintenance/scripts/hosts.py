@@ -45,29 +45,30 @@ except:
 
 
 
-
-target = open("/home/pi/oprint/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 'w')
-
-
-line1 = '''var hostName = \"'''+ newhost +'''\";
-var generate = '''+ str(time.time())+ ''';
-
-    var ip = [\"'''+ str(wlanip[3])+'''\",\"'''+ str(ethip[3]) +'''\"];
-    for (i = 0; i < ip.length; i++) 
-    { 
-    id1 = (\"ip\"+ip[i].toString());
-    hostDiv = document.getElementById(id1);
-    hostDiv.innerHTML = hostName;
-    }
-    '''
+try:
+    target = open("/home/pi/oprint/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 'w')
 
 
+    line1 = '''var hostName = \"'''+ newhost +'''\";
+    var generate = '''+ str(time.time())+ ''';
+
+        var ip = [\"'''+ str(wlanip[3])+'''\",\"'''+ str(ethip[3]) +'''\"];
+        for (i = 0; i < ip.length; i++) 
+        { 
+        id1 = (\"ip\"+ip[i].toString());
+        hostDiv = document.getElementById(id1);
+        hostDiv.innerHTML = hostName;
+        }
+        '''
 
 
-target.write(line1)
 
-target.close()
 
+    target.write(line1)
+
+    target.close()
+except IOError as e:
+    print "Target file could not be found! Error: "+str(e)
 
 
 

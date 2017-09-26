@@ -25,6 +25,11 @@ aaaa8888aaaa
               
                #}
     <div role="tabpanel" class="tab-pane active" id="maintenanceHome">Welcome to the MakerGear M3 Maintenance Tab.  Here you'll have easy access to individual maintenance operations for your printer, including Filament Loading and Unloading, Calibrating your Z Offset (either with the new Zigzag pattern or the classic Feeler Gauge method), Leveling your Bed (again, with the Zigzag or Feeler Gauge), and adjusting your Independent Dual Extruder Offsets (if relevant).
+    <br>
+    Start of showing firmware values:<br><br>
+    Firmwareline: <span data-bind="text: $root.firmwareline()"></span><br><br>
+    ZOffsetwareline: <span data-bind="text: $root.zoffsetline()"></span><br><br>
+    Tooloffsetline: <span data-bind="text: $root.tooloffsetline()"></span><br>
 
 
 
@@ -1010,7 +1015,7 @@ Y8,    ,d88       88
                           
 #}
 
-{# Physical T1 Height Adjustment - By Hand #}
+{# Physical T0 and T1 Height Adjustment - By Hand #}
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===91">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">

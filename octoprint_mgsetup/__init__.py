@@ -406,38 +406,42 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._plugin_manager.send_plugin_message("mgsetup", dict(localfirmwareline = self.localfirmwareline))
 
 	def updateLocalFirmware(self):
-		self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
-		self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
-		self._logger.info("Hello")
-		self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
-		self._logger.info("Profile: "+self.activeProfile)
-		self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
-		self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
+		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
+			self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
+			self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
+			self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
+			self._logger.info("Profile: "+self.activeProfile)
+			self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
+			self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
 
-		# self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
-		# self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
-		if (self.extruderCount == 2):
-			try:
-				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
-				self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
-				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Dual configuration to Configuration_makergear.h"))
-			except IOError as e:
-				self._logger.info("Tried to copy Dual configuration but encountered an error!")
-				self._logger.info("Error: "+str(e))
-				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Dual configuration but encountered an error!  Error: "+str(e)))
+			# self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
+			# self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
+			if (self.extruderCount == 2):
+				try:
+					shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+					self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
+					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Dual configuration to Configuration_makergear.h"))
+				except IOError as e:
+					self._logger.info("Tried to copy Dual configuration but encountered an error!")
+					self._logger.info("Error: "+str(e))
+					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Dual configuration but encountered an error!  Error: "+str(e)))
+			else:
+				try:
+					shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+					self._logger.info("Copied the Single configuration to Configuration_makergear.h")
+					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Single configuration to Configuration_makergear.h"))
+				except IOError as e:
+					self._logger.info("Tried to copy Single configuration but encountered an error!")
+					self._logger.info("Error: "+str(e))
+					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Single configuration but encountered an error!  Error: "+str(e)))
+			self.getLocalFirmwareVersion()
+
 		else:
-			try:
-				shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
-				self._logger.info("Copied the Single configuration to Configuration_makergear.h")
-				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Single configuration to Configuration_makergear.h"))
-			except IOError as e:
-				self._logger.info("Tried to copy Single configuration but encountered an error!")
-				self._logger.info("Error: "+str(e))
-				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Single configuration but encountered an error!  Error: "+str(e)))
-
+			self._logger.info("Tried to update firmware, but lock file exists!  Aborting.")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to update firmware, but lock file exists!  Aborting."))
 
 		# settings.printerProfiles.currentProfileData().extruder.count()
-		self.getLocalFirmwareVersion()
+
 # octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
 
 	def writeNetconnectdPassword(self, newPassword):
@@ -499,6 +503,51 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._settings.save()
 		self._logger.info("Activation and Registration Reset!")
 
+	def disableRadios(self):
+		self._execute("netconnectcli stop_ap")
+		if not os.path.isfile('/boot/config.txt.backup'):
+			shutil.copy('/boot/config.txt','/boot/config.txt.backup')
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.txt to config.txt.backup ."))
+		if not "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
+			f = open('/boot/config.txt', 'a')
+			f.write("\ndtoverlay=pi3-disable-wifi")
+			f.close()
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Disabled Wifi in config.txt .  Will now reboot."))
+			self._execute("sudo reboot")
+
+	def enableRadios(self):
+		if "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
+			shutil.copy('/boot/config.txt.backup','/boot/config.txt')
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.txt.backup to config.txt .  Will now reboot."))
+			self._execute("sudo reboot")
+
+	def lockFirmware(self):
+		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
+			open('/home/pi/m3firmware/src/Marlin/lockFirmware','a').close()
+			self._logger.info("Firmware lock file created.")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Firmware lock file created!"))
+
+	def unlockFirmware(self):
+		if os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
+			try:
+				os.remove('/home/pi/m3firmware/src/Marlin/lockFirmware')
+				self._logger.info("Firmware lock file deleted.")
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Firmware lock file deleted - now free to update firmware."))
+			except IOError as e:
+				self._logger.info("Tried to delete firmware lock file, but there was an error!")
+				self._logger.info("Error: "+str(e))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to delete firmware lock file but encountered an error!  Error: "+str(e)))
+		else:
+			self._logger.info("Tried to delete firmware lock file, but it doesn't seem to exist?")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to delete firmware lock file, but it doesn't seem to exist?"))
+
+
+
+
+
+
+
+
 	def adminAction(self, action):
 		self._logger.info("adminAction called: "+ str(action))
 		if action["action"] == 'turnSshOn':
@@ -547,6 +596,17 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'whead':
 			self._logger.info("Showing w | head -n1.")
 			self._execute("w | head -n1")
+		elif action["action"] == 'lockFirmware':
+			self.lockFirmware()
+		elif action["action"] == 'unlockFirmware':
+			self.unlockFirmware()
+		elif action["action"] == 'disableRadios':
+			self.disableRadios()
+		elif action["action"] == 'enableRadios':
+			self.enableRadios()
+
+
+
 		elif action["action"] == 'sshState':
 			self._logger.info("Showing sudo service ssh status.")
 			sshState = self._execute("sudo service ssh status")
