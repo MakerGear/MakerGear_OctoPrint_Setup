@@ -30,6 +30,12 @@ aaaa8888aaaa
     Firmwareline: <span data-bind="text: $root.firmwareline()"></span><br><br>
     ZOffsetwareline: <span data-bind="text: $root.zoffsetline()"></span><br><br>
     Tooloffsetline: <span data-bind="text: $root.tooloffsetline()"></span><br>
+    <div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work without a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.1 && Math.abs($root.tool1ZOffset()) > 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work with a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) > 0.1">Your T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Dual Offsets, "T0 and T1 Cold/Mechanical Height Adjustment" section.<br>
+<a href='#dualOffsets' data-toggle='tab' role='tab' data-bind="click: maintenancePage(91)">Click here to go to the correct section.</a>
+
+</div>
 
 
 
