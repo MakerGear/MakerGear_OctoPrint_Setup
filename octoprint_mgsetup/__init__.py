@@ -506,20 +506,21 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def disableRadios(self):
 		self._execute("netconnectcli stop_ap")
 		if not os.path.isfile('/boot/config.txt.backup'):
-			shutil.copy('/boot/config.txt','/boot/config.txt.backup')
+			self._execute('sudo cp /boot/config.txt /boot/config.txt.backup')
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.txt to config.txt.backup ."))
 		if not "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
-			f = open('/boot/config.txt', 'a')
-			f.write("\ndtoverlay=pi3-disable-wifi")
-			f.close()
-			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Disabled Wifi in config.txt .  Will now reboot."))
+			# f = open('/boot/config.txt', 'a')
+			# f.write("\ndtoverlay=pi3-disable-wifi")
+			# f.close()
+			self._execute('sudo cp /home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/maintenance/scripts/config.txt.wifiDisable /boot/config.txt')
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.txt.wifiDisable to config.txt to Disable Wifi.  Will now reboot."))
 			self._execute("sudo reboot")
 
 	def enableRadios(self):
-		if "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
-			shutil.copy('/boot/config.txt.backup','/boot/config.txt')
-			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.txt.backup to config.txt .  Will now reboot."))
-			self._execute("sudo reboot")
+		# if "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
+		self._execute('sudo cp /boot/config.txt.backup /boot/config.txt')
+		self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.txt.backup to config.txt .  Will now reboot."))
+		self._execute("sudo reboot")
 
 	def lockFirmware(self):
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
