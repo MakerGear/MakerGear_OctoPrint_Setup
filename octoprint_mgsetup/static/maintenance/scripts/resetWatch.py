@@ -84,6 +84,7 @@ def resetPasswordHold():
   shutil.copy("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml")
   shutil.copy("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml")
   shutil.copy("/home/pi/.octoprint/scripts/interfaces", "/etc/network/interfaces")
+  shutil.copy("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/maintenance/scripts/config.txt.original", "/boot/config.txt")
 
   os.chmod("/etc/netconnectd.yaml", 0600)
   os.chmod("/etc/network/interfaces", 0644)
