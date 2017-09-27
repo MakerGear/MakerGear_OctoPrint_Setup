@@ -100,6 +100,14 @@ def resetPasswordHold():
   os.chown("/etc/network/interfaces", uidRoot, gidRoot)
   os.chown("/home/pi/.octoprint/config.yaml", uidPi, gidPi)
   os.chown("/home/pi/.octoprint/users.yaml", uidPi, gidPi)
+
+
+  #turn ssh on
+  subprocess.call("sync")
+  subprocess.call(["update-rc.d", "ssh", "enable"])
+  subprocess.call(["invoke-rc.d", "ssh", "start"])
+
+
   subprocess.call(["shutdown", "-r", "-F", "now"])
 
 
@@ -175,7 +183,8 @@ while(True):
         t           = time.time()
         if (t - prevTime) >= sshHoldTime:
           #print("turn ssh on")
-          sshOn()
+          #sshOn()
+          pass
         elif (t - prevTime) >= resetPasswordsHoldTime:
           #print("reset passwords")
           resetPasswordHold()
