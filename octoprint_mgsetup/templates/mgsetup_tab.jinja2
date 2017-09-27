@@ -48,18 +48,48 @@
         </p>
     </div> 
     <div data-bind="visible: $root.googleGood()===1">
-        <p>
+        <!--<p>
             You are connected to the Internet - please proceed to Quick Check 
-        </p>
+        </p>-->
     </div>
 <hr />
 
-    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>
+<!--    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>-->
     
                 <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
+                <p style="font-size:16px;text-align:center; margin-top:20px;">
+                    This guided procees will help you verify your M3's calibration and make any necessary adjustments.  
+                </p>
+
+                <p style="text-align:center; margin-top:20px;">
+                    Need to calibrate a specific feature on your printer? Check out the <a href='#maintenanceHome' data-bind="click: function() {$root.showMaintenanceStep(0,'#maintenanceHome'); window.scroll(0,0); return true}">Maintenance Tab.</a>
+
+                </p>
+    
+
+
+
+
+
 <hr />
 <br />
-                <center> <button style="width:150px;height:100px;" class="btngo"  onClick="window.open('https://makergear.zendesk.com/hc/en-us/categories/115000563646-M3','_blank','menubar=yes,resizable=yes,height=520,width=740'); return false;" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button></center>
+                <center> <button style="width:150px;height:100px;" class="btngo"  onClick="window.open('https://makergear.zendesk.com/hc/en-us','_blank','menubar=yes,resizable=yes,height=520,width=740'); return false;" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button></center>
+
+
+                <p style="font-size:16px;text-align:center; margin-top:20px;">
+                    To learn more about how to use your M3, check out the <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">MakerGear Knowledge Base</a>. Below are some articles to get you started.
+                </p>
+
+
+                <ul>
+                    <li><a href="" target="_blank"> </a>
+                    <li><a href="" target="_blank"> </a>
+
+                </ul>
+
+
+
+
 </div>
 </center>
 
@@ -781,7 +811,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
 
 <img src="/plugin/mgsetup/static/img/10.jpg">
-<p> You should make the fewest number of adjustments required to make all four of your Zigzag patternes look the same. If all of the corners are different, or you are unsure, set each pattern so that it peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments.
+<p> You should make the fewest number of adjustments required to make all four of your Zigzag patterns look the same. If all of the corners are different, or you are unsure, set each pattern so that it peels with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments.
 </p>
 
 <center>
@@ -847,7 +877,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
 
     <p style="margin-top:21px;" data-bind="visible: !$root.isDual()">
-        Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us/categories/115000563646-M3" target="_blank">M3 Knowledge Base</a>.
+        Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">M3 Knowledge Base</a>.
 
     </p>
 
