@@ -64,12 +64,23 @@ This will Show the Current response from "sudo service ssh status".<br><br>
 </form>
     <br><br>
 
+<hr />
 
 {# <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('lockFirmware'), $root.showCommandResponse() }">Lock Firmware</button><br>
 This will create a lock file in the firmware folder, which will prevent the firmware update from running.<br><br>
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('unlockFirmware'), $root.showCommandResponse() }">Unlock Firmware</button><br>
-This will delete the firmware lock file, allowing updating of the local firmware copy.<br><br> #}
+This will delete the firmware lock file, allowing updating of the local firmware copy.<br><br> 
+
+<hr />
+
+#}
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('disableRadios'), $root.showCommandResponse() }">Disable Wifi</button><br>
+This will backup the current config.txt file in the BOOT partition (only if not already backed up), then append a device table overlay to completely prevent the Wifi drivers from loading on next boot; it will then reboot the Raspberry Pi.<br><br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('enableRadios'), $root.showCommandResponse() }">Enable Wifi</button><br>
+This will copy the backed up config.txt to the main file and then reboot, enabling Wifi.<br><br>
 
 <hr />
 

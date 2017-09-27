@@ -1111,6 +1111,7 @@ $(function() {
 			}
 
 
+
 			if (dualRightNozzleAdjustStep === 'simple'){
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
@@ -1187,6 +1188,18 @@ $(function() {
 
 
 		};
+
+		self.showMaintenanceStep = function(inputStep, inputTab){
+			if(inputStep != undefined && inputTab != undefined){
+				self.maintenancePage(inputStep);
+				$('.nav-tabs a[href='+'\''+inputTab.toString()+'\']').click();
+				//return true;
+			}
+
+
+			//$(".nav-tabs a[href='#coldZ']").click();
+		};
+
 
 		self.skipConfirm = ko.observable(false);
 		self.calibrationStep = ko.observable(0);
