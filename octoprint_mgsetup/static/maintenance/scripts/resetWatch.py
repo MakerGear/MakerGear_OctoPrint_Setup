@@ -79,27 +79,52 @@ def resetPasswordHold():
   shutil.copy("/etc/netconnectd.yaml", "/etc/netconnectd.yaml.userold")
   shutil.copy("/home/pi/.octoprint/config.yaml", "/home/pi/.octoprint/config.yaml.userold")
   shutil.copy("/home/pi/.octoprint/users.yaml", "/home/pi/.octoprint/users.yaml.userold")
+  shutil.copy("/etc/network/interfaces", "/etc/network/interfaces.userold")
 
   shutil.copy("/etc/netconnectd.yaml.backup", "/etc/netconnectd.yaml")
   shutil.copy("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml")
   shutil.copy("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml")
   shutil.copy("/home/pi/.octoprint/scripts/interfaces", "/etc/network/interfaces")
+
   shutil.copy("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/maintenance/scripts/config.txt.original", "/boot/config.txt")
+
 
   os.chmod("/etc/netconnectd.yaml", 0600)
   os.chmod("/etc/network/interfaces", 0644)
   os.chmod("/home/pi/.octoprint/config.yaml", 0600)
   os.chmod("/home/pi/.octoprint/users.yaml", 0600)
 
+  
+  os.chmod("/etc/netconnectd.yaml.userold", 0600)
+  os.chmod("/etc/network/interfaces.userold", 0644)
+  os.chmod("/home/pi/.octoprint/config.yaml.userold", 0600)
+  os.chmod("/home/pi/.octoprint/users.yaml.userold", 0600)
+
   uidRoot = pwd.getpwnam("root").pw_uid
   uidPi = pwd.getpwnam("pi").pw_uid
   gidRoot = grp.getgrnam("root").gr_gid
   gidPi = grp.getgrnam("pi").gr_gid
 
+
+
+  os.chown("/etc/netconnectd.yaml.userold", uidRoot, gidRoot)
+  os.chown("/etc/network/interfaces.userold", uidRoot, gidRoot)
+  os.chown("/home/pi/.octoprint/config.yaml.userold", uidPi, gidPi)
+  os.chown("/home/pi/.octoprint/users.yaml.userold", uidPi, gidPi)
+
+
   os.chown("/etc/netconnectd.yaml", uidRoot, gidRoot)
   os.chown("/etc/network/interfaces", uidRoot, gidRoot)
   os.chown("/home/pi/.octoprint/config.yaml", uidPi, gidPi)
   os.chown("/home/pi/.octoprint/users.yaml", uidPi, gidPi)
+
+
+  #turn ssh on
+  subprocess.call("sync")
+  subprocess.call(["update-rc.d", "ssh", "enable"])
+  subprocess.call(["invoke-rc.d", "ssh", "start"])
+
+
   subprocess.call(["shutdown", "-r", "-F", "now"])
 
 
@@ -175,7 +200,8 @@ while(True):
         t           = time.time()
         if (t - prevTime) >= sshHoldTime:
           #print("turn ssh on")
-          sshOn()
+          #sshOn()
+          pass
         elif (t - prevTime) >= resetPasswordsHoldTime:
           #print("reset passwords")
           resetPasswordHold()
