@@ -477,6 +477,8 @@ $(function() {
 
 			if (targetTemperature == undefined){
 				temperature = 220;
+			} else {
+				temperature = targetTemperature;
 			}
 			if (targetHotend == undefined){
 				hotend = "T0";
@@ -486,7 +488,7 @@ $(function() {
 			if (hotend == "T0"){
 
 				OctoPrint.control.sendGcode([
-					"M104 T0 S220",
+					"M104 T0 S"+temperature.toString(),
 					"M140 S70",
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
@@ -494,7 +496,7 @@ $(function() {
 					"G28 Z",
 					"G28 Y X",
 					"G1 X20",
-					"M109 S220 T0",
+					"M109 S"+temperature.toString()+" T0",
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
@@ -502,7 +504,7 @@ $(function() {
 				]);
 			} else if (hotend == "T1"){
 				OctoPrint.control.sendGcode([
-					"M104 T1 S220",
+					"M104 T1 S"+temperature.toString(),
 					"M140 S70",
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
@@ -510,7 +512,7 @@ $(function() {
 					"G28 Z",
 					"G28 Y X",
 					"G1 X20 Y100",
-					"M109 S220 T1",
+					"M109 S"+temperature.toString()+" T1",
 					"T1",
 					"M400",
 					"M300 S1392 P250",
@@ -528,6 +530,8 @@ $(function() {
 
 			if (targetTemperature == undefined){
 				temperature = 220;
+			} else {
+				temperature = targetTemperature;
 			}
 			if (targetHotend == undefined){
 				hotend = "T0";
@@ -537,14 +541,14 @@ $(function() {
 			if (hotend == "T0"){
 
 				OctoPrint.control.sendGcode([
-					"M104 T0 S220",
+					"M104 T0 S"+temperature.toString(),
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
 					"G1 X20",
-					"M109 S220 T0",
+					"M109 S"+temperature.toString()+" T0",
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
@@ -552,14 +556,14 @@ $(function() {
 				]);
 			} else if (hotend == "T1"){
 				OctoPrint.control.sendGcode([
-					"M104 T1 S220",
+					"M104 T1 S"+temperature.toString(),
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
 					"G1 X20 Y100",
-					"M109 S220 T1",
+					"M109 S"+temperature.toString()+" T1",
 					"T1",
 					"M400",
 					"M300 S1392 P250",
