@@ -26,7 +26,7 @@ aaaa8888aaaa
                #}
     <div role="tabpanel" class="tab-pane active" id="maintenanceHome">Welcome to the MakerGear M3 Maintenance Tab.  Here you'll have easy access to individual maintenance operations for your printer, including Filament Loading and Unloading, Calibrating your Z Offset (either with the new Zigzag pattern or the classic Feeler Gauge method), Leveling your Bed (again, with the Zigzag or Feeler Gauge), and adjusting your Independent Dual Extruder Offsets (if relevant).
     <br>
-    Start of showing firmware values:<br><br>
+{#     Start of showing firmware values:<br><br>
     Firmwareline: <span data-bind="text: $root.firmwareline()"></span><br><br>
     ZOffsetwareline: <span data-bind="text: $root.zoffsetline()"></span><br><br>
     Tooloffsetline: <span data-bind="text: $root.tooloffsetline()"></span><br>
@@ -34,8 +34,8 @@ aaaa8888aaaa
 <div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.1 && Math.abs($root.tool1ZOffset()) > 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work with a raft.</div>
 <div data-bind="visible: Math.abs($root.tool1ZOffset()) > 0.1">Your T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Dual Offsets, "T0 and T1 Cold/Mechanical Height Adjustment" section.<br>
 <a href='#dualOffsets' data-bind="click: function() {$root.showMaintenanceStep(91,'#dualOffsets'); window.scroll(0,0); return true}">Click here to go to the correct section.</a>
-
-</div>
+ #}
+{# </div> #}
 
 
 
@@ -1027,6 +1027,11 @@ Y8,    ,d88       88
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
     </div><br>
+
+    <div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work without a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.1 && Math.abs($root.tool1ZOffset()) > 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work with a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) > 0.1">Your T1 Z Offset is far enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted below:</div><br><br>
+
 
 In this step, we will physically adjust the height of both Extruders in the mounting plates.
 

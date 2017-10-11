@@ -1806,6 +1806,11 @@ $(function() {
 				self.stepFourShowFineAdjustments(false);
 				self.stepFourFirstWiggleClicked(false);
 			}
+			if (targetStep === 41){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 41");}
+				self.stepFourShowFineAdjustments(false);
+				self.stepFourFirstWiggleClicked(false);
+			}
 			if (targetStep === 5){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 5");}
 				self.stepFiveBeginCornerCheckClicked(false);
@@ -1826,6 +1831,12 @@ $(function() {
 			}
 			if (targetStep === 9){
 				if(!self.hideDebug()){console.log("targetStep = 9");}
+				self.stepNineAtPosition(false);
+				self.stepNineExtrudersSwitched(false);
+				self.cooldown();
+			}
+			if (targetStep === 91){
+				if(!self.hideDebug()){console.log("targetStep = 91");}
 				self.stepNineAtPosition(false);
 				self.stepNineExtrudersSwitched(false);
 				self.cooldown();
@@ -1878,28 +1889,30 @@ $(function() {
 					var tmp = vars[i].split('=');
 					key[tmp[0]] = tmp[1];
 				}
-				console.log(key["user"]);
-				console.log(key["pass"]);
-				if (key["user"] !== undefined && key["pass"] !== undefined){
-					OctoPrint.browser.login(key["user"], key["pass"], true)
-						.done(function(response){
-							console.log(response.message);
-							console.log(response.status);
-							console.log(response.statusText);
-							console.log(response);
-							console.log("logged in via URL");
-							location.reload();
-						})
-						.fail(function(response){
-							console.log(response.message);
-							console.log(response.status);
-							console.log(response.statusText);
-							console.log(response);
-							self.notify("URL Login Fail","There was an issue logging in with the credentials provided in the URL.  Check the credentials and try again, or login normally.","error");
-						});
+				// console.log(key["user"]);
+				// console.log(key["pass"]);
+				if (!self.loginState.isUser()){
+					if (key["user"] !== undefined && key["pass"] !== undefined){
+						OctoPrint.browser.login(key["user"], key["pass"], true)
+							.done(function(response){
+								// console.log(response.message);
+								// console.log(response.status);
+								// console.log(response.statusText);
+								// console.log(response);
+								// console.log("logged in via URL");
+								location.reload();
+							})
+							.fail(function(response){
+								// console.log(response.message);
+								// console.log(response.status);
+								// console.log(response.statusText);
+								// console.log(response);
+								self.notify("URL Login Fail","There was an issue logging in with the credentials provided in the URL.  Check the credentials and try again, or login normally.","error");
+							});
+					}
 				}
-				console.log(hash);
-				console.log(key);
+				// console.log(hash);
+				// console.log(key);
 				// if hash
 				history.replaceState(history.state,"","/");
       // hash found
@@ -2015,6 +2028,16 @@ $(function() {
 			if (self.googleGood()===-1 || self.googleGood()===0){
 				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
+		};
+
+		self.onAfterTabChange = function(current, previous){
+			// console.log(current);
+			// console.log(previous);
+			if(previous === "#tab_plugin_mgsetup_maintenance"){
+				self.resetStep(self.maintenancePage());
+				console.log("Reset page: "+self.maintenancePage().toString());
+			}
+
 		};
 
 		self.onUserLoggedIn = function (data){
