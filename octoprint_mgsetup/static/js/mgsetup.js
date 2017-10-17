@@ -2041,6 +2041,10 @@ $(function() {
 				self.resetStep(self.maintenancePage());
 				console.log("Reset page: "+self.maintenancePage().toString());
 			}
+			if(current === "#tab_plugin_mgsetup_maintenance"){
+				self.resetStep(self.maintenancePage());
+				console.log("Reset page: "+self.maintenancePage().toString());
+			}
 
 		};
 
