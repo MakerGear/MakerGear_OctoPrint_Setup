@@ -139,5 +139,9 @@ a {
   } 
 
 
+.nav-collapse.in 
+{
+  height:auto !important;
+}
 
 
