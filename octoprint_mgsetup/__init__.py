@@ -17,6 +17,7 @@ from octoprint.events import Events
 import flask
 import traceback
 import time
+import datetime
 import errno
 import sys
 import urllib2
@@ -390,6 +391,15 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#while p.poll():
 		#	self._logger.info(p.readline())
 
+	def backUpConfigYaml(self):
+		if not os.path.isfile('/home/pi/.octoprint/config.yaml.backup'):
+			shutil.copyfile('/home/pi/.octoprint/config.yaml','/home/pi/.octoprint/config.yaml.backup')
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.yaml to config.yaml.backup.\n"))
+		else:
+			newBackup = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
+			shutil.copyfile('/home/pi/.octoprint/config.yaml.backup','/home/pi/.octoprint/config.yaml.backup.'+newBackup)
+			shutil.copyfile('/home/pi/.octoprint/config.yaml','/home/pi/.octoprint/config.yaml.backup')
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.yaml.backup to "+newBackup+" and copied config.yaml to config.yaml.backup.\n"))
 
 	def getLocalFirmwareVersion(self):
 		self._logger.info("local firmware reports itself as: ")
@@ -406,6 +416,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._plugin_manager.send_plugin_message("mgsetup", dict(localfirmwareline = self.localfirmwareline))
 
 	def updateLocalFirmware(self):
+		self.backUpConfigYaml()
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
 			self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
 			self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
