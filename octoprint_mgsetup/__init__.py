@@ -392,14 +392,28 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#	self._logger.info(p.readline())
 
 	def backUpConfigYaml(self):
-		if not os.path.isfile('/home/pi/.octoprint/config.yaml.backup'):
-			shutil.copyfile('/home/pi/.octoprint/config.yaml','/home/pi/.octoprint/config.yaml.backup')
-			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.yaml to config.yaml.backup.\n"))
-		else:
-			newBackup = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
-			shutil.copyfile('/home/pi/.octoprint/config.yaml.backup','/home/pi/.octoprint/config.yaml.backup.'+newBackup)
-			shutil.copyfile('/home/pi/.octoprint/config.yaml','/home/pi/.octoprint/config.yaml.backup')
-			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.yaml.backup to "+newBackup+" and copied config.yaml to config.yaml.backup.\n"))
+		try:
+			if not os.path.isfile('/home/pi/.octoprint/config.yaml.backup'):
+				shutil.copyfile('/home/pi/.octoprint/config.yaml','/home/pi/.octoprint/config.yaml.backup')
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.yaml to config.yaml.backup.\n"))
+			else:
+				newBackup = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
+				shutil.copyfile('/home/pi/.octoprint/config.yaml.backup','/home/pi/.octoprint/config.yaml.backup.'+newBackup)
+				shutil.copyfile('/home/pi/.octoprint/config.yaml','/home/pi/.octoprint/config.yaml.backup')
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.yaml.backup to config.yaml.backup."+newBackup+" and copied config.yaml to config.yaml.backup.\n"))
+		except IOError as e:
+			self._logger.info("Tried to backup config.yaml but encountered an error!")
+			self._logger.info("Error: "+str(e))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to backup config.yaml but encountered an error!  Error: "+str(e)+"\n"))
+			if not os.path.isfile('/home/pi/.octoprint/config.yaml.backup'):
+				raise
+			else:
+				self._execute("sudo chgrp pi /home/pi/.octoprint/config.yaml.backup")
+				self._execute("sudo chown pi /home/pi/.octoprint/config.yaml.backup")
+				os.chmod("/home/pi/.octoprint/config.yaml.backup", 0600)
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Changed the owner, group and permissions of config.yaml.backup - please try to Update Firmware again to backup config.yaml.\n"))
+
+
 
 	def getLocalFirmwareVersion(self):
 		self._logger.info("local firmware reports itself as: ")
