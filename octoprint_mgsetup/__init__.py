@@ -698,10 +698,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def turnSshOn(self):
 		subprocess.call("/home/pi/.octoprint/scripts/startSsh.sh")
 		self._logger.info("SSH service started!")
+		self.adminAction(dict(action="sshState"))
 
 	def turnSshOff(self):
 		subprocess.call("/home/pi/.octoprint/scripts/stopSsh.sh")
-		self._logger.info("SSH service stopped!")		
+		self._logger.info("SSH service stopped!")	
+		self.adminAction(dict(action="sshState"))	
 
 	def on_api_command(self, command, data):
 		self._logger.info("MGSetup on_api_command triggered.")
