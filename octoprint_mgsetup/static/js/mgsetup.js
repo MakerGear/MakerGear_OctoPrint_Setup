@@ -253,6 +253,10 @@ $(function() {
 				self.notify("Error - Please Select Configuration","Please select machine configuration before printing the first Zigzag","error");
 				return;
 			}
+			if(wigglePosition == "T1-custom" && self.customWiggle() == undefined){
+				self.notify("Error - Please Select Configuration","Please select machine configuration before printing the first Zigzag","error");
+				return;
+			}
 			if (wigglePosition !== undefined){
 				self.storeWigglePosition(wigglePosition);
 			}
@@ -425,16 +429,26 @@ $(function() {
 			}
 			if (wigglePosition === "custom"){
 				var context = {};
-				if (self.stepFourFirstWiggleClicked()){
+				if (self.stepElevenFirstWiggleClicked()){
 					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: self.customWiggle(), tool: 0};
 				} else {
 					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: self.customWiggle(), tool: 0};
-					self.stepFourFirstWiggleClicked(true);
+					self.stepElevenFirstWiggleClicked(true);
 				}
 				// var parameters = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("customWiggle", context, parameters);
 			}
-
+			if (wigglePosition === "T1-custom"){
+				var context = {};
+				if (self.stepElevenFirstWiggleClicked()){
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: self.customWiggle(), tool: 1};
+				} else {
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: self.customWiggle(), tool: 1};
+					self.stepElevenFirstWiggleClicked(true);
+				}
+				// var parameters = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("customWiggle", context, parameters);
+			}
 
 		};
 

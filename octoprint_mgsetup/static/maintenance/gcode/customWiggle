@@ -24,6 +24,7 @@ T0
 G28 X
 T0
 G28
+G1 F2000 X0
 T{{tool}}
 {% endif %}
 T{{tool}}
