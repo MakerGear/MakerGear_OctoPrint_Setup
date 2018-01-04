@@ -422,16 +422,16 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 
 <div class="thumbnail" style="margin:auto; width:60%"><br>
 <div style="margin:auto; width:90%">
-<input type="radio" name="customWiggleSelect" value="035absrounded" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.35mm Rounded Brass Nozzle, ABS
+<input type="radio" name="customWiggleSelect" value="035absrounded" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.35mm Rounded Brass Nozzle, ABS
 <hr>
-<div><input type="radio" name="customWiggleSelect" value="025absflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, ABS</div>
-<div><input type="radio" name="customWiggleSelect" value="050absflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, ABS</div>
-<div><input type="radio" name="customWiggleSelect" value="075absflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, ABS</div>
+<div><input type="radio" name="customWiggleSelect" value="025absflat" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, ABS</div>
+<div><input type="radio" name="customWiggleSelect" value="050absflat" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, ABS</div>
+<div><input type="radio" name="customWiggleSelect" value="075absflat" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, ABS</div>
 <hr>
-<div><input type="radio" name="customWiggleSelect" value="025plaflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, PLA</div>
-<div><input type="radio" name="customWiggleSelect" value="075plaflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, PLA</div>
+<div><input type="radio" name="customWiggleSelect" value="025plaflat" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, PLA</div>
+<div><input type="radio" name="customWiggleSelect" value="075plaflat" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, PLA</div>
 <hr>
-<div><input type="radio" name="customWiggleSelect" value="050psflat" data-bind="checked: customWiggle, click: function() { $root.stepFourFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, PolySupport</div>
+<div><input type="radio" name="customWiggleSelect" value="050psflat" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, PolySupport</div>
 <hr>
 </div>
 </div>
@@ -458,7 +458,7 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 </p>
 <br>
 
-<center><button class="btnstay" data-bind="enable: !$root.stepFourFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
 
 
@@ -565,7 +565,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
             
-            <center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance'); window.scroll(0,0); $root.stepFourFirstWiggleClicked(false) }">Save<br /></button></center>
+            <center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance'); window.scroll(0,0); $root.stepElevenFirstWiggleClicked(false) }">Save<br /></button></center>
 
   <!--Too far-->
         </td>
@@ -573,26 +573,26 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 <div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
 
         </td>
 
 
         <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
             <div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
             <!--Too Close-->
         </td>
     <tr>
 
 </table>
-<button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepFourFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+<button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
 
 <input type="checkbox" data-bind="checked: $root.stepFourShowFineAdjustments" /> Show Advanced Options.
 
