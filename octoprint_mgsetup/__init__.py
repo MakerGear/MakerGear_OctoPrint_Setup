@@ -58,6 +58,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.ip = ""
 		self.firmwareline = ""
 		self.localfirmwareline = ""
+		self.printActive = False
 
 
 
@@ -296,6 +297,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._logger.info(str(time.mktime(time.gmtime())))
 				return
 
+		if event == Events.PRINT_STARTED:
+			self.printActive = True
+
+		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED) or (event == Events.PRINT_DONE):
+			self.printActive = False
 
 	def _to_unicode(self, s_or_u, encoding="utf-8", errors="strict"):
 		"""Make sure ``s_or_u`` is a unicode string."""
@@ -369,7 +375,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		lines = p.stderr.readlines()
 		if lines:
-			lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+			lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
 			#_log_stderr(*lines)
 			all_stderr += lines
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
@@ -377,7 +383,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		lines = p.stdout.readlines()
 		if lines:
-			lines = map(lambda x: _to_unicode(x, errors="replace"), lines)
+			lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
 			#_log_stdout(*lines)
 			all_stdout += lines
 
@@ -493,8 +499,21 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.position_state = "stale"
 
 	def process_z_offset(self, comm, line, *args, **kwargs):
-		if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line:
+
+		if self.printActive:
+			self._logger.info("printActive true, skipping filters.")
 			return line
+
+		# if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line and "Error" not in line and "z_min" not in line and "Bed X:" not in line and "M851" not in line:
+		# 	return line
+
+		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ "]
+
+		if not any([x in line for x in watchCommands]):
+			return line
+
+		# if ("M206" or "M218" or "FIRMWARE_NAME" or "Error" or "z_min" or "Bed X:" or "M851" or "= [[ ") not in line:
+		# 	return line
 
 		# logging.getLogger("octoprint.plugin." + __name__ + "process_z_offset triggered")
 		if "M206" in line:
@@ -512,6 +531,29 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("plugin version - firmware reports itself as: ")
 			self.firmwareline = line
 			self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = line))
+
+		if "Error:Probing failed" in line:
+			self._logger.info("'Error:Probing failed' message received")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(errorline = line))
+			return ""
+
+
+		if "z_min" in line:
+			self._logger.info("z_min message received")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(zminline = line))
+
+		if "Bed X:" in line:
+			self._logger.info("Bed Probe data received?")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(probeline = line))
+
+		if "M851" in line:
+			self._logger.info("Z Probe Offset received")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
+
+		if "= [[ " in line:
+			self._logger.info("Bed Leveling Information received")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(bedLevelLine = line))
+
 		return line
 
 	def resetRegistration(self):

@@ -905,7 +905,6 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 </div>
 </div>
 
-<!-- Container for custom controls -->
 
 {#                                              
     88888888ba,                             88  
@@ -1719,6 +1718,410 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 
 
+{# 
+                                                               
+88888888ba                            88                       
+88      "8b                           88                       
+88      ,8P                           88                       
+88aaaaaa8P'  8b,dPPYba,   ,adPPYba,   88,dPPYba,    ,adPPYba,  
+88""""""'    88P'   "Y8  a8"     "8a  88P'    "8a  a8P_____88  
+88           88          8b       d8  88       d8  8PP"""""""  
+88           88          "8a,   ,a8"  88b,   ,a8"  "8b,   ,aa  
+88           88           `"YbbdP"'   8Y"Ybbd8"'    `"Ybbd8"'  
+                                                               
+                                                               
+ #}
+
+{#                       
+    88  888888888888  
+  ,d88          ,8P'  
+888888         d8"    
+    88       ,8P'     
+    88      d8"       
+    88    ,8P'        
+    88   d8"          
+    88  8P'           
+                      
+                       #}
+
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='17'">
+
+Now we will begin checking that the AutoLevel Probe is installed and configured correctly, and that the bed is level.  This automatic series of tests will take you to a separate page if there's an issue in the process, or to begin loading filament and printing if everything works correctly.<br><br>
+Click on "Start Probe Checking" to begin testing:<br><br>
+
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.checkProbe() }">Start Probe Checking</button>
+<br><br>
+
+
+
+<div style="display:flex;"><div data-bind="visible: $root.probeStep()<2 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>1 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() < 2 ? 'bold':''}"> Detect Probe</div></div><br>
+
+<div style="display:flex;"><div data-bind="visible: $root.probeStep()<3 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>2 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 2 ? 'bold':''}"> Verify Probe Location</div></div><br>
+
+<div style="display:flex;"><div data-bind="visible: $root.probeStep()<4 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>3 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 3 ? 'bold':''}"> Check Probe Offset</div></div><br>
+
+<div style="display:flex;"><div data-bind="visible: $root.probeStep()<5 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>4 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 4 ? 'bold':''}"> Check Bed Level</div></div><br><br>
+
+
+
+{# text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
+
+
+</div>
+
+{#                      
+    88   ad88888ba   
+  ,d88  d8"     "8b  
+888888  Y8a     a8P  
+    88   "Y8aaa8P"   
+    88   ,d8"""8b,   
+    88  d8"     "8b  
+    88  Y8a     a8P  
+    88   "Y88888P"   
+                     
+                      #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='18'">
+
+Probe Fail 1/2: Probe Not Detected or Failed at Edge of Bed
+
+<div data-bind="visible: $root.failedStep() <2">
+It looks like your probe is not responding to commands.  Please confirm that it is connected correctly inside the electronics case [PICTURE HERE], and at the probe body itself [PICTURE HERE OF WHITE CONNECTOR SECURE].  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
+
+Once you have verified both connections, and that the probe body indicator LED is lit, use the below buttons to test all functionality before returning to the Autocheck.
+
+</div>
+
+<div data-bind="visible: $root.failedStep() == 2">
+
+It looks like your probe failed to activate while testing at the edge of the bed.  Please confirm that the probe responds to the buttons below, and that it is actually positioned over the bed.
+
+If the X motor did not move correctly, or did not position the probe at the correct location, check that the X motor connectors are secure.
+
+If the probe is above the bed, but the bed did not activate the probe, please go to the Control tab and use the manual jog controls to verify that the bed can move all the way up to the probe and/or nozzle.
+
+</div>
+
+{# <div data-bind="visible: $root.failedStep() == 3">
+
+It looks like your probe failed to activate while testing in 
+
+</div> #}
+
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('selftest') }">Initiate Self-Test</button><br>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('resetalarm') }">Reset Alarm State</button> If the probe body is blinking red, click this to Reset the alarm.<br><br>
+
+  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button>
+
+
+
+
+
+</div>
+
+{#                      
+    88   ad88888ba   
+  ,d88  d8"     "88  
+888888  8P       88  
+    88  Y8,    ,d88  
+    88   "PPPPPP"88  
+    88           8P  
+    88  8b,    a8P   
+    88  `"Y8888P'    
+                     
+                      #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='19'">
+
+
+Probe Fail 3: Probing Failed in Middle of Bed
+
+It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.
+
+Please check that the nozzle is above the tip of the probe when extended.  The buttons below will let you extend and retract the probe tip:<br><br>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
+
+
+
+Once you have confirmed or adjusted the nozzle position, click here to go to the Probe Offset Adjustment:<br>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button>
+
+<br><br>If the nozzle is already above the tip of the probe when extended, please [contact support/go through some other diagnostics].
+
+
+
+
+</div>
+{#                              
+ ad888888b,     ,a8888a,     
+d8"     "88   ,8P"'  `"Y8,   
+        a8P  ,8P        Y8,  
+     ,d8P"   88          88  
+   a8P"      88          88  
+ a8P'        `8b        d8'  
+d8"           `8ba,  ,ad8'   
+88888888888     "Y8888P"     
+                             
+                              #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='20'">
+
+Probe Config 3.5: Adjust Probe Offset with Wiggles
+
+Your Probe Offset is larger than we recommend printing with.  The steps below will guide you through adjusting the Probe Offset with our standard "Zigzag" pattern.
+
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" />
+    </div><br>
+
+<h1 style="text-align:left">Adjust Probe Offset</h1>
+
+
+
+
+
+<p>
+   
+    <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i><div data-bind="visible:!$root.isDual()">
+The printer's extruder and build platform are hot - do not touch them!
+</div>
+<div data-bind="visible: $root.isDual()">
+The printer's Left Extruder (T0) and build platform are hot - do not touch them! 
+</div>
+
+</p>
+
+<p>
+    During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your starting height (also known as "Z Probe Offset"). 
+</p>
+
+<p>
+    Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
+</p>
+
+<ol>
+    <li>Start to heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.
+    <li>Move components to their home positions.
+    <li>Move extruder to its purge position.
+    <li>Purge and wipe the extruder on the lower right-hand corner of the build plate.
+    <li>Print a Zigzag pattern on the center of the build plate.
+    <li>Move components to their final position.
+</ol>
+
+
+<p>
+    When you are ready to begin this process, click "Print Zigzag Pattern":
+</p>
+<br>
+
+<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+
+
+
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+    </div>
+</div>
+</div>
+
+Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The  Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
+
+
+   
+   <video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  setupStep() === '20'" onclick="this.paused ? this.play() : this.pause();">
+    <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+    </video>
+
+<br />
+
+
+<p >
+    <strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
+</p>
+
+
+
+<table>
+    <tr>
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+            <a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" /></a>
+ 
+        </td>
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+            <a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" /></a>
+ 
+        </td>
+ 
+
+
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+             <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" /></a>
+         </td>
+ 
+    </tr>
+
+
+
+
+    <tr>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+            If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Probe Offset</strong>. Click below to proceed to the next step. 
+            <br />
+
+
+
+
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+
+
+             
+        </td>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+                If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Probe Offset is too low</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
+           <!-- <br />
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. -->
+            <br />
+            <br />
+            <a href="/plugin/mgsetup/static/img/stringZigzag.jpg" data-lightbox="step8-1">Click here to see other examples of zigzags printed too low.</a>
+
+
+
+        </td>
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+     
+            If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
+             <strong>the Probe Offset is too high</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
+            <br />
+            <br />
+            <a href="/plugin/mgsetup/static/img/squishZigzag.jpg" data-lightbox="step8-2">Click here to see other examples of zigzags printed too high.</a>
+
+
+
+        </td>
+    </tr>
+
+    <tr>
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            
+            <center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0) }">Next Step<br /></button></center>
+
+  <!--Too far-->
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
+
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            <div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
+            <!--Too Close-->
+        </td>
+    <tr>
+
+</table>
+<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm(10); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+
+<input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
+
+
+
+
+
+
+
+</div>
+
+{#                      
+ ad888888b,      88  
+d8"     "88    ,d88  
+        a8P  888888  
+     ,d8P"       88  
+   a8P"          88  
+ a8P'            88  
+d8"              88  
+88888888888      88  
+                     
+                      #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='21'">
+
+Probe Fail 4: Adjust Bed Level with Probe<br><br>
+
+Your bed is further out of level than we recommend printing with.  The steps below will guide you through confirming your current bed level, and adjusting it with your 2mm Allen key.  All directions are given as though you were looking up at the bottom of the bed mounting plate.<br><br>
+
+Once the bed is level enough, the "Load Filament" button will activate - click it to continue setting up your printer.
+
+The first run will home:<br><center>
+<button class="btnstay" data-bind="enable:$root.lockButton(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
+
+[IMAGINE A PREVIEW HERE]
+<div id="bedPreviewDiv">
+
+
+</div>
+<button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button>
+<br><br><br>
+
+Once the printer has finished probing, the numbers below will tell you how far to adjust each leveling screw to bring the bed to perfectly level.<br><br>
+<div data-bind="visible: bedLevelResults().length > 0">
+{# The front left corner needs to move <span data-bind="text: $root.frontLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
+The front right corner needs to move <span data-bind="text: $root.frontRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
+The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
+The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
+<b>
+<span data-bind="text: $root.frontLeftString()"></span><br><br>
+<span data-bind="text: $root.frontRightString()"></span><br><br>
+<span data-bind="text: $root.rearLeftString()"></span><br><br>
+<span data-bind="text: $root.rearRightString()"></span><br><br>
+</b>
+</div>
+
+
+
+
+
+ 
 
 
 
@@ -1727,6 +2130,88 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 
 
+<div data-bind="visible: bedLevelResults().length === 0"><b>
+No data yet!  Click "Run First Bed Check" to acquire the first set of measurements.</b><br><br></div>
+
+The second run will only update the bed level data:<br><center>
+<button class="btnstay" data-bind="enable:$root.lockButton(), click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
+
+<br><br><br>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') }">Load Filament</button>
+
+
+</div>
+
+
+{#                           
+ ad888888b,   ad888888b,  
+d8"     "88  d8"     "88  
+        a8P          a8P  
+     ,d8P"        ,d8P"   
+   a8P"         a8P"      
+ a8P'         a8P'        
+d8"          d8"          
+88888888888  88888888888  
+                          
+                           #}
+
+
+
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='22'">
+
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='22'" />
+    </div><br>
+
+
+    <h1 style="text-align:left;">Your First Print</h1>
+
+    <p style="margin-top:21px;">
+        In the file menu to the left, you should see 'mgkeychain.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
+    </p>
+    <img src="/plugin/mgsetup/static/img/gcode.png" style="display:block;width::50%;margin-left:auto;margin-right:auto;margin-top:21px;"">
+
+
+    <p style="margin-top:21px;">
+    <div data-bind="visible:!$root.isDual()">
+        Your printer will make sure that the extruder/bed are heated correctly, and then start to print the keychain.  You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
+    </div>
+    <div data-bind="visible:$root.isDual()">
+        Your printer will make sure that the Left Extruder (T0)/bed are heated correctly, and then start to print the keychain.  You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
+    </div>
+    </p>
+
+
+If your printer did not finish correctly, or if the bottom of the print is sparse or very over-squished [picture here of a print with bad Z height], click here to adjust your Z Probe Height Offset:<br>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20','22') }">Adjust Z Probe Offset</button>
+
+    <p style="margin-top:21px;" data-bind="visible: !$root.isDual()">
+        Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">M3 Knowledge Base</a>.
+
+    </p>
+
+
+    <div data-bind="visible: $root.isDual">
+    <h1 style="text-align:left;">M3 Independent Dual (M3-ID) Setup</h1>
+    To continue on to the (M3-ID) configuration, click "Next":<br>
+<center><button class="btngoBig" data-bind="enable: loginState.isUser(), click: function() { $root.goTo('8'); window.scroll(0,0) }">Next</button></center>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+{# </div>
+ #}
 
 
 
@@ -1777,6 +2262,13 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X Offset Calibration</div>
     <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Y Offset Calibration</div>
     <div><input type="radio" name="setupStepSelect" value="16" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Sixteen - Done/Prints</div>
+    <div><input type="radio" name="setupStepSelect" value="17" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Autocheck</div>
+    <div><input type="radio" name="setupStepSelect" value="18" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Fail 1/2 - Probe Connection</div>
+    <div><input type="radio" name="setupStepSelect" value="19" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Fail 3 - Nozzle vs Probe Height</div>
+    <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
+    <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 4 - Bed Level</div>
+    <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 5 - Print</div>
+
 
 
 </div>
@@ -1910,3 +2402,11 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 <link href="/plugin/mgsetup/static/video-js/video-js.min.css" rel="stylesheet">
 <link href="/plugin/mgsetup/static/css/lightbox.css" rel="stylesheet">
 <!-- End of templates for custom controls -->
+
+<!-- Latest compiled and minified plotly.js JavaScript -->
+<script type="text/javascript" src="/plugin/mgsetup/static/js/plotly-v1-31-2.min.js"></script>
+
+
+
+<!-- OR an un-minified version is also available -->
+{# <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.js"></script> #}

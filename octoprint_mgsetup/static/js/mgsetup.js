@@ -45,6 +45,7 @@ $(function() {
 		self.maintenancePage = ko.observable(0);
 		self.maintenanceThirteenPrepared = ko.observable(false);
 		self.maintenanceThirteenSaved = ko.observable(false);
+		self.specialNext = ko.observable(undefined); //used to alter flow - "goto load filament, then X instead of default Y"
 
 		//UI controls:
 		self.hideDebug = ko.observable(true);
@@ -285,6 +286,7 @@ $(function() {
 			if (wigglePosition == undefined){
 				wigglePosition = self.storeWigglePosition();
 			}
+			
 			if (inputWiggleHeight !== undefined){
 				self.ZWiggleHeight(parseFloat((parseFloat(self.ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
 				//self.T1ZWiggleHeight(parseFloat((parseFloat(self.T1ZWiggleHeight())+parseFloat(inputWiggleHeight)).toFixed(2)).toFixed(2));
@@ -302,15 +304,23 @@ $(function() {
 				}
 
 			}
+
 			if (wigglePosition === 0){
 				//just to keep this from being empty...
 			}
+
 			if (wigglePosition === 1){
 				if (self.setupStep() === '4'){
 					self.stepFourFirstWiggleClicked(true);
 				}
 
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 90,
+					wiggleY: 110,
+					tohome: true,
+					wigglenumber: parseFloat(wigglePosition),
+					tool: 0};
 				var context = {};
 				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
@@ -321,55 +331,98 @@ $(function() {
 		//
 		//              });
 			}
+
 			if (wigglePosition === 2){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 20, tohome: true, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 20,
+					wiggleY: 20,
+					tohome: true,
+					wigglenumber: parseFloat(wigglePosition),
+					tool: 0};
 				var context = {};
 				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
 			}
+
 			if (wigglePosition === 3){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 170, wiggleY: 20, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 170,
+					wiggleY: 20,
+					tohome: false,
+					wigglenumber: parseFloat(wigglePosition),
+					tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
+
 			if (wigglePosition === 4){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 170, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 170,
+					wiggleY: 220,
+					tohome: false,
+					wigglenumber: parseFloat(wigglePosition),
+					tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
-			}                       
+			}
+
 			if (wigglePosition === 5){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(wigglePosition), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 20,
+					wiggleY: 220,
+					tohome: false,
+					wigglenumber: parseFloat(wigglePosition),
+					tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
-			}                         
+			}
+
 			if (wigglePosition === 6){
 				self.setupStep('7');
 			}
+
 			if (wigglePosition === "next"){
 				self.printWiggle(self.WiggleToRun());
 				self.WiggleReady(false);
 			}
+
 			if (wigglePosition === "all"){
 				if (self.setupStep() === '5' ){
 					self.stepFiveBeginCornerCheckClicked(true);
 				}
 
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: true, wigglenumber: parseFloat(1), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 20,
+					wiggleY: 220,
+					tohome: true,
+					wigglenumber: parseFloat(1),
+					tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
 			} 
-			if (wigglePosition === "step6all"){
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 220, tohome: false, wigglenumber: parseFloat(1), tool: 0};
-				var context = {};
-				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
-			} 
-			if (wigglePosition === 10){ //same as position 1 but without homing
-				
 
+			if (wigglePosition === "step6all"){
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 20,
+					wiggleY: 220,
+					tohome: false,
+					wigglenumber: parseFloat(1),
+					tool: 0};
+				var context = {};
+				OctoPrint.control.sendGcodeScriptWithParameters("newWiggleAll", context, parameters);
+			} 
+
+			if (wigglePosition === 10){ //same as position 1 but without homing
 				if(!self.hideDebug()){console.log(wigglePosition);}
 				if(!self.hideDebug()){console.log(inputWiggleHeight);}
 				if(!self.hideDebug()){console.log(self.wiggleHeightAdjust);}
@@ -377,49 +430,95 @@ $(function() {
 				if(!self.hideDebug()){console.log(typeof(self.ZWiggleHeight()));}
 				if(!self.hideDebug()){console.log(typeof(self.wiggleHeightAdjust));}
 				if(!self.hideDebug()){console.log(parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust));}
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true, wiggleX: 90,
+					wiggleY: 110,
+					tohome: false,
+					wigglenumber: parseFloat(1),
+					tool: 0};
 				var context = {};
 				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters); //remove this semicolon for further .then testing
 				//OctoPrint.control.sendGcodeWithParameters(self.homeWiggleArray,parameters);
 			}
+
 			if (wigglePosition === 20){ //same as position 2 but without homing
-				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2), heatup: true, wiggleX: 20, wiggleY: 20, tohome: false, wigglenumber: parseFloat(2), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+					heatup: true,
+					wiggleX: 20,
+					wiggleY: 20,
+					tohome: false,
+					wigglenumber: parseFloat(2),
+					tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 				//OctoPrint.control.sendGcodeScriptWithParameters("/plugin/hellopablo/static/gcode/homeWiggle.gcode",context,parameters);
 			}
+
 			if (wigglePosition === "dual"){
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 0};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+					heatup: true,
+					wiggleX: 90,
+					wiggleY: 110,
+					tohome: true,
+					wigglenumber: parseFloat(1),
+					tool: 0};
 				var context = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+					heatup: true,
+					wiggleX: 90,
+					wiggleY: 110,
+					tohome: false,
+					wigglenumber: parseFloat(1),
+					tool: 1};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
-
 			}
+
 			if (wigglePosition === "T1"){
 				if (self.setupStep() === '11'){
 					self.stepElevenFirstWiggleClicked(true);
 				}
 
 				var context = {};
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 1};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+					heatup: true,
+					wiggleX: 90,
+					wiggleY: 110,
+					tohome: true,
+					wigglenumber: parseFloat(1),
+					tool: 1};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 			}
+
 			if (wigglePosition === "T1-maintenance"){
 				if (self.maintenancePage() === 11){
 					self.stepElevenFirstWiggleClicked(true);
 				}
 
 				var context = {};
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: parseFloat(1), tool: 1};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+					heatup: true,
+					wiggleX: 90,
+					wiggleY: 110,
+					tohome: true,
+					wigglenumber: parseFloat(1),
+					tool: 1};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 			}
+
 			if (wigglePosition === "T1-2"){
 				var context = {};
-				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
+				var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+					heatup: true,
+					wiggleX: 90,
+					wiggleY: 110,
+					tohome: false,
+					wigglenumber: parseFloat(1),
+					tool: 1};
 				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
 			}
+
 			if (wigglePosition === "simple"){
 				var context = {};
 				//var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: parseFloat(1), tool: 1};
@@ -427,27 +526,72 @@ $(function() {
 				OctoPrint.control.sendGcodeScriptWithParameters("cross", context, parameters);
 				self.stepTwelveSimpleClicked(true);
 			}
+
 			if (wigglePosition === "custom"){
 				var context = {};
 				if (self.stepElevenFirstWiggleClicked()){
-					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: self.customWiggle(), tool: 0};
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+						heatup: true,
+						wiggleX: 90,
+						wiggleY: 110,
+						tohome: false,
+						wigglenumber: self.customWiggle(),
+						tool: 0};
 				} else {
-					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: self.customWiggle(), tool: 0};
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+						heatup: true,
+						wiggleX: 90,
+						wiggleY: 110,
+						tohome: true,
+						wigglenumber: self.customWiggle(),
+						tool: 0};
 					self.stepElevenFirstWiggleClicked(true);
 				}
 				// var parameters = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("customWiggle", context, parameters);
 			}
+
 			if (wigglePosition === "T1-custom"){
 				var context = {};
 				if (self.stepElevenFirstWiggleClicked()){
-					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: false, wigglenumber: self.customWiggle(), tool: 1};
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true,
+						wiggleX: 90,
+						wiggleY: 110,
+						tohome: false,
+						wigglenumber: self.customWiggle(),
+						tool: 1};
 				} else {
-					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()), heatup: true, wiggleX: 90, wiggleY: 110, tohome: true, wigglenumber: self.customWiggle(), tool: 1};
+					var parameters = {wiggleHeight: parseFloat(self.ZWiggleHeight()),
+						heatup: true,
+						wiggleX: 90,
+						wiggleY: 110,
+						tohome: true,
+						wigglenumber: self.customWiggle(),
+						tool: 1};
 					self.stepElevenFirstWiggleClicked(true);
 				}
 				// var parameters = {};
 				OctoPrint.control.sendGcodeScriptWithParameters("customWiggle", context, parameters);
+			}
+
+			if (wigglePosition === "probe"){
+				
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+				heatup: true,
+				wiggleX: 90,
+				wiggleY: 110,
+				tohome: true,
+				wigglenumber: parseFloat(1),
+				tool: 0};
+				if (self.stepTwentyFirstWiggleClicked()){
+					parameters.tohome = false;
+				}
+				var context = {};
+				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
+				OctoPrint.control.sendGcodeScriptWithParameters("probeWiggle", context, parameters);
+				if (self.setupStep() === '20'){
+					self.stepTwentyFirstWiggleClicked(true);
+				}
 			}
 
 		};
@@ -952,8 +1096,36 @@ $(function() {
 				} else if(Math.abs(self.tool1ZOffset())<=0.10){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work with a raft.", "notice");
 				} else if(Math.abs(self.tool1ZOffset())>0.10){
-					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
+			}
+			if (startingHeightStep == "probe") {
+				self.newProbeOffset = (parseFloat(self.probeOffset())+parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
+				if (self.newProbeOffset.toString() == "NaN") {
+					self.notify("Offset Setting Error","There was an error when setting the Probe Offset.  Please refresh the page and try again.  Support values: self.newProbeOffset="+self.newProbeOffset.toString()+" ; self.probeOffset="+self.probeOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
+					if(!self.hideDebug()){console.log("Offset setting error:");}
+					if(!self.hideDebug()){console.log("self.newProbeOffset = "+self.newProbeOffset.toString());}
+					if(!self.hideDebug()){console.log("self.probeOffset = "+self.probeOffset().toString());}
+					if(!self.hideDebug()){console.log("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());}
+					return;
+				}
+				//self.newZOffset = self.newZOffset + 0.1 ;
+				self.ProbeOffString = "M851 Z"+self.newProbeOffset.toString();
+				if(!self.hideDebug()){console.log(self.newProbeOffset.toString());}
+				if(!self.hideDebug()){console.log(self.ProbeOffString);}
+				OctoPrint.control.sendGcode([self.ProbeOffString,
+					"M500"					
+				]);
+				self.probeOffset(self.newProbeOffset);
+				self.requestEeprom();
+				//new PNotify({
+				//	title: 'Starting Height Adjustment',
+				//	text: "Starting Height Set to : "+self.newZOffset.toString(),
+				//	type: 'success',
+				//});
+				self.ZWiggleHeight(self.stockZWiggleHeight);
+				self.setupStep("17");
+				// self.goTo("5");
 			}
 
 
@@ -1239,7 +1411,7 @@ $(function() {
 		// The entire process revoles around printing a pattern with the two hotends, and having the user select the pattern feature where the pattern is closest to aligned; this is repeated until the central feature is selected,
 		// and then repeated with a pattern with smaller spacings twice.
 		// There are 5 potential choices - originaly, selecting 1,2,4 or 5 would adjust the axis offset and ask the user to reprint the same pattern, while selecting 3 would move to either the next pattern granularity or axis.
-		// On 9/26 we changed this behavior so that 2 and 4 also move to the next granularity, but _only_ if not the final granularity.
+		// On 9/26/2017 we changed this behavior so that 2 and 4 also move to the next granularity, but _only_ if not the final granularity.
 
 		// Actual process - user clicks one of the buttons (1,2,3,4,5), which triggers printSawBinConfirm(2) or whatever number is selected.  printSawBinConfirm() takes in that number, saves it if actually provided, then either
 		// calls pickSawBin() if we're on calibrationStep() 2 and the chosenBin was 3, or pops up the printSawBinDialog to confirm with the user that the bed is clear and thus ready to print again.
@@ -1455,6 +1627,550 @@ $(function() {
 // to center - if bin 1, add (2*offset); if bin 2, add (1*offset); bin 3, (0*offset); bin 4, (-1*offset); bin 5, (-2*offset) to M218 T1 X offset
 
 
+                                                               
+// 88888888ba                            88                       
+// 88      "8b                           88                       
+// 88      ,8P                           88                       
+// 88aaaaaa8P'  8b,dPPYba,   ,adPPYba,   88,dPPYba,    ,adPPYba,  
+// 88""""""'    88P'   "Y8  a8"     "8a  88P'    "8a  a8P_____88  
+// 88           88          8b       d8  88       d8  8PP"""""""  
+// 88           88          "8a,   ,a8"  88b,   ,a8"  "8b,   ,aa  
+// 88           88           `"YbbdP"'   8Y"Ybbd8"'    `"Ybbd8"'  
+                                                               
+                                                               
+
+//functions and variables for calibration/testing of the probe
+//first step is just to verify the probe exists and activates - first test is to send M119, check that
+//Z min is not activated, extend and retract the probe, set the M119 test mode, and send M119 again, checking
+//that Z min is activated this time
+//then run a G30 on the left edge, then in the middle of the bed - Z should be sane (within 0.5mm ?)
+// Recv: Bed X: 121.00 Y: 125.00 Z: 0.08
+// Recv: X:100.00 Y:125.00 Z:10.90 E:0.00 Count X:8010 Y:10013 Z:10984
+// Recv: ok
+
+		self.probeStep = ko.observable(0);
+		self.probePresent = ko.observable(-1); //simple tristate: -1 untested, 0 false, 1 true
+		self.probeOffset = ko.observable(undefined);
+		self.checkingForProbe = ko.observable(0);
+		self.waitingForEndstopResponse = ko.observable(false);
+		self.waitingForProbeResponse = ko.observable(false);
+		self.stepTwentyShowFineAdjustments = ko.observable(false);
+		self.stepTwentyFirstWiggleClicked = ko.observable(false);
+		self.bedLevelResults = ko.observableArray([]);
+		self.frontLeftMm = ko.observable(undefined);
+		self.frontRightMm = ko.observable(undefined);
+		self.rearLeftMm = ko.observable(undefined);
+		self.rearRightMm = ko.observable(undefined);
+		self.frontLeftDegrees = ko.observable(undefined);
+		self.frontRightDegrees = ko.observable(undefined);
+		self.rearLeftDegrees = ko.observable(undefined);
+		self.rearRightDegrees = ko.observable(undefined);
+		self.zLevelError = ko.observable(undefined);
+		self.bedPreviewArray = ko.observableArray(undefined);
+		self.activePreview = ko.observable(undefined);
+		self.failedStep = ko.observable(-1);
+		self.frontLeftString = ko.observable("");
+		self.frontRightString = ko.observable("");
+		self.rearLeftString = ko.observable("");
+		self.rearRightString = ko.observable("");
+		// self.probeCheckActive = ko.observable(-1);
+
+
+		self.checkProbe = function() {
+			if(!self.hideDebug()){console.log("checkProbe called.");}
+			if (self.probeStep() === 0){
+				// self.probeCheckActive(0);
+				OctoPrint.control.sendGcode(["M280 P1 S10",
+					"M280 P1 S90",
+					"M280 P1 S160",
+					"M400",
+					"M119",
+					"M400"]);
+				self.waitingForEndstopResponse(true);
+				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},10000);
+			}
+			if (self.probeStep() === 1){
+				OctoPrint.control.sendGcode(["M280 P1 S10",
+					"M400",
+					"M280 P1 S90",
+					"M400",
+					"M280 P1 S60",
+					"M400",
+					"M119"]);
+				self.waitingForEndstopResponse(true);
+				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},10000);
+			}
+			if (self.probeStep() === 2){
+				OctoPrint.control.sendGcode(["G28 XYZ",
+					"G1 F2000 X-10 Y125 Z10",
+					"M400",
+					"G30",
+					"M400"]);
+				self.waitingForProbeResponse(true);
+				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
+			}
+			if (self.probeStep() === 3){
+				OctoPrint.control.sendGcode(["G1 F2000 Z10",
+					"M400",
+					"G1 F2000 X100 Z10",
+					"M400",
+					"G30",
+					"M400"]);
+				self.waitingForProbeResponse(true);
+				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
+			}
+			if (self.probeStep() === 4){
+				OctoPrint.control.sendGcode(["G1 F2000 Z10",
+					"M400",
+					"G29",
+					"M400"]);
+				self.waitingForProbeResponse(true);
+				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
+			}
+
+
+		};
+
+
+		self.probeCheckFailed = function() {
+			if(!self.hideDebug()){console.log("probeCheckFailed triggered.");}
+			if (self.waitingForEndstopResponse() || self.waitingForProbeResponse()){
+				if(!self.hideDebug()){console.log("probeCheckFailed triggered with waiting true.");}
+				if (self.probeStep() <= 2){
+					self.failedStep(self.probeStep());
+					self.setupStep('18');
+				}
+				if (self.probeStep() == 3){
+					self.failedStep(self.probeStep());
+					self.setupStep('19');
+				}
+				if (self.probeStep() === 0 || self.probeStep() === 1 || self.probeStep() === 2 || self.probeStep() === 3){
+					self.probeCheckReset();
+					self.failedStep(self.probeStep());
+				}
+				// if (self.probeStep() === 2){
+				// 	self.probeStep(3);
+				// 	self.checkProbe();
+				// }
+				clearTimeout(self.probeFail);
+
+
+
+
+
+			}
+		};
+
+		self.probeCheckReset = function(){
+			if(!self.hideDebug()){console.log("probeCheckReset called - resetting stuff.");}
+			self.probeStep(0);
+			self.probePresent(0);
+			self.checkingForProbe(0);
+			self.waitingForEndstopResponse(false);
+			self.waitingForProbeResponse(false);
+			clearTimeout(self.probeFail);
+			return;
+
+		};
+
+		self.zMinReceived = function(line) {
+			if(!self.hideDebug()){console.log("zMinReceived called.");}
+			
+			if (self.waitingForEndstopResponse()){
+				if(!self.hideDebug()){console.log("zMinReceived while waitingForEndstopResponse is true.");}
+				if(!self.hideDebug()){console.log(line);}
+				
+				//if(!self.hideDebug()){console.log(typeof(line));}
+				if (line.trim() === "z_min: open"){
+					if(!self.hideDebug()){console.log("zMinReceived, line:"+line);}
+					if(!self.hideDebug()){console.log("z_min: open");}
+					if (self.probeStep()=== 0){
+						self.probeStep(1);
+						self.waitingForEndstopResponse(false);
+						clearTimeout(self.probeFail);
+						self.checkProbe();
+					}
+				}
+				if (line.trim() === "z_min: TRIGGERED"){
+					if(!self.hideDebug()){console.log("zMinReceived, line:"+line);}
+					if(!self.hideDebug()){console.log("z_min: TRIGGERED");}
+					if (self.probeStep()=== 1){
+						self.probeStep(2);
+						self.probePresent(1);
+						self.waitingForEndstopResponse(false);
+						clearTimeout(self.probeFail);
+						self.checkProbe();
+					}
+				}
+			}
+		};
+
+		self.probeReceived = function(line){
+			if(!self.hideDebug()){console.log(line);}
+			clearTimeout(self.probeFail);
+			if (self.waitingForProbeResponse()){
+				self.waitingForProbeResponse(false);
+				if (self.probeStep() === 2){
+					self.probeStep(3);
+					self.processProbeValue(line);
+					self.checkProbe();
+
+				} else if (self.probeStep() === 3){
+					tempProbeValue = self.processProbeValue(line);
+					if (tempProbeValue !== undefined){
+						if (Math.abs(tempProbeValue) >= 0.50){
+							if(!self.hideDebug()){console.log("It looks like the probe value is greater than ±0.50.");}
+							self.probeCheckReset();
+							//self.setupStep("20");
+							self.goTo("3","20");
+							self.failedStep(self.probeStep());
+						} else {
+							if(!self.hideDebug()){console.log("It looks like the probe value is smaller than ±0.50.");}
+							self.probeStep(4);
+							self.checkProbe();
+						}
+					}
+				}
+			}
+		};
+
+		self.processProbeValue = function(probeLine){
+			self.filter = /([Z]):.*(\d+\.\d+)/;
+			match = self.filter.exec(probeLine);
+			if (match !== undefined){
+				if(!self.hideDebug()){console.log(match);}
+				if(!self.hideDebug()){console.log(match[2]);}
+				return parseFloat(match[2]);
+			}
+		};
+
+		self.probeAction = function(action){
+			if (action === 'extend'){
+				OctoPrint.control.sendGcode(["M280 P1 S10"]);
+			}
+			if (action === 'retract'){
+				OctoPrint.control.sendGcode(["M280 P1 S90"]);
+			}
+			if (action === 'selftest'){
+				OctoPrint.control.sendGcode(["M280 P1 S120"]);
+			}
+			if (action === 'resetalarm'){
+				OctoPrint.control.sendGcode(["M280 P1 S160"]);
+			}
+		};
+
+
+		self.processBedLevel = function(bedLevelLine){
+			self.filter = /\[\[(.*?)\].*\[(.*?)\].*\[(.*)\]\]/;
+			self.xProbeArray = [];
+			self.yProbeArray = [];
+			self.zProbeArray = [];
+			self.xProbeArrayFiltered = [];
+			self.yProbeArrayFiltered = [];
+			self.zProbeArrayFiltered = [];
+			self.probeCorners = [];
+			self.zProbeMax = undefined;
+			self.zProbeMin = undefined;
+			match = self.filter.exec(bedLevelLine);
+			if (match !== undefined){
+				if(!self.hideDebug()){console.log(match);}
+				self.xProbeArray = match[1].split(",");
+				self.yProbeArray = match[2].split(",");
+				self.zProbeArray = match[3].split(",");
+				self.xProbePoints = 0;
+				self.yProbePoints = 0;
+				self.zProbePoints = 0;
+				var j = 0;
+				for (i = 0; i < self.xProbeArray.length; i++){
+					if (parseFloat(self.xProbeArray[i]) == 777){continue;}
+					newVal = parseFloat(self.xProbeArray[i]);
+					if (!self.xProbeArrayFiltered.includes(newVal)){
+						self.xProbePoints++;
+					}
+					self.xProbeArrayFiltered[j] = newVal;
+					j++;
+				}
+				j = 0;
+				for (i = 0; i < self.yProbeArray.length; i++){
+					if (parseFloat(self.yProbeArray[i]) == 777){continue;}
+					newVal = parseFloat(self.yProbeArray[i]);
+					if (!self.yProbeArrayFiltered.includes(newVal)){
+						self.yProbePoints++;
+					}
+					self.yProbeArrayFiltered[j] = newVal;
+					// if(!self.hideDebug()){console.log(self.yProbeArrayFiltered[i]);}
+					j++;
+				}
+				// j = 0;
+				for (i = 0; i < self.zProbeArray.length; i++){
+					if (parseFloat(self.zProbeArray[i]) == 777){continue;}
+					newVal = parseFloat(self.zProbeArray[i]);
+					if (i === 0){
+						self.zProbeMax = newVal;
+						self.zProbeMin = newVal;
+					} else {
+						if (newVal > self.zProbeMax){self.zProbeMax = newVal;} else {if (newVal < self.zProbeMin){self.zProbeMin = newVal;}}
+					}
+					self.zProbeArrayFiltered[self.zProbePoints] = newVal;
+					self.zProbePoints++;
+					
+					// j++;
+				}
+				// if(!self.hideDebug()){console.log(self.yProbeArrayFiltered);)
+				for (i=0; i< self.xProbeArrayFiltered.length; i++){if(self.xProbeArrayFiltered[i]==undefined){self.xProbeArrayFiltered.splice(i,1);}}
+				for (i=0; i< self.yProbeArrayFiltered.length; i++){if(self.yProbeArrayFiltered[i]==undefined){self.yProbeArrayFiltered.splice(i,1);}}
+				for (i=0; i< self.zProbeArrayFiltered.length; i++){if(self.zProbeArrayFiltered[i]==undefined){self.zProbeArrayFiltered.splice(i,1);}}
+				self.firstCorner = [self.xProbeArrayFiltered[0],self.yProbeArrayFiltered[0],self.zProbeArrayFiltered[0]];
+				self.secondCorner = [self.xProbeArrayFiltered[self.xProbePoints-1],self.yProbeArrayFiltered[self.xProbePoints-1],self.zProbeArrayFiltered[self.xProbePoints-1]];
+				self.thirdCorner = [self.xProbeArrayFiltered[self.xProbeArrayFiltered.length-self.xProbePoints],self.yProbeArrayFiltered[self.xProbeArrayFiltered.length-self.xProbePoints],self.zProbeArrayFiltered[self.zProbePoints-self.xProbePoints]];
+				self.fourthCorner = [self.xProbeArrayFiltered.slice(-1)[0],self.yProbeArrayFiltered.slice(-1)[0],self.zProbeArrayFiltered.slice(-1)[0]];
+				self.bedLevelResults.unshift([self.xProbeArrayFiltered,self.yProbeArrayFiltered,self.zProbeArrayFiltered,[self.firstCorner,self.secondCorner,self.thirdCorner,self.fourthCorner],[self.xProbePoints,self.yProbePoints,self.zProbePoints]]);
+				if(!self.hideDebug()){console.log(self.xProbePoints);}
+				if(!self.hideDebug()){console.log(self.yProbePoints);}
+				if(!self.hideDebug()){console.log(self.zProbePoints);}
+				//console.log(self.zProbeArray[0]+" "+self.zProbeArray.slice(-1)[0]+" "+self.zProbeArray[self.xProbePoints-1]+" "+self.zProbeArray[self.zProbePoints-self.xProbePoints]);
+				if(!self.hideDebug()){console.log(self.xProbeArray);}
+				if(!self.hideDebug()){console.log(self.yProbeArray);}
+				if(!self.hideDebug()){console.log(self.zProbeArray);}
+				if(!self.hideDebug()){console.log(self.xProbeArrayFiltered);}
+				if(!self.hideDebug()){console.log(self.yProbeArrayFiltered);}
+				if(!self.hideDebug()){console.log(self.zProbeArrayFiltered);}
+				if(!self.hideDebug()){console.log(self.bedLevelResults());}
+
+				// self.bedPreviewArray([[self.zProbeArray[0],self.zProbeArray[self.yProbePoints],self.zProbeArray[(2*self.yProbePoints)]],
+				// 					[self.zProbeArray[1],self.zProbeArray[1+self.yProbePoints],self.zProbeArray[1+(2*self.yProbePoints)]],
+				// 					[self.zProbeArray[2],self.zProbeArray[2+self.yProbePoints],self.zProbeArray[2+(2*self.yProbePoints)]]]);
+			
+				// self.bedPreviewArray([
+				// 	[self.zProbeArray[0], self.zProbeArray[2]],
+				// 	[self.zProbeArray[(2*self.yProbePoints)], self.zProbeArray[2+(2*self.yProbePoints)]]
+				// ]); //works, but moving elsewhere
+
+
+				// console.log(self.zProbeMax + " , " + self.zProbeMin + " ; " + (self.zProbeMax-self.zProbeMin));
+				self.frontLeftMm(self.bedLevelResults()[0][3][0][2]);
+				self.frontRightMm(self.bedLevelResults()[0][3][1][2]);
+				self.rearLeftMm(self.bedLevelResults()[0][3][2][2]);
+				self.rearRightMm(self.bedLevelResults()[0][3][3][2]);
+				self.frontLeftDegrees((Math.abs(self.bedLevelResults()[0][3][0][2]) * (360/0.7)).toFixed());
+				self.frontRightDegrees((Math.abs(self.bedLevelResults()[0][3][1][2]) * (360/0.7)).toFixed());
+				self.rearLeftDegrees((Math.abs(self.bedLevelResults()[0][3][2][2]) * (360/0.7)).toFixed());
+				self.rearRightDegrees((Math.abs(self.bedLevelResults()[0][3][3][2]) * (360/0.7)).toFixed());
+				self.direction = "";
+				self.turns = "";
+				self.numberWords = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","too many"];
+				if (((self.frontLeftDegrees()/90).toFixed()) == 0){
+					self.frontLeftString("The front left corner does not need to be adjusted this time.");
+				} else {
+					if (self.frontLeftMm() < 0){
+						self.direction = "clockwise.";
+					} else {
+						self.direction = "counter-clockwise.";
+					}
+					if (((self.frontLeftDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
+					self.frontLeftString("The front left corner needs to be adjusted "+self.numberWords[((self.frontLeftDegrees()/90).toFixed())]+self.turns+self.direction);
+				}
+
+				if (((self.frontRightDegrees()/90).toFixed()) == 0){
+					self.frontRightString("The front right corner does not need to be adjusted this time.");
+				} else {
+					if (self.frontRightMm() < 0){
+						self.direction = "clockwise.";
+					} else {
+						self.direction = "counter-clockwise.";
+					}
+					if (((self.frontRightDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
+					self.frontRightString("The front right corner needs to be adjusted "+self.numberWords[((self.frontRightDegrees()/90).toFixed())]+self.turns+self.direction);
+				}
+
+				if (((self.rearLeftDegrees()/90).toFixed()) == 0){
+					self.rearLeftString("The rear left corner does not need to be adjusted this time.");
+				} else {
+					if (self.rearLeftMm() < 0){
+						self.direction = "clockwise.";
+					} else {
+						self.direction = "counter-clockwise.";
+					}
+					if (((self.rearLeftDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
+					self.rearLeftString("The rear left corner needs to be adjusted "+self.numberWords[((self.rearLeftDegrees()/90).toFixed())]+self.turns+self.direction);
+				}
+
+				if (((self.rearRightDegrees()/90).toFixed()) == 0){
+					self.rearRightString("The rear right corner does not need to be adjusted this time.");
+				} else {
+					if (self.rearRightMm() < 0){
+						self.direction = "clockwise.";
+					} else {
+						self.direction = "counter-clockwise.";
+					}
+					if (((self.rearRightDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
+					self.rearRightString("The rear right corner needs to be adjusted "+self.numberWords[((self.rearRightDegrees()/90).toFixed())]+self.turns+self.direction);
+				}
+				if(!self.hideDebug()){console.log("The front left corner needs to move "+self.frontLeftMm()+ "mm or " + self.frontLeftDegrees() + "° " + ((self.frontLeftMm()>0)?"counter-clockwise.":"clockwise."));}
+				if(!self.hideDebug()){console.log("The front right corner needs to move "+self.frontRightMm()+ "mm or " + self.frontRightDegrees() + "° " + ((self.frontRightMm()>0)?"counter-clockwise.":"clockwise."));}
+				if(!self.hideDebug()){console.log("The rear left corner needs to move "+self.rearLeftMm()+ "mm or " + self.rearLeftDegrees() + "° " + ((self.rearLeftMm()>0)?"counter-clockwise.":"clockwise."));}
+				if(!self.hideDebug()){console.log("The rear right corner needs to move "+self.rearRightMm()+ "mm or " + self.rearRightDegrees() + "° " + ((self.rearRightMm()>0)?"counter-clockwise.":"clockwise."));}
+				self.zLevelError(Math.abs(self.zProbeMax-self.zProbeMin));
+				if (self.waitingForProbeResponse()){
+					self.waitingForProbeResponse(false);
+					clearTimeout(self.probeFail);
+					if (self.zLevelError() > 0.5){
+						if(!self.hideDebug()){console.log("Bed is out of level more than ±0.5, going to assisted leveling.");}
+						self.setupStep("21");
+						self.probeCheckReset();
+						self.failedStep(self.probeStep());
+					} else {
+						// self.setupStep("7");
+						self.goTo("3","22");
+						self.probeCheckReset();
+					}
+				}
+			}
+			self.bedPreview();
+		};
+
+		self.probeLevelAssist = function(levelStep){
+			if(levelStep === 0){
+				OctoPrint.control.sendGcode(["T0",
+					"G28 XYZ",
+					"G29 P2",
+					"G1 F1000 X100 Y125"]);
+			}
+			if(levelStep === 1){
+				OctoPrint.control.sendGcode(["T0",
+					"G29 P2",
+					"G1 F1000 X100 Y125"]);
+			}
+		};
+
+		self.selectPreview = function(targetPreview){
+			if (targetPreview == "first"){
+				self.bedPreview(self.bedLevelResults().length-1);
+			}
+
+			if (targetPreview == "last"){
+				self.bedPreview(0);
+			}
+
+			if (targetPreview == "next"){
+				if (self.activePreview()-1 > 0){
+					self.bedPreview(self.activePreview()-1);
+				} else {
+					self.bedPreview(0);
+				}
+			}
+
+			if (targetPreview == "previous"){
+				if (self.activePreview() >= self.bedLevelResults().length-1){
+					self.bedPreview(self.bedLevelResults().length-1);
+				} else {
+					self.bedPreview(self.activePreview()+1);
+				}
+				//self.bedPreview();
+			}
+		};
+
+
+		self.bedPreview = function(targetResult){
+			if(!self.hideDebug()){console.log(targetResult);}
+			if (targetResult == undefined || typeof(targetResult) != "number"){
+				targetResult = 0;
+			}
+			if(!self.hideDebug()){console.log(targetResult);}
+			self.activePreview(targetResult);
+
+			// self.bedPreviewArray([
+			// 		[self.bedLevelResults()[targetResult][3][0][2], self.bedLevelResults()[targetResult][3][1][2]],
+			// 		[self.bedLevelResults()[targetResult][3][2][2], self.bedLevelResults()[targetResult][3][3][2]]
+			// ]);
+
+			self.bedPreviewArray.removeAll();
+//for (i=0; i< self.xProbeArrayFiltered.length; i++){if(self.xProbeArrayFiltered[i]==undefined){self.xProbeArrayFiltered.splice(i);}}
+			// self.tempArray = [];
+			self.tempZArray = Array.from(self.bedLevelResults()[targetResult][2]);
+			// console.log(self.bedLevelResults());
+			for (i=0; i<(self.bedLevelResults()[targetResult][4][1]) ; i++){
+				self.tempArray = [];
+				for (j=0; j<self.bedLevelResults()[targetResult][4][0]; j++){
+					// console.log(self.tempZArray);
+					self.tempArray.push(self.tempZArray.shift());
+					//self.tempArray[] = self.bedLevelResults()[targetResult][2][i];
+					//self.tempArray.push([(for (k=0; k<self.bedLevelResults()[targetResult][4][0]; k++){return self.bedLevelResults()[targetResult][2][j+i];}]));
+					// console.log(self.tempArray);
+				}
+				self.bedPreviewArray().push(self.tempArray);
+				// console.log(self.bedPreviewArray());
+			}
+			if(!self.hideDebug()){console.log(self.bedPreviewArray());}
+			// var myDiv = $('#bedPreviewDiv');
+			var raw_data = self.bedPreviewArray();
+			// var raw_data = self.tempArray;
+			//var raw_data = [[1,2,3], [2,3,4], [3,4,5]];
+
+			// var colorscale = [[0.0, 'rgb(0, 242, 242)'],
+			// 				[0.08333333333333333, 'rgb(0, 121, 242)'],
+			// 				[0.16666666666666666, 'rgb(0, 0, 242)'],
+			// 				[0.25, 'rgb(121, 0, 242)'],
+			// 				[0.3333333333333333, 'rgb(242, 0, 242)'],
+			// 				[0.41666666666666663, 'rgb(242, 0, 121)'],
+			// 				[0.5, 'rgb(242, 0, 0)'],
+			// 				[0.5833333333333333, 'rgb(242, 121, 0)'],
+			// 				[0.6666666666666666, 'rgb(242, 242, 0)'],
+			// 				[0.75, 'rgb(121, 242, 0)'],
+			// 				[0.8333333333333333, 'rgb(0, 242, 0)'],
+			// 				[0.9166666666666666, 'rgb(0, 242, 121)'],
+			// 				[1.0, 'rgb(0, 242, 242)']];
+			// var colorscale = [[0.0, 'rgb(0, 0, 255)'],
+			// 				[0.5, 'rgb(0, 0, 255)'],
+			// 				[.99, 'rgb(0, 0, 255)'],
+			// 				[1, 'rgb(255, 0, 0)']];
+			var colorscale = [[0.0, 'rgb(0, 150, 205)'],
+							[.5-0.0875, 'rgb(0, 0, 255)'],
+							[.5+0.0875, 'rgb(0, 0, 255)'],
+							[1, 'rgb(0, 150, 205)']];
+
+
+
+
+			var data = [{
+				z: raw_data,
+				type: 'surface',
+				colorscale: colorscale,
+				cauto: false
+			}];
+
+			var layout = {
+				title: 'OH WAIT YOU DONT HAVE TO IMAGINE',
+				autosize: false,
+				cauto:false,
+				height: 2,
+				margin: {
+					l: 0,
+					r: 0,
+					b: 0,
+					t: 0,
+				},
+				scene: {
+					camera: {
+						center: {x: 0, y: 0 , z: 0},
+						eye: {x: 0.55, y: -2, z: 0.25}
+					},
+					zaxis: {
+						range: [-1,1]
+					}
+				},
+
+			};
+			if (self.bedLevelResults().length == 1){
+				Plotly.newPlot('bedPreviewDiv', data, layout);
+			} else {
+				// Plotly.deleteTraces('bedPreviewDiv', 0);
+				Plotly.purge('bedPreviewDiv');
+				Plotly.plot('bedPreviewDiv', data, layout);
+			}
+		};
+
+
 																			 
 	//   ,ad8888ba,                                                             
 	//  d8"'    `"8b                                                            
@@ -1541,10 +2257,23 @@ $(function() {
 	// Y8a.    .a8P  88      88           "8a,   ,a88  88       88  "8a,   ,aa    88,    88  "8a,   ,a8"  88       88  aa    ]8I  
 	//  `"Y8888Y"'   88      88            `"YbbdP'Y8  88       88   `"Ybbd8"'    "Y888  88   `"YbbdP"'   88       88  `"YbbdP"'  
 
-		self.goTo = function (targetStep){
+		self.goTo = function (targetStep, forceNext){
+			console.log(forceNext);
+			if (self.specialNext() != undefined){
+				console.log(self.specialNext());
+				targetStep = self.specialNext();
+				self.specialNext(undefined);
+			} else {
+				if (forceNext != undefined){
+					self.specialNext(forceNext);
+				} //quick hack to let us go to a step, but force the step after to be something outside of normal flow
+			//initially setup for filament loading - can now say from any step "go toload filament, and then go to X instead of 4"
+			//probably the better choice over having special clones of the main step in a bunch of different places
+			}
 
 			self.setupStepHistory.push(self.setupStep());
 			self.setupStep(targetStep);
+			console.log(targetStep);
 			if(self.setupStepHistory.length>0){
 				self.hasHistory(true);
 			}
@@ -1827,7 +2556,7 @@ $(function() {
 			if (targetStep === 41){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 41");}
 				self.stepFourShowFineAdjustments(false);
-				self.stepFourFirstWiggleClicked(false);
+				self.stepElevenFirstWiggleClicked(false);
 			}
 			if (targetStep === 5){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 5");}
@@ -1869,6 +2598,11 @@ $(function() {
 				self.stepElevenFirstWiggleClicked(false);
 				self.stepElevenShowFineAdjustments(false);
 			}
+			if (targetStep === 111){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 111");}
+				self.stepElevenFirstWiggleClicked(false);
+				self.stepElevenShowFineAdjustments(false);
+			}
 			if (targetStep === 12){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 12");}
 				self.stepTwelveSimpleClicked(false);
@@ -1892,6 +2626,10 @@ $(function() {
 			}
 			if (targetStep === 16){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 16");}
+			}
+			if (16<targetStep<22){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 17~21");}
+				self.probeCheckReset();
 			}
 
 		};
@@ -2046,6 +2784,13 @@ $(function() {
 			if (self.googleGood()===-1 || self.googleGood()===0){
 				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
+		};
+
+		self.onEventError = function(payload) {
+			console.log(payload);
+
+
+
 		};
 
 		self.onAfterTabChange = function(current, previous){
@@ -2236,6 +2981,35 @@ $(function() {
 			if (data.firmwareline !== undefined){
 				self.firmwareline(data.firmwareline);
 			}
+			if (data.errorline !== undefined){
+				if(!self.hideDebug()){console.log(data.errorline);}
+				//alert("Probing failed!  Check that the probe is installed and wired correctly, then try again.");
+				self.probeCheckFailed();
+			}
+			if (data.zminline !== undefined){
+				if(!self.hideDebug()){console.log(data.zminline);}
+				self.zMinReceived(data.zminline);
+			}
+			if (data.probeline !== undefined){
+				if(!self.hideDebug()){console.log(data.probeline);}
+				self.probeReceived(data.probeline);
+			}
+			if (data.probeOffsetLine !== undefined){
+				if(!self.hideDebug()){console.log(data.probeOffsetLine);}
+				self.filter = /M851 Z(.?\d+\.\d+)/;
+				match = self.filter.exec(data.probeOffsetLine);
+				if (match !== undefined){
+					if(!self.hideDebug()){console.log(match)};
+					if(!self.hideDebug()){console.log(match[1])};
+				}
+				self.probeOffset(parseFloat(match[1]));
+			}
+			if (data.bedLevelLine !== undefined){
+				if(!self.hideDebug()){console.log(data.bedLevelLine);}
+				self.processBedLevel(data.bedLevelLine);
+
+			}
+
 		};
 
 
