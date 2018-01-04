@@ -1827,7 +1827,7 @@ $(function() {
 			if (targetStep === 41){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 41");}
 				self.stepFourShowFineAdjustments(false);
-				self.stepFourFirstWiggleClicked(false);
+				self.stepElevenFirstWiggleClicked(false);
 			}
 			if (targetStep === 5){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 5");}
@@ -1865,6 +1865,11 @@ $(function() {
 				self.stepTenFirstWiggleClicked(false); //vestigial?
 			}
 			if (targetStep === 11){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 11");}
+				self.stepElevenFirstWiggleClicked(false);
+				self.stepElevenShowFineAdjustments(false);
+			}
+            if (targetStep === 111){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 11");}
 				self.stepElevenFirstWiggleClicked(false);
 				self.stepElevenShowFineAdjustments(false);
