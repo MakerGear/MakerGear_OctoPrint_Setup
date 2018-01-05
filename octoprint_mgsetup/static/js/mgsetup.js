@@ -105,6 +105,16 @@ $(function() {
 			}
 		},this);
 
+		self.hasProbe = ko.pureComputed(function(){
+			if (self.settings.printerProfiles.currentProfileData().model().indexOf("probe") !== -1 ){
+				if(!self.hideDebug()){console.log("hasProbe is true!");}
+				return true;
+			} else {
+				if(!self.hideDebug()){console.log("hasProbe is false!");}
+				return false;
+			}
+		},this);
+
 		self.ipAddress = ko.observable(undefined);
 		self.ipPort = ko.observable(undefined);
 		self.hostnameJS = ko.observable(undefined);
@@ -1124,8 +1134,8 @@ $(function() {
 				//	type: 'success',
 				//});
 				self.ZWiggleHeight(self.stockZWiggleHeight);
-				self.setupStep("17");
-				// self.goTo("5");
+				//self.setupStep("17");
+				self.goTo("17");
 			}
 
 
@@ -1722,7 +1732,7 @@ $(function() {
 			if (self.probeStep() === 4){
 				OctoPrint.control.sendGcode(["G1 F2000 Z10",
 					"M400",
-					"G29",
+					"G29 P2",
 					"M400"]);
 				self.waitingForProbeResponse(true);
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
@@ -2698,6 +2708,7 @@ $(function() {
 		self.onStartupComplete = function() {
 			if(!self.hideDebug()){console.log("onStartupComplete triggered.");}
 			//console.log(self.temperatures.tools());
+
 			if(!self.hideDebug()){console.log(self.oldZOffset);}
 			//self.updateCuraProfiles();
 			self.displayToolTemp(self.temperatures.tools()[0].actual);

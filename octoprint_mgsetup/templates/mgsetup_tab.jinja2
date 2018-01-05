@@ -56,7 +56,7 @@
 
 <!--    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>-->
     
-                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
+                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button><button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
                 <p style="font-size:16px;text-align:center; margin-top:20px;">
                     This guided process will help you verify your M3's calibration and make any necessary adjustments.  
                 </p>
@@ -2312,7 +2312,7 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
     <center>Before starting Quick Check, please complete all setup procedures contained in the M3 User Guide booklet (included with your M3).<br>
 
     </center><br><br>
-    <button style="float: left; width: 35%;" data-bind="click: function() { $root.preflightDialog.modal('hide')}">Cancel Quick Check</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.goTo('1'); $root.preflightDialog.modal('hide') }">Begin Quick Check</button><br><br>
+    <button style="float: left; width: 35%;" data-bind="click: function() { $root.preflightDialog.modal('hide')}">Cancel Quick Check</button><button style="float: right; width: 45%;" data-bind="visible: !hasProbe(), click: function() { $root.goTo('1'); $root.preflightDialog.modal('hide') }">Begin Quick Check</button><button style="float: right; width: 45%;" data-bind="visible: hasProbe(), click: function() { $root.goTo('17'); $root.preflightDialog.modal('hide') }">Begin Quick Check</button><br><br>
     {# <div style="float:right"><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me again.</div><br> #}
 
     </div><br>
