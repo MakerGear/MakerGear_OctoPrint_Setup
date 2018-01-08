@@ -1746,7 +1746,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='17'">
-
+<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 Now we will begin checking that the AutoLevel Probe is installed and configured correctly, and that the bed is level.  This automatic series of tests will take you to a separate page if there's an issue in the process, or to begin loading filament and printing if everything works correctly.<br><br>
 Click on "Start Probe Checking" to begin testing:<br><br>
 
@@ -1787,7 +1787,7 @@ Click on "Start Probe Checking" to begin testing:<br><br>
 Probe Fail 1/2: Probe Not Detected or Failed at Edge of Bed
 
 <div data-bind="visible: $root.failedStep() <2">
-It looks like your probe is not responding to commands.  Please confirm that it is connected correctly inside the electronics case [PICTURE HERE], and at the probe body itself [PICTURE HERE OF WHITE CONNECTOR SECURE].  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
+It looks like your probe is not responding to commands.  Please confirm that it is connected correctly inside the electronics case:<br> <img src="/plugin/mgsetup/static/img/probeRamboConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br> and at the probe body itself:<br> <img src="/plugin/mgsetup/static/img/probeConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto">.<br><br>  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
 
 Once you have verified both connections, and that the probe body indicator LED is lit, use the below buttons to test all functionality before returning to the Autocheck.
 
@@ -1839,9 +1839,13 @@ It looks like your probe failed to activate while testing in
 
 Probe Fail 3: Probing Failed in Middle of Bed
 
-It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.
+It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.<br><br>
+Probe extended, below the tip of the nozzle:<br>
+<img src="/plugin/mgsetup/static/img/probeExtended.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
+Probe retracted, above the tip of the nozzle:<br>
+<img src="/plugin/mgsetup/static/img/probeRetracted.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
-Please check that the nozzle is above the tip of the probe when extended.  The buttons below will let you extend and retract the probe tip:<br><br>
+Please check that the nozzle is above the tip of the probe when extended as show above.  The buttons below will let you extend and retract the probe tip:<br><br>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
 
@@ -2088,7 +2092,12 @@ d8"              88
 
 Probe Fail 4: Adjust Bed Level with Probe<br><br>
 
-Your bed is further out of level than we recommend printing with.  The steps below will guide you through confirming your current bed level, and adjusting it with your 2mm Allen key.  All directions are given as though you were looking up at the bottom of the bed mounting plate.<br><br>
+Your bed is further out of level than we recommend printing with.  The steps below will guide you through confirming your current bed level, and adjusting it with your 2mm Allen key.  All directions are given as though you were looking down at the bed.<br><br>
+
+This is a picture of the bottom of the mounting plate - turning this screw will raise or lower the matching corner of the bed:<br>
+<img src="/plugin/mgsetup/static/img/underside-arrow.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
+And as seen from above:<br>
+<img src="/plugin/mgsetup/static/img/frontright-bothways-demo.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
 Once the bed is level enough, the "Load Filament" button will activate - click it to continue setting up your printer.
 
@@ -2110,10 +2119,10 @@ The front right corner needs to move <span data-bind="text: $root.frontRightMm()
 The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
 <b>
-<span data-bind="text: $root.frontLeftString()"></span><br><br>
-<span data-bind="text: $root.frontRightString()"></span><br><br>
-<span data-bind="text: $root.rearLeftString()"></span><br><br>
-<span data-bind="text: $root.rearRightString()"></span><br><br>
+<span data-bind="text: $root.frontLeftString()"></span><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<span data-bind="text: $root.frontRightString()"></span><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<span data-bind="text: $root.rearLeftString()"></span><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<span data-bind="text: $root.rearRightString()"></span><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
 </b>
 </div>
 
@@ -2183,7 +2192,8 @@ d8"          d8"
     </p>
 
 
-If your printer did not finish correctly, or if the bottom of the print is sparse or very over-squished [picture here of a print with bad Z height], click here to adjust your Z Probe Height Offset:<br>
+Your first print should look like this, with the center keychain solid and with a mostly smooth bottom surface, and the outer rectangular strip solid and well-adhered all around the bed:<br><img src="/plugin/mgsetup/static/img/probeBedPrint.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
+If your printer did not finish correctly, or if the bottom of the print is sparse or very over-squished or doesn't look like the example overall, click here to adjust your Z Probe Height Offset:<br>
 <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20','22') }">Adjust Z Probe Offset</button>
 
     <p style="margin-top:21px;" data-bind="visible: !$root.isDual()">

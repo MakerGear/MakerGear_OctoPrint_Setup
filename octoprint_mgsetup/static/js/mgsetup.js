@@ -1711,7 +1711,8 @@ $(function() {
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},10000);
 			}
 			if (self.probeStep() === 2){
-				OctoPrint.control.sendGcode(["G28 XYZ",
+				OctoPrint.control.sendGcode(["T0",
+					"G28 XYZ",
 					"G1 F2000 X-10 Y125 Z10",
 					"M400",
 					"G30",
@@ -1720,7 +1721,8 @@ $(function() {
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
 			}
 			if (self.probeStep() === 3){
-				OctoPrint.control.sendGcode(["G1 F2000 Z10",
+				OctoPrint.control.sendGcode(["T0",
+					"G1 F2000 Z10",
 					"M400",
 					"G1 F2000 X100 Z10",
 					"M400",
@@ -1730,7 +1732,8 @@ $(function() {
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
 			}
 			if (self.probeStep() === 4){
-				OctoPrint.control.sendGcode(["G1 F2000 Z10",
+				OctoPrint.control.sendGcode(["T0",
+					"G1 F2000 Z10",
 					"M400",
 					"G29 P2",
 					"M400"]);
@@ -1973,9 +1976,9 @@ $(function() {
 					self.frontLeftString("The front left corner does not need to be adjusted this time.");
 				} else {
 					if (self.frontLeftMm() < 0){
-						self.direction = "clockwise.";
-					} else {
 						self.direction = "counter-clockwise.";
+					} else {
+						self.direction = "clockwise.";
 					}
 					if (((self.frontLeftDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
 					self.frontLeftString("The front left corner needs to be adjusted "+self.numberWords[((self.frontLeftDegrees()/90).toFixed())]+self.turns+self.direction);
@@ -1985,9 +1988,9 @@ $(function() {
 					self.frontRightString("The front right corner does not need to be adjusted this time.");
 				} else {
 					if (self.frontRightMm() < 0){
-						self.direction = "clockwise.";
-					} else {
 						self.direction = "counter-clockwise.";
+					} else {
+						self.direction = "clockwise.";
 					}
 					if (((self.frontRightDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
 					self.frontRightString("The front right corner needs to be adjusted "+self.numberWords[((self.frontRightDegrees()/90).toFixed())]+self.turns+self.direction);
@@ -1997,9 +2000,9 @@ $(function() {
 					self.rearLeftString("The rear left corner does not need to be adjusted this time.");
 				} else {
 					if (self.rearLeftMm() < 0){
-						self.direction = "clockwise.";
-					} else {
 						self.direction = "counter-clockwise.";
+					} else {
+						self.direction = "clockwise.";
 					}
 					if (((self.rearLeftDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
 					self.rearLeftString("The rear left corner needs to be adjusted "+self.numberWords[((self.rearLeftDegrees()/90).toFixed())]+self.turns+self.direction);
@@ -2009,9 +2012,9 @@ $(function() {
 					self.rearRightString("The rear right corner does not need to be adjusted this time.");
 				} else {
 					if (self.rearRightMm() < 0){
-						self.direction = "clockwise.";
-					} else {
 						self.direction = "counter-clockwise.";
+					} else {
+						self.direction = "clockwise.";
 					}
 					if (((self.rearRightDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
 					self.rearRightString("The rear right corner needs to be adjusted "+self.numberWords[((self.rearRightDegrees()/90).toFixed())]+self.turns+self.direction);
