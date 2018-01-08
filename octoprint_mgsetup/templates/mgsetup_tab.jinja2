@@ -2119,10 +2119,10 @@ The front right corner needs to move <span data-bind="text: $root.frontRightMm()
 The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
 <b>
-<span data-bind="text: $root.frontLeftString()"></span><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.frontRightString()"></span><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.rearLeftString()"></span><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.rearRightString()"></span><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<span data-bind="text: $root.frontLeftString()"></span><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<span data-bind="text: $root.frontRightString()"></span><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<span data-bind="text: $root.rearLeftString()"></span><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<span data-bind="text: $root.rearRightString()"></span><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
 </b>
 </div>
 
@@ -2192,7 +2192,17 @@ d8"          d8"
     </p>
 
 
-Your first print should look like this, with the center keychain solid and with a mostly smooth bottom surface, and the outer rectangular strip solid and well-adhered all around the bed:<br><img src="/plugin/mgsetup/static/img/probeBedPrint.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
+Your first print should look like this, with the center keychain solid and with a mostly smooth bottom surface, and the outer rectangular strip solid and well-adhered all around the bed:<br><img src="/plugin/mgsetup/static/img/probeBedPrint.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
+The top of the keychain:<br>
+<img src="/plugin/mgsetup/static/img/probeBedPrintKeychainTop.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
+The bottom of the keychain:<br>
+<img src="/plugin/mgsetup/static/img/probeBedPrintKeychainBottom.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
+A closeup of the border:<br>
+<img src="/plugin/mgsetup/static/img/probeBedPrintBorder.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
+
+
+
+<br>
 If your printer did not finish correctly, or if the bottom of the print is sparse or very over-squished or doesn't look like the example overall, click here to adjust your Z Probe Height Offset:<br>
 <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20','22') }">Adjust Z Probe Offset</button>
 
