@@ -2099,31 +2099,44 @@ This is a picture of the bottom of the mounting plate - turning this screw will 
 And as seen from above:<br>
 <img src="/plugin/mgsetup/static/img/frontright-bothways-demo.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
-Once the bed is level enough, the "Load Filament" button will activate - click it to continue setting up your printer.
+Once the bed is level enough, the "Return to Autocheck" button will activate - click it to continue setting up your printer.
 
 The first run will home:<br><center>
-<button class="btnstay" data-bind="enable:$root.lockButton(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && !$root.probeLevelFirstCheckClicked(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
 
 [IMAGINE A PREVIEW HERE]
 <div id="bedPreviewDiv">
 
 
 </div>
-<button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button>
-<br><br><br>
+<div data-bind="visible: bedLevelResults().length > 0">
+<button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button></div>
+<br><br><br><hr>
 
-Once the printer has finished probing, the numbers below will tell you how far to adjust each leveling screw to bring the bed to perfectly level.<br><br>
+Once the printer has finished probing, the instructions below will tell you how far to adjust each leveling screw to bring the bed to level.<br><br>
 <div data-bind="visible: bedLevelResults().length > 0">
 {# The front left corner needs to move <span data-bind="text: $root.frontLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The front right corner needs to move <span data-bind="text: $root.frontRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
 <b>
-<span data-bind="text: $root.frontLeftString()"></span><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.frontRightString()"></span><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.rearLeftString()"></span><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.rearRightString()"></span><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
+<center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button><button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() + 1) }">Next Corner</button>
+</center><br>
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 1">
+<span data-bind="text: $root.frontLeftString()"></span><br><br><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 2">
+<span data-bind="text: $root.frontRightString()"></span><br><br><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 3">
+<span data-bind="text: $root.rearLeftString()"></span><br><br><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 4">
+<span data-bind="text: $root.rearRightString()"></span><br><br><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div><hr><br>
 </b>
+<br>
+
 </div>
 
 
@@ -2143,10 +2156,10 @@ The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), 
 No data yet!  Click "Run First Bed Check" to acquire the first set of measurements.</b><br><br></div>
 
 The second run will only update the bed level data:<br><center>
-<button class="btnstay" data-bind="enable:$root.lockButton(), click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
 
 <br><br><br>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') }">Load Filament</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('17') }">Return to Autocheck</button>
 
 
 </div>

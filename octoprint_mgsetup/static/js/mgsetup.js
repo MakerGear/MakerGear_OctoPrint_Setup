@@ -498,7 +498,11 @@ $(function() {
 					tohome: true,
 					wigglenumber: parseFloat(1),
 					tool: 1};
-				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+				if (self.hasProbe()){
+					OctoPrint.control.sendGcodeScriptWithParameters("probeWiggle", context, parameters);
+				} else {
+					OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+				}
 			}
 
 			if (wigglePosition === "T1-maintenance"){
@@ -1133,6 +1137,7 @@ $(function() {
 				//	text: "Starting Height Set to : "+self.newZOffset.toString(),
 				//	type: 'success',
 				//});
+				self.stepTwentyFirstWiggleClicked(false);
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("17");
 				self.goTo("17");
@@ -1683,6 +1688,13 @@ $(function() {
 		self.frontRightString = ko.observable("");
 		self.rearLeftString = ko.observable("");
 		self.rearRightString = ko.observable("");
+		self.probeLevelFirstCheckClicked = ko.observable(false);
+		self.probeLevelActiveCorner = ko.observable(0);
+
+
+
+
+
 		// self.probeCheckActive = ko.observable(-1);
 
 
@@ -1781,6 +1793,10 @@ $(function() {
 			self.checkingForProbe(0);
 			self.waitingForEndstopResponse(false);
 			self.waitingForProbeResponse(false);
+			self.probeLevelFirstCheckClicked(false);
+			self.probeLevelActiveCorner(0);
+			self.stepTwentyFirstWiggleClicked(false);
+
 			clearTimeout(self.probeFail);
 			return;
 
@@ -1829,16 +1845,24 @@ $(function() {
 					self.checkProbe();
 
 				} else if (self.probeStep() === 3){
-					tempProbeValue = self.processProbeValue(line);
+					var tempProbeValue = self.processProbeValue(line);
 					if (tempProbeValue !== undefined){
-						if (Math.abs(tempProbeValue) >= 0.50){
-							if(!self.hideDebug()){console.log("It looks like the probe value is greater than ±0.50.");}
-							self.probeCheckReset();
-							//self.setupStep("20");
-							self.goTo("3","20");
-							self.failedStep(self.probeStep());
+						if (Math.abs(tempProbeValue) >= 0.05){
+							if(!self.hideDebug()){console.log("It looks like the probe value is greater than ±0.05 - adjusting M206 Z Home Offset.");}
+							if(self.probeOffset() !== undefined){
+								var newHomeOffset = ((parseFloat(tempProbeValue)+parseFloat(self.probeOffset()))*-1).toString();
+								OctoPrint.control.sendGcode(["M206 Z"+newHomeOffset,
+									"M500"]);
+								if(!self.hideDebug()){console.log("M206 Z set to:"+newHomeOffset);}
+							}
+
+							//self.probeCheckReset();
+							//self.goTo("3","20");
+							//self.failedStep(self.probeStep());
+							self.probeStep(4);
+							self.checkProbe();
 						} else {
-							if(!self.hideDebug()){console.log("It looks like the probe value is smaller than ±0.50.");}
+							if(!self.hideDebug()){console.log("It looks like the probe value is smaller than ±0.05 - no adjustment needed.");}
 							self.probeStep(4);
 							self.checkProbe();
 						}
@@ -1973,7 +1997,8 @@ $(function() {
 				self.turns = "";
 				self.numberWords = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","too many"];
 				if (((self.frontLeftDegrees()/90).toFixed()) == 0){
-					self.frontLeftString("The front left corner does not need to be adjusted this time.");
+					self.frontLeftString("The front left corner does not need to be adjusted at this time.");
+					self.frontLeftMm(0);
 				} else {
 					if (self.frontLeftMm() < 0){
 						self.direction = "counter-clockwise.";
@@ -1985,7 +2010,8 @@ $(function() {
 				}
 
 				if (((self.frontRightDegrees()/90).toFixed()) == 0){
-					self.frontRightString("The front right corner does not need to be adjusted this time.");
+					self.frontRightString("The front right corner does not need to be adjusted at this time.");
+					self.frontRightMm(0);
 				} else {
 					if (self.frontRightMm() < 0){
 						self.direction = "counter-clockwise.";
@@ -1997,7 +2023,8 @@ $(function() {
 				}
 
 				if (((self.rearLeftDegrees()/90).toFixed()) == 0){
-					self.rearLeftString("The rear left corner does not need to be adjusted this time.");
+					self.rearLeftString("The rear left corner does not need to be adjusted at this time.");
+					self.rearLeftMm(0);
 				} else {
 					if (self.rearLeftMm() < 0){
 						self.direction = "counter-clockwise.";
@@ -2009,7 +2036,8 @@ $(function() {
 				}
 
 				if (((self.rearRightDegrees()/90).toFixed()) == 0){
-					self.rearRightString("The rear right corner does not need to be adjusted this time.");
+					self.rearRightString("The rear right corner does not need to be adjusted at this time.");
+					self.rearRightMm(0);
 				} else {
 					if (self.rearRightMm() < 0){
 						self.direction = "counter-clockwise.";
@@ -2019,10 +2047,10 @@ $(function() {
 					if (((self.rearRightDegrees()/90).toFixed()) == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
 					self.rearRightString("The rear right corner needs to be adjusted "+self.numberWords[((self.rearRightDegrees()/90).toFixed())]+self.turns+self.direction);
 				}
-				if(!self.hideDebug()){console.log("The front left corner needs to move "+self.frontLeftMm()+ "mm or " + self.frontLeftDegrees() + "° " + ((self.frontLeftMm()>0)?"counter-clockwise.":"clockwise."));}
-				if(!self.hideDebug()){console.log("The front right corner needs to move "+self.frontRightMm()+ "mm or " + self.frontRightDegrees() + "° " + ((self.frontRightMm()>0)?"counter-clockwise.":"clockwise."));}
-				if(!self.hideDebug()){console.log("The rear left corner needs to move "+self.rearLeftMm()+ "mm or " + self.rearLeftDegrees() + "° " + ((self.rearLeftMm()>0)?"counter-clockwise.":"clockwise."));}
-				if(!self.hideDebug()){console.log("The rear right corner needs to move "+self.rearRightMm()+ "mm or " + self.rearRightDegrees() + "° " + ((self.rearRightMm()>0)?"counter-clockwise.":"clockwise."));}
+				// if(!self.hideDebug()){console.log("The front left corner needs to move "+self.frontLeftMm()+ "mm or " + self.frontLeftDegrees() + "° " + ((self.frontLeftMm()>0)?"counter-clockwise.":"clockwise."));}
+				// if(!self.hideDebug()){console.log("The front right corner needs to move "+self.frontRightMm()+ "mm or " + self.frontRightDegrees() + "° " + ((self.frontRightMm()>0)?"counter-clockwise.":"clockwise."));}
+				// if(!self.hideDebug()){console.log("The rear left corner needs to move "+self.rearLeftMm()+ "mm or " + self.rearLeftDegrees() + "° " + ((self.rearLeftMm()>0)?"counter-clockwise.":"clockwise."));}
+				// if(!self.hideDebug()){console.log("The rear right corner needs to move "+self.rearRightMm()+ "mm or " + self.rearRightDegrees() + "° " + ((self.rearRightMm()>0)?"counter-clockwise.":"clockwise."));} //commented out this block when changed to zeroing cornerMm value for correct picture display - 1/10/2018
 				self.zLevelError(Math.abs(self.zProbeMax-self.zProbeMin));
 				if (self.waitingForProbeResponse()){
 					self.waitingForProbeResponse(false);
@@ -2038,6 +2066,7 @@ $(function() {
 						self.probeCheckReset();
 					}
 				}
+			self.probeLevelActiveCorner(1);
 			}
 			self.bedPreview();
 		};
@@ -2048,11 +2077,13 @@ $(function() {
 					"G28 XYZ",
 					"G29 P2",
 					"G1 F1000 X100 Y125"]);
+				self.probeLevelFirstCheckClicked(true);
 			}
 			if(levelStep === 1){
 				OctoPrint.control.sendGcode(["T0",
 					"G29 P2",
 					"G1 F1000 X100 Y125"]);
+				self.probeLevelActiveCorner(0);
 			}
 		};
 
