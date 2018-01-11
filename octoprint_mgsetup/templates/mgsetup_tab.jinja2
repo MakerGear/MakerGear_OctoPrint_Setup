@@ -2099,17 +2099,20 @@ This is a picture of the bottom of the mounting plate - turning this screw will 
 And as seen from above:<br>
 <img src="/plugin/mgsetup/static/img/frontright-bothways-demo.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
-Once the bed is level enough, the "Return to Autocheck" button will activate - click it to continue setting up your printer.
+Once the bed is level enough, the "Load Filament" button will activate - click it to continue setting up your printer.
 
+<div data-bind="visible: !$root.hideDebug() ">
+This div is only visible with Show Debug enabled.
 The first run will home:<br><center>
 <button class="btnstay" data-bind="enable:$root.lockButton() && !$root.probeLevelFirstCheckClicked(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
+</div>
 
 [IMAGINE A PREVIEW HERE]
 <div id="bedPreviewDiv">
 
 
 </div>
-<div data-bind="visible: bedLevelResults().length > 0">
+<div data-bind="visible: !$root.hideDebug() && bedLevelResults().length > 0">
 <button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button></div>
 <br><br><br><hr>
 
@@ -2158,8 +2161,8 @@ No data yet!  Click "Run First Bed Check" to acquire the first set of measuremen
 The second run will only update the bed level data:<br><center>
 <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
 
-<br><br><br>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('17') }">Return to Autocheck</button>
+<br><br><br>Once all four corners no longer require adjustment, click "Load Filament" to proceed.
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.probeHomeOffsetAdjust() ; $root.goTo('3','22') }">Load Filament</button>
 
 
 </div>

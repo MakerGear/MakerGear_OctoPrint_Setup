@@ -1690,6 +1690,7 @@ $(function() {
 		self.rearRightString = ko.observable("");
 		self.probeLevelFirstCheckClicked = ko.observable(false);
 		self.probeLevelActiveCorner = ko.observable(0);
+		self.setHomeOffsetFromProbe = ko.observable(false);
 
 
 
@@ -1796,6 +1797,7 @@ $(function() {
 			self.probeLevelFirstCheckClicked(false);
 			self.probeLevelActiveCorner(0);
 			self.stepTwentyFirstWiggleClicked(false);
+			self.setHomeOffsetFromProbe(false);
 
 			clearTimeout(self.probeFail);
 			return;
@@ -1837,14 +1839,14 @@ $(function() {
 		self.probeReceived = function(line){
 			if(!self.hideDebug()){console.log(line);}
 			clearTimeout(self.probeFail);
-			if (self.waitingForProbeResponse()){
+			if (self.waitingForProbeResponse() || self.setHomeOffsetFromProbe()){
 				self.waitingForProbeResponse(false);
 				if (self.probeStep() === 2){
 					self.probeStep(3);
 					self.processProbeValue(line);
 					self.checkProbe();
 
-				} else if (self.probeStep() === 3){
+				} else if (self.probeStep() === 3 || self.setHomeOffsetFromProbe() ){
 					var tempProbeValue = self.processProbeValue(line);
 					if (tempProbeValue !== undefined){
 						if (Math.abs(tempProbeValue) >= 0.05){
@@ -1853,14 +1855,17 @@ $(function() {
 								var newHomeOffset = ((parseFloat(tempProbeValue)+parseFloat(self.probeOffset()))*-1).toString();
 								OctoPrint.control.sendGcode(["M206 Z"+newHomeOffset,
 									"M500"]);
+								self.setHomeOffsetFromProbe(false);
 								if(!self.hideDebug()){console.log("M206 Z set to:"+newHomeOffset);}
 							}
 
 							//self.probeCheckReset();
 							//self.goTo("3","20");
 							//self.failedStep(self.probeStep());
-							self.probeStep(4);
-							self.checkProbe();
+							if(self.probeStep() === 3){
+								self.probeStep(4);
+								self.checkProbe();
+							}
 						} else {
 							if(!self.hideDebug()){console.log("It looks like the probe value is smaller than ±0.05 - no adjustment needed.");}
 							self.probeStep(4);
@@ -2059,6 +2064,7 @@ $(function() {
 						if(!self.hideDebug()){console.log("Bed is out of level more than ±0.5, going to assisted leveling.");}
 						self.setupStep("21");
 						self.probeCheckReset();
+						self.probeLevelFirstCheckClicked(true);
 						self.failedStep(self.probeStep());
 					} else {
 						// self.setupStep("7");
@@ -2086,6 +2092,21 @@ $(function() {
 				self.probeLevelActiveCorner(0);
 			}
 		};
+
+		self.probeHomeOffsetAdjust = function(){
+			self.setHomeOffsetFromProbe(true);
+			OctoPrint.control.sendGcode(["T0",
+				"G28 X Y Z",
+				"G1 F2000 X100 Y125 Z30",
+				"G30",
+				"M400"]);
+
+
+
+
+		};
+
+
 
 		self.selectPreview = function(targetPreview){
 			if (targetPreview == "first"){
