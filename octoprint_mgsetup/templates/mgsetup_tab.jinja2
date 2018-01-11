@@ -2162,7 +2162,7 @@ The second run will only update the bed level data:<br><center>
 <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
 
 <br><br><br>Once all four corners no longer require adjustment, click "Load Filament" to proceed.
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.probeHomeOffsetAdjust() ; $root.goTo('3','22') }">Load Filament</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') ; $root.probeHomeOffsetAdjust() }">Load Filament</button>
 
 
 </div>
