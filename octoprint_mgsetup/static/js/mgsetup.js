@@ -667,7 +667,7 @@ $(function() {
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
-					"G1 X20",
+					"G1 F1500 X20 Z100",
 					"M109 S"+temperature.toString()+" T0",
 					"M400",
 					"M300 S1392 P250",
@@ -683,7 +683,7 @@ $(function() {
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
-					"G1 X20 Y100",
+					"G1 F1500 X20 Y100 Z100",
 					"M109 S"+temperature.toString()+" T1",
 					"T1",
 					"M400",
@@ -719,7 +719,7 @@ $(function() {
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
-					"G1 X20",
+					"G1 F1500 X20 Z100",
 					"M109 S"+temperature.toString()+" T0",
 					"M400",
 					"M300 S1392 P250",
@@ -734,7 +734,7 @@ $(function() {
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
-					"G1 X20 Y100",
+					"G1 F1500 X20 Y100 Z100",
 					"M109 S"+temperature.toString()+" T1",
 					"T1",
 					"M400",
@@ -1851,13 +1851,14 @@ $(function() {
 					if (tempProbeValue !== undefined){
 						if (Math.abs(tempProbeValue) >= 0.05){
 							if(!self.hideDebug()){console.log("It looks like the probe value is greater than ±0.05 - adjusting M206 Z Home Offset.");}
-							if(self.probeOffset() !== undefined){
-								var newHomeOffset = ((parseFloat(tempProbeValue)+parseFloat(self.probeOffset()))*-1).toString();
-								OctoPrint.control.sendGcode(["M206 Z"+newHomeOffset,
-									"M500"]);
-								self.setHomeOffsetFromProbe(false);
-								if(!self.hideDebug()){console.log("M206 Z set to:"+newHomeOffset);}
-							}
+							// if(self.probeOffset() !== undefined){
+							// 	var newHomeOffset = ((parseFloat(tempProbeValue)+parseFloat(self.probeOffset()))*-1).toString();
+							// 	OctoPrint.control.sendGcode(["M206 Z"+newHomeOffset,
+							// 		"M500",
+							// 		"M503"]);
+							// 	self.setHomeOffsetFromProbe(false);
+							// 	if(!self.hideDebug()){console.log("M206 Z set to:"+newHomeOffset);}
+							// }
 
 							//self.probeCheckReset();
 							//self.goTo("3","20");
