@@ -337,10 +337,38 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
 {# Filament Loading #}
 
 <div id="eleven" data-bind="visible: loginState.isUser && setupStep()==='3'">
+
+
+    <div style="width:100%;margin-top:15px;" data-bind="visible: hasProbe()">
+        <div style="display:inline-block;width:24.5%;">
+            <div style="text-align:center;">
+                <i class="icon-check" style="font-size:50px; color:orange;"></i>
+            </div>
+            <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+                Automated  <br /> Calibration Test
+            </div>
+        </div>
+        <div style="display:inline-block;width:74.5%;">
+            <span style="font-size:18px;">The Automated Calibration Test has completed sucessfully. Follow the instructions below to proceed. </span>
+             <br />
+             <br />
+             <br />
+        </div>
+
+    </div>
+    <hr style="margin-top:0px;margin-bottom:0px;" />
+
+
+
+
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='3'" />
     </div><br>
 <h1 style="text-align:left">Extrude Filament</h1>
+
+
+
+
 
 
 <p>
@@ -1653,11 +1681,10 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button>
 </div>
 </div>
-</div><br><br>
+</div>
 
 
 </div>
-<br><br><br>
 
 
 
@@ -1746,22 +1773,91 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='17'">
-<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
-Now we will begin checking that the AutoLevel Probe is installed and configured correctly, and that the bed is level.  This automatic series of tests will take you to a separate page if there's an issue in the process, or to begin loading filament and printing if everything works correctly.<br><br>
-Click on "Start Probe Checking" to begin testing:<br><br>
 
- <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.checkProbe() }">Start Probe Checking</button>
+
+
+
+<h1 style="text-align:left;">Automated Calibration Test</h1>
+<p style="text-align:left;">
+
+	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the correct next step after the test is complate. 
+
+</p>
+
+
+<!--<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>-->
+
+<center> <button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.checkProbe() }">Start Automated Calibration Test</button></center>
 <br><br>
 
 
 
-<div style="display:flex;"><div data-bind="visible: $root.probeStep()<2 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>1 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() < 2 ? 'bold':''}"> Detect Probe</div></div><br>
+
+{#             
+<div style="display:flex;float:left;disp"><div data-bind="visible: $root.probeStep()<2 "><i class="icon-check"></i></div><div data-bind="visible: $root.probeStep()>1 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() < 2 ? 'bold':''}"> Detect Probe</div></div><br>
 
 <div style="display:flex;"><div data-bind="visible: $root.probeStep()<3 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>2 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 2 ? 'bold':''}"> Verify Probe Location</div></div><br>
 
 <div style="display:flex;"><div data-bind="visible: $root.probeStep()<4 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>3 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 3 ? 'bold':''}"> Check Probe Offset</div></div><br>
 
 <div style="display:flex;"><div data-bind="visible: $root.probeStep()<5 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>4 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 4 ? 'bold':''}"> Check Bed Level</div></div><br><br>
+                      #}
+
+
+
+
+
+<div style="width:80%;margin-left:auto;margin-right:auto;text-align:center;" >
+    <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<2 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>1 " style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+            Detect <br /> Probe
+        </div>
+    </div>
+    <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<3 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>2 " style="text-align:center;"  style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 2 ? 'bold':''}"  style="text-align:center;">
+            Verify <br /> Probe Location
+        </div>
+    </div>
+    <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<4 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>3 " style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 3 ? 'bold':''}"  style="text-align:center;">
+            Check   <br /> Probe Offset
+        </div>
+    </div>
+    <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<5 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>4 " style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 4 ? 'bold':''}"  style="text-align:center;">
+            Check  <br /> Bed Level
+        </div>
+    </div>
+
+
+</div>
+
+
+
 
 
 
@@ -1784,12 +1880,30 @@ Click on "Start Probe Checking" to begin testing:<br><br>
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='18'">
 
-Probe Fail 1/2: Probe Not Detected or Failed at Edge of Bed
+
+<h1 style="text-align:left;">Probe Electronic Failure</h1>
+
 
 <div data-bind="visible: $root.failedStep() <2">
-It looks like your probe is not responding to commands.  Please confirm that it is connected correctly inside the electronics case:<br> <img src="/plugin/mgsetup/static/img/probeRamboConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br> and at the probe body itself:<br> <img src="/plugin/mgsetup/static/img/probeConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto">.<br><br>  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
+<p>
+    Your printer's probe is either not responding to commands or failing the initial bed probe.  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
+</p>
 
-Once you have verified both connections, and that the probe body indicator LED is lit, use the below buttons to test all functionality before returning to the Autocheck.
+
+
+<p>Check that the probe is connected to the printer via the 6-pin connector. 
+
+<br> <img src="/plugin/mgsetup/static/img/probeConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+
+
+{#    
+If it is connected and still not reacting, you may need to open the electronic case and make sure it is connected correctly. 
+connected correctly inside the electronics case:<br> <img src="/plugin/mgsetup/static/img/probeRamboConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br> and at the probe body itself:.<br><br> 
+
+                      #}
+
+<p>Once you have verified the connection, and that the probe body indicator LED is lit, use the "Retest Probe" button to start the test. You should see the probe extend and retract. 
+</p>
 
 </div>
 
@@ -1809,12 +1923,25 @@ It looks like your probe failed to activate while testing in
 
 </div> #}
 
- <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
- <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
+ <center> <button style="" class="btnstay" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retest') }">Retest Probe</button></center>
+
+
+<p>
+    If the probe is extending and retracting on its own, you can click on "Return to Automated Calibration Test" to go back to the main testing page. If the probe does not extend/retract, please contact MakerGear Support.
+</p>
+
+
+
+
+{#       
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button>
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('selftest') }">Initiate Self-Test</button><br>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('resetalarm') }">Reset Alarm State</button> If the probe body is blinking red, click this to Reset the alarm.<br><br>
+#}
 
-  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button>
+
+ <center> <button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Automated Calibration Test</button></center>
 
 
 

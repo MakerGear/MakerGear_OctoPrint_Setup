@@ -1,18 +1,11 @@
-var hostName = "octodemom31";
-var ip = ["88", "89", "90"];
+var hostName = "M3Printer51G90";
+    var generate = 1516121727.79;
 
-
-for (i = 0; i < ip.length; i++) 
-{ 
-    
- id1 = ("ip"+ip[i].toString());
-
- hostDiv = document.getElementById(id1);
-
- hostDiv.innerHTML = hostName
-
-}
-
-
-;
-
+        var ip = ["139","-1"];
+        for (i = 0; i < ip.length; i++) 
+        { 
+        id1 = ("ip"+ip[i].toString());
+        hostDiv = document.getElementById(id1);
+        hostDiv.innerHTML = hostName;
+        }
+        

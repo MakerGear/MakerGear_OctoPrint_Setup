@@ -1900,6 +1900,16 @@ $(function() {
 			if (action === 'resetalarm'){
 				OctoPrint.control.sendGcode(["M280 P1 S160"]);
 			}
+			if (action === 'retest'){
+				OctoPrint.control.sendGcode(["M280 P1 S160"]);
+				OctoPrint.control.sendGcode(["G1 Z50"]);
+				OctoPrint.control.sendGcode(["M400"]);
+
+				OctoPrint.control.sendGcode(["M280 P1 S10"]);
+				OctoPrint.control.sendGcode(["M280 P1 S90"]);
+				OctoPrint.control.sendGcode(["M280 P1 S10"]);
+				OctoPrint.control.sendGcode(["M280 P1 S90"]);
+			}
 		};
 
 
