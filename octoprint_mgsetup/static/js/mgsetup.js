@@ -1219,29 +1219,62 @@ $(function() {
 
 			if (dualCheckLevelStep === 0){
 
-				OctoPrint.control.sendGcode(["M300 S1040 P250",
-					"M300 S1312 P250", 
-					"M300 S1392 P250",
-					"G28 Z",
-					"M218 T1 Z0",
-					"M500",
-					"G28 X",
-					"T0",
-					"G28 X",
-					"T0",
-					"G28",
-					"T1",
-					"G1 F1000 Y125 Z20",
-					"G1 F1800 X220",
-					"G1 F1000 Z0.25",
-					"G4 P1000",
-					"M84 X",
-					"M400",
-					"M300 S1392 P250",
-					"M300 S1312 P250", 
-					"M300 S1040 P250"
-				]);
+				if (!self.hasProbe()){
+					OctoPrint.control.sendGcode(["M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G28 Z",
+						"M218 T1 Z0",
+						"M500",
+						"G28 X",
+						"T0",
+						"G28 X",
+						"T0",
+						"G28",
+						"T1",
+						"G1 F1000 Y125 Z20",
+						"G1 F1800 X220",
+						"G1 F1000 Z0.25",
+						"G4 P1000",
+						"M84 X",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+					]);
+				} else {
+					OctoPrint.control.sendGcode(["M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G28 Z",
+						"M218 T1 Z0",
+						"M500",
+						// "G28 X",
+						// "T0",
+						// "G28 X",
+						"T0",
+						"G28 X Y Z",
+						"T1",
+						"G1 F1000 Y125 Z20",
+						"T0",
+						"G1 F2000 X10",
+						"T1",
+						"G1 F1800 X220",
+						"G1 F1000 Z0.25",
+						"G4 P1000",
+						"M84 X",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+					]);
+				}
+
 			}
+
+
+
+
 		};
 
 
@@ -1849,8 +1882,8 @@ $(function() {
 				} else if (self.probeStep() === 3 || self.setHomeOffsetFromProbe() ){
 					var tempProbeValue = self.processProbeValue(line);
 					if (tempProbeValue !== undefined){
-						if (Math.abs(tempProbeValue) >= 0.05){
-							if(!self.hideDebug()){console.log("It looks like the probe value is greater than ±0.05 - adjusting M206 Z Home Offset.");}
+						if ( -3 < Math.abs(tempProbeValue) < 0){
+							if(!self.hideDebug()){console.log("It looks like the probe value is greater than 0 or below -3 - adjusting M851 Offset.");}
 							// if(self.probeOffset() !== undefined){
 							// 	var newHomeOffset = ((parseFloat(tempProbeValue)+parseFloat(self.probeOffset()))*-1).toString();
 							// 	OctoPrint.control.sendGcode(["M206 Z"+newHomeOffset,
@@ -1860,15 +1893,15 @@ $(function() {
 							// 	if(!self.hideDebug()){console.log("M206 Z set to:"+newHomeOffset);}
 							// }
 
-							//self.probeCheckReset();
-							//self.goTo("3","20");
-							//self.failedStep(self.probeStep());
+							self.probeCheckReset();
+							self.goTo("3","20");
+							self.failedStep(self.probeStep());
 							if(self.probeStep() === 3){
 								self.probeStep(4);
 								self.checkProbe();
 							}
 						} else {
-							if(!self.hideDebug()){console.log("It looks like the probe value is smaller than ±0.05 - no adjustment needed.");}
+							if(!self.hideDebug()){console.log("It looks like the probe value is smaller between 0 and -3 - no adjustment needed.");}
 							self.probeStep(4);
 							self.checkProbe();
 						}
