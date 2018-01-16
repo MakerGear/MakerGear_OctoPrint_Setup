@@ -342,7 +342,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
     <div style="width:100%;margin-top:15px;" data-bind="visible: hasProbe()">
         <div style="display:inline-block;width:24.5%;">
             <div style="text-align:center;">
-                <i class="icon-check" style="font-size:50px; color:orange;"></i>
+                <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
             </div>
             <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
                 Automated  <br /> Calibration Test
@@ -379,31 +379,22 @@ Now you need to load filament into your extruder.
 Now you need to load filament into your Left Extruder (T0). 
 </div>
 
-    When you click "Prepare" the printer will perform the following actions:
-</p>
-
-<ol>
-    <li>Move the heated build platform down to its home position
-    <li>Move the X and Y axes to their home positions
-    <li>Start heating the printer's hot end
-    <li>Start heating the printer's heated build platform.
-</ol>
 
 <p>
-    Click 'Prepare' and then continue reading the instructions while you wait for your printer to heat up.
+    Click 'Prepare' and then continue reading the instructions while you wait for your printer to move into position and heat up the printer's hot end and build platform.
 </p>
 
 <p>
 
     <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
 
-    Your extruder will begin to get very hot.  Your build surface will also start to heat up.  (You'll need your build surface to be heated for the next step and it can take a few minutes for it to heat up).  Do not touch the extruder's nozzle or the build surface.
+    Your extruder and build surface will start to heat up. Do not touch the extruder's nozzle or the build surface.
 </p>
 
 
 <center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
 
-Now we’ll prepare to load filament, if you have not already, while waiting for your M3 to heat up.
+Now we’ll prepare to load filament (if you have not already) while waiting for your M3 to heat up.
 <br><br>
 
 
@@ -438,7 +429,8 @@ Feed the tip of your filament up through the black filament guide and the clear 
 </video>
 <br /><br />
 
-Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
+<p>Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
+</p>
 
 <div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
 <div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
@@ -1810,10 +1802,10 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <div style="width:80%;margin-left:auto;margin-right:auto;text-align:center;" >
     <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
         <div data-bind="visible: $root.probeStep()<2 " style="text-align:center;">
-            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="visible: $root.probeStep()>1 " style="text-align:center;">
-            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
             Detect <br /> Probe
@@ -1821,10 +1813,10 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
     </div>
     <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
         <div data-bind="visible: $root.probeStep()<3 " style="text-align:center;">
-            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="visible: $root.probeStep()>2 " style="text-align:center;"  style="text-align:center;">
-            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="style: {fontWeight: $root.probeStep() == 2 ? 'bold':''}"  style="text-align:center;">
             Verify <br /> Probe Location
@@ -1832,10 +1824,10 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
     </div>
     <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
         <div data-bind="visible: $root.probeStep()<4 " style="text-align:center;">
-            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="visible: $root.probeStep()>3 " style="text-align:center;">
-            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="style: {fontWeight: $root.probeStep() == 3 ? 'bold':''}"  style="text-align:center;">
             Check   <br /> Probe Offset
@@ -1843,10 +1835,10 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
     </div>
     <div style="display:inline-block;width:24.5%;margin-left:auto;margin-right:auto;">
         <div data-bind="visible: $root.probeStep()<5 " style="text-align:center;">
-            <i class="icon-check-empty" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="visible: $root.probeStep()>4 " style="text-align:center;">
-            <i class="icon-check" style="font-size:50px; color:orange;"></i>
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
         </div>
         <div data-bind="style: {fontWeight: $root.probeStep() == 4 ? 'bold':''}"  style="text-align:center;">
             Check  <br /> Bed Level
@@ -1964,24 +1956,44 @@ It looks like your probe failed to activate while testing in
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='19'">
 
 
+
+
+<h1 style="text-align:left;">Probe / Nozzle Failure</h1>
+<p style="text-align:left;">
+
+    It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.
+
+</p>
+
+
+
 Probe Fail 3: Probing Failed in Middle of Bed
 
-It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.<br><br>
+<br><br>
 Probe extended, below the tip of the nozzle:<br>
 <img src="/plugin/mgsetup/static/img/probeExtended.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 Probe retracted, above the tip of the nozzle:<br>
 <img src="/plugin/mgsetup/static/img/probeRetracted.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
 Please check that the nozzle is above the tip of the probe when extended as show above.  The buttons below will let you extend and retract the probe tip:<br><br>
+
+
+<button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button>
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button>
+
+
+{#
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
+#}
 
+<p>
+Once you have confirmed or adjusted the nozzle position, click here to go to the Probe Offset Adjustment:
+</p>
+<center>
+<button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button> </center>
 
-
-Once you have confirmed or adjusted the nozzle position, click here to go to the Probe Offset Adjustment:<br>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button>
-
-<br><br>If the nozzle is already above the tip of the probe when extended, please [contact support/go through some other diagnostics].
+<br>If the nozzle is already above the tip of the probe when extended, please contact MakerGear Support.
 
 
 
