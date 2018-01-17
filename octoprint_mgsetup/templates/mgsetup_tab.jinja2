@@ -2263,7 +2263,8 @@ The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), st
 The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
 <b>
 <center>
-<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button><button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() + 1) }">Next Corner</button>
+{# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
+<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Check Again</button>
 </center><br>
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 1">
 <span data-bind="text: $root.frontLeftString()"></span><br><br><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
@@ -2293,15 +2294,15 @@ The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), 
 
 
 
-
+{# 
 <div data-bind="visible: bedLevelResults().length === 0"><b>
 No data yet!  Click "Run First Bed Check" to acquire the first set of measurements.</b><br><br></div>
 
 The second run will only update the bed level data:<br><center>
-<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
 
 <br><br><br>Once all four corners no longer require adjustment, click "Load Filament" to proceed.
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') ; $root.probeHomeOffsetAdjust() }">Load Filament</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') ; $root.probeHomeOffsetAdjust() }">Load Filament</button> #}
 
 
 </div>
