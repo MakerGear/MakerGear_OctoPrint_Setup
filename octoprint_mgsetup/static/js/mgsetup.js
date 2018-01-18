@@ -1777,6 +1777,7 @@ $(function() {
 					"G28 X Y",
 					"G1 F2000 X-10 Y125",
 					"M400",
+					"G92 Z210",
 					"G30",
 					"M400"]);
 				self.waitingForProbeResponse(true);
