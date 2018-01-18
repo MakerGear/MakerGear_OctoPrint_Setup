@@ -350,8 +350,8 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
 {# Filament Loading 
 
     3 = flow from step 2
-    23 = flow from 
-    24 = flow from 
+    23 = flow from sucess
+    24 = flow from  faile
 
 #}
 
@@ -373,9 +373,29 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
              <br />
              <br />
         </div>
+    <hr style="margin-top:0px;margin-bottom:0px;" />
 
     </div>
+
+
+    <div style="width:100%;margin-top:15px;" data-bind="visible: setupStep()==='24'">
+        <div style="display:inline-block;width:24.5%;">
+            <div style="text-align:center;">
+                <i class="icon-check-minus" style="font-size:50px; color:#FF6E35;"></i>
+            </div>
+            <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+                Automated  <br /> Calibration Test
+            </div>
+        </div>
+        <div style="display:inline-block;width:74.5%;">
+            <span style="font-size:18px;">The Automated Calibration Test found a problem with you nozzle-probe offset. Follow the instructions below to proceed to fix the problem. </span>
+             <br />
+             <br />
+             <br />
+        </div>
     <hr style="margin-top:0px;margin-bottom:0px;" />
+
+    </div>
 
 
 
@@ -425,7 +445,7 @@ Place the PLA filament spool on the spool holder so that the loose end points di
 
 Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
 
-<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '3'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
+<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
     <source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -439,7 +459,7 @@ Feed the tip of your filament up through the black filament guide and the clear 
 
  Next insert the filament into the hole on top of the extruder. 
 
-<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '3'" onclick="this.paused ? this.play() : this.pause();">
+<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -475,7 +495,7 @@ Continue clicking "Feed Filament" until a thin strand of filament is consistentl
 
 Push the filament guide tube down into the plastic extruder hole. 
 
-<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '3'" onclick="this.paused ? this.play() : this.pause();">
+<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -495,9 +515,9 @@ Once filament is consistently extruding, click to "Next Step" proceed:<br>
 
 <center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='3', click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button></center>
 
-<center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='23', click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button></center>
+<center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='23', click: function() { $root.goTo('22'); window.scroll(0,0) }">Next Step</button></center>
 
-<center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='24', click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button></center>
+<center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='24', click: function() { $root.goTo('20'); window.scroll(0,0) }">Next Step</button></center>
 
 
 
@@ -1816,8 +1836,10 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 <!--<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>-->
 
-<center> <button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.checkProbe() }">Start Automated Calibration Test</button></center>
+<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser , click: function() { $root.checkProbe();$root.enableLockedButton(72000) }">Start Automated Calibration Test</button></center>
 <br><br>
+
+
 
 
 
@@ -2304,29 +2326,28 @@ The first run will home:<br><center>
 <button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button></div>
 <br><br><br><hr>
 
-Once the printer has finished probing, the instructions below will tell you how far to adjust each leveling screw to bring the bed to level.<br><br>
+
 <div data-bind="visible: bedLevelResults().length > 0">
 {# The front left corner needs to move <span data-bind="text: $root.frontLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The front right corner needs to move <span data-bind="text: $root.frontRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
-<b>
 <center>
 {# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
-<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Check Again</button>
+<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
 </center><br>
+
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 1">
-<span data-bind="text: $root.frontLeftString()"></span><br><br><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+<span style="font-size:18px;" data-bind="html: $root.frontLeftString()"></span><br><br><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 2">
-<span data-bind="text: $root.frontRightString()"></span><br><br><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+<span style="font-size:18px;"  data-bind="html: $root.frontRightString()"></span><br><br><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 3">
-<span data-bind="text: $root.rearLeftString()"></span><br><br><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+<span style="font-size:18px;"  data-bind="html: $root.rearLeftString()"></span><br><br><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 4">
-<span data-bind="text: $root.rearRightString()"></span><br><br><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div><hr><br>
-</b>
+<span style="font-size:18px;"  data-bind="html: $root.rearRightString()"></span><br><br><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div><hr><br>
 <br>
 
 </div>

@@ -98,7 +98,10 @@ $(function() {
 //		self.isDual = ko.observable(false);
 
 		self.maxSteps = ko.pureComputed(function(){
-			if (self.isDual()){
+			if (self.hasProbe()){
+				return 24;
+			} 
+			else if (self.isDual()){
 				return 16;
 			} else{
 				return 8;
@@ -667,7 +670,7 @@ $(function() {
 					"M300 S1392 P250",
 					"G28 Z",
 					"G28 Y X",
-					"G1 F1500 X20 Z100",
+					"G1 F1500 X20 Y100 Z100",
 					"M109 S"+temperature.toString()+" T0",
 					"M400",
 					"M300 S1392 P250",
@@ -1140,7 +1143,7 @@ $(function() {
 				self.stepTwentyFirstWiggleClicked(false);
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("17");
-				self.goTo("17");
+				self.goTo("22");
 			}
 
 
@@ -1788,7 +1791,7 @@ $(function() {
 					return;
 				} else {
 					self.probeCheckReset();
-					self.goTo("3","20");
+					self.goTo("24");
 					self.failedStep(3);
 				}
 
@@ -1925,7 +1928,7 @@ $(function() {
 							// }
 
 							self.probeCheckReset();
-							self.goTo("3","20");
+							self.goTo("23");
 							self.failedStep(self.probeStep());
 							// if(self.probeStep() === 3){
 							// 	self.probeStep(4);
@@ -2097,7 +2100,7 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.frontLeftTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.frontLeftString("The front left corner needs to be adjusted "+self.numberWords[(self.frontLeftTurns())]+self.turns+self.direction);
+					self.frontLeftString("The front left corner needs to be adjusted <strong>"+self.numberWords[(self.frontLeftTurns())] + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.frontRightTurns() == 0){
@@ -2110,7 +2113,7 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.frontRightTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.frontRightString("The front right corner needs to be adjusted "+self.numberWords[(self.frontRightTurns())]+self.turns+self.direction);
+					self.frontRightString("The front right corner needs to be adjusted <strong>"+self.numberWords[(self.frontRightTurns())] + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.rearLeftTurns() == 0){
@@ -2123,7 +2126,7 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.rearLeftTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.rearLeftString("The rear left corner needs to be adjusted "+self.numberWords[(self.rearLeftTurns())]+self.turns+self.direction);
+					self.rearLeftString("The rear left corner needs to be adjusted <strong>"+self.numberWords[(self.rearLeftTurns())] + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.rearRightTurns() == 0){
@@ -2136,7 +2139,7 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.rearRightTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.rearRightString("The rear right corner needs to be adjusted "+self.numberWords[(self.rearRightTurns())]+self.turns+self.direction);
+					self.rearRightString("The rear right corner needs to be adjusted <strong>"+self.numberWords[(self.rearRightTurns())]  + "</strong>" +self.turns+self.direction);
 				}
 				// if(!self.hideDebug()){console.log("The front left corner needs to move "+self.frontLeftMm()+ "mm or " + self.frontLeftDegrees() + "° " + ((self.frontLeftMm()>0)?"counter-clockwise.":"clockwise."));}
 				// if(!self.hideDebug()){console.log("The front right corner needs to move "+self.frontRightMm()+ "mm or " + self.frontRightDegrees() + "° " + ((self.frontRightMm()>0)?"counter-clockwise.":"clockwise."));}
@@ -2154,7 +2157,7 @@ $(function() {
 						self.failedStep(self.probeStep());
 					} else {
 						// self.setupStep("7");
-						self.goTo("3","22");
+						self.goTo("23");
 						self.probeCheckReset();
 					}
 				}
@@ -2185,7 +2188,7 @@ $(function() {
 				
 				if ( nextCorner === -1){
 					if(self.probeLevelActiveCorner() === 0){
-						self.goTo('3','22');
+						self.goTo('23');
 						window.scroll(0,0);
 						self.lastCorner(false);
 						//self.probeHomeOffsetAdjust();
