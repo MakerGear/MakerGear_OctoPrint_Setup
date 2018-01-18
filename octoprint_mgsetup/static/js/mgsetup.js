@@ -2199,7 +2199,8 @@ $(function() {
 				} else {
 					self.probeLevelActiveCorner(nextCorner+1);
 					self.turnArray()[nextCorner] = 0;
-					if (self.turnArray().findIndex(function(element){return element === -1 ;})){
+					// if (self.turnArray().findIndex(function(element){return element === -1 ;})){
+					if (self.turnArray().findIndex(function(element){return element > 0 ;}) === -1){
 						self.lastCorner(true);
 					}
 					return;
