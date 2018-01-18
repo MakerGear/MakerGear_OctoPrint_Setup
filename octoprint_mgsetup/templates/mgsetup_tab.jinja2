@@ -355,10 +355,10 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
 
 #}
 
-<div id="eleven" data-bind="visible: loginState.isUser && (setupStep()==='3' || setupStep()==='23') || setupStep()==='24') ">
+<div id="three" data-bind="visible: loginState.isUser && (setupStep()==='3' || setupStep()==='23' || setupStep()==='24') ">
 
 
-    <div style="width:100%;margin-top:15px;" data-bind=" setupStep()==='23')">
+    <div style="width:100%;margin-top:15px;" data-bind="visible: setupStep()==='23'">
         <div style="display:inline-block;width:24.5%;">
             <div style="text-align:center;">
                 <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
@@ -1809,7 +1809,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <h1 style="text-align:left;">Automated Calibration Test</h1>
 <p style="text-align:left;">
 
-	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the correct next step after the test is complate. 
+	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the correct next step after the test is complete. 
 
 </p>
 
@@ -2266,16 +2266,27 @@ d8"              88
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='21'">
 
-Probe Fail 4: Adjust Bed Level with Probe<br><br>
 
-Your bed is further out of level than we recommend printing with.  The steps below will guide you through confirming your current bed level, and adjusting it with your 2mm Allen key.  All directions are given as though you were looking down at the bed.<br><br>
 
-This is a picture of the bottom of the mounting plate - turning this screw will raise or lower the matching corner of the bed:<br>
+<h1 style="text-align:left;">Assited Bed Leveling</h1>
+<p style="text-align:left;">
+
+    The Automated Calibration Test detected that your bed is further out of level than we recommend printing with. The steps below will guide you through leveling your bed with your 2mm Allen key.  All directions are given as though you were looking down at the bed.
+
+</p>
+
+
+<p>
+    This is a picture of the bottom of the mounting plate - turning this screw will raise or lower the matching corner of the bed:<br>
+</p>
+
 <img src="/plugin/mgsetup/static/img/underside-noarrow.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
-And as seen from above:<br>
+
+<p>
+    And as seen from above:<br>
+</p>
 <img src="/plugin/mgsetup/static/img/frontright-bothways-demo.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
-Once the bed is level enough, the "Load Filament" button will activate - click it to continue setting up your printer.
 
 <div data-bind="visible: !$root.hideDebug() ">
 This div is only visible with Show Debug enabled.
@@ -2283,7 +2294,8 @@ The first run will home:<br><center>
 <button class="btnstay" data-bind="enable:$root.lockButton() && !$root.probeLevelFirstCheckClicked(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
 </div>
 
-[IMAGINE A PREVIEW HERE]
+
+<h3>3D Bed View</h3>
 <div id="bedPreviewDiv">
 
 
@@ -2475,13 +2487,15 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X Offset Calibration</div>
     <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Y Offset Calibration</div>
     <div><input type="radio" name="setupStepSelect" value="16" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Sixteen - Done/Prints</div>
-    <div><input type="radio" name="setupStepSelect" value="17" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Autocheck</div>
-    <div><input type="radio" name="setupStepSelect" value="18" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Fail 1/2 - Probe Connection</div>
-    <div><input type="radio" name="setupStepSelect" value="19" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Fail 3 - Nozzle vs Probe Height</div>
-    <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
-    <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 4 - Bed Level</div>
-    <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 5 - Print</div>
+    <div><input type="radio" name="setupStepSelect" value="17" data-bind="checked: setupStep, click: window.scroll(0,0)" />17 Probe Autocheck</div>
+    <div><input type="radio" name="setupStepSelect" value="18" data-bind="checked: setupStep, click: window.scroll(0,0)" />18 Probe Fail 1/2 - Probe Connection</div>
+    <div><input type="radio" name="setupStepSelect" value="19" data-bind="checked: setupStep, click: window.scroll(0,0)" />19 Probe Fail 3 - Nozzle vs Probe Height</div>
+    <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" />20 Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
+    <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" />21 Probe Config 4 - Bed Level</div>
+    <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" />22 Probe Config 5 - Print</div>
+    <div><input type="radio" name="setupStepSelect" value="23" data-bind="checked: setupStep, click: window.scroll(0,0)" />23 extrude, test sucess</div>
 
+    <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test faiure</div>
 
 
 </div>
