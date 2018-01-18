@@ -37,8 +37,8 @@ $(function() {
 		self.additionalControls = [];
 
 		// UI history:
-		self.setupStepHistory = [];
-		self.setupStepFuture = [];
+		self.setupStepHistory = ko.observableArray([]);
+		self.setupStepFuture = ko.observableArray([]);
 		self.hasHistory = ko.observable(false);
 		self.hasFuture = ko.observable(false);
 		self.setupStep = ko.observable("0");
@@ -99,7 +99,7 @@ $(function() {
 
 		self.maxSteps = ko.pureComputed(function(){
 			if (self.hasProbe()){
-				return 24;
+				return 5;
 			} 
 			else if (self.isDual()){
 				return 16;
@@ -107,6 +107,10 @@ $(function() {
 				return 8;
 			}
 		},this);
+
+		self.stepProgressArray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,1,2,2,3,3,5,4,2];
+
+
 
 		self.hasProbe = ko.pureComputed(function(){
 			if (self.settings.printerProfiles.currentProfileData().model().indexOf("probe") !== -1 ){
@@ -2162,9 +2166,11 @@ $(function() {
 						self.probeCheckReset();
 					}
 				}
-			self.probeLevelActiveCorner(0);
-			self.lastCorner(false);
-			self.probeLevelAssist("next");
+				if (self.setupStep() === 21){
+					self.probeLevelActiveCorner(0);
+					self.lastCorner(false);
+					self.probeLevelAssist("next");
+				}
 			}
 			self.bedPreview();
 		};
@@ -2458,14 +2464,14 @@ $(function() {
 			self.setupStepHistory.push(self.setupStep());
 			self.setupStep(targetStep);
 			console.log(targetStep);
-			if(self.setupStepHistory.length>0){
+			if(self.setupStepHistory().length>0){
 				self.hasHistory(true);
 			}
 			else {
 				self.hasHistory(false);
 			}
-			if(self.setupStepFuture.length>0){
-				self.setupStepFuture = [];
+			if(self.setupStepFuture().length>0){
+				self.setupStepFuture([]);
 				self.hasFuture(false);
 			}
 			else {
@@ -2478,19 +2484,19 @@ $(function() {
 
 		self.stepBack = function (){
 
-			if(self.setupStepHistory.length>0){
+			if(self.setupStepHistory().length>0){
 
-				self.setupStepFuture.push(self.setupStep());
-				self.setupStep(self.setupStepHistory.pop());
+				self.setupStepFuture().push(self.setupStep());
+				self.setupStep(self.setupStepHistory().pop());
 
 			}
-			if(self.setupStepHistory.length>0){
+			if(self.setupStepHistory().length>0){
 				self.hasHistory(true);
 			}
 			else {
 				self.hasHistory(false);
 			}
-			if(self.setupStepFuture.length>0){
+			if(self.setupStepFuture().length>0){
 				self.hasFuture(true);
 			}
 			else {
@@ -2501,19 +2507,19 @@ $(function() {
 
 		self.stepForward = function (){
 
-			if(self.setupStepFuture.length>0){
+			if(self.setupStepFuture().length>0){
 
-				self.setupStepHistory.push(self.setupStep());
-				self.setupStep(self.setupStepFuture.pop());
+				self.setupStepHistory().push(self.setupStep());
+				self.setupStep(self.setupStepFuture().pop());
 
 			}
-			if(self.setupStepHistory.length>0){
+			if(self.setupStepHistory().length>0){
 				self.hasHistory(true);
 			}
 			else {
 				self.hasHistory(false);
 			}
-			if(self.setupStepFuture.length>0){
+			if(self.setupStepFuture().length>0){
 				self.hasFuture(true);
 			}
 			else {
