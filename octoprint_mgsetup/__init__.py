@@ -672,6 +672,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.disableRadios()
 		elif action["action"] == 'enableRadios':
 			self.enableRadios()
+		elif action["action"] == 'flushPrintActive':
+			self.printActive = False
 
 
 
