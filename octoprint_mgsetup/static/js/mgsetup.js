@@ -1929,6 +1929,7 @@ $(function() {
 							// }
 
 							self.probeCheckReset();
+							console.log("probeRecieved");
 							self.goTo("23");
 							self.failedStep(self.probeStep());
 							// if(self.probeStep() === 3){
@@ -2158,6 +2159,8 @@ $(function() {
 						self.failedStep(self.probeStep());
 					} else {
 						// self.setupStep("7");
+
+							console.log("process bed level");
 						self.goTo("23");
 						self.probeCheckReset();
 					}
@@ -2189,6 +2192,9 @@ $(function() {
 				
 				if ( nextCorner === -1){
 					if(self.probeLevelActiveCorner() === 0){
+
+							console.log("next corner probs");
+
 						self.goTo('23');
 						window.scroll(0,0);
 						self.lastCorner(false);

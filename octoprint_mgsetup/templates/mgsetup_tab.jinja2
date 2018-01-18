@@ -368,7 +368,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
             </div>
         </div>
         <div style="display:inline-block;width:74.5%;">
-            <span style="font-size:18px;">The Automated Calibration Test has completed sucessfully. Follow the instructions below to proceed. </span>
+            <span style="font-size:18px;">The Automated Calibration Test has completed successfully. Follow the instructions below to proceed. </span>
              <br />
              <br />
              <br />
@@ -1829,7 +1829,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <h1 style="text-align:left;">Automated Calibration Test</h1>
 <p style="text-align:left;">
 
-	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the correct next step after the test is complete. 
+	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the next step after the test is complete. 
 
 </p>
 
@@ -2072,9 +2072,9 @@ d8"           `8ba,  ,ad8'
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='20'">
 
-Probe Config 3.5: Adjust Probe Offset with Wiggles
 
-Your Probe Offset is larger than we recommend printing with.  The steps below will guide you through adjusting the Probe Offset with our standard "Zigzag" pattern.
+
+
 
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" />
@@ -2098,7 +2098,7 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 </p>
 
 <p>
-    During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your starting height (also known as "Z Probe Offset"). 
+ You're probe-to-nozzle offset is not set correctly. The steps below will guide you through adjusting the Probe Offset with our standard "Zigzag" pattern to make sure you have the perfect starting height.
 </p>
 
 <p>
@@ -2290,7 +2290,7 @@ d8"              88
 
 
 
-<h1 style="text-align:left;">Assited Bed Leveling</h1>
+<h1 style="text-align:left;">Assisted Bed Leveling</h1>
 <p style="text-align:left;">
 
     The Automated Calibration Test detected that your bed is further out of level than we recommend printing with. The steps below will guide you through leveling your bed with your 2mm Allen key.  All directions are given as though you were looking down at the bed.
@@ -2514,9 +2514,9 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" />20 Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
     <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" />21 Probe Config 4 - Bed Level</div>
     <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" />22 Probe Config 5 - Print</div>
-    <div><input type="radio" name="setupStepSelect" value="23" data-bind="checked: setupStep, click: window.scroll(0,0)" />23 extrude, test sucess</div>
+    <div><input type="radio" name="setupStepSelect" value="23" data-bind="checked: setupStep, click: window.scroll(0,0)" />23 extrude, test success</div>
 
-    <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test faiure</div>
+    <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test failure</div>
 
 
 </div>
