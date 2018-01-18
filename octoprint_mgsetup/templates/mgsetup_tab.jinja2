@@ -8,7 +8,9 @@
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: loginState.isUser">
 <br>
                 <div class="progress">
-                    <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat(setupStep())) * (100/parseFloat(maxSteps()))) + '%'} "></div>
+                    {# <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat(setupStep())) * (100/parseFloat(maxSteps()))) + '%'} "></div> #}
+                    {# <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat($root.setupStepHistory().length)) * (100/parseFloat(maxSteps()))) + '%'} "></div> #}
+                    <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat($root.stepProgressArray[parseFloat(setupStep())])) * (100/parseFloat(maxSteps()))) + '%'} "></div>
                 </div>
 
         <h5 data-bind=" visible: loginState.isUser && setupStep()!=='0'"><center>NOTE: Do not refresh during the setup process, or you will need to start over from the beginning.</center></h5>
