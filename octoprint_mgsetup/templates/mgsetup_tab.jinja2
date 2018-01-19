@@ -58,7 +58,7 @@
 
 <!--    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>-->
     
-                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button><button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
+                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button><button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown(); $root.adminAction('flushPrintActive') }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
                 <p style="font-size:16px;text-align:center; margin-top:20px;">
                     This guided process will help you verify your M3's calibration and make any necessary adjustments.  
                 </p>
@@ -1845,7 +1845,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 <!--<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>-->
 
-<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser , click: function() { $root.checkProbe();$root.enableLockedButton(72000) }">Start Automated Calibration Test</button></center>
+<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser , click: function() { $root.checkProbe(); $root.adminAction('flushPrintActive'); $root.enableLockedButton(72000) }">Start Automated Calibration Test</button></center>
 <br><br>
 
 
@@ -2271,7 +2271,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
     <tr>
 
 </table>
-<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm(10); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
 
 <input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
 
