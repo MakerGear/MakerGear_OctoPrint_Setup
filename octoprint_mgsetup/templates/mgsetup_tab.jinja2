@@ -58,7 +58,7 @@
 
 <!--    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>-->
     
-                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button><button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
+                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button><button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown(); $root.adminAction('flushPrintActive') }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
                 <p style="font-size:16px;text-align:center; margin-top:20px;">
                     This guided process will help you verify your M3's calibration and make any necessary adjustments.  
                 </p>
@@ -370,7 +370,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
             </div>
         </div>
         <div style="display:inline-block;width:74.5%;">
-            <span style="font-size:18px;">The Automated Calibration Test has completed sucessfully. Follow the instructions below to proceed. </span>
+            <span style="font-size:18px;">The Automated Calibration Test has completed successfully. Follow the instructions below to proceed. </span>
              <br />
              <br />
              <br />
@@ -420,9 +420,10 @@ Now you need to load filament into your extruder.
 Now you need to load filament into your Left Extruder (T0). 
 </div>
 
+<br />
 
 <p>
-    Click 'Prepare' and then continue reading the instructions while you wait for your printer to move into position and heat up the printer's hot end and build platform.
+    Click 'Prepare' and then continue reading the instructions while you wait for your printer to move into position and heat up.
 </p>
 
 <p>
@@ -435,8 +436,7 @@ Now you need to load filament into your Left Extruder (T0).
 
 <center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
 
-Now we’ll prepare to load filament (if you have not already) while waiting for your M3 to heat up.
-<br><br>
+
 
 
 
@@ -445,8 +445,9 @@ Place the PLA filament spool on the spool holder so that the loose end points di
 <br /><br />
 
 
-Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
-
+<p>
+    Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
+</p>
 <video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
     <source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
     <p class="vjs-no-js">
@@ -459,7 +460,9 @@ Feed the tip of your filament up through the black filament guide and the clear 
 
 
 
+<p>
  Next insert the filament into the hole on top of the extruder. 
+</p>
 
 <video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
@@ -493,10 +496,14 @@ Feed the tip of your filament up through the black filament guide and the clear 
 <br>
 <center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament(); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
 <br>
+<p>
 Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
 
+</p>
+<p>
 Push the filament guide tube down into the plastic extruder hole. 
 
+</p>
 <video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
     <p class="vjs-no-js">
@@ -1831,14 +1838,14 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <h1 style="text-align:left;">Automated Calibration Test</h1>
 <p style="text-align:left;">
 
-	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the correct next step after the test is complete. 
+	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the next step after the test is complete. 
 
 </p>
 
 
 <!--<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>-->
 
-<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser , click: function() { $root.checkProbe();$root.enableLockedButton(72000) }">Start Automated Calibration Test</button></center>
+<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser , click: function() { $root.checkProbe(); $root.adminAction('flushPrintActive'); $root.enableLockedButton(72000) }">Start Automated Calibration Test</button></center>
 <br><br>
 
 
@@ -1994,7 +2001,7 @@ It looks like your probe failed to activate while testing in
 #}
 
 
- <center> <button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Automated Calibration Test</button></center>
+ <center> <button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17');window.scroll(0,0) }">Return to Automated Calibration Test</button></center>
 
 
 
@@ -2052,7 +2059,7 @@ Please check that the nozzle is above the tip of the probe when extended as show
 Once you have confirmed or adjusted the nozzle position, click here to go to the Probe Offset Adjustment:
 </p>
 <center>
-<button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button> </center>
+<button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17');window.scroll(0,0) }">Return to Probe Autocheck</button> </center>
 
 <br>If the nozzle is already above the tip of the probe when extended, please contact MakerGear Support.
 
@@ -2074,9 +2081,9 @@ d8"           `8ba,  ,ad8'
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='20'">
 
-Probe Config 3.5: Adjust Probe Offset with Wiggles
 
-Your Probe Offset is larger than we recommend printing with.  The steps below will guide you through adjusting the Probe Offset with our standard "Zigzag" pattern.
+
+
 
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" />
@@ -2100,7 +2107,7 @@ The printer's Left Extruder (T0) and build platform are hot - do not touch them!
 </p>
 
 <p>
-    During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your starting height (also known as "Z Probe Offset"). 
+ You're probe-to-nozzle offset is not set correctly. The steps below will guide you through adjusting the Probe Offset with our standard "Zigzag" pattern to make sure you have the perfect starting height.
 </p>
 
 <p>
@@ -2264,7 +2271,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
     <tr>
 
 </table>
-<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm(10); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
 
 <input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
 
@@ -2292,7 +2299,7 @@ d8"              88
 
 
 
-<h1 style="text-align:left;">Assited Bed Leveling</h1>
+<h1 style="text-align:left;">Assisted Bed Leveling</h1>
 <p style="text-align:left;">
 
     The Automated Calibration Test detected that your bed is further out of level than we recommend printing with. The steps below will guide you through leveling your bed with your 2mm Allen key.  All directions are given as though you were looking down at the bed.
@@ -2412,7 +2419,19 @@ d8"          d8"
 
     <p style="margin-top:21px;">
     <div data-bind="visible:!$root.isDual()">
-        Your printer will make sure that the extruder/bed are heated correctly, and then start to print the keychain.  You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
+        <p>
+            First your printer will heat up the hot-end and heated build platform if they are not already heated up. 
+        </p>
+
+        <p>
+            Next, your printer will use its probe to take several measurments of the heated build platform so that it can make adjustment for any imperfections in the build surface. This probing proces will take place anytime you start a print.    
+        </p>
+        <p>
+            Once the probing process is complete, your printer will start printing the file. 
+        </p>
+
+
+        You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
     </div>
     <div data-bind="visible:$root.isDual()">
         Your printer will make sure that the Left Extruder (T0)/bed are heated correctly, and then start to print the keychain.  You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
@@ -2432,7 +2451,7 @@ A closeup of the border:<br>
 
 <br>
 If your printer did not finish correctly, or if the bottom of the print is sparse or very over-squished or doesn't look like the example overall, click here to adjust your Z Probe Height Offset:<br>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20','22') }">Adjust Z Probe Offset</button>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20'); window.scroll(0,0) }">Adjust Z Probe Offset</button>
 
     <p style="margin-top:21px;" data-bind="visible: !$root.isDual()">
         Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">M3 Knowledge Base</a>.
@@ -2516,9 +2535,9 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" />20 Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
     <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" />21 Probe Config 4 - Bed Level</div>
     <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" />22 Probe Config 5 - Print</div>
-    <div><input type="radio" name="setupStepSelect" value="23" data-bind="checked: setupStep, click: window.scroll(0,0)" />23 extrude, test sucess</div>
+    <div><input type="radio" name="setupStepSelect" value="23" data-bind="checked: setupStep, click: window.scroll(0,0)" />23 extrude, test success</div>
 
-    <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test faiure</div>
+    <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test failure</div>
 
 
 </div>
