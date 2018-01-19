@@ -8,7 +8,9 @@
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: loginState.isUser">
 <br>
                 <div class="progress">
-                    <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat(setupStep())) * (100/parseFloat(maxSteps()))) + '%'} "></div>
+                    {# <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat(setupStep())) * (100/parseFloat(maxSteps()))) + '%'} "></div> #}
+                    {# <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat($root.setupStepHistory().length)) * (100/parseFloat(maxSteps()))) + '%'} "></div> #}
+                    <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat($root.stepProgressArray[parseFloat(setupStep())])) * (100/parseFloat(maxSteps()))) + '%'} "></div>
                 </div>
 
         <h5 data-bind=" visible: loginState.isUser && setupStep()!=='0'"><center>NOTE: Do not refresh during the setup process, or you will need to start over from the beginning.</center></h5>
@@ -325,22 +327,89 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
 <br><br></div>
 
 
-{#     ad888888b,    #}
-{#    d8"     "88    #}
-{#            a8P    #}
-{#         aad8"     #}
-{#         ""Y8,     #}
-{#            "8b    #}
-{#    Y8,     a88    #}
-{#     "Y888888P'    #}
 
-{# Filament Loading #}
+{#  
+  /$$$$$$         /$$$            /$$$$$$   /$$$$$$         /$$$            /$$$$$$  /$$   /$$
+ /$$__  $$       /$$ $$          /$$__  $$ /$$__  $$       /$$ $$          /$$__  $$| $$  | $$
+|__/  \ $$      |  $$$          |__/  \ $$|__/  \ $$      |  $$$          |__/  \ $$| $$  | $$
+   /$$$$$/       /$$ $$/$$        /$$$$$$/   /$$$$$/       /$$ $$/$$        /$$$$$$/| $$$$$$$$
+  |___  $$      | $$  $$_/       /$$____/   |___  $$      | $$  $$_/       /$$____/ |_____  $$
+ /$$  \ $$      | $$\  $$       | $$       /$$  \ $$      | $$\  $$       | $$            | $$
+|  $$$$$$/      |  $$$$/$$      | $$$$$$$$|  $$$$$$/      |  $$$$/$$      | $$$$$$$$      | $$
+ \______/        \____/\_/      |________/ \______/        \____/\_/      |________/      |__/
 
-<div id="eleven" data-bind="visible: loginState.isUser && setupStep()==='3'">
+
+
+
+#}
+
+
+
+
+
+
+
+{# Filament Loading 
+
+    3 = flow from step 2
+    23 = flow from sucess
+    24 = flow from  faile
+
+#}
+
+<div id="three" data-bind="visible: loginState.isUser && (setupStep()==='3' || setupStep()==='23' || setupStep()==='24') ">
+
+
+    <div style="width:100%;margin-top:15px;" data-bind="visible: setupStep()==='23'">
+        <div style="display:inline-block;width:24.25%;">
+            <div style="text-align:center;">
+                <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+            </div>
+            <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+                Automated  <br /> Calibration Test
+            </div>
+        </div>
+        <div style="display:inline-block;width:74.5%;">
+            <span style="font-size:18px;">The Automated Calibration Test has completed sucessfully. Follow the instructions below to proceed. </span>
+             <br />
+             <br />
+             <br />
+        </div>
+    <hr style="margin-top:0px;margin-bottom:0px;" />
+
+    </div>
+
+
+    <div style="width:100%;margin-top:15px;" data-bind="visible: setupStep()==='24'">
+        <div style="display:inline-block;width:24.25%;">
+            <div style="text-align:center;">
+                <i class="icon-check-minus" style="font-size:50px; color:#FF6E35;"></i>
+            </div>
+            <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+                Automated  <br /> Calibration Test
+            </div>
+        </div>
+        <div style="display:inline-block;width:74.5%;">
+            <span style="font-size:18px;">The Automated Calibration Test found a problem with you nozzle-probe offset. Follow the instructions below to proceed to fix the problem. </span>
+             <br />
+             <br />
+             <br />
+        </div>
+    <hr style="margin-top:0px;margin-bottom:0px;" />
+
+    </div>
+
+
+
+
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='3'" />
     </div><br>
 <h1 style="text-align:left">Extrude Filament</h1>
+
+
+
+
 
 
 <p>
@@ -351,31 +420,22 @@ Now you need to load filament into your extruder.
 Now you need to load filament into your Left Extruder (T0). 
 </div>
 
-    When you click "Prepare" the printer will perform the following actions:
-</p>
-
-<ol>
-    <li>Move the heated build platform down to its home position
-    <li>Move the X and Y axes to their home positions
-    <li>Start heating the printer's hot end
-    <li>Start heating the printer's heated build platform.
-</ol>
 
 <p>
-    Click 'Prepare' and then continue reading the instructions while you wait for your printer to heat up.
+    Click 'Prepare' and then continue reading the instructions while you wait for your printer to move into position and heat up the printer's hot end and build platform.
 </p>
 
 <p>
 
     <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
 
-    Your extruder will begin to get very hot.  Your build surface will also start to heat up.  (You'll need your build surface to be heated for the next step and it can take a few minutes for it to heat up).  Do not touch the extruder's nozzle or the build surface.
+    Your extruder and build surface will start to heat up. Do not touch the extruder's nozzle or the build surface.
 </p>
 
 
 <center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
 
-Now we’ll prepare to load filament, if you have not already, while waiting for your M3 to heat up.
+Now we’ll prepare to load filament (if you have not already) while waiting for your M3 to heat up.
 <br><br>
 
 
@@ -387,7 +447,7 @@ Place the PLA filament spool on the spool holder so that the loose end points di
 
 Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
 
-<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '3'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
+<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
     <source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -401,7 +461,7 @@ Feed the tip of your filament up through the black filament guide and the clear 
 
  Next insert the filament into the hole on top of the extruder. 
 
-<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '3'" onclick="this.paused ? this.play() : this.pause();">
+<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -410,7 +470,8 @@ Feed the tip of your filament up through the black filament guide and the clear 
 </video>
 <br /><br />
 
-Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
+<p>Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees,  click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
+</p>
 
 <div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
 <div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
@@ -436,7 +497,7 @@ Continue clicking "Feed Filament" until a thin strand of filament is consistentl
 
 Push the filament guide tube down into the plastic extruder hole. 
 
-<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '3'" onclick="this.paused ? this.play() : this.pause();">
+<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '3' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -445,7 +506,25 @@ Push the filament guide tube down into the plastic extruder hole.
 </video>
 
 Once filament is consistently extruding, click to "Next Step" proceed:<br>
-<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button></center>
+
+
+
+ 
+
+
+
+
+
+<center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='3', click: function() { $root.goTo('4'); window.scroll(0,0) }">Next Step</button></center>
+
+<center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='23', click: function() { $root.goTo('22'); window.scroll(0,0) }">Next Step</button></center>
+
+<center><button class="btngoBig" data-bind="visible: loginState.isUser && setupStep()==='24', click: function() { $root.goTo('20'); window.scroll(0,0) }">Next Step</button></center>
+
+
+
+
+
 </div>
 
 
@@ -1653,11 +1732,10 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 <br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button>
 </div>
 </div>
-</div><br><br>
+</div>
 
 
 </div>
-<br><br><br>
 
 
 
@@ -1746,22 +1824,93 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='17'">
-<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
-Now we will begin checking that the AutoLevel Probe is installed and configured correctly, and that the bed is level.  This automatic series of tests will take you to a separate page if there's an issue in the process, or to begin loading filament and printing if everything works correctly.<br><br>
-Click on "Start Probe Checking" to begin testing:<br><br>
 
- <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.checkProbe() }">Start Probe Checking</button>
+
+
+
+<h1 style="text-align:left;">Automated Calibration Test</h1>
+<p style="text-align:left;">
+
+	Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the correct next step after the test is complete. 
+
+</p>
+
+
+<!--<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>-->
+
+<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser , click: function() { $root.checkProbe();$root.enableLockedButton(72000) }">Start Automated Calibration Test</button></center>
 <br><br>
 
 
 
-<div style="display:flex;"><div data-bind="visible: $root.probeStep()<2 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>1 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() < 2 ? 'bold':''}"> Detect Probe</div></div><br>
+
+
+
+{#             
+<div style="display:flex;float:left;disp"><div data-bind="visible: $root.probeStep()<2 "><i class="icon-check"></i></div><div data-bind="visible: $root.probeStep()>1 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() < 2 ? 'bold':''}"> Detect Probe</div></div><br>
 
 <div style="display:flex;"><div data-bind="visible: $root.probeStep()<3 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>2 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 2 ? 'bold':''}"> Verify Probe Location</div></div><br>
 
 <div style="display:flex;"><div data-bind="visible: $root.probeStep()<4 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>3 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 3 ? 'bold':''}"> Check Probe Offset</div></div><br>
 
 <div style="display:flex;"><div data-bind="visible: $root.probeStep()<5 "><i class="icon-check-empty"></i></div><div data-bind="visible: $root.probeStep()>4 "><i class="icon-check"></i></div> <div data-bind="style: {fontWeight: $root.probeStep() == 4 ? 'bold':''}"> Check Bed Level</div></div><br><br>
+                      #}
+
+
+
+
+
+<div style="width:80%;margin-left:auto;margin-right:auto;text-align:center;" >
+    <div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<2 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>1 " style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+            Detect <br /> Probe
+        </div>
+    </div>
+    <div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<3 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>2 " style="text-align:center;"  style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 2 ? 'bold':''}"  style="text-align:center;">
+            Verify <br /> Probe Location
+        </div>
+    </div>
+    <div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<4 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>3 " style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 3 ? 'bold':''}"  style="text-align:center;">
+            Check   <br /> Probe Offset
+        </div>
+    </div>
+    <div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+        <div data-bind="visible: $root.probeStep()<5 " style="text-align:center;">
+            <i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="visible: $root.probeStep()>4 " style="text-align:center;">
+            <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+        </div>
+        <div data-bind="style: {fontWeight: $root.probeStep() == 4 ? 'bold':''}"  style="text-align:center;">
+            Check  <br /> Bed Level
+        </div>
+    </div>
+
+
+</div>
+
+
+
 
 
 
@@ -1784,12 +1933,30 @@ Click on "Start Probe Checking" to begin testing:<br><br>
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='18'">
 
-Probe Fail 1/2: Probe Not Detected or Failed at Edge of Bed
+
+<h1 style="text-align:left;">Probe Electronic Failure</h1>
+
 
 <div data-bind="visible: $root.failedStep() <2">
-It looks like your probe is not responding to commands.  Please confirm that it is connected correctly inside the electronics case:<br> <img src="/plugin/mgsetup/static/img/probeRamboConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br> and at the probe body itself:<br> <img src="/plugin/mgsetup/static/img/probeConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto">.<br><br>  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
+<p>
+    Your printer's probe is either not responding to commands or failing the initial bed probe.  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
+</p>
 
-Once you have verified both connections, and that the probe body indicator LED is lit, use the below buttons to test all functionality before returning to the Autocheck.
+
+
+<p>Check that the probe is connected to the printer via the 6-pin connector. 
+
+<br> <img src="/plugin/mgsetup/static/img/probeConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+
+
+{#    
+If it is connected and still not reacting, you may need to open the electronic case and make sure it is connected correctly. 
+connected correctly inside the electronics case:<br> <img src="/plugin/mgsetup/static/img/probeRamboConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br> and at the probe body itself:.<br><br> 
+
+                      #}
+
+<p>Once you have verified the connection, and that the probe body indicator LED is lit, use the "Retest Probe" button to start the test. You should see the probe extend and retract. 
+</p>
 
 </div>
 
@@ -1809,12 +1976,25 @@ It looks like your probe failed to activate while testing in
 
 </div> #}
 
- <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
- <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
+ <center> <button style="" class="btnstay" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retest') }">Retest Probe</button></center>
+
+
+<p>
+    If the probe is extending and retracting on its own, you can click on "Return to Automated Calibration Test" to go back to the main testing page. If the probe does not extend/retract, please contact MakerGear Support.
+</p>
+
+
+
+
+{#       
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button>
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('selftest') }">Initiate Self-Test</button><br>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('resetalarm') }">Reset Alarm State</button> If the probe body is blinking red, click this to Reset the alarm.<br><br>
+#}
 
-  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button>
+
+ <center> <button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Automated Calibration Test</button></center>
 
 
 
@@ -1837,24 +2017,44 @@ It looks like your probe failed to activate while testing in
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='19'">
 
 
+
+
+<h1 style="text-align:left;">Probe / Nozzle Failure</h1>
+<p style="text-align:left;">
+
+    It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.
+
+</p>
+
+
+
 Probe Fail 3: Probing Failed in Middle of Bed
 
-It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.<br><br>
+<br><br>
 Probe extended, below the tip of the nozzle:<br>
 <img src="/plugin/mgsetup/static/img/probeExtended.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 Probe retracted, above the tip of the nozzle:<br>
 <img src="/plugin/mgsetup/static/img/probeRetracted.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
 Please check that the nozzle is above the tip of the probe when extended as show above.  The buttons below will let you extend and retract the probe tip:<br><br>
+
+
+<button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button>
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button>
+
+
+{#
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
  <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
+#}
 
+<p>
+Once you have confirmed or adjusted the nozzle position, click here to go to the Probe Offset Adjustment:
+</p>
+<center>
+<button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button> </center>
 
-
-Once you have confirmed or adjusted the nozzle position, click here to go to the Probe Offset Adjustment:<br>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.setupStep('17') }">Return to Probe Autocheck</button>
-
-<br><br>If the nozzle is already above the tip of the probe when extended, please [contact support/go through some other diagnostics].
+<br>If the nozzle is already above the tip of the probe when extended, please contact MakerGear Support.
 
 
 
@@ -2090,40 +2290,68 @@ d8"              88
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='21'">
 
-Probe Fail 4: Adjust Bed Level with Probe<br><br>
 
-Your bed is further out of level than we recommend printing with.  The steps below will guide you through confirming your current bed level, and adjusting it with your 2mm Allen key.  All directions are given as though you were looking down at the bed.<br><br>
 
-This is a picture of the bottom of the mounting plate - turning this screw will raise or lower the matching corner of the bed:<br>
+<h1 style="text-align:left;">Assited Bed Leveling</h1>
+<p style="text-align:left;">
+
+    The Automated Calibration Test detected that your bed is further out of level than we recommend printing with. The steps below will guide you through leveling your bed with your 2mm Allen key.  All directions are given as though you were looking down at the bed.
+
+</p>
+
+
+<p>
+    This is a picture of the bottom of the mounting plate - turning this screw will raise or lower the matching corner of the bed:<br>
+</p>
+
 <img src="/plugin/mgsetup/static/img/underside-noarrow.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
-And as seen from above:<br>
+
+<p>
+    And as seen from above:<br>
+</p>
 <img src="/plugin/mgsetup/static/img/frontright-bothways-demo.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
 
-Once the bed is level enough, the "Load Filament" button will activate - click it to continue setting up your printer.
 
+<div data-bind="visible: !$root.hideDebug() ">
+This div is only visible with Show Debug enabled.
 The first run will home:<br><center>
-<button class="btnstay" data-bind="enable:$root.lockButton(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && !$root.probeLevelFirstCheckClicked(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
+</div>
 
-[IMAGINE A PREVIEW HERE]
+
+<h3>3D Bed View</h3>
 <div id="bedPreviewDiv">
 
 
 </div>
-<button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button>
-<br><br><br>
+<div data-bind="visible: !$root.hideDebug() && bedLevelResults().length > 0">
+<button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button></div>
+<br><br><br><hr>
 
-Once the printer has finished probing, the numbers below will tell you how far to adjust each leveling screw to bring the bed to perfectly level.<br><br>
+
 <div data-bind="visible: bedLevelResults().length > 0">
 {# The front left corner needs to move <span data-bind="text: $root.frontLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The front right corner needs to move <span data-bind="text: $root.frontRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
-<b>
-<span data-bind="text: $root.frontLeftString()"></span><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.frontRightString()"></span><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.rearLeftString()"></span><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-<span data-bind="text: $root.rearRightString()"></span><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br><hr><br>
-</b>
+<center>
+{# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
+<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
+</center><br>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 1">
+<span style="font-size:18px;" data-bind="html: $root.frontLeftString()"></span><br><br><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 2">
+<span style="font-size:18px;"  data-bind="html: $root.frontRightString()"></span><br><br><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 3">
+<span style="font-size:18px;"  data-bind="html: $root.rearLeftString()"></span><br><br><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 4">
+<span style="font-size:18px;"  data-bind="html: $root.rearRightString()"></span><br><br><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div><hr><br>
+<br>
+
 </div>
 
 
@@ -2138,15 +2366,15 @@ The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), 
 
 
 
-
+{# 
 <div data-bind="visible: bedLevelResults().length === 0"><b>
 No data yet!  Click "Run First Bed Check" to acquire the first set of measurements.</b><br><br></div>
 
 The second run will only update the bed level data:<br><center>
-<button class="btnstay" data-bind="enable:$root.lockButton(), click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
 
-<br><br><br>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') }">Load Filament</button>
+<br><br><br>Once all four corners no longer require adjustment, click "Load Filament" to proceed.
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') ; $root.probeHomeOffsetAdjust() }">Load Filament</button> #}
 
 
 </div>
@@ -2164,7 +2392,7 @@ d8"          d8"
                           
                            #}
 
-
+{# first print with probe #}
 
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='22'">
@@ -2282,13 +2510,15 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X Offset Calibration</div>
     <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Y Offset Calibration</div>
     <div><input type="radio" name="setupStepSelect" value="16" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Sixteen - Done/Prints</div>
-    <div><input type="radio" name="setupStepSelect" value="17" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Autocheck</div>
-    <div><input type="radio" name="setupStepSelect" value="18" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Fail 1/2 - Probe Connection</div>
-    <div><input type="radio" name="setupStepSelect" value="19" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Fail 3 - Nozzle vs Probe Height</div>
-    <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
-    <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 4 - Bed Level</div>
-    <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Probe Config 5 - Print</div>
+    <div><input type="radio" name="setupStepSelect" value="17" data-bind="checked: setupStep, click: window.scroll(0,0)" />17 Probe Autocheck</div>
+    <div><input type="radio" name="setupStepSelect" value="18" data-bind="checked: setupStep, click: window.scroll(0,0)" />18 Probe Fail 1/2 - Probe Connection</div>
+    <div><input type="radio" name="setupStepSelect" value="19" data-bind="checked: setupStep, click: window.scroll(0,0)" />19 Probe Fail 3 - Nozzle vs Probe Height</div>
+    <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" />20 Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
+    <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" />21 Probe Config 4 - Bed Level</div>
+    <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" />22 Probe Config 5 - Print</div>
+    <div><input type="radio" name="setupStepSelect" value="23" data-bind="checked: setupStep, click: window.scroll(0,0)" />23 extrude, test sucess</div>
 
+    <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test faiure</div>
 
 
 </div>
