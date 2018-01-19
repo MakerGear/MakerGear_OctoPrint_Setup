@@ -537,7 +537,11 @@ $(function() {
 					tohome: false,
 					wigglenumber: parseFloat(1),
 					tool: 1};
-				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+				if (self.hasProbe()){
+					OctoPrint.control.sendGcodeScriptWithParameters("probeWiggle", context, parameters);
+				} else {
+					OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+				}
 			}
 
 			if (wigglePosition === "simple"){
@@ -2163,13 +2167,12 @@ $(function() {
 						self.failedStep(self.probeStep());
 					} else {
 						// self.setupStep("7");
-
-							console.log("process bed level");
+						if(!self.hideDebug()){console.log("process bed level");}
 						self.goTo("23");
 						self.probeCheckReset();
 					}
 				}
-				if (self.setupStep() === 21){
+				if (self.setupStep() === "21"){
 					self.probeLevelActiveCorner(0);
 					self.lastCorner(false);
 					self.probeLevelAssist("next");
@@ -2179,6 +2182,7 @@ $(function() {
 		};
 
 		self.probeLevelAssist = function(levelStep){
+			if(!self.hideDebug()){console.log(levelStep);}
 			if(levelStep === 0){
 				OctoPrint.control.sendGcode(["T0",
 					"G28 XYZ",
@@ -2194,13 +2198,12 @@ $(function() {
 				return;
 			}
 			if(levelStep === "next"){
+				if(!self.hideDebug()){console.log(self.turnArray());}
 				var nextCorner = self.turnArray().findIndex(function(element){return element > 0;});
 				
 				if ( nextCorner === -1){
 					if(self.probeLevelActiveCorner() === 0){
-
-							console.log("next corner probs");
-
+						if(!self.hideDebug()){console.log("next corner probs");}
 						self.goTo('23');
 						window.scroll(0,0);
 						self.lastCorner(false);
