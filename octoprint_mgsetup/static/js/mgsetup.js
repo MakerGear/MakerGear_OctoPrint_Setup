@@ -1743,6 +1743,7 @@ $(function() {
 		self.probePresent = ko.observable(-1); //simple tristate: -1 untested, 0 false, 1 true
 		self.probeOffset = ko.observable(undefined);
 		self.checkingForProbe = ko.observable(0);
+		self.autoCheckClicked = ko.observable(false);
 		self.waitingForEndstopResponse = ko.observable(false);
 		self.waitingForProbeResponse = ko.observable(false);
 		self.stepTwentyShowFineAdjustments = ko.observable(false);
@@ -1786,9 +1787,11 @@ $(function() {
 			if(!self.hideDebug()){console.log("checkProbe called");}
 			if (self.probeStep() === 0){
 				if(!self.hideDebug()){console.log("probeStep: "+self.probeStep().toString());}
+				self.autoCheckClicked(true);
 				// self.probeCheckActive(0);
 				//first check - extend and retract probe, reset alarm, enable M119 test mode, check M119 state
-				OctoPrint.control.sendGcode(["M280 P1 S10",
+				OctoPrint.control.sendGcode(["M605 S0",
+					"M280 P1 S10",
 					"M280 P1 S90",
 					"M280 P1 S160",
 					"M400",
@@ -1906,6 +1909,7 @@ $(function() {
 			self.stepTwentyFirstWiggleClicked(false);
 			self.setHomeOffsetFromProbe(false);
 			self.lastCorner(false);
+			self.autoCheckClicked(false);
 
 			clearTimeout(self.probeFail);
 			return;
@@ -2875,6 +2879,15 @@ $(function() {
 			if (16<targetStep<22){
 				if(!self.hideDebug()){console.log("resetStep targetStep = 17~21");}
 				self.probeCheckReset();
+			}
+			if (targetStep === 26){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 26");}
+				self.stepTwelveSimpleClicked(false);
+			}
+			if (targetStep === 23 || targetStep === 24 || targetStep === 25){
+				if(!self.hideDebug()){console.log("resetStep targetStep:");}
+				if(!self.hideDebug()){console.log(targetStep);}
+				self.stepThreeStartHeatingClicked(false);
 			}
 
 		};

@@ -1828,7 +1828,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
 
 <!--<img src="/plugin/mgsetup/static/img/probeIntro.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>-->
 
-<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser , click: function() { $root.checkProbe(); $root.adminAction('flushPrintActive'); $root.enableLockedButton(72000) }">Start Automated Calibration Test</button></center>
+<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser && !$root.autoCheckClicked() , click: function() { $root.checkProbe(); $root.adminAction('flushPrintActive') }">Start Automated Calibration Test</button></center>
 <br><br>
 
 
@@ -2325,10 +2325,7 @@ The first run will home:<br><center>
 The front right corner needs to move <span data-bind="text: $root.frontRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
 The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
-<center>
-{# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
-<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
-</center><br>
+
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 1">
 <span style="font-size:18px;" data-bind="html: $root.frontLeftString()"></span><br><br><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
@@ -2340,7 +2337,13 @@ The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), 
 <span style="font-size:18px;"  data-bind="html: $root.rearLeftString()"></span><br><br><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 4">
-<span style="font-size:18px;"  data-bind="html: $root.rearRightString()"></span><br><br><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div><hr><br>
+<span style="font-size:18px;"  data-bind="html: $root.rearRightString()"></span><br><br><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"></div><br></div>
+<center>
+{# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
+<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
+</center><br>
+
+<hr><br>
 <br>
 
 </div>
@@ -2640,7 +2643,7 @@ After printing the pattern, you’ll examine it on the build plate: the perimete
 <br><br>
 <center><button class="btnstay" data-bind="click: function() { $root.printWiggleConfirm('simple') }, enable: !$root.stepTwelveSimpleClicked()">Print Simple Test</button>
 <br><br>
-<button class="btngo" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }">Skip to Calibration Adjustment</button><br><br>
+{# <button class="btngo" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }">Skip to Calibration Adjustment</button><br><br> #}
 </center>
 <br><br><div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
 <div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
@@ -2680,7 +2683,7 @@ Once the print has finished, inspect it and compare it to the images below:<br><
         </tr>
         <tr>
         <td class="buttonCell">
-         <center><button class="btngoBig" data-bind="click: function() { $root.goTo('16'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center>
+         <center><button class="btngoBig" data-bind="click: function() { $root.goTo('22'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center>
         </td>
         </tr>
         </table><br>
