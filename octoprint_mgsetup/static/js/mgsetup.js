@@ -702,6 +702,26 @@ $(function() {
 					"M300 S1312 P250", 
 					"M300 S1040 P250"
 				]);
+			} else if (hotend == "both"){
+				OctoPrint.control.sendGcode([
+					"M104 T0 S"+temperature.toString(),
+					"M104 T1 S"+temperature.toString(),
+					"M140 S70",
+					"M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28 Z",
+					"G1 F1500 Z50",
+					"G28 Y X",
+					"G1 F1500 X20 Y100 Z100",
+					"M109 S"+temperature.toString()+" T0",
+					"M109 S"+temperature.toString()+" T1",
+					"T1",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
+				]);
 			}
 		};
 
@@ -1085,7 +1105,11 @@ $(function() {
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
 
-				self.goTo("12");
+				if(!self.hasProbe()){
+					self.goTo("12");
+				} else{
+					self.goTo("26");
+				}
 			}
 
 			if (startingHeightStep == "T1-maintenance") {
@@ -1151,7 +1175,11 @@ $(function() {
 				self.stepTwentyFirstWiggleClicked(false);
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("17");
-				self.goTo("22");
+				if (!self.isDual()){
+					self.goTo("22");
+				} else {
+					self.goTo("26");
+				}
 			}
 
 
@@ -1647,7 +1675,11 @@ $(function() {
 					if (self.calibrationStep() === 3){
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
-						self.goTo("16");
+						if(!self.hasProbe()){
+							self.goTo("16");
+						} else {
+							self.goTo("22")
+						}
 						self.cooldown();
 						OctoPrint.control.sendGcode(["M84"]);
 					} else{
@@ -1938,7 +1970,11 @@ $(function() {
 
 							self.probeCheckReset();
 							console.log("probeRecieved");
-							self.goTo("23");
+							if(!self.isDual()){
+								self.goTo("23");
+							} else {
+								self.goTo("25");
+							}
 							self.failedStep(self.probeStep());
 							// if(self.probeStep() === 3){
 							// 	self.probeStep(4);
@@ -2168,7 +2204,11 @@ $(function() {
 					} else {
 						// self.setupStep("7");
 						if(!self.hideDebug()){console.log("process bed level");}
-						self.goTo("23");
+						if(!self.isDual()){
+							self.goTo("23");
+						} else {
+							self.goTo("25");
+						}
 						self.probeCheckReset();
 					}
 				}
@@ -2178,7 +2218,9 @@ $(function() {
 					self.probeLevelAssist("next");
 				}
 			}
-			self.bedPreview();
+			if (!self.hideDebug()){
+				self.bedPreview();
+			}
 		};
 
 		self.probeLevelAssist = function(levelStep){
@@ -2204,7 +2246,11 @@ $(function() {
 				if ( nextCorner === -1){
 					if(self.probeLevelActiveCorner() === 0){
 						if(!self.hideDebug()){console.log("next corner probs");}
-						self.goTo('23');
+						if(!self.isDual()){
+							self.goTo('23');
+						} else {
+							self.goTo('25');
+						}
 						window.scroll(0,0);
 						self.lastCorner(false);
 						//self.probeHomeOffsetAdjust();
