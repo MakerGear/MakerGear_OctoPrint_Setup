@@ -627,14 +627,22 @@ $(function() {
 				targetTool = "tool0";
 			}
 			if (targetTool == "tool0"){
-				OctoPrint.control.sendGcode(["T0"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T0",
+					"G91",
+					"G1 E75 F400",
+					"G90"]);
 			} else if (targetTool == "tool1"){
-				OctoPrint.control.sendGcode(["T1"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T1",
+					"G91",
+					"G1 E75 F400",
+					"G90"]);
 			}
 
-			OctoPrint.control.sendGcode(["M300 S1040 P700"]);
+			// OctoPrint.control.sendGcode(["M300 S1040 P700"]);
 
-			OctoPrint.printer.extrude(75, {"tool":targetTool});
+			// OctoPrint.printer.extrude(75, {"tool":targetTool});
 		};
 
 		self.retractFilament = function(targetTool) {
@@ -643,14 +651,22 @@ $(function() {
 				targetTool = "tool0";
 			}
 			if (targetTool == "tool0"){
-				OctoPrint.control.sendGcode(["T0"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T0",
+					"G91",
+					"G1 E-75 F400",
+					"G90"]);
 			} else if (targetTool == "tool1"){
-				OctoPrint.control.sendGcode(["T1"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T1",
+					"G91",
+					"G1 E-75 F400",
+					"G90"]);
 			}
 
-			OctoPrint.control.sendGcode(["M300 S1040 P700"]);
+			// OctoPrint.control.sendGcode(["M300 S1040 P700"]);
 
-			OctoPrint.printer.extrude(-75, {"tool":targetTool});
+			// OctoPrint.printer.extrude(-75, {"tool":targetTool});
 		};
 
 		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
@@ -2150,7 +2166,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.frontLeftTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.frontLeftString("The front left corner needs to be adjusted <strong>"+self.numberWords[(self.frontLeftTurns())] + "</strong>" +self.turns+self.direction);
+					// self.frontLeftString("The front left corner needs to be adjusted <strong>"+self.numberWords[(self.frontLeftTurns())] + "</strong>" +self.turns+self.direction);
+					self.frontLeftString("The front left corner needs to be adjusted <strong>"+(self.frontLeftTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.frontRightTurns() == 0){
@@ -2163,7 +2180,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.frontRightTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.frontRightString("The front right corner needs to be adjusted <strong>"+self.numberWords[(self.frontRightTurns())] + "</strong>" +self.turns+self.direction);
+					// self.frontRightString("The front right corner needs to be adjusted <strong>"+self.numberWords[(self.frontRightTurns())] + "</strong>" +self.turns+self.direction);
+					self.frontRightString("The front right corner needs to be adjusted <strong>"+(self.frontRightTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.rearLeftTurns() == 0){
@@ -2176,7 +2194,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.rearLeftTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.rearLeftString("The rear left corner needs to be adjusted <strong>"+self.numberWords[(self.rearLeftTurns())] + "</strong>" +self.turns+self.direction);
+					// self.rearLeftString("The rear left corner needs to be adjusted <strong>"+self.numberWords[(self.rearLeftTurns())] + "</strong>" +self.turns+self.direction);
+					self.rearLeftString("The rear left corner needs to be adjusted <strong>"+(self.rearLeftTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.rearRightTurns() == 0){
@@ -2189,7 +2208,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.rearRightTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.rearRightString("The rear right corner needs to be adjusted <strong>"+self.numberWords[(self.rearRightTurns())]  + "</strong>" +self.turns+self.direction);
+					// self.rearRightString("The rear right corner needs to be adjusted <strong>"+self.numberWords[(self.rearRightTurns())]  + "</strong>" +self.turns+self.direction);
+					self.rearRightString("The rear right corner needs to be adjusted <strong>"+(self.rearRightTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 				// if(!self.hideDebug()){console.log("The front left corner needs to move "+self.frontLeftMm()+ "mm or " + self.frontLeftDegrees() + "° " + ((self.frontLeftMm()>0)?"counter-clockwise.":"clockwise."));}
 				// if(!self.hideDebug()){console.log("The front right corner needs to move "+self.frontRightMm()+ "mm or " + self.frontRightDegrees() + "° " + ((self.frontRightMm()>0)?"counter-clockwise.":"clockwise."));}

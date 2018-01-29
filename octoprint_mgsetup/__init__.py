@@ -300,7 +300,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		if event == Events.PRINT_STARTED:
 			self.printActive = True
 
-		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED) or (event == Events.PRINT_DONE):
+		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED) or (event == Events.PRINT_DONE) or (event == Events.CONNECTED) or (event == Events.PRINT_DISCONNECTED):
 			self.printActive = False
 
 	def _to_unicode(self, s_or_u, encoding="utf-8", errors="strict"):
