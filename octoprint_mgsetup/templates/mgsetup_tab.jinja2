@@ -2478,17 +2478,91 @@ A closeup of the border:<br>
 If your finished "mgkeychain-dual.gco" keychain looks different than the images above, click the button below to adjust your Z Probe Height Offset:<br>
 <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20'); window.scroll(0,0) }">Adjust Z Probe Offset</button>
 
+<br><br>
+If your finished "mgkeychain-dual.gcode" keychain or perimeter looks different than the images above, select the closest image from the set below to be taken to the appropriate adjustment page:<br><br>
+
+<div data-bind="visible: $root.isDual()">
+<table class="choiceTable">
+
+    <tr>
+        <td colspan="2">
+        <b><center>One of the patterns did not print correctly - NOTE these are placeholder images for the failed final print:</center></b>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+                  <center><a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross-t1-only.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='22'" /></a>        </center>
+        </td>
+        <td>
+                            <center><a href="/plugin/mgsetup/static/img/simpleTestFail1.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross-t0-only.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='22'" /></a></center>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+                       The Left Extruder (T0, Black filament) did not print correctly - only the Blue pattern is present, or the Black pattern did not stick to the bed.
+
+        </td>
+        <td>
+                           The Right Extruder (T1, Blue filament) did not print correctly - only the Black pattern is present, or the Blue pattern did not stick to the bed.
+
+        </td>
+    </tr>
+    <tr>
+        <td class="buttonCell">
+         <center><button class="btngoBig" data-bind="click: function() { $root.goTo('20'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T0 Height</button></center>
+        </td>
+        <td class="buttonCell">
+        <center><button class="btngoBig" data-bind="click: function() { $root.goTo('11'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T1 Height</button></center>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+        <b><center>Both patterns printed:</center></b>
+        </td>
+    </tr>
+
+    <tr>
+            <td>
+                            <center><a href="/plugin/mgsetup/static/img/simpleTestFail1.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail1.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='22'" /></a></center>
+        </td>
+        <td>
+                            <center><a href="/plugin/mgsetup/static/img/simpleTestFail2.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail2.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='22'" /></a></center>
+        </td>
+    </tr>
+    <tr>
+
+        <td colspan="2">
+                           The two patterns intersect or have uneven spacing. If you are not sure, pick this option.
+
+        </td>
+    </tr>
+    <tr>
+
+        <td colspan="2" class="buttonCell">
+        <center><button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
+        </td>
+    </tr>
+
+</table>
+</div>
+
     <p style="margin-top:21px;" data-bind="visible: !$root.isDual()">
+        Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">M3 Knowledge Base</a>.
+
+    </p>
+    <p style="margin-top:21px;" data-bind="visible: $root.isDual()">
         Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">M3 Knowledge Base</a>.
 
     </p>
 
 
-    <div data-bind="visible: $root.isDual">
+{#     <div data-bind="visible: $root.isDual">
     <h1 style="text-align:left;">M3 Independent Dual (M3-ID) Setup</h1>
     To continue on to the (M3-ID) configuration, click "Next":<br>
 <center><button class="btngoBig" data-bind="enable: loginState.isUser(), click: function() { $root.goTo('8'); window.scroll(0,0) }">Next</button></center>
-</div>
+</div> #}
 </div>
 
 
