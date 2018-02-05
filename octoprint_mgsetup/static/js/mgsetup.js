@@ -1791,6 +1791,7 @@ $(function() {
 		self.probeLevelFirstCheckClicked = ko.observable(false);
 		self.probeLevelActiveCorner = ko.observable(0);
 		self.setHomeOffsetFromProbe = ko.observable(false);
+		self.bedAdjustmentRounds = ko.observable(0);
 
 
 
@@ -1890,11 +1891,13 @@ $(function() {
 				if(!self.hideDebug()){console.log("probeCheckFailed triggered with waiting true.");}
 				if (self.probeStep() <= 2){
 					self.failedStep(self.probeStep());
-					self.setupStep('18');
+					// self.setupStep('18');
+					self.goTo("18");
 				}
 				if (self.probeStep() == 3){
 					self.failedStep(self.probeStep());
-					self.setupStep('19');
+					// self.setupStep('19');
+					self.goTo("19");
 				}
 				if (self.probeStep() === 0 || self.probeStep() === 1 || self.probeStep() === 2 || self.probeStep() === 3){
 					self.probeCheckReset();
@@ -1926,6 +1929,7 @@ $(function() {
 			self.setHomeOffsetFromProbe(false);
 			self.lastCorner(false);
 			self.autoCheckClicked(false);
+			self.bedAdjustmentRounds(0);
 
 			clearTimeout(self.probeFail);
 			return;
@@ -2221,7 +2225,8 @@ $(function() {
 					clearTimeout(self.probeFail);
 					if (self.zLevelError() > 0.5){
 						if(!self.hideDebug()){console.log("Bed is out of level more than ±0.5, going to assisted leveling.");}
-						self.setupStep("21");
+						// self.setupStep("21");
+						self.goTo("21");
 						self.probeCheckReset();
 						self.probeLevelFirstCheckClicked(true);
 						self.failedStep(self.probeStep());
@@ -2237,9 +2242,14 @@ $(function() {
 					}
 				}
 				if (self.setupStep() === "21"){
-					self.probeLevelActiveCorner(0);
-					self.lastCorner(false);
-					self.probeLevelAssist("next");
+					if (self.bedAdjustmentRounds() >= 3){
+						console.log("Adjustment rounds greater than 3: "+self.bedAdjustmentRounds().toString());
+						self.bedConfigDialog.modal("show");
+					} else {
+						self.probeLevelActiveCorner(0);
+						self.lastCorner(false);
+						self.probeLevelAssist("next");
+					}
 				}
 			}
 			if (!self.hideDebug()){
@@ -2249,6 +2259,12 @@ $(function() {
 
 		self.probeLevelAssist = function(levelStep){
 			if(!self.hideDebug()){console.log(levelStep);}
+			if(levelStep === "skipConfig"){ //use this to skip the "Check Bed Configuration" option
+				self.probeLevelActiveCorner(0);
+				self.lastCorner(false);
+				self.probeLevelAssist("next");
+				return;
+			}
 			if(levelStep === 0){
 				OctoPrint.control.sendGcode(["T0",
 					"G28 XYZ",
@@ -2267,8 +2283,8 @@ $(function() {
 				if(!self.hideDebug()){console.log(self.turnArray());}
 				var nextCorner = self.turnArray().findIndex(function(element){return element > 0;});
 				
-				if ( nextCorner === -1){
-					if(self.probeLevelActiveCorner() === 0){
+				if ( nextCorner === -1){ //check if the turn array does NOT contain any more corners to adjust
+					if(self.probeLevelActiveCorner() === 0){ //if no corners left to adjust and at position 0, we're done
 						if(!self.hideDebug()){console.log("next corner probs");}
 						if(!self.isDual()){
 							self.goTo('23');
@@ -2279,18 +2295,19 @@ $(function() {
 						self.lastCorner(false);
 						//self.probeHomeOffsetAdjust();
 						return;
-					} else {
+					} else { //if at any other corner, we're done for this round, so check bed again and proceed
 						self.probeLevelAssist(1);
 						self.enableLockedButton(20000);
 						self.lastCorner(false);
 						return;
 					}
-				} else {
+				} else { //if we have a corner left to adjust
 					self.probeLevelActiveCorner(nextCorner+1);
 					self.turnArray()[nextCorner] = 0;
 					// if (self.turnArray().findIndex(function(element){return element === -1 ;})){
 					if (self.turnArray().findIndex(function(element){return element > 0 ;}) === -1){
 						self.lastCorner(true);
+						self.bedAdjustmentRounds(self.bedAdjustmentRounds() +1);
 					}
 					return;
 				}
@@ -2542,6 +2559,7 @@ $(function() {
 
 			self.setupStepHistory.push(self.setupStep());
 			self.setupStep(targetStep);
+			window.scroll(0,0);
 			console.log(targetStep);
 			if(self.setupStepHistory().length>0){
 				self.hasHistory(true);
@@ -3003,6 +3021,7 @@ $(function() {
 			self.preflightDialog = $("#dialog-preflight");
 			self.printWiggleDialog = $("#dialog-wiggle");
 			self.stepOneDialog = $("#dialog-stepOne");
+			self.bedConfigDialog = $("#dialog-bedConfigDialog");
 			//self.checkGoogle();
 			if (self.isOperational()){
 				self.requestEeprom();
