@@ -1780,6 +1780,8 @@ $(function() {
 		self.rearRightTurns = ko.observable(undefined);
 		self.turnArray = ko.observableArray([]); //every now and then I get a little bit lonely
 		self.lastCorner = ko.observable(false);
+		self.strictBedLeveling = ko.observable(false);
+		
 
 		self.bedPreviewArray = ko.observableArray(undefined);
 		self.activePreview = ko.observable(undefined);

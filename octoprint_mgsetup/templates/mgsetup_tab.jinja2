@@ -2357,16 +2357,86 @@ Although the bed leveling screws are accessed from the bottom of the mounting pl
 
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 1">
-<span style="font-size:18px;" data-bind="html: $root.frontLeftString()"></span><br><br><div data-bind="visible: $root.frontLeftMm() > 0"><img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontLeftMm() < 0"><img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><img src="/plugin/mgsetup/static/img/bedinset-frontleft.png" style="display:block;width:40%;margin-left:auto;margin-right:auto"><br></div>
+    <span style="font-size:18px;" data-bind="html: $root.frontLeftString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.frontLeftMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.frontLeftMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-frontleft.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 2">
-<span style="font-size:18px;"  data-bind="html: $root.frontRightString()"></span><br><br><div data-bind="visible: $root.frontRightMm() > 0"><img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.frontRightMm() < 0"><img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><img src="/plugin/mgsetup/static/img/bedinset-frontright.png" style="display:block;width:40%;margin-left:auto;margin-right:auto"><br></div>
+    <span style="font-size:18px;"  data-bind="html: $root.frontRightString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.frontRightMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.frontRightMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-frontright.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 3">
-<span style="font-size:18px;"  data-bind="html: $root.rearLeftString()"></span><br><br><div data-bind="visible: $root.rearLeftMm() > 0"><img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearLeftMm() < 0"><img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><img src="/plugin/mgsetup/static/img/bedinset-rearleft.png" style="display:block;width:40%;margin-left:auto;margin-right:auto"><br></div>
+    <span style="font-size:18px;"  data-bind="html: $root.rearLeftString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.rearLeftMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.rearLeftMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-rearleft.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
 
 <div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 4">
-<span style="font-size:18px;"  data-bind="html: $root.rearRightString()"></span><br><br><div data-bind="visible: $root.rearRightMm() > 0"><img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><div data-bind="visible: $root.rearRightMm() < 0"><img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"></div><img src="/plugin/mgsetup/static/img/bedinset-rearright.png" style="display:block;width:40%;margin-left:auto;margin-right:auto"><br></div>
+    <span style="font-size:18px;"  data-bind="html: $root.rearRightString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.rearRightMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.rearRightMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-rearright.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
+<br>
+
 <center>
 {# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
 <button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5 && $root.probeLevelActiveCorner() > 0, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
