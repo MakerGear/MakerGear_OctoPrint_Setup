@@ -627,14 +627,22 @@ $(function() {
 				targetTool = "tool0";
 			}
 			if (targetTool == "tool0"){
-				OctoPrint.control.sendGcode(["T0"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T0",
+					"G91",
+					"G1 E75 F400",
+					"G90"]);
 			} else if (targetTool == "tool1"){
-				OctoPrint.control.sendGcode(["T1"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T1",
+					"G91",
+					"G1 E75 F400",
+					"G90"]);
 			}
 
-			OctoPrint.control.sendGcode(["M300 S1040 P700"]);
+			// OctoPrint.control.sendGcode(["M300 S1040 P700"]);
 
-			OctoPrint.printer.extrude(75, {"tool":targetTool});
+			// OctoPrint.printer.extrude(75, {"tool":targetTool});
 		};
 
 		self.retractFilament = function(targetTool) {
@@ -643,14 +651,22 @@ $(function() {
 				targetTool = "tool0";
 			}
 			if (targetTool == "tool0"){
-				OctoPrint.control.sendGcode(["T0"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T0",
+					"G91",
+					"G1 E-75 F400",
+					"G90"]);
 			} else if (targetTool == "tool1"){
-				OctoPrint.control.sendGcode(["T1"]);
+				OctoPrint.control.sendGcode(["M300 S1040 P700",
+					"T1",
+					"G91",
+					"G1 E-75 F400",
+					"G90"]);
 			}
 
-			OctoPrint.control.sendGcode(["M300 S1040 P700"]);
+			// OctoPrint.control.sendGcode(["M300 S1040 P700"]);
 
-			OctoPrint.printer.extrude(-75, {"tool":targetTool});
+			// OctoPrint.printer.extrude(-75, {"tool":targetTool});
 		};
 
 		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
@@ -695,6 +711,26 @@ $(function() {
 					"G28 Z",
 					"G28 Y X",
 					"G1 F1500 X20 Y100 Z100",
+					"M109 S"+temperature.toString()+" T1",
+					"T1",
+					"M400",
+					"M300 S1392 P250",
+					"M300 S1312 P250", 
+					"M300 S1040 P250"
+				]);
+			} else if (hotend == "both"){
+				OctoPrint.control.sendGcode([
+					"M104 T0 S"+temperature.toString(),
+					"M104 T1 S"+temperature.toString(),
+					"M140 S70",
+					"M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G28 Z",
+					"G1 F1500 Z50",
+					"G28 Y X",
+					"G1 F1500 X20 Y100 Z100",
+					"M109 S"+temperature.toString()+" T0",
 					"M109 S"+temperature.toString()+" T1",
 					"T1",
 					"M400",
@@ -1085,7 +1121,11 @@ $(function() {
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
 
-				self.goTo("12");
+				if(!self.hasProbe()){
+					self.goTo("12");
+				} else{
+					self.goTo("26");
+				}
 			}
 
 			if (startingHeightStep == "T1-maintenance") {
@@ -1151,7 +1191,11 @@ $(function() {
 				self.stepTwentyFirstWiggleClicked(false);
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("17");
-				self.goTo("22");
+				if (!self.isDual()){
+					self.goTo("22");
+				} else {
+					self.goTo("26");
+				}
 			}
 
 
@@ -1647,7 +1691,11 @@ $(function() {
 					if (self.calibrationStep() === 3){
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
-						self.goTo("16");
+						if(!self.hasProbe()){
+							self.goTo("16");
+						} else {
+							self.goTo("22")
+						}
 						self.cooldown();
 						OctoPrint.control.sendGcode(["M84"]);
 					} else{
@@ -1711,6 +1759,7 @@ $(function() {
 		self.probePresent = ko.observable(-1); //simple tristate: -1 untested, 0 false, 1 true
 		self.probeOffset = ko.observable(undefined);
 		self.checkingForProbe = ko.observable(0);
+		self.autoCheckClicked = ko.observable(false);
 		self.waitingForEndstopResponse = ko.observable(false);
 		self.waitingForProbeResponse = ko.observable(false);
 		self.stepTwentyShowFineAdjustments = ko.observable(false);
@@ -1731,6 +1780,8 @@ $(function() {
 		self.rearRightTurns = ko.observable(undefined);
 		self.turnArray = ko.observableArray([]); //every now and then I get a little bit lonely
 		self.lastCorner = ko.observable(false);
+		self.strictBedLeveling = ko.observable(false);
+		
 
 		self.bedPreviewArray = ko.observableArray(undefined);
 		self.activePreview = ko.observable(undefined);
@@ -1742,6 +1793,7 @@ $(function() {
 		self.probeLevelFirstCheckClicked = ko.observable(false);
 		self.probeLevelActiveCorner = ko.observable(0);
 		self.setHomeOffsetFromProbe = ko.observable(false);
+		self.bedAdjustmentRounds = ko.observable(0);
 
 
 
@@ -1754,9 +1806,11 @@ $(function() {
 			if(!self.hideDebug()){console.log("checkProbe called");}
 			if (self.probeStep() === 0){
 				if(!self.hideDebug()){console.log("probeStep: "+self.probeStep().toString());}
+				self.autoCheckClicked(true);
 				// self.probeCheckActive(0);
 				//first check - extend and retract probe, reset alarm, enable M119 test mode, check M119 state
-				OctoPrint.control.sendGcode(["M280 P1 S10",
+				OctoPrint.control.sendGcode(["M605 S0",
+					"M280 P1 S10",
 					"M280 P1 S90",
 					"M280 P1 S160",
 					"M400",
@@ -1839,11 +1893,13 @@ $(function() {
 				if(!self.hideDebug()){console.log("probeCheckFailed triggered with waiting true.");}
 				if (self.probeStep() <= 2){
 					self.failedStep(self.probeStep());
-					self.setupStep('18');
+					// self.setupStep('18');
+					self.goTo("18");
 				}
 				if (self.probeStep() == 3){
 					self.failedStep(self.probeStep());
-					self.setupStep('19');
+					// self.setupStep('19');
+					self.goTo("19");
 				}
 				if (self.probeStep() === 0 || self.probeStep() === 1 || self.probeStep() === 2 || self.probeStep() === 3){
 					self.probeCheckReset();
@@ -1874,6 +1930,8 @@ $(function() {
 			self.stepTwentyFirstWiggleClicked(false);
 			self.setHomeOffsetFromProbe(false);
 			self.lastCorner(false);
+			self.autoCheckClicked(false);
+			self.bedAdjustmentRounds(0);
 
 			clearTimeout(self.probeFail);
 			return;
@@ -1938,7 +1996,11 @@ $(function() {
 
 							self.probeCheckReset();
 							console.log("probeRecieved");
-							self.goTo("23");
+							if(!self.isDual()){
+								self.goTo("23");
+							} else {
+								self.goTo("25");
+							}
 							self.failedStep(self.probeStep());
 							// if(self.probeStep() === 3){
 							// 	self.probeStep(4);
@@ -2110,7 +2172,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.frontLeftTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.frontLeftString("The front left corner needs to be adjusted <strong>"+self.numberWords[(self.frontLeftTurns())] + "</strong>" +self.turns+self.direction);
+					// self.frontLeftString("The front left corner needs to be adjusted <strong>"+self.numberWords[(self.frontLeftTurns())] + "</strong>" +self.turns+self.direction);
+					self.frontLeftString("The front left corner needs to be adjusted <strong>"+(self.frontLeftTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.frontRightTurns() == 0){
@@ -2123,7 +2186,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.frontRightTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.frontRightString("The front right corner needs to be adjusted <strong>"+self.numberWords[(self.frontRightTurns())] + "</strong>" +self.turns+self.direction);
+					// self.frontRightString("The front right corner needs to be adjusted <strong>"+self.numberWords[(self.frontRightTurns())] + "</strong>" +self.turns+self.direction);
+					self.frontRightString("The front right corner needs to be adjusted <strong>"+(self.frontRightTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.rearLeftTurns() == 0){
@@ -2136,7 +2200,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.rearLeftTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.rearLeftString("The rear left corner needs to be adjusted <strong>"+self.numberWords[(self.rearLeftTurns())] + "</strong>" +self.turns+self.direction);
+					// self.rearLeftString("The rear left corner needs to be adjusted <strong>"+self.numberWords[(self.rearLeftTurns())] + "</strong>" +self.turns+self.direction);
+					self.rearLeftString("The rear left corner needs to be adjusted <strong>"+(self.rearLeftTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
 				if (self.rearRightTurns() == 0){
@@ -2149,7 +2214,8 @@ $(function() {
 						self.direction = "clockwise.";
 					}
 					if (self.rearRightTurns() == 1){self.turns = " quarter-turn ";} else {self.turns = " quarter-turns ";}
-					self.rearRightString("The rear right corner needs to be adjusted <strong>"+self.numberWords[(self.rearRightTurns())]  + "</strong>" +self.turns+self.direction);
+					// self.rearRightString("The rear right corner needs to be adjusted <strong>"+self.numberWords[(self.rearRightTurns())]  + "</strong>" +self.turns+self.direction);
+					self.rearRightString("The rear right corner needs to be adjusted <strong>"+(self.rearRightTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 				// if(!self.hideDebug()){console.log("The front left corner needs to move "+self.frontLeftMm()+ "mm or " + self.frontLeftDegrees() + "° " + ((self.frontLeftMm()>0)?"counter-clockwise.":"clockwise."));}
 				// if(!self.hideDebug()){console.log("The front right corner needs to move "+self.frontRightMm()+ "mm or " + self.frontRightDegrees() + "° " + ((self.frontRightMm()>0)?"counter-clockwise.":"clockwise."));}
@@ -2161,28 +2227,46 @@ $(function() {
 					clearTimeout(self.probeFail);
 					if (self.zLevelError() > 0.5){
 						if(!self.hideDebug()){console.log("Bed is out of level more than ±0.5, going to assisted leveling.");}
-						self.setupStep("21");
+						// self.setupStep("21");
+						self.goTo("21");
 						self.probeCheckReset();
 						self.probeLevelFirstCheckClicked(true);
 						self.failedStep(self.probeStep());
 					} else {
 						// self.setupStep("7");
 						if(!self.hideDebug()){console.log("process bed level");}
-						self.goTo("23");
+						if(!self.isDual()){
+							self.goTo("23");
+						} else {
+							self.goTo("25");
+						}
 						self.probeCheckReset();
 					}
 				}
 				if (self.setupStep() === "21"){
-					self.probeLevelActiveCorner(0);
-					self.lastCorner(false);
-					self.probeLevelAssist("next");
+					if (self.bedAdjustmentRounds() >= 3){
+						console.log("Adjustment rounds greater than 3: "+self.bedAdjustmentRounds().toString());
+						self.bedConfigDialog.modal("show");
+					} else {
+						self.probeLevelActiveCorner(0);
+						self.lastCorner(false);
+						self.probeLevelAssist("next");
+					}
 				}
 			}
-			self.bedPreview();
+			if (!self.hideDebug()){
+				self.bedPreview();
+			}
 		};
 
 		self.probeLevelAssist = function(levelStep){
 			if(!self.hideDebug()){console.log(levelStep);}
+			if(levelStep === "skipConfig"){ //use this to skip the "Check Bed Configuration" option
+				self.probeLevelActiveCorner(0);
+				self.lastCorner(false);
+				self.probeLevelAssist("next");
+				return;
+			}
 			if(levelStep === 0){
 				OctoPrint.control.sendGcode(["T0",
 					"G28 XYZ",
@@ -2201,26 +2285,31 @@ $(function() {
 				if(!self.hideDebug()){console.log(self.turnArray());}
 				var nextCorner = self.turnArray().findIndex(function(element){return element > 0;});
 				
-				if ( nextCorner === -1){
-					if(self.probeLevelActiveCorner() === 0){
+				if ( nextCorner === -1){ //check if the turn array does NOT contain any more corners to adjust
+					if(self.probeLevelActiveCorner() === 0){ //if no corners left to adjust and at position 0, we're done
 						if(!self.hideDebug()){console.log("next corner probs");}
-						self.goTo('23');
+						if(!self.isDual()){
+							self.goTo('23');
+						} else {
+							self.goTo('25');
+						}
 						window.scroll(0,0);
 						self.lastCorner(false);
 						//self.probeHomeOffsetAdjust();
 						return;
-					} else {
+					} else { //if at any other corner, we're done for this round, so check bed again and proceed
 						self.probeLevelAssist(1);
 						self.enableLockedButton(20000);
 						self.lastCorner(false);
 						return;
 					}
-				} else {
+				} else { //if we have a corner left to adjust
 					self.probeLevelActiveCorner(nextCorner+1);
 					self.turnArray()[nextCorner] = 0;
 					// if (self.turnArray().findIndex(function(element){return element === -1 ;})){
 					if (self.turnArray().findIndex(function(element){return element > 0 ;}) === -1){
 						self.lastCorner(true);
+						self.bedAdjustmentRounds(self.bedAdjustmentRounds() +1);
 					}
 					return;
 				}
@@ -2472,6 +2561,7 @@ $(function() {
 
 			self.setupStepHistory.push(self.setupStep());
 			self.setupStep(targetStep);
+			window.scroll(0,0);
 			console.log(targetStep);
 			if(self.setupStepHistory().length>0){
 				self.hasHistory(true);
@@ -2830,6 +2920,15 @@ $(function() {
 				if(!self.hideDebug()){console.log("resetStep targetStep = 17~21");}
 				self.probeCheckReset();
 			}
+			if (targetStep === 26){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 26");}
+				self.stepTwelveSimpleClicked(false);
+			}
+			if (targetStep === 23 || targetStep === 24 || targetStep === 25){
+				if(!self.hideDebug()){console.log("resetStep targetStep:");}
+				if(!self.hideDebug()){console.log(targetStep);}
+				self.stepThreeStartHeatingClicked(false);
+			}
 
 		};
 
@@ -2924,6 +3023,7 @@ $(function() {
 			self.preflightDialog = $("#dialog-preflight");
 			self.printWiggleDialog = $("#dialog-wiggle");
 			self.stepOneDialog = $("#dialog-stepOne");
+			self.bedConfigDialog = $("#dialog-bedConfigDialog");
 			//self.checkGoogle();
 			if (self.isOperational()){
 				self.requestEeprom();
