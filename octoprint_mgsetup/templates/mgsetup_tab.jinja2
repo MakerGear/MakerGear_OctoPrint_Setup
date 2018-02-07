@@ -2543,7 +2543,7 @@ d8"          d8"
     <h1 style="text-align:left;">Your First Print</h1>
 <div data-bind="visible: !$root.isDual()">
     <p style="margin-top:21px;">
-        In the file menu to the left, you should see 'mgkeychain-dual.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
+        In the file menu to the left, you should see 'mgkeychain.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
     </p>
     <img src="/plugin/mgsetup/static/img/gcode.png" style="display:block;width::50%;margin-left:auto;margin-right:auto;margin-top:21px;"">
 </div>
@@ -2557,7 +2557,7 @@ d8"          d8"
     <p style="margin-top:21px;">
     <div data-bind="visible:!$root.isDual()">
         <p>
-            First your printer will heat up the hot-end and heated build platform if they are not already heated up. 
+            First your printer will heat up the Extruder and Heated Build Platform if they are not already heated up. 
         </p>
 
         <p>
@@ -2571,26 +2571,57 @@ d8"          d8"
         You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
     </div>
     <div data-bind="visible:$root.isDual()">
-        Your printer will first ensure that the Left Extruder (T0), Right Extruder (T1), and bed are heated correctly, then it will print the selected file. You can monitor print progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab.
+        <p>
+            First your printer will heat up both Extruders (Left T0 and Right T1) and the Heated Build Platform if they are not already heated up. 
+        </p>
+
+        <p>
+            Next, your printer will use its probe to take several measurments of the heated build platform so that it can make adjustment for any imperfections in the build surface. This probing proces will take place anytime you start a print.    
+        </p>
+        <p>
+            Once the probing process is complete, your printer will start printing the file. 
+        </p>
+
+
+        You can monitor your progress from the 'State' bar on the left, or from the 'Gcode Viewer' Tab. 
+
+
+
+
     </div>
     </p>
 
-
-Your first print should look like this: <br><img src="/plugin/mgsetup/static/img/dual-probe-plate.png" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br>
+<div data-bind="visible:$root.isDual()">
+Your first print should look like this: 
+<br><img src="/plugin/mgsetup/static/img/dual-probe-plate.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
 The top of the keychain:<br>
 <img src="/plugin/mgsetup/static/img/dual-probe-keychain-top.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
 The bottom of the keychain:<br>
 <img src="/plugin/mgsetup/static/img/dual-probe-keychain-bottom.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
 A closeup of the border:<br>
 <img src="/plugin/mgsetup/static/img/probeBedPrintBorder.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
+</div>
+<div data-bind="visible:!$root.isDual()">
+Your first print should look like this: 
+<br><img src="/plugin/mgsetup/static/img/probeBedPrint.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
+The top of the keychain:<br>
+<img src="/plugin/mgsetup/static/img/probeBedPrintKeychainTop.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
+The bottom of the keychain:<br>
+<img src="/plugin/mgsetup/static/img/probeBedPrintKeychainBottom.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
+A closeup of the border:<br>
+<img src="/plugin/mgsetup/static/img/probeBedPrintBorder.png" style="display:block;width:50%;margin-left:auto;margin-right:auto"><br>
+</div>
 
 
 
-{# <br>
-If your finished "mgkeychain-dual.gco" keychain looks different than the images above, click the button below to adjust your Z Probe Height Offset:<br>
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20'); window.scroll(0,0) }">Adjust Z Probe Offset</button> #}
+<br>
+<div data-bind="visible:!$root.isDual()">
+If your finished "mgkeychain.gco" keychain looks different than the images above, click the button below to adjust your Z Probe Height Offset:<br>
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.goTo('20'); window.scroll(0,0) }">Adjust Z Probe Offset</button>
+</div>
 
 <br><br>
+<div data-bind="visible:$root.isDual()">
 If your finished "mgkeychain-dual.gcode" keychain or perimeter looks different than the images above, select the closest image from the set below to be taken to the appropriate adjustment page:<br><br>
 
 <div data-bind="visible: $root.isDual()">
@@ -2658,6 +2689,7 @@ If your finished "mgkeychain-dual.gcode" keychain or perimeter looks different t
     </tr>
 
 </table>
+</div>
 </div>
 
     <p style="margin-top:21px;" data-bind="visible: !$root.isDual()">

@@ -440,21 +440,26 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
 			self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
 			self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
-			self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
+			self.activeProfile = (self._printer_profile_manager.get_current_or_default()["model"])
+			# self._logger.info(self._printer_profile_manager.get_current_or_default()["model"])
 			self._logger.info("Profile: "+self.activeProfile)
 
 			newProfileString = (re.sub('[^\w]','_',self.activeProfile)).upper()
 
 			with open('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h','r+') as f:
 				timeString = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
+				oldConfig = f.read()
+				f.seek(0,0)
 				if f.readline() == "\n":
 					f.seek(0,0)
-					f.write(newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n')
+					f.write("#define " + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + oldConfig)
 				else:
 					f.seek(0,0)
 					oldLine = f.readline()
 					f.seek(0,0)
-					f.write(newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n")
+					i = oldConfig.index("\n")
+					oldConfigStripped = oldConfig[i+1:]
+					f.write("#define " + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n" + oldConfigStripped)
 
 
 

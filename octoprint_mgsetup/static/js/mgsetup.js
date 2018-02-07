@@ -2226,7 +2226,7 @@ $(function() {
 				if (self.waitingForProbeResponse()){
 					self.waitingForProbeResponse(false);
 					clearTimeout(self.probeFail);
-					if (self.zLevelError() > 0.5){
+					if (self.zLevelError() > 0.35){
 						if(!self.hideDebug()){console.log("Bed is out of level more than ±0.5, going to assisted leveling.");}
 						// self.setupStep("21");
 						self.goTo("21");
