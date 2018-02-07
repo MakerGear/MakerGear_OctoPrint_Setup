@@ -2342,7 +2342,7 @@ Although the bed leveling screws are accessed from the bottom of the mounting pl
 </tr>
 <tr>
 <td>
-<img src="/plugin/mgsetup/static/img/frontright-bothways-demo.jpg" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+<img src="/plugin/mgsetup/static/img/topside-demo.jpg" style="display:block;width:95%;margin-left:auto;margin-right:auto">
 </td>
 <td>
 <img src="/plugin/mgsetup/static/img/underside-noarrow.jpg" style="display:block;width:95%;margin-left:auto;margin-right:auto">
@@ -2352,7 +2352,10 @@ Although the bed leveling screws are accessed from the bottom of the mounting pl
 <br>
 <hr>
 
-
+<div data-bind="visible:$root.bedAdjustmentRounds()>1">
+<center>During this adjustment you will fine-tune the bed level.</center>
+</div>
+<br><br>
 
 
 
@@ -2363,10 +2366,10 @@ Although the bed leveling screws are accessed from the bottom of the mounting pl
         <tr>
             <td>
                 <div data-bind="visible: $root.frontLeftMm() > 0">
-                    <img src="/plugin/mgsetup/static/img/frontleft-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/frontleft-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
                 <div data-bind="visible: $root.frontLeftMm() < 0">
-                    <img src="/plugin/mgsetup/static/img/frontleft-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/frontleft-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
             </td>
             <td>
@@ -2383,10 +2386,10 @@ Although the bed leveling screws are accessed from the bottom of the mounting pl
         <tr>
             <td>
                 <div data-bind="visible: $root.frontRightMm() > 0">
-                    <img src="/plugin/mgsetup/static/img/frontright-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/frontright-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
                 <div data-bind="visible: $root.frontRightMm() < 0">
-                    <img src="/plugin/mgsetup/static/img/frontright-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/frontright-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
             </td>
             <td>
@@ -2403,10 +2406,10 @@ Although the bed leveling screws are accessed from the bottom of the mounting pl
         <tr>
             <td>
                 <div data-bind="visible: $root.rearLeftMm() > 0">
-                    <img src="/plugin/mgsetup/static/img/rearleft-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/rearleft-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
                 <div data-bind="visible: $root.rearLeftMm() < 0">
-                    <img src="/plugin/mgsetup/static/img/rearleft-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/rearleft-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
             </td>
             <td>
@@ -2423,10 +2426,10 @@ Although the bed leveling screws are accessed from the bottom of the mounting pl
         <tr>
             <td>
                 <div data-bind="visible: $root.rearRightMm() > 0">
-                    <img src="/plugin/mgsetup/static/img/rearright-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/rearright-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
                 <div data-bind="visible: $root.rearRightMm() < 0">
-                    <img src="/plugin/mgsetup/static/img/rearright-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                    <img src="/plugin/mgsetup/static/img/rearright-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
                 </div>
             </td>
             <td>

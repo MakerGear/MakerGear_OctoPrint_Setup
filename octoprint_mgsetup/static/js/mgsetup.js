@@ -108,19 +108,20 @@ $(function() {
 			}
 		},this);
 
-		self.stepProgressArray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,1,2,2,3,3,5,4,2];
+		self.stepProgressArray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,1,2,2,3,3,5,4,2]; //TODO - update this for all new step pages
 
 
 
-		self.hasProbe = ko.pureComputed(function(){
-			if (self.settings.printerProfiles.currentProfileData().model().indexOf("probe") !== -1 ){
-				if(!self.hideDebug()){console.log("hasProbe is true!");}
-				return true;
-			} else {
-				if(!self.hideDebug()){console.log("hasProbe is false!");}
-				return false;
-			}
-		},this);
+		self.hasProbe = ko.observable(false);
+		// self.hasProbe = ko.pureComputed(function(){
+		// 	if (self.settings.printerProfiles.currentProfileData().model().indexOf("probe") !== -1 ){
+		// 		if(!self.hideDebug()){console.log("hasProbe is true!");}
+		// 		return true;
+		// 	} else {
+		// 		if(!self.hideDebug()){console.log("hasProbe is false!");}
+		// 		return false;
+		// 	}
+		// },this);
 
 		self.ipAddress = ko.observable(undefined);
 		self.ipPort = ko.observable(undefined);
@@ -1781,7 +1782,7 @@ $(function() {
 		self.turnArray = ko.observableArray([]); //every now and then I get a little bit lonely
 		self.lastCorner = ko.observable(false);
 		self.strictBedLeveling = ko.observable(false);
-		
+
 
 		self.bedPreviewArray = ko.observableArray(undefined);
 		self.activePreview = ko.observable(undefined);
@@ -2246,7 +2247,8 @@ $(function() {
 				if (self.setupStep() === "21"){
 					if (self.bedAdjustmentRounds() >= 3){
 						console.log("Adjustment rounds greater than 3: "+self.bedAdjustmentRounds().toString());
-						self.bedConfigDialog.modal("show");
+						// self.bedConfigDialog.modal("show");
+						self.bedConfigDialog.modal({keyboard: true, backdrop: "static", show: true});
 					} else {
 						self.probeLevelActiveCorner(0);
 						self.lastCorner(false);
@@ -3071,8 +3073,18 @@ $(function() {
 			// if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh()){
 			// 	self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button data-bind=\"click: function() { $root.showSettings() }\">Mark as last read</button>","error",false);
 			// }
+			self.parseProfile();
 			window.setTimeout(function() {self.urlLogin()},500);
+		
 		};
+
+
+	// $("#bedConfigDialog").on("hide.bs.modal", function (e) {
+	// 			self.probeLevelAssist("skipConfig")
+	// 		});
+
+
+
 
 		self.onEventClientOpened = function() {
 			if(!self.hideDebug()){console.log("onEventClientOpened triggered.");}
@@ -3123,6 +3135,7 @@ $(function() {
 		self.onAfterBinding = function() {
 			if(!self.hideDebug()){console.log("onAfterBinding triggered.");}
 			self.warnSshNotify();
+
 			//self.support_widget = $("#mgsetup_support_widget");
 		};
 
@@ -3138,6 +3151,7 @@ $(function() {
 			self.registered(self.settings.settings.plugins.mgsetup.registered());
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
 			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
+			self.parseProfile();
 
 			window.setTimeout(function() {self.warnSshNotify()},5000);
 			// self.warnSshNotify();
@@ -3330,8 +3344,59 @@ $(function() {
 			self.eepromData([]);
 			OctoPrint.control.sendGcode("M503");
 		//	self.fromCurrentData();
-
 		};
+
+
+		self.parseProfile = function() {
+			// profile parser
+			// look at profile model string
+			// decide if we should show the single or dual version of the plugin
+			// 	based on number of extruders
+			// decide if we should show the probe or probeless version of the plugin
+			// 	based on model string contents
+			// handle firmware:
+			// 	convert model string to configuration string:
+			// 		convert to UPPER
+			// 		convert all "-" to "_"
+			// 		prefix it with "MAKERGEAR_MODEL_"
+			// 	configuration.makergear.h:
+			// 		check first line:
+			// 			blank:
+			// 				replace first line with ("#define " + [modified configuration string]) and a comment with date and "AUTOMATICALLY SELECTED PROFILE"
+			// 			contains a configuration string:
+			// 				add newline to beginning
+			// 				comment out old configuration string - add comment at end with date and "automatically commented out by firmware configuration"
+			// 				replace first line with ("#define " + [modified configuration string]) and a comment with date and "AUTOMATICALLY SELECTED PROFILE"
+
+			// (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
+			//if (self.settings.printerProfiles.currentProfileData().model().indexOf("probe") !== -1 ){
+			// MakerGear M3 Single Extruder Rev 0		M3-SE Rev0-004
+			// MakerGear M3 Single Extruder Rev 0		M3-SE Rev0-005
+			// MakerGear M3 Independent Dual Rev 0		M3-ID Rev0-005
+			// MakerGear M3 Single Extruder Rev 1		M3-SE Rev1-000
+			// MakerGear M3 Independent Dual Rev 1		M3-ID Rev1-000
+			var profileString = self.settings.printerProfiles.currentProfileData().model().toString();
+			// if (profileString.indexOf("ID")!==-1){
+			// 	self.isDual(true);
+			// } else {
+			// 	self.isDual(false);
+			// }
+
+			if (profileString.indexOf("M3-SE Rev0-005") !== -1 || profileString.indexOf("Rev1-000") !== -1){
+				self.hasProbe(true);
+				if(!self.hideDebug()){console.log("hasProbe true!");}
+			} else {
+				self.hasProbe(false);
+				if(!self.hideDebug()){console.log("hasProbe false!");}
+			}
+
+
+
+
+
+
+		}
+
 
 		self.fromCurrentData = function (data) {
 			self._processStateData(data.state);

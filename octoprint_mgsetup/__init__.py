@@ -442,29 +442,45 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
 			self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
 			self._logger.info("Profile: "+self.activeProfile)
-			self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
-			self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
 
-			# self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
-			# self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
-			if (self.extruderCount == 2):
-				try:
-					shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
-					self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Dual configuration to Configuration_makergear.h"))
-				except IOError as e:
-					self._logger.info("Tried to copy Dual configuration but encountered an error!")
-					self._logger.info("Error: "+str(e))
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Dual configuration but encountered an error!  Error: "+str(e)))
-			else:
-				try:
-					shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
-					self._logger.info("Copied the Single configuration to Configuration_makergear.h")
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Single configuration to Configuration_makergear.h"))
-				except IOError as e:
-					self._logger.info("Tried to copy Single configuration but encountered an error!")
-					self._logger.info("Error: "+str(e))
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Single configuration but encountered an error!  Error: "+str(e)))
+			newProfileString = (re.sub('[^\w]','_',self.activeProfile)).upper()
+
+			with open('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h','r+') as f:
+				timeString = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
+				if f.readline() == "\n":
+					f.seek(0,0)
+					f.write(newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n')
+				else:
+					f.seek(0,0)
+					oldLine = f.readline()
+					f.seek(0,0)
+					f.write(newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n")
+
+
+
+			# self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
+			# self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
+
+			# # self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
+			# # self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
+			# if (self.extruderCount == 2):
+			# 	try:
+			# 		shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+			# 		self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Dual configuration to Configuration_makergear.h"))
+			# 	except IOError as e:
+			# 		self._logger.info("Tried to copy Dual configuration but encountered an error!")
+			# 		self._logger.info("Error: "+str(e))
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Dual configuration but encountered an error!  Error: "+str(e)))
+			# else:
+			# 	try:
+			# 		shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+			# 		self._logger.info("Copied the Single configuration to Configuration_makergear.h")
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Single configuration to Configuration_makergear.h"))
+			# 	except IOError as e:
+			# 		self._logger.info("Tried to copy Single configuration but encountered an error!")
+			# 		self._logger.info("Error: "+str(e))
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Single configuration but encountered an error!  Error: "+str(e)))
 			self.getLocalFirmwareVersion()
 
 		else:
