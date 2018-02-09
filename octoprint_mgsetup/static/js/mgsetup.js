@@ -615,7 +615,7 @@ $(function() {
 				var context = {};
 				if(!self.hideDebug()){console.log(parameters.wiggleHeight);}
 				OctoPrint.control.sendGcodeScriptWithParameters("probeWiggle", context, parameters);
-				if (self.setupStep() === '20'){
+				if (self.setupStep() === '20' || self.maintenancePage() === 20){
 					self.stepTwentyFirstWiggleClicked(true);
 				}
 			}
@@ -1770,6 +1770,10 @@ $(function() {
 		self.frontRightMm = ko.observable(undefined);
 		self.rearLeftMm = ko.observable(undefined);
 		self.rearRightMm = ko.observable(undefined);
+		self.frontLeftDisplayMm = ko.observable(undefined);
+		self.frontRightDisplayMm = ko.observable(undefined);
+		self.rearLeftDisplayMm = ko.observable(undefined);
+		self.rearRightDisplayMm = ko.observable(undefined);
 		self.frontLeftDegrees = ko.observable(undefined);
 		self.frontRightDegrees = ko.observable(undefined);
 		self.rearLeftDegrees = ko.observable(undefined);
@@ -2054,6 +2058,7 @@ $(function() {
 
 
 		self.processBedLevel = function(bedLevelLine){
+			console.log("processBedLevel started");
 			self.filter = /\[\[(.*?)\].*\[(.*?)\].*\[(.*)\]\]/;
 			self.xProbeArray = [];
 			self.yProbeArray = [];
@@ -2142,9 +2147,13 @@ $(function() {
 
 				// console.log(self.zProbeMax + " , " + self.zProbeMin + " ; " + (self.zProbeMax-self.zProbeMin));
 				self.frontLeftMm(self.bedLevelResults()[0][3][0][2]);
+				self.frontLeftDisplayMm(self.frontLeftMm());
 				self.frontRightMm(self.bedLevelResults()[0][3][1][2]);
+				self.frontRightDisplayMm(self.frontRightMm());
 				self.rearLeftMm(self.bedLevelResults()[0][3][2][2]);
+				self.rearLeftDisplayMm(self.rearLeftMm());
 				self.rearRightMm(self.bedLevelResults()[0][3][3][2]);
+				self.rearRightDisplayMm(self.rearRightMm());
 				self.frontLeftDegrees((Math.abs(self.bedLevelResults()[0][3][0][2]) * (360/0.7)).toFixed());
 				self.frontRightDegrees((Math.abs(self.bedLevelResults()[0][3][1][2]) * (360/0.7)).toFixed());
 				self.rearLeftDegrees((Math.abs(self.bedLevelResults()[0][3][2][2]) * (360/0.7)).toFixed());
@@ -2244,8 +2253,8 @@ $(function() {
 						self.probeCheckReset();
 					}
 				}
-				if (self.setupStep() === "21"){
-					if (self.bedAdjustmentRounds() >= 3){
+				if (self.setupStep() === "21" || self.maintenancePage() === 21){
+					if (self.bedAdjustmentRounds() >= 3 && !self.maintenancePage() === 21){
 						console.log("Adjustment rounds greater than 3: "+self.bedAdjustmentRounds().toString());
 						// self.bedConfigDialog.modal("show");
 						self.bedConfigDialog.modal({keyboard: true, backdrop: "static", show: true});
@@ -2256,10 +2265,12 @@ $(function() {
 					}
 				}
 			}
+			console.log("processBedLevel calling bedPreview");
 			if (!self.hideDebug()){
 				self.bedPreview();
 			}
 		};
+
 
 		self.probeLevelAssist = function(levelStep){
 			if(!self.hideDebug()){console.log(levelStep);}
@@ -2451,12 +2462,22 @@ $(function() {
 				},
 
 			};
-			if (self.bedLevelResults().length == 1){
-				Plotly.newPlot('bedPreviewDiv', data, layout);
+			if (self.setupStep()==="21"){
+				if (self.bedLevelResults().length == 1){
+					Plotly.newPlot('bedPreviewDiv', data, layout);
+				} else {
+					// Plotly.deleteTraces('bedPreviewDiv', 0);
+					Plotly.purge('bedPreviewDiv');
+					Plotly.plot('bedPreviewDiv', data, layout);
+				}
 			} else {
-				// Plotly.deleteTraces('bedPreviewDiv', 0);
-				Plotly.purge('bedPreviewDiv');
-				Plotly.plot('bedPreviewDiv', data, layout);
+				if (self.bedLevelResults().length == 1){
+					Plotly.newPlot('maintenanceBedPreviewDiv', data, layout);
+				} else {
+					// Plotly.deleteTraces('bedPreviewDiv', 0);
+					Plotly.purge('maintenanceBedPreviewDiv');
+					Plotly.plot('maintenanceBedPreviewDiv', data, layout);
+				}
 			}
 		};
 

@@ -27,6 +27,10 @@ aaaa8888aaaa
     <div role="tabpanel" class="tab-pane active" id="maintenanceHome">Welcome to the MakerGear M3 Maintenance Tab.<br><br>
     Here you'll have easy access to individual maintenance operations for your printer, including Filament Loading and Unloading, Calibrating your Z Offset (either with the new Zigzag pattern or the classic Feeler Gauge method), Leveling your Bed (again, with the Zigzag or Feeler Gauge), and adjusting your Independent Dual Extruder Offsets (if relevant).
     <br>
+
+<button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {($('#bedLeveling')).css('class','active')}">Cooldown</button>
+
+
 {#     Start of showing firmware values:<br><br>
     Firmwareline: <span data-bind="text: $root.firmwareline()"></span><br><br>
     ZOffsetwareline: <span data-bind="text: $root.zoffsetline()"></span><br><br>
@@ -65,6 +69,7 @@ aaaa8888aaaa
 <div><input type="radio" name="maintenancePageSelect" value=2 data-bind="checkedValue: 2, checked: maintenancePage, click: window.scroll(0,0)" /> Adjust Starting Height - Cold</div>
 <div><input type="radio" name="maintenancePageSelect" value=4 data-bind="checkedValue: 4, checked: maintenancePage, click: window.scroll(0,0)" /> Adjust Starting Height - Hot</div>
 <div><input type="radio" name="maintenancePageSelect" value=41 data-bind="checkedValue: 41, checked: maintenancePage, click: window.scroll(0,0)" /> Adjust Starting Height - Hot, Alternate Materials and Nozzle Size</div>
+<div><input type="radio" name="maintenancePageSelect" value=41 data-bind="checkedValue: 20, checked: maintenancePage, click: window.scroll(0,0)" /> Adjust Probe Offset </div>
 <hr />
 <br>
 
@@ -620,6 +625,7 @@ aaaa8888aaaa
     <div role="tabpanel" class="tab-pane" id="bedLeveling">
     	<div><input type="radio" name="maintenancePageSelect" value=10 data-bind="checkedValue: 10, checked: maintenancePage, click: window.scroll(0,0)" /> Bed Leveling - Cold</div>
 <div><input type="radio" name="maintenancePageSelect" value=6 data-bind="checkedValue: 6, checked: maintenancePage, click: window.scroll(0,0)" /> Bed Leveling - Hot</div>
+<div><input type="radio" name="maintenancePageSelect" value=6 data-bind="checkedValue: 21, checked: maintenancePage, click: window.scroll(0,0)" /> Bed Leveling - Probe Assisted</div>
 <br><hr />
 {#      ad8888ba,    #}
 {#     8P'    "Y8    #}
@@ -1662,7 +1668,482 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
 </div>
-<br><br><br><br><Br>
+
+{#                              
+ ad888888b,     ,a8888a,     
+d8"     "88   ,8P"'  `"Y8,   
+        a8P  ,8P        Y8,  
+     ,d8P"   88          88  
+   a8P"      88          88  
+ a8P'        `8b        d8'  
+d8"           `8ba,  ,ad8'   
+88888888888     "Y8888P"     
+                             
+                              #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===20">
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===20" />
+    </div><br>
+
+<h1 style="text-align:left">Adjust Probe Offset</h1>
+
+
+
+
+
+<p>
+   
+    <i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i><div data-bind="visible:!$root.isDual()">
+The printer's extruder and build platform are hot - do not touch them!
+</div>
+<div data-bind="visible: $root.isDual()">
+The printer's Left Extruder (T0) and build platform are hot - do not touch them! 
+</div>
+
+</p>
+
+<p>
+ Your probe-to-nozzle offset is not set correctly. The steps below will guide you through adjusting the Probe Offset with our standard "Zigzag" pattern to make sure you have the perfect starting height.
+</p>
+
+<p>
+    Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
+</p>
+
+<ol>
+    <li>Start to heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.
+    <li>Move components to their home positions.
+    <li>Move extruder to its purge position.
+    <li>Purge and wipe the extruder on the lower right-hand corner of the build plate.
+    <li>Print a Zigzag pattern on the center of the build plate.
+    <li>Move components to their final position.
+</ol>
+
+
+<p>
+    When you are ready to begin this process, click "Print Zigzag Pattern":
+</p>
+<br>
+
+<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+
+
+
+<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+</div>
+
+<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+    Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+    <div data-bind="visible: !$root.isDual()">
+    Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    </div>
+    <div data-bind="visible: $root.isDual()">
+    Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+    Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+    </div>
+</div>
+</div>
+
+Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The  Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
+
+
+   
+   <video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  maintenancePage()===20" onclick="this.paused ? this.play() : this.pause();">
+    <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that
+      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+    </video>
+
+<br />
+
+
+<p >
+    <strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
+</p>
+
+
+
+<table>
+    <tr>
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+            <a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===20" /></a>
+ 
+        </td>
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+            <a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===20" /></a>
+ 
+        </td>
+ 
+
+
+
+        <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+             <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===20" /></a>
+         </td>
+ 
+    </tr>
+
+
+
+
+    <tr>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+            If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Probe Offset</strong>. Click below to proceed to the next step. 
+            <br />
+
+
+
+
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+
+
+             
+        </td>
+
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+                If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Probe Offset is too low</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
+           <!-- <br />
+            <br />
+
+            <strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. -->
+            <br />
+            <br />
+            <a href="/plugin/mgsetup/static/img/stringZigzag.jpg" data-lightbox="step8-1">Click here to see other examples of zigzags printed too low.</a>
+
+
+
+        </td>
+        <td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+     
+            If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
+             <strong>the Probe Offset is too high</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
+            <br />
+            <br />
+            <a href="/plugin/mgsetup/static/img/squishZigzag.jpg" data-lightbox="step8-2">Click here to see other examples of zigzags printed too high.</a>
+
+
+
+        </td>
+    </tr>
+
+    <tr>
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            
+            <center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0) }">Next Step<br /></button></center>
+
+  <!--Too far-->
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
+
+        </td>
+
+
+        <td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+            <div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center></div>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+            <center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
+            <!--Too Close-->
+        </td>
+    <tr>
+
+</table>
+<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+
+<input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{#                      
+ ad888888b,      88  
+d8"     "88    ,d88  
+        a8P  888888  
+     ,d8P"       88  
+   a8P"          88  
+ a8P'            88  
+d8"              88  
+88888888888      88  
+                     
+                      #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===21">
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===21" />
+    </div><br><br>
+
+
+
+<h1 style="text-align:left;">Assisted Bed Leveling</h1>
+<p style="text-align:left;">
+
+    The Automated Calibration Test detected that your bed is further out of level than we recommend printing with.  Using the example images below, follow the steps below to level the bed using the included 2 mm Allen key, then click "Recheck Bed Level".
+
+</p>
+
+<br>
+Although the bed leveling screws are accessed from the bottom of the mounting plate, all instructions are given as seen from above, with the user looking downward at the bed. As such, clockwise rotation of each bed leveling screw lowers the corresponding corner, and counter-clockwise rotation raises it.<br><br>
+
+<table class="choiceTable">
+<tr>
+<td>
+<center>
+    As seen from above:
+</center>
+</td>
+<td>
+<center>
+    Where to access each leveling screw on the bottom of the mounting plate:
+</center>
+</td>
+</tr>
+<tr>
+<td>
+<img src="/plugin/mgsetup/static/img/topside-demo.jpg" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+</td>
+<td>
+<img src="/plugin/mgsetup/static/img/underside-noarrow.jpg" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+</td>
+</tr>
+</table>
+<br>
+<hr>
+<div data-bind="visible: !$root.hideDebug() || $root.maintenancePage()===21">
+The first run will home:<br><center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && !$root.probeLevelFirstCheckClicked(), click: function() { $root.probeLevelAssist(0); $root.enableLockedButton(10000) }">Run First Bed Check</button><br><br></center>
+</div><br>
+
+<div data-bind="visible:$root.bedAdjustmentRounds()>1">
+<center>During this adjustment you will fine-tune the bed level.</center>
+</div>
+<br><br>
+
+
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 1">
+    <span style="font-size:18px;" data-bind="html: $root.frontLeftString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.frontLeftMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/frontleft-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.frontLeftMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/frontleft-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-frontleft.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 2">
+    <span style="font-size:18px;"  data-bind="html: $root.frontRightString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.frontRightMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/frontright-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.frontRightMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/frontright-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-frontright.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 3">
+    <span style="font-size:18px;"  data-bind="html: $root.rearLeftString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.rearLeftMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/rearleft-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.rearLeftMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/rearleft-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-rearleft.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div data-bind="visible:$root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 4">
+    <span style="font-size:18px;"  data-bind="html: $root.rearRightString()"></span>
+    <br><br>
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div data-bind="visible: $root.rearRightMm() > 0">
+                    <img src="/plugin/mgsetup/static/img/rearright-2-cw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+                <div data-bind="visible: $root.rearRightMm() < 0">
+                    <img src="/plugin/mgsetup/static/img/rearright-2-ccw.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+                </div>
+            </td>
+            <td>
+                <img src="/plugin/mgsetup/static/img/bedinset-rearright.png" style="display:block;width:95%;margin-left:auto;margin-right:auto">
+            </td>
+        </tr>
+    </table>
+</div>
+<br>
+
+<center>
+{# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
+<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5 && $root.probeLevelActiveCorner() > 0, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
+</center><br> 
+
+<hr><br>
+<br>
+
+{# </div> #}
+
+
+
+
+
+
+<h3>3D Bed View</h3>
+<div id="maintenanceBedPreviewDiv">
+
+</div>
+<div data-bind="visible: bedLevelResults().length > 0">
+<button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('first')}" style="float:left;"><i class="icon-circle-arrow-left"></i><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('previous')}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('last')}" style="float:right;"><i class="icon-circle-arrow-right"></i><i class="icon-circle-arrow-right"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, click: function() {$root.selectPreview('next')}" style="float:right;"><i class="icon-circle-arrow-right"></i></button></div>
+<br><br><br>
+<hr>
+
+
+{# <div data-bind="visible: bedLevelResults().length > 0">
+{# The front left corner needs to move <span data-bind="text: $root.frontLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
+The front right corner needs to move <span data-bind="text: $root.frontRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.frontRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.frontRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
+The rear left corner needs to move <span data-bind="text: $root.rearLeftMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearLeftDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearLeftMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br>
+The rear right corner needs to move <span data-bind="text: $root.rearRightMm(), style: { color: 'green'}"></span> mm or <b><span data-bind="text: $root.rearRightDegrees(), style: { color: 'green'}"></span>°</b> <span data-bind="text: ($root.rearRightMm() > 0 ? 'counter-clockwise.' : 'clockwise.')"></span><br><br> #}
+
+<table class="choiceTable">
+<tr>
+<td style="width:25%">Front Left</td>
+<td style="width:25%">Front Right</td>
+<td style="width:25%">Rear Left</td>
+<td style="width:25%">Rear Right</td>
+</tr>
+
+<tr>
+<td ><span data-bind="text: $root.frontLeftDisplayMm()"></span></td>
+<td ><span data-bind="text: $root.frontRightDisplayMm()"></span></td>
+<td ><span data-bind="text: $root.rearLeftDisplayMm()"></span></td>
+<td ><span data-bind="text: $root.rearRightDisplayMm()"></span></td>
+
+
+</tr>
+
+
+</table>
+
+
+ 
+
+
+
+
+
+
+
+{# 
+<div data-bind="visible: bedLevelResults().length === 0"><b>
+No data yet!  Click "Run First Bed Check" to acquire the first set of measurements.</b><br><br></div>
+
+The second run will only update the bed level data:<br><center>
+<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
+
+<br><br><br>Once all four corners no longer require adjustment, click "Load Filament" to proceed.
+<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') ; $root.probeHomeOffsetAdjust() }">Load Filament</button> #}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br>
 {#                  
        ,a8888a,     
      ,8P"'  `"Y8,   
@@ -2930,7 +3411,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.maintenanceThirteenSa
 
 
 
-<br><br><button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasHistory(), click: function() {$root.stepBack()}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasFuture(), click: function() {$root.stepForward()}" style="float:right;"><i class="icon-circle-arrow-right"></i></button><br><br><br>
+<br><br>{# <button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasHistory(), click: function() {$root.stepBack()}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasFuture(), click: function() {$root.stepForward()}" style="float:right;"><i class="icon-circle-arrow-right"></i></button> #}<br><br><br>
 </div>
 <div data-bind= "visible: !$root.hideDebug()">
 <input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.
