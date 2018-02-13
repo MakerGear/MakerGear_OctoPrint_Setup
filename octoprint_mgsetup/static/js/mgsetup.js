@@ -134,8 +134,7 @@ $(function() {
 			} else {
 				return ("API and/or CORS are Disabled - Enable both in the API settings.");
 			}
-		}
-		,this);
+		},this);
 
 		// Settings controls:
 		self.newNetconnectdPassword = ko.observable("");
@@ -156,7 +155,7 @@ $(function() {
 		self.zoffsetline = ko.observable();		
 		self.eepromM206RegEx = /M206 ([X])(.*)[^0-9]([Y])(.*)[^0-9]([Z])(.*)/;
 		self.zoffsetlineextract = ko.pureComputed(function() {
-			match = self.eepromM206RegEx.exec(self.zoffsetline());
+			var match = self.eepromM206RegEx.exec(self.zoffsetline());
 				//alert('M206 loaded; Z Home Offset: '+self.eepromData()[2].value);
 			if (self.originalZOffset !== "undefined"){
 				self.originalZOffset = parseFloat(match[6]);
@@ -164,8 +163,7 @@ $(function() {
 			}
 			if(!self.hideDebug()){console.log(self.zoffsetline().keys());}
 				//alert('M206 loaded; Z Home Offset: '+self.originalZOffset.toString());
-		}
-		,this);
+		},this);
 		if(!self.hideDebug()){console.log(self.zoffsetline());}
 		self.eepromData = ko.observableArray([]);
 		self.coldLevelCheckPosition = ko.observable(0);
@@ -190,10 +188,10 @@ $(function() {
 		self.waitingForM = ko.observable(false);
 		self.showFontAwesome = ko.observable(false);
 		self.ZPosStatus = ko.pureComputed(function() {
-			if (self.ZPosFresh == true) {
+			if (self.ZPosFresh === true) {
 				return "Fresh";
 			}
-			if (self.ZPosFresh == false) {
+			if (self.ZPosFresh === false) {
 				alert("stale");
 				return "Stale";
 			}
@@ -268,11 +266,11 @@ $(function() {
 
 		self.printWiggleConfirm = function(wigglePosition, inputWiggleHeight){
 			if(!self.hideDebug()){console.log("printWiggleConfirm triggered");}
-			if(wigglePosition == "custom" && self.customWiggle() == undefined){
+			if(wigglePosition === "custom" && self.customWiggle() === undefined){
 				self.notify("Error - Please Select Configuration","Please select machine configuration before printing the first Zigzag","error");
 				return;
 			}
-			if(wigglePosition == "T1-custom" && self.customWiggle() == undefined){
+			if(wigglePosition === "T1-custom" && self.customWiggle() === undefined){
 				self.notify("Error - Please Select Configuration","Please select machine configuration before printing the first Zigzag","error");
 				return;
 			}
@@ -301,7 +299,7 @@ $(function() {
 
 
 			//console.log(typeof(self.ZWiggleHeight()));
-			if (wigglePosition == undefined){
+			if (wigglePosition === undefined){
 				wigglePosition = self.storeWigglePosition();
 			}
 			
@@ -624,7 +622,7 @@ $(function() {
 
 		self.feedFilament = function(targetTool) {
 
-			if (targetTool == undefined){
+			if (targetTool === undefined){
 				targetTool = "tool0";
 			}
 			if (targetTool == "tool0"){
@@ -648,7 +646,7 @@ $(function() {
 
 		self.retractFilament = function(targetTool) {
 
-			if (targetTool == undefined){
+			if (targetTool === undefined){
 				targetTool = "tool0";
 			}
 			if (targetTool == "tool0"){
@@ -675,12 +673,12 @@ $(function() {
 
 
 
-			if (targetTemperature == undefined){
+			if (targetTemperature === undefined){
 				temperature = 220;
 			} else {
 				temperature = targetTemperature;
 			}
-			if (targetHotend == undefined){
+			if (targetHotend === undefined){
 				hotend = "T0";
 			} else {
 				hotend = targetHotend;
@@ -748,12 +746,12 @@ $(function() {
 
 
 
-			if (targetTemperature == undefined){
+			if (targetTemperature === undefined){
 				temperature = 220;
 			} else {
 				temperature = targetTemperature;
 			}
-			if (targetHotend == undefined){
+			if (targetHotend === undefined){
 				hotend = "T0";
 			} else {
 				hotend = targetHotend;
@@ -1484,7 +1482,7 @@ $(function() {
 		};
 
 		self.showMaintenanceStep = function(inputStep, inputTab){
-			if(inputStep != undefined && inputTab != undefined){
+			if(inputStep !== undefined && inputTab !== undefined){
 				self.maintenancePage(inputStep);
 				$('.nav-tabs a[href='+'\''+inputTab.toString()+'\']').click();
 				//return true;
@@ -1604,10 +1602,10 @@ $(function() {
 				chosenMatch = self.chosenSawBin();
 			}
 			if (self.calibrationAxis()=="X"){
-				if (chosenMatch == 0){
+				if (chosenMatch === 0){
 					self.printSawBin();
 				}
-				if (chosenMatch == 1){
+				if (chosenMatch === 1){
 					if(!self.hideDebug()){console.log("PickSawBin 1, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
@@ -1615,7 +1613,7 @@ $(function() {
 						"M501"]);
 					self.printSawBin();
 				}
-				if (chosenMatch == 2){
+				if (chosenMatch === 2){
 					if(!self.hideDebug()){console.log("PickSawBin 2, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
@@ -1624,7 +1622,7 @@ $(function() {
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
-				if (chosenMatch == 3){
+				if (chosenMatch === 3){
 					if(!self.hideDebug()){console.log("PickSawBin 3, X.");}
 					// self.newT1XOffset = ((self.tool1XOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
@@ -1644,7 +1642,7 @@ $(function() {
 						self.printSawBin();
 					}
 				}
-				if (chosenMatch == 4){
+				if (chosenMatch === 4){
 					if(!self.hideDebug()){console.log("PickSawBin 4, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(-1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
@@ -1653,7 +1651,7 @@ $(function() {
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
-				if (chosenMatch == 5){
+				if (chosenMatch === 5){
 					if(!self.hideDebug()){console.log("PickSawBin 5, X.");}
 					self.newT1XOffset = ((self.tool1XOffset()+(-2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
@@ -1662,10 +1660,10 @@ $(function() {
 					self.printSawBin();
 				}
 			} else if (self.calibrationAxis()=="Y"){
-				if (chosenMatch == 0){
+				if (chosenMatch === 0){
 					self.printSawBin();
 				}
-				if (chosenMatch == 1){
+				if (chosenMatch === 1){
 					if(!self.hideDebug()){console.log("PickSawBin 1, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
@@ -1673,7 +1671,7 @@ $(function() {
 						"M501"]);
 					self.printSawBin();
 				}
-				if (chosenMatch == 2){
+				if (chosenMatch === 2){
 					if(!self.hideDebug()){console.log("PickSawBin 2, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
@@ -1682,7 +1680,7 @@ $(function() {
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
-				if (chosenMatch == 3){
+				if (chosenMatch === 3){
 					if(!self.hideDebug()){console.log("PickSawBin 3, Y.");}
 					// self.newT1YOffset = ((self.tool1YOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
@@ -1695,7 +1693,7 @@ $(function() {
 						if(!self.hasProbe()){
 							self.goTo("16");
 						} else {
-							self.goTo("22")
+							self.goTo("22");
 						}
 						self.cooldown();
 						OctoPrint.control.sendGcode(["M84"]);
@@ -1703,7 +1701,7 @@ $(function() {
 						self.printSawBin();
 					}
 				}
-				if (chosenMatch == 4){
+				if (chosenMatch === 4){
 					if(!self.hideDebug()){console.log("PickSawBin 4, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(-1*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
@@ -1712,7 +1710,7 @@ $(function() {
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
-				if (chosenMatch == 5){
+				if (chosenMatch === 5){
 					if(!self.hideDebug()){console.log("PickSawBin 5, Y.");}
 					self.newT1YOffset = ((self.tool1YOffset()+(-2*self.calibrationOffset())).toString());
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
@@ -1853,7 +1851,7 @@ $(function() {
 			if (self.probeStep() === 3){
 				if(!self.hideDebug()){console.log("probeStep: "+self.probeStep().toString());}
 				//fourth check - make sure the M851 Z offset is sane
-				if (self.probeOffset()!=undefined && 0>self.probeOffset()>-3 ){
+				if (self.probeOffset()!==undefined && 0>self.probeOffset()>-3 ){
 					self.probeStep(4);
 					self.checkProbe();
 					return;
@@ -2023,7 +2021,7 @@ $(function() {
 
 		self.processProbeValue = function(probeLine){
 			self.filter = /([Z]):.*(\d+\.\d+)/;
-			match = self.filter.exec(probeLine);
+			var match = self.filter.exec(probeLine);
 			if (match !== undefined){
 				if(!self.hideDebug()){console.log(match);}
 				if(!self.hideDebug()){console.log(match[2]);}
@@ -2069,7 +2067,7 @@ $(function() {
 			self.probeCorners = [];
 			self.zProbeMax = undefined;
 			self.zProbeMin = undefined;
-			match = self.filter.exec(bedLevelLine);
+			var match = self.filter.exec(bedLevelLine);
 			if (match !== undefined){
 				if(!self.hideDebug()){console.log(match);}
 				self.xProbeArray = match[1].split(",");
@@ -2081,7 +2079,7 @@ $(function() {
 				var j = 0;
 				for (i = 0; i < self.xProbeArray.length; i++){
 					if (parseFloat(self.xProbeArray[i]) == 777){continue;}
-					newVal = parseFloat(self.xProbeArray[i]);
+					var newVal = parseFloat(self.xProbeArray[i]);
 					if (!self.xProbeArrayFiltered.includes(newVal)){
 						self.xProbePoints++;
 					}
@@ -2091,7 +2089,7 @@ $(function() {
 				j = 0;
 				for (i = 0; i < self.yProbeArray.length; i++){
 					if (parseFloat(self.yProbeArray[i]) == 777){continue;}
-					newVal = parseFloat(self.yProbeArray[i]);
+					var newVal = parseFloat(self.yProbeArray[i]);
 					if (!self.yProbeArrayFiltered.includes(newVal)){
 						self.yProbePoints++;
 					}
@@ -2102,7 +2100,7 @@ $(function() {
 				// j = 0;
 				for (i = 0; i < self.zProbeArray.length; i++){
 					if (parseFloat(self.zProbeArray[i]) == 777){continue;}
-					newVal = parseFloat(self.zProbeArray[i]);
+					var newVal = parseFloat(self.zProbeArray[i]);
 					if (i === 0){
 						self.zProbeMax = newVal;
 						self.zProbeMin = newVal;
@@ -2115,9 +2113,9 @@ $(function() {
 					// j++;
 				}
 				// if(!self.hideDebug()){console.log(self.yProbeArrayFiltered);)
-				for (i=0; i< self.xProbeArrayFiltered.length; i++){if(self.xProbeArrayFiltered[i]==undefined){self.xProbeArrayFiltered.splice(i,1);}}
-				for (i=0; i< self.yProbeArrayFiltered.length; i++){if(self.yProbeArrayFiltered[i]==undefined){self.yProbeArrayFiltered.splice(i,1);}}
-				for (i=0; i< self.zProbeArrayFiltered.length; i++){if(self.zProbeArrayFiltered[i]==undefined){self.zProbeArrayFiltered.splice(i,1);}}
+				for (i=0; i< self.xProbeArrayFiltered.length; i++){if(self.xProbeArrayFiltered[i]===undefined){self.xProbeArrayFiltered.splice(i,1);}}
+				for (i=0; i< self.yProbeArrayFiltered.length; i++){if(self.yProbeArrayFiltered[i]===undefined){self.yProbeArrayFiltered.splice(i,1);}}
+				for (i=0; i< self.zProbeArrayFiltered.length; i++){if(self.zProbeArrayFiltered[i]===undefined){self.zProbeArrayFiltered.splice(i,1);}}
 				self.firstCorner = [self.xProbeArrayFiltered[0],self.yProbeArrayFiltered[0],self.zProbeArrayFiltered[0]];
 				self.secondCorner = [self.xProbeArrayFiltered[self.xProbePoints-1],self.yProbeArrayFiltered[self.xProbePoints-1],self.zProbeArrayFiltered[self.xProbePoints-1]];
 				self.thirdCorner = [self.xProbeArrayFiltered[self.xProbeArrayFiltered.length-self.xProbePoints],self.yProbeArrayFiltered[self.xProbeArrayFiltered.length-self.xProbePoints],self.zProbeArrayFiltered[self.zProbePoints-self.xProbePoints]];
@@ -2172,7 +2170,7 @@ $(function() {
 
 
 
-				if (self.frontLeftTurns() == 0){
+				if (self.frontLeftTurns() === 0){
 					self.frontLeftString("The front left corner does not need to be adjusted at this time.");
 					self.frontLeftMm(0);
 				} else {
@@ -2186,7 +2184,7 @@ $(function() {
 					self.frontLeftString("The front left corner needs to be adjusted <strong>"+(self.frontLeftTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
-				if (self.frontRightTurns() == 0){
+				if (self.frontRightTurns() === 0){
 					self.frontRightString("The front right corner does not need to be adjusted at this time.");
 					self.frontRightMm(0);
 				} else {
@@ -2200,7 +2198,7 @@ $(function() {
 					self.frontRightString("The front right corner needs to be adjusted <strong>"+(self.frontRightTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
-				if (self.rearLeftTurns() == 0){
+				if (self.rearLeftTurns() === 0){
 					self.rearLeftString("The rear left corner does not need to be adjusted at this time.");
 					self.rearLeftMm(0);
 				} else {
@@ -2214,7 +2212,7 @@ $(function() {
 					self.rearLeftString("The rear left corner needs to be adjusted <strong>"+(self.rearLeftTurns().toString()) + "</strong>" +self.turns+self.direction);
 				}
 
-				if (self.rearRightTurns() == 0){
+				if (self.rearRightTurns() === 0){
 					self.rearRightString("The rear right corner does not need to be adjusted at this time.");
 					self.rearRightMm(0);
 				} else {
@@ -2374,7 +2372,7 @@ $(function() {
 
 		self.bedPreview = function(targetResult){
 			if(!self.hideDebug()){console.log(targetResult);}
-			if (targetResult == undefined || typeof(targetResult) != "number"){
+			if (targetResult === undefined || typeof(targetResult) != "number"){
 				targetResult = 0;
 			}
 			if(!self.hideDebug()){console.log(targetResult);}
@@ -2426,8 +2424,8 @@ $(function() {
 			// 				[.99, 'rgb(0, 0, 255)'],
 			// 				[1, 'rgb(255, 0, 0)']];
 			var colorscale = [[0.0, 'rgb(0, 150, 205)'],
-							[.5-0.0875, 'rgb(0, 0, 255)'],
-							[.5+0.0875, 'rgb(0, 0, 255)'],
+							[0.5-0.0875, 'rgb(0, 0, 255)'],
+							[0.5+0.0875, 'rgb(0, 0, 255)'],
 							[1, 'rgb(0, 150, 205)']];
 
 
@@ -2495,7 +2493,7 @@ $(function() {
 																			 
 		self.storeActivation = function(actkey) {
 			//console.log(actkey);
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "storeActivation", {"activation":actkey})
 				.done(function(response) {
 					//console.log(response);
@@ -2504,7 +2502,7 @@ $(function() {
 
 		self.checkActivation = function(actkey) {
 			//console.log(actkey);
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "checkActivation", {"userActivation":actkey})
 				.done(function(response) {
 					//console.log(response);
@@ -2512,7 +2510,7 @@ $(function() {
 		};
 
 		self.turnSshOn = function() {
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "turnSshOn")
 				.done(function(response) {
 					//console.log(response);
@@ -2520,7 +2518,7 @@ $(function() {
 		};
 
 		self.turnSshOff = function() {
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "turnSshOff")
 				.done(function(response) {
 					//console.log(response);
@@ -2528,7 +2526,7 @@ $(function() {
 		};
 
 		self.writeNetconnectdPassword = function(password) {
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "writeNetconnectdPassword", {"password":password})
 				.done(function(response) {
 					//console.log(response);
@@ -2536,7 +2534,7 @@ $(function() {
 		};
 
 		self.changeHostname = function(hostname) {
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "changeHostname", {"hostname":hostname})
 				.done(function(response) {
 					//console.log(response);
@@ -2551,7 +2549,7 @@ $(function() {
 				self.registered(false);
 				self.activated(false);
 			}
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "adminAction", {"action":targetAction})
 				.done(function(response) {
 					if(!self.hideDebug()){console.log(response);}
@@ -2570,12 +2568,12 @@ $(function() {
 
 		self.goTo = function (targetStep, forceNext){
 			console.log(forceNext);
-			if (self.specialNext() != undefined){
+			if (self.specialNext() !== undefined){
 				console.log(self.specialNext());
 				targetStep = self.specialNext();
 				self.specialNext(undefined);
 			} else {
-				if (forceNext != undefined){
+				if (forceNext !== undefined){
 					self.specialNext(forceNext);
 				} //quick hack to let us go to a step, but force the step after to be something outside of normal flow
 			//initially setup for filament loading - can now say from any step "go toload filament, and then go to X instead of 4"
@@ -2654,7 +2652,7 @@ $(function() {
 			if (testUrl === undefined){
 				testUrl = "none";
 			}
-			url = OctoPrint.getSimpleApiUrl("mgsetup");
+			var url = OctoPrint.getSimpleApiUrl("mgsetup");
 			OctoPrint.issueCommand(url, "checkGoogle", {"url":testUrl})
 				.done(function(response) {
 				//console.log(response);
@@ -2663,16 +2661,16 @@ $(function() {
 
 		self.notify = function (title,message,type,hide){
 
-			if(title == undefined){
+			if(title === undefined){
 				title = "Generic Notification";
 			}
-			if(message == undefined){
+			if(message === undefined){
 				message = "Generic Message (no, I don't know why we're sending this either)";
 			}
-			if(type == undefined){
+			if(type === undefined){
 				type = "info";
 			}
-			if(hide == undefined){
+			if(hide === undefined){
 				hide = false;
 			}
 			message = message.replace(/'/g, '\x27');
@@ -2687,7 +2685,7 @@ $(function() {
 		};
 		
 		self.showSettings = function(target) {
-			if (target == undefined){
+			if (target === undefined){
 				self.settings.show("settings_plugin_netconnectd");
 			} else {
 				self.settings.show(target);
@@ -2742,7 +2740,7 @@ $(function() {
 			}
 			if (input === "remind"){
 				self.support_widget.modal("hide");
-				url = OctoPrint.getSimpleApiUrl("mgsetup");
+				var url = OctoPrint.getSimpleApiUrl("mgsetup");
 				OctoPrint.issueCommand(url, "remindLater")
 					.done(function(response) {
 					//console.log(response);
@@ -2765,7 +2763,7 @@ $(function() {
 			//buttons after a period of time; use "enable: $root.lockButton()" in the data-bind of the button
 			//and then "$root.enableLockedButton(2000)" in the "click: function() { ... }" section;
 			//if just $root.enableLockedButton() is sent the default timeout will be 5 seconds.
-			if (timeoutLength != undefined && typeof(timeoutLength) === 'number'){
+			if (timeoutLength !== undefined && typeof(timeoutLength) === 'number'){
 				window.setTimeout(function() {self.lockButton(true)},timeoutLength);
 				return;
 			}
@@ -2786,7 +2784,7 @@ $(function() {
 		});
 
 		self.submitRegistration = function() {
-			if (self.newsletter() == true){
+			if (self.newsletter() === true){
 				self.newsletterValue = "1";
 			} else{
 				self.newsletterValue = "0";
@@ -2812,10 +2810,10 @@ $(function() {
 
 		self.incrementZWiggleHeight = function (amount) {
 			
-			if (amount == undefined){
+			if (amount === undefined){
 				amount = 0.01;
 			}
-			previousHeight = self.ZWiggleHeight();
+			var previousHeight = self.ZWiggleHeight();
 			
 			self.ZWiggleHeight((parseFloat(previousHeight) + parseFloat(amount)).toFixed(2));        
 			
@@ -2823,10 +2821,10 @@ $(function() {
 		
 		self.decrementZWiggleHeight = function (amount) {
 			
-			if (amount == undefined){
+			if (amount === undefined){
 				amount = 0.01;
 			}
-			previousHeight = self.ZWiggleHeight();
+			var previousHeight = self.ZWiggleHeight();
 			
 			self.ZWiggleHeight((previousHeight - amount).toFixed(2));
 		};
@@ -3024,7 +3022,7 @@ $(function() {
 			//self.updateCuraProfiles();
 			self.displayToolTemp(self.temperatures.tools()[0].actual);
 			self.displayToolTempTarget(self.temperatures.tools()[0].target);
-			if (self.temperatures.tools()[1] != undefined){
+			if (self.temperatures.tools()[1] !== undefined){
 				self.displayTool1Temp(self.temperatures.tools()[1].actual);
 				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
 			}
@@ -3221,7 +3219,7 @@ $(function() {
 				// console.log('Ignoring '+plugin);
 				return;
 			}
-			if (data.zoffsetline != undefined){
+			if (data.zoffsetline !== undefined){
 				var re = /Z(-?\d+\.\d\d)/;
 				if (re.exec(data.zoffsetline)){
 					var result = re.exec(data.zoffsetline);
@@ -3233,9 +3231,10 @@ $(function() {
 				}
 				self.zoffsetline(data.zoffsetline);
 			}
-			if (data.tooloffsetline != undefined){
+			if (data.tooloffsetline !== undefined){
 				var re = /([XYZ])-?\d+\.\d+/g;
-				while (result = re.exec(data.tooloffsetline)){
+				if (re.exec(data.tooloffsetline)){
+					var result = re.exec(data.tooloffsetline);
 					//var result = re.exec(data.tooloffsetline);
 					if(!self.hideDebug()){console.log(result);}
 					if (result[1]==="X"){
@@ -3274,22 +3273,22 @@ $(function() {
 				self.support_widget.modal("hide");
 
 			}
-			if (data.commandResponse != undefined ){
+			if (data.commandResponse !== undefined ){
 				//console.log(data.commandResponse);
 				self.commandResponse(self.commandResponse()+data.commandResponse);
 			}
-			if (data.commandError != undefined){
+			if (data.commandError !== undefined){
 				if(!self.hideDebug()){console.log(data.commandError);}
 				self.commandResponse(self.commandResponse()+data.commandError);
 			}
-			if (data.pleaseRemind != undefined){
+			if (data.pleaseRemind !== undefined){
 				self.remindPlease(true);
 				if (self.remindPlease()===true){
 					window.setTimeout(function() {self.showSupport()},10000);
 					if(!self.hideDebug()){console.log("Reminding.");}
 				}
 			}
-			if (data.internetConnection != undefined){
+			if (data.internetConnection !== undefined){
 				if (data.internetConnection){
 					self.googleGood(1);
 				} else{
@@ -3298,13 +3297,13 @@ $(function() {
 			}
 			//console.log(data.hostname);
 			//self.serialNumber(data.serial);
-			if (data.ip != undefined){
+			if (data.ip !== undefined){
 				self.ipAddress(data.ip);
-				if ((document.location.host) != undefined){
-					if (((document.location.host).split(":")[1]) != undefined){
+				if ((document.location.host) !== undefined){
+					if (((document.location.host).split(":")[1]) !== undefined){
 						self.ipPort(((document.location.host).split(":")[1]).toString());
 					}
-					if (((document.location.host).split(":")[0]) != undefined){
+					if (((document.location.host).split(":")[0]) !== undefined){
 						self.hostnameJS(((document.location.host).split(":")[0]).toString());
 					}
 				}
@@ -3332,10 +3331,10 @@ $(function() {
 			if (data.probeOffsetLine !== undefined){
 				if(!self.hideDebug()){console.log(data.probeOffsetLine);}
 				self.filter = /M851 Z(.?\d+\.\d+)/;
-				match = self.filter.exec(data.probeOffsetLine);
+				var match = self.filter.exec(data.probeOffsetLine);
 				if (match !== undefined){
-					if(!self.hideDebug()){console.log(match)};
-					if(!self.hideDebug()){console.log(match[1])};
+					if(!self.hideDebug()){console.log(match);}
+					if(!self.hideDebug()){console.log(match[1]);}
 				}
 				self.probeOffset(parseFloat(match[1]));
 			}
@@ -3416,7 +3415,7 @@ $(function() {
 
 
 
-		}
+		};
 
 
 		self.fromCurrentData = function (data) {
@@ -3473,7 +3472,7 @@ $(function() {
 			OctoPrint.printer.jog(data);
 			OctoPrint.control.sendGcode("M114");
 			var pitch = (10 / distance)  + 100;
-			var speed =  (195.2 *  distance) + 161
+			var speed =  (195.2 *  distance) + 161;
 			OctoPrint.control.sendGcode(["M300 S" + pitch + " P" + speed]);
 			//self._logger.info("M114 supposed to be sent...");
 		};

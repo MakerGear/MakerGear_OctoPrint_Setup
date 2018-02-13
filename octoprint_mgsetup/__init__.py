@@ -509,7 +509,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'])
+		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'], flushPrintActive=[])
 
 	def on_api_get(self, request):
 		self._logger.info("MGSetup on_api_get triggered.")
@@ -771,7 +771,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.adminAction(dict(action="sshState"))	
 
 	def on_api_command(self, command, data):
-		self._logger.info("MGSetup on_api_command triggered.")
+		self._logger.info("MGSetup on_api_command triggered.  Command: "+str(command)+" .  Data: "+str(data))
 		if command == 'turnSshOn':
 			self.turnSshOn()
 		elif command == 'turnSshOff':
@@ -794,6 +794,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.remindLater()
 		elif command == 'checkGoogle':
 			self.checkInternet(3,3, data['url'])
+		elif command == 'flushPrintActive':
+			self.printActive = False
 
 	def sendSerial(self):
 		self._logger.info("MGSetup sendSerial triggered.")
