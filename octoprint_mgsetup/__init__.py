@@ -21,6 +21,7 @@ import datetime
 import errno
 import sys
 import urllib2
+from logging.handlers import TimedRotatingFileHandler
 
 
 
@@ -59,6 +60,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.firmwareline = ""
 		self.localfirmwareline = ""
 		self.printActive = False
+		self.mgLogger = logging.getLogger("mgLumberJack")
+		self.mgLogger.setLevel(logging.DEBUG)
+		self.mgLogger.info("right after init test!?")
 
 
 
@@ -66,6 +70,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 	def on_settings_initialized(self):
+		self.mgLogger.info("First mgLogger test!?")
 		self._logger.info("MGSetup on_settings_initialized triggered.")
 		# octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), dict(controls=dict(children=dict(name="Medium Quality"), dict(commands=["M201 X900 Y900", "M205 X20 Y20", "M220 S50"]))))
 		#octoprint.settings.Settings.set(octoprint.settings.settings(), ["controls", "children", "name"],["Fan Orn"])
@@ -139,6 +144,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 	def on_after_startup(self):
+		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+		handler = logging.handlers.TimedRotatingFileHandler(self._basefolder+"/logs/mgsetup.log", when="d", interval=3, backupCount=10)
+		handler.setFormatter(formatter)
+		self.mgLogger.addHandler(handler)
+		
+		self.mgLogger.info("on_after_startup mgLogger test!")
+
 		self._logger.info("MGSetup on_after_startup triggered.")
 		self._logger.info("Hello Pablo!")
 		# self._logger.info("extruders: "+str(self._printer_profile_manager.get_current()))

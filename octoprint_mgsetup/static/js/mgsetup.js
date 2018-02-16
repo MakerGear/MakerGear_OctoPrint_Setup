@@ -14,6 +14,14 @@ $(function() {
 				if (priority === 1){
 					console.log(stringToLog);
 					//also send to Python side to log
+					var url = OctoPrint.getSimpleApiUrl("mgsetup");
+					OctoPrint.issueCommand(url, "mgLog", {"stringToLog":stringToLog,"priority":priority})
+						.done(function(response) {
+							console.log("mgLog response: "+response);
+						})
+						.fail(function(response){
+							console.log("mgLog fail response: "+response);
+				});
 				}
 			}
 		};
@@ -2816,7 +2824,7 @@ $(function() {
 				})
 				.fail(function(response){
 					alert("Something went wrong.  Please check all fields and try again, or contact Support@MakerGear.com .  Error: "+response.status+" "+response.statusText);
-					self.mgLog("submitRegistration response: "+response);
+					self.mgLog("submitRegistration fail response: "+response);
 				});
 		};
 
