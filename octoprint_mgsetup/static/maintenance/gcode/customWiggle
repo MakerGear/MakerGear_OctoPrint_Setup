@@ -15,8 +15,42 @@ M300 S1392 P250
 G90
 M83
 {% if heatup == true %}
+
+{% if wigglenumber == "035absrounded" %}
+M190 S110
+M109 T{{tool}} S260
+{% endif %}
+
+{% if wigglenumber == "025absflat" %}
+M190 S110
+M109 T{{tool}} S260
+{% endif %}
+
+{% if wigglenumber == "050absflat" %}
+M190 S110
+M109 T{{tool}} S265
+{% endif %}
+
+{% if wigglenumber == "075absflat" %}
+M190 S110
+M109 T{{tool}} S265
+{% endif %}
+
+{% if wigglenumber == "025plaflat" %}
 M190 S70
 M109 T{{tool}} S220
+{% endif %}
+
+{% if wigglenumber == "075plaflat" %}
+M190 S70
+M109 T{{tool}} S225
+{% endif %}
+
+{% if wigglenumber == "050psflat" %}
+M190 S70
+M109 T{{tool}} S220
+{% endif %}
+
 {% endif %}
 {% if tohome == true %}
 G28 X

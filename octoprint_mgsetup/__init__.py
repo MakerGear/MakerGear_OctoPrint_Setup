@@ -796,6 +796,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.checkInternet(3,3, data['url'])
 		elif command == 'flushPrintActive':
 			self.printActive = False
+			self._logger.info("flushPrintActive executed.")
 
 	def sendSerial(self):
 		self._logger.info("MGSetup sendSerial triggered.")
