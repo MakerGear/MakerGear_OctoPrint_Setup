@@ -1509,13 +1509,14 @@ $(function() {
 
 		self.showMaintenanceStep = function(inputStep, inputTab, subTab){
 			if(inputStep !== undefined && inputTab !== undefined){
+				self.linkingToMaintenance(true);
 				self.maintenancePage(inputStep);
 				$('.nav-tabs a[href='+'\''+inputTab.toString()+'\']').click();
-				self.linkingToMaintenance(true);
+				
 				//return true;
 				if (subTab !== undefined){
-					$('.nav-tabs a[href='+'\''+subTab.toString()+'\']').click();
 					self.linkingToMaintenance(true);
+					$('.nav-tabs a[href='+'\''+subTab.toString()+'\']').click();
 				}
 			}
 			
@@ -3157,15 +3158,21 @@ $(function() {
 		};
 
 		self.onAfterTabChange = function(current, previous){
-			// console.log(current);
-			// console.log(previous);
+			self.mgLog("Current tab:"+current);
+			self.mgLog("Previous tab:"+previous);
 			if(previous === "#tab_plugin_mgsetup_maintenance"){
+				if (self.linkingToMaintenance() === true){
+					self.linkingToMaintenance(false);
+					self.mgLog("Breaking onAfterTabChange.");
+					return;
+				}
 				self.resetStep(self.maintenancePage());
 				self.mgLog("Reset page: "+self.maintenancePage().toString());
 			}
 			if(current === "#tab_plugin_mgsetup_maintenance"){
-				if (self.linkingToMaintenance()){
+				if (self.linkingToMaintenance() === true){
 					self.linkingToMaintenance(false);
+					self.mgLog("Breaking onAfterTabChange.");
 					return;
 				}
 				self.resetStep(self.maintenancePage());
