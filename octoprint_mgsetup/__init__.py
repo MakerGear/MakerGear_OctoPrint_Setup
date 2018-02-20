@@ -22,6 +22,7 @@ import errno
 import sys
 import urllib2
 from logging.handlers import TimedRotatingFileHandler
+from logging.handlers import RotatingFileHandler
 
 
 
@@ -62,9 +63,54 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.printActive = False
 		self.mgLogger = logging.getLogger("mgLumberJack")
 		self.mgLogger.setLevel(logging.DEBUG)
+		self.mgLoggerFirstRun = logging.getLogger("mgFirstRun")
+		self.mgLoggerFirstRun.setLevel(5)
+		self.mgLoggerPermanent = logging.getLogger("mgPermanent")
+		self.mgLoggerPermanent.setLevel(5)
 		self.mgLogger.info("right after init test!?")
 
 
+
+
+	def create_loggers(self):
+		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+		handler = logging.handlers.TimedRotatingFileHandler(self._basefolder+"/logs/mgsetup.log", when="d", interval=3, backupCount=10)
+		firstRunHandler = logging.handlers.RotatingFileHandler(self._basefolder+"/logs/mgsetupFirstRun.log", maxBytes=100000000, backupCount=20)
+		# firstRunHandler.setLevel(5)
+		permanentHandler = logging.handlers.RotatingFileHandler(self._basefolder+"/logs/mgsetupPermanent.log", maxBytes=100000000, backupCount=20)
+		# permanentHandler.setLevel(5)
+		handler.setFormatter(formatter)
+		firstRunHandler.setFormatter(formatter)
+		permanentHandler.setFormatter(formatter)
+		self.mgLogger.addHandler(handler)
+		# self.mgLogger.addHandler(firstRunHandler)
+		# self.mgLogger.addHandler(permanentHandler)
+		self.mgLoggerPermanent.addHandler(permanentHandler)
+		self.mgLoggerFirstRun.addHandler(firstRunHandler)
+
+
+		# self.mgLogger.info("on_after_startup mgLogger test!")
+		self.mgLog("general test",0)
+		self.mgLog("permanent test",2)
+		self.mgLog("firstrun test",3)
+		self.mgLog("permanent and first run test",4)
+
+
+
+
+	def mgLog(self,message,level):
+		self._logger.info(message)
+		self.mgLogger.info(message)
+		if (level == 2):
+			self.mgLoggerPermanent.info(message)
+			self.mgLogger.info("Also logged to PERMANENT")
+		if (level == 3):
+			self.mgLoggerFirstRun.info(message)
+			self.mgLogger.info("Also logged to FIRST RUN")
+		if (level == 4):
+			self.mgLoggerPermanent.info(message)
+			self.mgLoggerFirstRun.info(message)
+			self.mgLogger.info("Also logged to PERMANENT and FIRST RUN")
 
 
 
@@ -144,13 +190,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 	def on_after_startup(self):
-		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-		handler = logging.handlers.TimedRotatingFileHandler(self._basefolder+"/logs/mgsetup.log", when="d", interval=3, backupCount=10)
-		handler.setFormatter(formatter)
-		self.mgLogger.addHandler(handler)
-		
-		self.mgLogger.info("on_after_startup mgLogger test!")
-
+		self.create_loggers()
 		self._logger.info("MGSetup on_after_startup triggered.")
 		self._logger.info("Hello Pablo!")
 		# self._logger.info("extruders: "+str(self._printer_profile_manager.get_current()))
@@ -372,6 +412,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					#_log_stderr(*lines)
 					all_stderr += list(lines)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
+					# self.mgLog(lines,2)
 
 				lines = p.stdout.readlines(timeout=0.5)
 				if lines:
@@ -381,6 +422,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._logger.info(lines)
 					self._logger.info(all_stdout)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
+					# self.mgLog(lines,2)
 
 		finally:
 			p.close()
@@ -392,6 +434,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			all_stderr += lines
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
 			self._logger.info(lines)
+			# self.mgLog(lines,2)
 
 		lines = p.stdout.readlines()
 		if lines:
@@ -667,7 +710,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Wifi reset!")
 		elif action["action"] == 'uploadFirmware':
 			#subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
-			self._execute("/home/pi/.octoprint/scripts/upload.sh")
+			self.mgLog(self._execute("/home/pi/.octoprint/scripts/upload.sh"),2)
 			self._logger.info("Firmware uploaded!")
 		elif action["action"] == 'counterTest':
 			self.counterTest(action)
