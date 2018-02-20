@@ -91,9 +91,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		# self.mgLogger.info("on_after_startup mgLogger test!")
 		self.mgLog("general test",0)
-		self.mgLog("permanent test",2)
-		self.mgLog("firstrun test",3)
-		self.mgLog("permanent and first run test",4)
+		# self.mgLog("permanent test",2)
+		# self.mgLog("firstrun test",3)
+		# self.mgLog("permanent and first run test",4)
 
 
 
@@ -577,7 +577,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def process_z_offset(self, comm, line, *args, **kwargs):
 
 		if self.printActive:
-			self._logger.info("printActive true, skipping filters.")
+			# self._logger.debug("printActive true, skipping filters.")
+			# self._logger.info("printActive true, skipping filters - info")
 			return line
 
 		# if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line and "Error" not in line and "z_min" not in line and "Bed X:" not in line and "M851" not in line:
@@ -750,6 +751,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.enableRadios()
 		elif action["action"] == 'flushPrintActive':
 			self.printActive = False
+			self.mgLog("flushPrintActive called",2)
 
 
 

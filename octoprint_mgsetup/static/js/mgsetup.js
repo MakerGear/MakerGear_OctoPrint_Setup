@@ -71,6 +71,7 @@ $(function() {
 		self.maintenanceThirteenPrepared = ko.observable(false);
 		self.maintenanceThirteenSaved = ko.observable(false);
 		self.specialNext = ko.observable(undefined); //used to alter flow - "goto load filament, then X instead of default Y"
+		self.linkingToMaintenance = ko.observable(false);
 
 		//UI controls:
 		self.hideDebug = ko.observable(true);
@@ -1506,12 +1507,18 @@ $(function() {
 
 		};
 
-		self.showMaintenanceStep = function(inputStep, inputTab){
+		self.showMaintenanceStep = function(inputStep, inputTab, subTab){
 			if(inputStep !== undefined && inputTab !== undefined){
 				self.maintenancePage(inputStep);
 				$('.nav-tabs a[href='+'\''+inputTab.toString()+'\']').click();
+				self.linkingToMaintenance(true);
 				//return true;
+				if (subTab !== undefined){
+					$('.nav-tabs a[href='+'\''+subTab.toString()+'\']').click();
+					self.linkingToMaintenance(true);
+				}
 			}
+			
 
 
 			//$(".nav-tabs a[href='#coldZ']").click();
@@ -3157,10 +3164,13 @@ $(function() {
 				self.mgLog("Reset page: "+self.maintenancePage().toString());
 			}
 			if(current === "#tab_plugin_mgsetup_maintenance"){
+				if (self.linkingToMaintenance()){
+					self.linkingToMaintenance(false);
+					return;
+				}
 				self.resetStep(self.maintenancePage());
 				self.mgLog("Reset page: "+self.maintenancePage().toString());
 			}
-
 		};
 
 		self.onUserLoggedIn = function (data){

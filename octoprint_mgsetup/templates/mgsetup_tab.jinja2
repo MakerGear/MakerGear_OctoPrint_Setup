@@ -57,6 +57,12 @@
 <hr />
 
 <!--    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>-->
+
+    function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}
+
+<center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.showMaintenanceStep(9,'#tab_plugin_mgsetup_maintenance','#mechanicalAdjustments'); window.scroll(0,0) }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Nozzle Change Instructions') }}</button>
+
+
     
                 <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button><button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown(); $root.adminAction('flushPrintActive') }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
                 <br><br>
