@@ -663,7 +663,7 @@ $(function() {
 				var context = {};
 				self.mgLog("parameters.wiggleHeight: "+parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("customProbeWiggle", context, parameters);
-				if (self.setupStep() === '20' || self.maintenancePage() === 20){
+				if (self.setupStep() === '20' || self.maintenancePage() === 200){
 					self.stepTwentyFirstWiggleClicked(true);
 				}
 			}
@@ -1857,6 +1857,7 @@ $(function() {
 		self.probeLevelActiveCorner = ko.observable(0);
 		self.setHomeOffsetFromProbe = ko.observable(false);
 		self.bedAdjustmentRounds = ko.observable(0);
+		self.noTurns = ko.observable(false); //used for Maintenance Assisted Bed Leveling to determine when we're done, but still let the user continue if they want
 
 
 
@@ -1995,6 +1996,7 @@ $(function() {
 			self.lastCorner(false);
 			self.autoCheckClicked(false);
 			self.bedAdjustmentRounds(0);
+			self.noTurns(false);
 
 			clearTimeout(self.probeFail);
 			return;
@@ -2294,7 +2296,7 @@ $(function() {
 					self.waitingForProbeResponse(false);
 					clearTimeout(self.probeFail);
 					if (self.zLevelError() > 0.35){
-						self.mgLog("Bed is out of level more than ±0.5, going to assisted leveling.");
+						self.mgLog("Bed is out of level more than ±0.35, going to assisted leveling.");
 						// self.setupStep("21");
 						self.goTo("21");
 						self.probeCheckReset();
@@ -2359,6 +2361,10 @@ $(function() {
 				if ( nextCorner === -1){ //check if the turn array does NOT contain any more corners to adjust
 					if(self.probeLevelActiveCorner() === 0){ //if no corners left to adjust and at position 0, we're done
 						self.mgLog("next corner probs.  Pretty sure Kyle wrote this one.  Still not actually sure what it means.");
+						if (self.maintenancePage() === 21){
+							self.noTurns(true);
+							return;
+						}
 						if(!self.isDual()){
 							self.goTo('23');
 						} else {
@@ -2448,9 +2454,9 @@ $(function() {
 			// self.tempArray = [];
 			self.tempZArray = Array.from(self.bedLevelResults()[targetResult][2]);
 			// console.log(self.bedLevelResults());
-			for (i=0; i<(self.bedLevelResults()[targetResult][4][1]) ; i++){
+			for (var i=0; i<(self.bedLevelResults()[targetResult][4][1]) ; i++){
 				self.tempArray = [];
-				for (j=0; j<self.bedLevelResults()[targetResult][4][0]; j++){
+				for (var j=0; j<self.bedLevelResults()[targetResult][4][0]; j++){
 					// console.log(self.tempZArray);
 					self.tempArray.push(self.tempZArray.shift());
 					//self.tempArray[] = self.bedLevelResults()[targetResult][2][i];
@@ -3495,6 +3501,13 @@ $(function() {
 			// MakerGear M3 Single Extruder Rev 1		M3-SE Rev1-000
 			// MakerGear M3 Independent Dual Rev 1		M3-ID Rev1-000
 			var profileString = self.settings.printerProfiles.currentProfileData().model().toString();
+			self.mgLog("profileString:");
+			self.mgLog(profileString);
+			if (profileString === ""){
+				self.mgLog("profileString seems to be blank, checking again.");
+				window.setTimeout(function() {self.parseProfile()},2000);
+				return;
+			}
 			// if (profileString.indexOf("ID")!==-1){
 			// 	self.isDual(true);
 			// } else {
