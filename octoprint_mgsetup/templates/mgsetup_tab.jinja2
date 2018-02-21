@@ -5,15 +5,16 @@
 
 
 
-<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: loginState.isUser">
-<br>
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: loginState.isUser && setupStep()!='0' ">
+        
+        <p data-bind=" visible: loginState.isUser && setupStep()!=='0'" style="font-size:11px;text-align:center;"><strong style="font-size:14px;">Progress Bar</strong> <br />Do not refresh during the setup process, or you will need to start over from the beginning.</p>
+
                 <div class="progress">
                     {# <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat(setupStep())) * (100/parseFloat(maxSteps()))) + '%'} "></div> #}
                     {# <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat($root.setupStepHistory().length)) * (100/parseFloat(maxSteps()))) + '%'} "></div> #}
                     <div class="progress bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="parseFloat(maxSteps())" data-bind="style: {width: ((parseFloat($root.stepProgressArray[parseFloat(setupStep())])) * (100/parseFloat(maxSteps()))) + '%'} "></div>
                 </div>
 
-        <h5 data-bind=" visible: loginState.isUser && setupStep()!=='0'"><center>NOTE: Do not refresh during the setup process, or you will need to start over from the beginning.</center></h5>
         </div>
 
 
@@ -32,9 +33,9 @@
 {# Welcome #}
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='0'">
-<center>
-    <h3>Welcome to the MakerGear M3 Quick Start Plugin!</h3>
-    <br><br></center>
+
+  
+
 
 
     <div data-bind="visible: ($root.googleGood()===-1)"><p>    We're currently checking your Internet Connection Status.</p>
@@ -52,72 +53,95 @@
     <div data-bind="visible: $root.googleGood()===1">
         <!--<p>
             You are connected to the Internet - please proceed to Quick Check 
-        </p>-->
+        <hr />
+           </p>-->
     </div>
-<hr />
 
-<!--    Designed to ensure consistent machine performance, the Quick Check process is a software-assisted procedure used for periodic verification of the MakerGear M3’s calibration (10-20 minutes). If Quick Check determines that your MakerGear M3 requires recalibration, you will proceed to a comprehensive calibration process (20-40 minutes) that will help maintain the performance benefits of True-Leveling on your MakerGear M3.<br><br><center>-->
+            <style>
+                .buttonColumn {
+                    float: left;
+                    width: 33.33%;
+                }
 
-
-<center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.showMaintenanceStep(9,'#tab_plugin_mgsetup_maintenance','#mechanicalAdjustments'); window.scroll(0,0) }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Nozzle Change Instructions') }}</button>
-
-
-    
-                <center> <button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button><button style="width:150px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown(); $root.adminAction('flushPrintActive') }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Begin Quick Check') }}</button></center>
-                <br><br>
-                <center>
-                <button style="width:125px;height:75px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), click: function() { $root.preflightDialog.modal('show') ; window.scroll(0,0); $root.cooldown(); $root.adminAction('flushPrintActive') }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Change Nozzle') }}</button></center>
-                <p style="font-size:16px;text-align:center; margin-top:20px;">
-                    This guided process will help you verify your M3's calibration and make any necessary adjustments.  
-                </p>
-
-                <p style="text-align:center; margin-top:20px;">
-                    Need to calibrate a specific feature on your printer? Check out the <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Maintenance Tab.</a>
-
-                </p>
-    
+                /* Clear floats after the columns */
+                .buttonRow:after {
+                    content: "";
+                    display: table;
+                    clear: both;
+                }
 
 
+            </style>
+
+
+            <div class="buttonRow" style="text-align:center;">
+                <div class="buttonColumn">
+                    <button style="width:130px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() {  $root.goTo('28'); window.scroll(0,0); $root.cooldown() }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Quick Check') }}</button>
+                
+                    <button style="width:130px;height:100px;" class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() { $root.goTo('28'); window.scroll(0,0); $root.cooldown(); $root.adminAction('flushPrintActive') }"><span class="icon-gear" style="font-size:40px;"></span><br /> {{ _('Quick Check') }}</button>
+                    <br />
+                    Verify your M3's calibration.
+                </div>
+
+                <div class="buttonColumn">
+                     <button style="width:130px;height:100px;" class="btngo"  onClick="window.open('https://makergear.zendesk.com/hc/en-us','_blank','menubar=yes,resizable=yes,height=520,width=740'); return false;" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button>
+                     <br />
+                     Learn more about your M3.
+
+                </div>
+
+                <div class="buttonColumn">
+                     <button style="width:130px;height:100px;" class="btngo"  data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}" ><span class="icon-stethoscope" style="font-size:40px;"></span><br /> {{ _('Maintenance') }}</button>
+                    <br />
+                     Perform routine maintenance tasks.
+
+                </div>
+
+
+            </div>
 
 
 
-<hr />
-<br />
-                <center> <button style="width:150px;height:100px;" class="btngo"  onClick="window.open('https://makergear.zendesk.com/hc/en-us','_blank','menubar=yes,resizable=yes,height=520,width=740'); return false;" ><span class="icon-book" style="font-size:40px;"></span><br /> {{ _('Knowledge Base') }}</button></center>
+              
+              <hr />
 
 
-                <p style="font-size:16px;text-align:center; margin-top:20px;">
-                    To learn more about how to use your M3, check out the <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">MakerGear Knowledge Base</a>. Below are some articles to get you started.
-                </p>
+<h2>FAQs</h2>
+            <div style="width:50%;float:left;">
+             <h4>Octoprint with the M3</h4>
+
+                    <ul>
+                        <li><a href="https://makergear.zendesk.com/hc/en-us/sections/115000740806-OctoPrint-the-control-interface-for-your-printer" target="_blank">What is OctoPrint? </a>
+                        <li><a href="https://makergear.zendesk.com/hc/en-us/articles/115002709903-OctoPrint-for-MakerGear-How-to-convert-an-STL-file-into-a-physical-object-
+    " target="_blank">How do I print my own designs? </a>
+                        <li><a href="https://makergear.zendesk.com/hc/en-us/articles/115002763003-OctoPrint-for-MakerGear-Manipulate-and-multiply-3D-models-using-CuraEngine-and-more" target="_blank"> How do I view my models before printing? </a>
 
 
+                    </ul>
+                </div>
+
+                 <div style="width:50%;float:left;">
+                    <h4>Simplify3D With the M3</h4>
+                    <ul>
+                        <li>What is Simplify3D?</li>
+                        <li><a href="https://makergear.zendesk.com/hc/en-us/articles/115004464806-Simplify3D-Profiles-and-Factory-Files-for-M3-and-M3ID" target="_blank">How do I install profiles for the M3 in Simplify3D? </a>
+                        <li data-bind="visible: !$root.isDual()"><a href="https://makergear.zendesk.com/hc/en-us/articles/115003052343-Simplify3D-Workflow" target="_blank">How do I use Simplify3D with my M3-SE?</a>
+                        <li data-bind="visible: $root.isDual()"><a href="https://makergear.zendesk.com/hc/en-us/articles/115004621743-Single-Extrusion-Prints-with-the-M3ID" target="_blank">How do I use Simplify3D with my M3-ID? </a>
 
 
-                <h4>Octoprint</h4>
+                        <!--Independent Dual Single Extrusion prints with Simplify 3D </a>
+                        <li data-bind="visible: $root.isDual()"><a href="https://makergear.zendesk.com/hc/en-us/articles/115004637866-Dual-Color-Prints-with-the-M3ID" target="_blank">M3 Independent Dual 2-Color Prints with Simplify 3D</a>
+                        -->
+                    </ul>
 
-                <ul>
-                    <li><a href="https://makergear.zendesk.com/hc/en-us/sections/115000740806-OctoPrint-the-control-interface-for-your-printer" target="_blank">Octoprint Overview </a>
-                    <li><a href="https://makergear.zendesk.com/hc/en-us/articles/115002709903-OctoPrint-for-MakerGear-How-to-convert-an-STL-file-into-a-physical-object-
-" target="_blank"> Basic Slicing & Printing with Octoprint </a>
-                    <li><a href="https://makergear.zendesk.com/hc/en-us/articles/115002763003-OctoPrint-for-MakerGear-Manipulate-and-multiply-3D-models-using-CuraEngine-and-more" target="_blank"> Enabling and Using Graphical Slicing </a>
+                </div>
 
+                <div style="clear:both;"></div>
 
-                </ul>
-
-
-                <h4>Using Simplify3D With Octoprint</h4>
-                <ul>
-                    <li><a href="https://makergear.zendesk.com/hc/en-us/articles/115004464806-Simplify3D-Profiles-and-Factory-Files-for-M3-and-M3ID" target="_blank">Installing M3 Profiles in Simplify3D</a>
-                    <li data-bind="visible: !$root.isDual()"><a href="https://makergear.zendesk.com/hc/en-us/articles/115003052343-Simplify3D-Workflow" target="_blank">M3 Single Extruder Workflow</a>
-                    <li data-bind="visible: $root.isDual()"><a href="https://makergear.zendesk.com/hc/en-us/articles/115004621743-Single-Extrusion-Prints-with-the-M3ID" target="_blank">M3 Independent Dual Single Extrusion prints with Simplify 3D </a>
-                    <li data-bind="visible: $root.isDual()"><a href="https://makergear.zendesk.com/hc/en-us/articles/115004637866-Dual-Color-Prints-with-the-M3ID" target="_blank">M3 Independent Dual 2-Color Prints with Simplify 3D</a>
-
-                </ul>
 
 
 
 </div>
-</center>
 
 {#        88    #}
 {#      ,d88    #}
@@ -3078,6 +3102,135 @@ Any other failure modes we want here - top surface of glass should be Xmm above 
 </div>
 
 
+{#                            
+
+ ad888888b,  ad88888ba
+d8"     "88 d8"     "8b
+        a8P Y8a     a8P
+     ,d8P"   "Y8aaa8P"
+   a8P"      ,d8"""8b,
+ a8P'       d8"     "8b
+d8"         Y8a     a8P
+88888888888  "Y88888P"
+
+      
+                            #}
+
+<div data-bind="visible: loginState.isUser && setupStep()==='28'">
+
+
+<h1 style="text-align:left;">Before proceeding to quick check, please answer the following questions.</h1>
+
+
+<p id="28guideQuestion" style="font-size:16px;">
+    Have you completed the 'Setup' section of your M3 User Guide (included with your printer)?
+</p>
+
+<div style="text-align:center;">
+
+            <span style="margin-left:auto;margin-right:auto;display:inline-block;">
+                <button style="padding:7px;" class="btngo" data-bind="click: function() { $root.stepTwentyEightGuideFollowed(true) }">&nbsp;&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;</button>
+
+                <button  style="padding:7px;" class="btngo" data-bind="click: function() { $root.stepTwentyEightGuideFollowed(false) }">&nbsp;&nbsp;&nbsp;No&nbsp;&nbsp;&nbsp;</button>
+            </span>
+</div>
+
+<div data-bind="visible: $root.stepTwentyEightGuideFollowed()== false">
+
+
+        <p>
+            Before you can proceed you must follow the instructions in the 'Hardware Setup' section of the M3 User Guide . This will include installing the HBP, Glass, bed hold-down clips and spool holder.
+        </p>
+
+        <p>
+            The User Guides for each printer model are also available online at the links below. (Interent connection required to download manuals)
+        </p>
+
+        <ul>
+            <li><a href="http://setup.makergear.com/m3UserGuideV1-0.pdf" target="_blank">M3 SE Rev0</a>
+            <li><a href="http://setup.makergear.com/Setup_M3-ID_User%20Guide.pdf" target="_blank">M3 ID Rev0</a>
+           <!-- <li><a href="">M3 SE Rev1</a>
+            <li><a href="">M3 ID Rev1</a>-->
+        </ul>
+</div>
+
+<div data-bind="visible: $root.stepTwentyEightGuideFollowed()== true">
+
+
+<br />
+<br />
+            
+       
+        <p id="28guideQuestion" style="font-size:16px;">
+            Have you replaced, installed, or removed the hot-end or nozzle since the last time you used your printer?
+        </p>
+
+
+
+<div style="text-align:center;">
+
+        <span style="margin-left:auto;margin-right:auto;display:inline-block;">
+            <button style="padding:7px;"  class="btngo" data-bind="click: function() { $root.hotendChangeDialog.modal('show') ; window.scroll(0,0); }">&nbsp;&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;</button>
+
+
+
+                     <button style="padding:7px;"  class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: !hasProbe(), click: function() { $root.goTo('1'); window.scroll(0,0); $root.cooldown() }">{{ _('No - Proceed to Quick Check') }}</button>
+                
+                   <button style="padding:7px;"  class="btngo" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser(), visible: hasProbe(), click: function() {  $root.goTo('17'); window.scroll(0,0); $root.cooldown(); $root.adminAction('flushPrintActive') }">{{ _('No - Proceed to Quick Check') }}</button>
+            </span>
+
+</div>
+
+
+
+
+    <div data-bind="visible: $root.stepTwentyEightHotendReplaced()== false">
+
+  
+
+    </div>
+
+    <div data-bind="visible: $root.stepTwentyEightHotendReplaced()== true">
+        <p>
+            Before proceeding to quick check, please make sure you have followed the instructions for replacing and setting the start height on your hot-end. 
+        </p>
+
+        <p>
+            Please note: all brand new printers have 
+        </p>
+
+
+
+
+
+        <button class="btngoBig" data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}" }">Change T0 Hotend (Left)</button>
+
+        <button class="btngoBig" data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}" }">Change T1 Hotend (Right)</button>
+
+
+            
+            
+
+    </div>
+
+
+</div>
+
+
+
+                   
+
+
+
+
+
+
+</div>
+
+
+
+
+
 
 
 
@@ -3134,6 +3287,8 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test failure</div>
     <div><input type="radio" name="setupStepSelect" value="25" data-bind="checked: setupStep, click: window.scroll(0,0)" />25 extrude, load both</div>
     <div><input type="radio" name="setupStepSelect" value="26" data-bind="checked: setupStep, click: window.scroll(0,0)" />26 print dual pattern</div>
+    <div><input type="radio" name="setupStepSelect" value="27" data-bind="checked: setupStep, click: window.scroll(0,0)" />27 Too many bed level check</div>
+    <div><input type="radio" name="setupStepSelect" value="28" data-bind="checked: setupStep, click: window.scroll(0,0)" />28 guide & hotend question</div>
 
 
 </div>
@@ -3174,14 +3329,53 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 
 <div id="dialog-preflight" title="Preflight Check" class="modal hide fade medium">
     <div style="width:95%; height:95%; margin:auto; "><p><br>
-    <center>Before starting Quick Check, please complete all setup procedures contained in the M3 User Guide booklet (included with your M3).<br>
+    <center>You can now begin quickcheck.<br>
 
     </center><br><br>
-    <button style="float: left; width: 35%;" data-bind="click: function() { $root.preflightDialog.modal('hide')}">Cancel Quick Check</button><button style="float: right; width: 45%;" data-bind="visible: !hasProbe(), click: function() { $root.goTo('1'); $root.preflightDialog.modal('hide') }">Begin Quick Check</button><button style="float: right; width: 45%;" data-bind="visible: hasProbe(), click: function() { $root.goTo('17'); $root.preflightDialog.modal('hide') }">Begin Quick Check</button><br><br>
+    <button style="float: left; width: 35%;" data-bind="click: function() { $root.preflightDialog.modal('hide')}">Cancel Quick Check</button>
+
+    <button style="float: right; width: 45%;" data-bind="visible: !hasProbe(), click: function() { $root.goTo('1'); $root.preflightDialog.modal('hide') }">Begin Quick Check</button>
+
+    <button style="float: right; width: 45%;" data-bind="visible: hasProbe(), click: function() { $root.goTo('17'); $root.preflightDialog.modal('hide') }">Begin Quick Check</button>
+
+    <br><br>
     {# <div style="float:right"><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me again.</div><br> #}
 
     </div><br>
 </div>
+
+
+<div id="dialog-hotend-replacement" title="Hotend Replacement Check" class="modal hide fade medium">
+    <div style="width:95%; height:95%; margin:auto; "><p><br>
+
+
+
+        Before you can proceed with quick check you must ensure your hot-end is properly installed and calibrated using the option(s) below. 
+
+
+        <br />
+        
+        
+
+		<div style="text-align:center;">
+		
+			<span style="margin-left:auto;margin-right:auto;display:inline-block;">
+				<button style=" width: 40%;" data-bind=" click: function() {  $root.hotendChangeDialog.modal('hide');$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); }">T0 Hotend Replacement Instructions</button>
+				<button style="width: 40%;" data-bind=" click: function() {  $root.hotendChangeDialog.modal('hide');$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); }">T1 Hotend Replacement Instructions</button><br><br>
+			</span>
+		</div>
+
+
+
+    <button style="float: left; width: 35%;" data-bind="click: function() { $root.hotendChangeDialog.modal('hide')}">Cancel </button>
+
+
+    </div><br>
+</div>
+
+
+
+
 
 <div id="dialog-wiggle" title="Zigzag Print Confirmation" class="modal hide fade medium">
     <div style="width:95%; height:95%; margin:auto; "><p><br>

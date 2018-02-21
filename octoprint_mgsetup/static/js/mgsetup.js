@@ -207,6 +207,10 @@ $(function() {
 		self.tool1XOffset = ko.observable(undefined);
 		self.tool1YOffset = ko.observable(undefined);
 		self.tool1ZOffset = ko.observable(undefined);
+		self.stepTwentyEightGuideFollowed = ko.observable(undefined); 
+		self.stepTwentyEightHotendReplaced = ko.observable(undefined); 
+
+
 
 
 		// Orphaned Variables?  Test...:
@@ -3006,6 +3010,12 @@ $(function() {
 				self.mgLog(targetStep);
 				self.stepThreeStartHeatingClicked(false);
 			}
+			if (targetStep === 28){
+				self.mgLog("resetStep targetStep:");
+				self.mgLog(targetStep);
+				self.stepTwentyEightGuideFollowed(undefined);
+				self.stepTwentyEightHotendReplaced(undefined);
+			}
 
 		};
 
@@ -3098,6 +3108,7 @@ $(function() {
 			self.command_response_popup = $("#command_response_popup");
 			self.printSawBinDialog = $("#dialog-sawbin");
 			self.preflightDialog = $("#dialog-preflight");
+			self.hotendChangeDialog = $("#dialog-hotend-replacement");
 			self.printWiggleDialog = $("#dialog-wiggle");
 			self.stepOneDialog = $("#dialog-stepOne");
 			self.bedConfigDialog = $("#dialog-bedConfigDialog");
