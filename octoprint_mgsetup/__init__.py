@@ -564,7 +564,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'], flushPrintActive=[])
+		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'], flushPrintActive=[], mgLog=['stringToLog','priority'])
 
 	def on_api_get(self, request):
 		self._logger.info("MGSetup on_api_get triggered.")
@@ -751,7 +751,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.enableRadios()
 		elif action["action"] == 'flushPrintActive':
 			self.printActive = False
-			self.mgLog("flushPrintActive called",2)
+			self.mgLog("flushPrintActive called",0)
 
 
 
@@ -854,6 +854,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif command == 'flushPrintActive':
 			self.printActive = False
 			self._logger.info("flushPrintActive executed.")
+		elif command == 'mgLog':
+			self.mgLog(data['stringToLog'],data['priority'])
 
 	def sendSerial(self):
 		self._logger.info("MGSetup sendSerial triggered.")

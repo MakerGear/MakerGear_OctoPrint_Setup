@@ -26,7 +26,8 @@ $(function() {
 			}
 		};
 
-		self.mgLog("Parameters: "+parameters);
+		self.mgLog("Parameters: ",1);
+		self.mgLog(parameters,1);
 
 		// Originally from Controls tab:
 		self.loginState = parameters[0];
@@ -643,6 +644,25 @@ $(function() {
 					self.stepTwentyFirstWiggleClicked(true);
 				}
 			}
+			if (wigglePosition === "probe-custom"){
+				
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+				heatup: true,
+				wiggleX: 90,
+				wiggleY: 110,
+				tohome: true,
+				wigglenumber: self.customWiggle(),
+				tool: 0};
+				if (self.stepTwentyFirstWiggleClicked()){
+					parameters.tohome = false;
+				}
+				var context = {};
+				self.mgLog("parameters.wiggleHeight: "+parameters.wiggleHeight);
+				OctoPrint.control.sendGcodeScriptWithParameters("customProbeWiggle", context, parameters);
+				if (self.setupStep() === '20' || self.maintenancePage() === 20){
+					self.stepTwentyFirstWiggleClicked(true);
+				}
+			}
 
 		};
 
@@ -695,8 +715,8 @@ $(function() {
 		};
 
 		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
-
-
+			var temperature;
+			var hotend;
 
 
 			if (targetTemperature === undefined){
@@ -768,7 +788,8 @@ $(function() {
 
 
 		self.sendMaintenancePreheat = function (targetHotend, targetTemperature) {
-
+			var temperature;
+			var hotend;
 
 
 
@@ -1518,6 +1539,8 @@ $(function() {
 					self.linkingToMaintenance(true);
 					$('.nav-tabs a[href='+'\''+subTab.toString()+'\']').click();
 				}
+			} else if (inputStep !== undefined){
+				self.maintenancePage(inputStep);
 			}
 			
 
