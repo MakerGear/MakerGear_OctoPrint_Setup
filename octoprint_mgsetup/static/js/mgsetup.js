@@ -5,7 +5,7 @@ $(function() {
 		self.mgLog = function(stringToLog, priority){
 
 			if (priority === undefined){
-				priority = 0;
+				priority = 0; //default priority level if not defined
 			}
 			if (stringToLog !== undefined){
 				if (priority === 0){
@@ -15,13 +15,14 @@ $(function() {
 					console.log(stringToLog);
 					//also send to Python side to log
 					var url = OctoPrint.getSimpleApiUrl("mgsetup");
+					console.log(url);
 					OctoPrint.issueCommand(url, "mgLog", {"stringToLog":stringToLog,"priority":priority})
 						.done(function(response) {
-							console.log("mgLog response: "+response);
+							console.log("mgLog send to server-side done; response: "+response);
 						})
 						.fail(function(response){
-							console.log("mgLog fail response: "+response);
-				});
+							console.log("mgLog send to server-side failed!  Response: "+response);
+						});
 				}
 			}
 		};
@@ -168,6 +169,7 @@ $(function() {
 		self.unlockAdvanced = ko.observable(false);
 		self.pluginVersion = ko.observable("");
 		self.firmwareline = ko.observable("");
+		self.profileString = ko.observable("");
 
 		// Quick Check Process starting/default values:
 		self.ZWiggleHeight = ko.observable(0.20);
@@ -3166,6 +3168,7 @@ $(function() {
 			// 	self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button data-bind=\"click: function() { $root.showSettings() }\">Mark as last read</button>","error",false);
 			// }
 			self.parseProfile();
+			self.checkParameters();
 			window.setTimeout(function() {self.urlLogin()},500);
 		
 		};
@@ -3459,7 +3462,63 @@ $(function() {
 		// 	}
 		// };
 
+		self.failedParameterChecks = ko.observable(0);
 
+
+		self.checkParameters = function(){
+			if (self.failedParameterChecks() > 15){
+				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
+				self.mgLog("Bailing on checkParameters, alerting user.");
+				self.notify("Printer Parameter Issue","It looks like one or more parameters that the Quick Check process requires are missing or invalid.  Please Restart OctoPrint and the printer and try again.  If this issue continues, please contact support.");
+				self.failedParameterChecks(0);
+				return;
+			}
+
+			var profileString = self.profileString();
+			var zOffsetLine = self.zoffsetline();
+			var probeOffset = self.probeOffset();
+			var tooloffsetline = self.tooloffsetline();
+			var failedThisRound = false;
+
+			if (profileString === "" || profileString === undefined){
+				self.parseProfile();
+				failedThisRound = true;
+				self.mgLog("checkParameters failed!  Bad profileString:"+profileString);
+			}
+
+			if (!self.hasProbe()){
+				if (zOffsetLine === "" || zOffsetLine === undefined){
+					self.requestEeprom();
+					failedThisRound = true;
+					self.mgLog("checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
+				}
+			} else {
+				if (probeOffset === "" || probeOffset === undefined || probeOffset > 0 || probeOffset < -3){
+					self.parseProfile();
+					self.requestEeprom();
+					failedThisRound = true;
+					self.mgLog("checkParameters failed!  Bad probeOffset:"+probeOffset);
+				}
+			}
+
+
+			if (failedThisRound){
+				var timeScaler = 0;
+				self.failedParameterChecks(self.failedParameterChecks()+1);
+				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
+				if (self.failedParameterChecks()>=10){
+					timeScaler = 10;
+				} else {
+					timeScaler = self.failedParameterChecks();
+				}
+				window.setTimeout(function() {self.checkParameters()},(1000+(1000*timeScaler)));
+			} else {
+				self.failedParameterChecks(0);
+				self.mgLog("checkParameters passed!");
+			}
+
+
+		};
 
 
 
@@ -3500,12 +3559,12 @@ $(function() {
 			// MakerGear M3 Independent Dual Rev 0		M3-ID Rev0-005
 			// MakerGear M3 Single Extruder Rev 1		M3-SE Rev1-000
 			// MakerGear M3 Independent Dual Rev 1		M3-ID Rev1-000
-			var profileString = self.settings.printerProfiles.currentProfileData().model().toString();
+			self.profileString(self.settings.printerProfiles.currentProfileData().model().toString());
 			self.mgLog("profileString:");
-			self.mgLog(profileString);
-			if (profileString === ""){
+			self.mgLog(self.profileString());
+			if (self.profileString() === ""){
 				self.mgLog("profileString seems to be blank, checking again.");
-				window.setTimeout(function() {self.parseProfile()},2000);
+				//window.setTimeout(function() {self.parseProfile()},2000);
 				return;
 			}
 			// if (profileString.indexOf("ID")!==-1){
@@ -3514,7 +3573,7 @@ $(function() {
 			// 	self.isDual(false);
 			// }
 
-			if (profileString.indexOf("M3-SE Rev0-005") !== -1 || profileString.indexOf("Rev1-000") !== -1){
+			if (self.profileString().indexOf("M3-SE Rev0-005") !== -1 || self.profileString().indexOf("Rev1-000") !== -1){
 				self.hasProbe(true);
 				self.mgLog("hasProbe true!");
 			} else {

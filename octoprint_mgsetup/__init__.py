@@ -112,6 +112,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.mgLoggerFirstRun.info(message)
 			self.mgLogger.info("Also logged to PERMANENT and FIRST RUN")
 
+			# Defined as an API target as well, so we can target it from octoprint client - [wherever]/octoprint client post_json '/api/plugin/mgsetup' '{"command":"mgLog","stringToLog":"[whateverYouWantToLog]","priority":"[priorityLevel]"}
+			
+
 
 
 
