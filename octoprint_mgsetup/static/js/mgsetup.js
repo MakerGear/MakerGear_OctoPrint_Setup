@@ -1537,7 +1537,33 @@ $(function() {
 		self.showMaintenanceStep = function(inputStep, inputTab, subTab){
 			if(inputStep !== undefined && inputTab !== undefined){
 				self.linkingToMaintenance(true);
-				self.maintenancePage(inputStep);
+				if (typeof(inputStep)==="number"){
+					self.maintenancePage(inputStep);
+				} else {
+					// if (inputStep === "hotendReplacement"){
+					// 	if (self.isDual()){
+					// 		self.maintenancePage();
+					// 	} else {
+					// 		self.maintenancePage();
+					// 	}
+					// }
+					if (inputStep === "hotBedLevel"){
+						if (self.hasProbe()){
+							self.maintenancePage(21);
+						} else {
+							self.maintenancePage(6);
+						}
+					}
+
+					if (inputStep === "hotZOffset"){
+						if (self.hasProbe()){
+							self.maintenancePage(200);
+						} else {
+							self.maintenancePage(41);
+						}
+					}
+
+				}
 				$('.nav-tabs a[href='+'\''+inputTab.toString()+'\']').click();
 				
 				//return true;
@@ -3563,7 +3589,7 @@ $(function() {
 			self.mgLog("profileString:");
 			self.mgLog(self.profileString());
 			if (self.profileString() === ""){
-				self.mgLog("profileString seems to be blank, checking again.");
+				//self.mgLog("profileString seems to be blank, checking again.");
 				//window.setTimeout(function() {self.parseProfile()},2000);
 				return;
 			}
