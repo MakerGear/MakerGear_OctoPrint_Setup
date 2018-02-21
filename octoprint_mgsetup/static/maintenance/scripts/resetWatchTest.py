@@ -8,7 +8,8 @@ import shutil
 import pwd
 import grp
 import os
-
+import datetime
+import sys
 
 GPIO.setwarnings(False)
 
@@ -26,62 +27,72 @@ nextInterval = 0.0   # Time of next recurring operation
 #print( "M300 S110 P100", file=/dev/ttyS0)
 
 
-def copyAndLog(fromFile, toFile):
-
+def copyAndLog(fromFile, toFile, logfile):
   try: 
     shutil.copy(fromFile, toFile)
   except EnvironmentError as e:
-    print "Copy Environmental Error on ", fromFile , "to" , toFile 
-    print e
-    print ""
+    logfile.write("")
+    logfile.write("")
+    logfile.write("-----ERROR-----\n")
+    logfile.write("Copy Environmental Error on " + fromFile  + " to "  + toFile + "\n")
+    logfile.write(str(e))
+    logfile.write("")
   except Exception as e:
-    print "Copy  Non Enviromental Error on ", fromFile , "to" , toFile 
-    print e
-    print ""
+    logfile.write("")
+    logfile.write("")
+    logfile.write("-----ERROR-----\n")
+    logfile.write("Copy  Non Enviromental Error on " + fromFile  + " to "  + toFile  + "\n")
+    logfile.write(str(e))
+    logfile.write("---------------\n")
   else:
-    print "File copied from ", fromFile , "to" , toFile , "sucesfully"
+    logfile.write("File copied from " + fromFile  + " to "  + toFile  + " sucesfully\n")
 
-def chmodAndLog(file, permission):
-
+def chmodAndLog(file, permission, logfile):
   try: 
     os.chmod(file, permission)
   except EnvironmentError as e:
-    print "CHMOD Environmental Error on ", file , "to" , permission 
-    print e
-    print ""
+    logfile.write("")
+    logfile.write("")
+    logfile.write("-----ERROR-----\n")
+    logfile.write("CHMOD Environmental Error on " + file  + " to "  + str(permission)  + "\n")
+    logfile.write(str(e))
+    logfile.write("---------------\n")
   except Exception as e:
-    print "CHMOD  Non Enviromental Error on ", file , "to" , permission 
-    print e
-    print ""
+    logfile.write("")
+    logfile.write("")
+    logfile.write("-----ERROR-----\n")
+    logfile.write("CHMOD  Non Enviromental Error on " + file  + " to "  + str(permission)  + "\n")
+    logfile.write(str(e))
+    logfile.write("---------------\n")
   else:
-    print "File permission changed ", file , "to" , permission , "sucesfully"
+    logfile.write("File permission changed " + file  + " to "  + str(permission)  + " sucesfully\n")
 
-def chownAndLog(file, uid, gid):
-
+def chownAndLog(file, uid, gid, logfile):
   try: 
     os.chown(file, uid, gid)
   except EnvironmentError as e:
-    print "CHOWN Environmental Error on ", file , "to" , uid 
-    print e
-    print ""
+    logfile.write("")
+    logfile.write("")
+    logfile.write("-----ERROR-----\n")
+    logfile.write("CHOWN Environmental Error on " + file  + " to "  + str(uid)  + "\n")
+    logfile.write(str(e))
+    logfile.write("---------------\n")
   except Exception as e:
-    print "CHOWN Non Enviromental Error on ", file , "to" , uid 
-    print e
-    print ""
+    logfile.write("")
+    logfile.write("")
+    logfile.write("-----ERROR-----\n")
+    logfile.write("CHOWN Non Enviromental Error on " + file  + " to "  + str(uid) + "\n") 
+    logfile.write(str(e))
+    logfile.write("---------------\n")
   else:
-    print "Chown ", file , "to" , uid , "sucesfully"
+    logfile.write("Chown " + file  + " to "  + str(uid)  + " sucesfully\n")
 
 
-
-
-
-
-
-
-
-
-# Called when button is briefly tapped.  Invokes time/temperature script.
+# Called when button is briefly tapped.  cancel print script
 def tap():
+
+  ts = time.time()
+  dateTimeVal = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
   avrFlag = 0
 
@@ -93,13 +104,33 @@ def tap():
   if avrFlag == 0:
     #print("cancel and Reset Start")
     subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/cancelPrint.sh',shell=True,stdout=subprocess.PIPE)
+    
+    logText = "Cancel script was activated because the RAMBo reset button  / reset line was tapped at  " + dateTimeVal 
+    persistentLogFileName = "/home/pi/.octoprint/logs/cancel_and_shutdown_from_reset.log"
+    persistentLogfile = open(persistentLogFileName, "a")
+    persistentLogfile.write(logText + "\n")
+    persistentLogfile.close()
+
+    subprocess.Popen('sudo -u pi /home/pi/oprint/bin/octoprint client post_json \'/api/plugin/mgsetup\' \'{"command":"mgLog","stringToLog":"' + logText + '","priority":"0"}\'',shell=True,stdout=subprocess.PIPE)
+
+
+
     #print("cancel and Reset Done ")
   #else:
     #print("don't reset thing")
 
+
+
+
+
+
+
 # Called when button is held down.  Prints image, invokes shutdown process.
 def shutdownHold():
   time.sleep(2)
+  ts = time.time()
+  dateTimeVal = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
+
   #print("shutdown")
 
   ser = serial.Serial("/dev/ttyS0", 115200, timeout=1)
@@ -111,15 +142,36 @@ def shutdownHold():
   ser.write("M300 S783 P400 \r\n")
   ser.close()
 
+
+
+  logText = "System was Shutdown because the RAMBo reset button  / reset line was held for more than 10 seconds at " + dateTimeVal 
+  persistentLogFileName = "/home/pi/.octoprint/logs/cancel_and_shutdown_from_reset.log"
+  persistentLogfile = open(persistentLogFileName, "a")
+  persistentLogfile.write(logText + "\n")
+  persistentLogfile.close()
+
+  subprocess.Popen('sudo -u pi /home/pi/oprint/bin/octoprint client post_json \'/api/plugin/mgsetup\' \'{"command":"mgLog","stringToLog":"' + logText + '","priority":"0"}\'',shell=True,stdout=subprocess.PIPE)
+
+
   subprocess.call("sync")
   subprocess.call(["shutdown", "-h", "now"])
 
-
-
 def resetPasswordHold():
+
+
+  print( "start")
+
+  ts = time.time()
   time.sleep(2)
+  dateTimeVal = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
+  logFileName = "/home/pi/.octoprint/logs/sytem_restore_" + dateTimeVal  + ".log"
+
+  logfile = open(logFileName, "w")
+  print(logFileName)
+  logfile.write("test")
   #print("reset")
   ser = serial.Serial("/dev/ttyS0", 115200, timeout=1)
+
   ser.close()
   ser.open()
   ser.write("M300 S523 P400 \r\n")
@@ -128,42 +180,44 @@ def resetPasswordHold():
   ser.close()
   
 
-  subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/stopOctoprint.sh',shell=True,stdout=subprocess.PIPE)
+  #subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/stopOctoprint.sh',shell=True,stdout=subprocess.PIPE)
 
 
   subprocess.call(["netconnectcli", "forget_wifi"])
 
 
   #copy and log current files to user backups
-  copyAndLog(fromFile, toFile):
 
-  copyAndLog("/etc/netconnectd.yaml", "/etc/netconnectd.yaml.userold")
-  copyAndLog("/home/pi/.octoprint/config.yaml", "/home/pi/.octoprint/config.yaml.userold")
-  copyAndLog("/home/pi/.octoprint/users.yaml", "/home/pi/.octoprint/users.yaml.userold")
-  copyAndLog("/etc/network/interfaces", "/etc/network/interfaces.userold")
+
+
+  copyAndLog("/etc/netconnectd.yaml", "/etc/netconnectd.yaml.userold",logfile)
+  copyAndLog("/home/pi/.octoprint/config.yaml", "/home/pi/.octoprint/config.yaml.userold",logfile)
+  copyAndLog("/home/pi/.octoprint/users.yaml", "/home/pi/.octoprint/users.yaml.userold",logfile)
+  copyAndLog("/etc/network/interfaces", "/etc/network/interfaces.userold",logfile)
 
 
   #copy and log canonical backups to working files
-  copyAndLog("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml")
-  copyAndLog("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml")
-  copyAndLog("/home/pi/.octoprint/scripts/interfaces", "/etc/network/interfaces")
-  copyAndLog("/etc/netconnectd.yaml.backup", "/etc/netconnectd.yaml")
-  copyAndLog("/home/pi/.octoprint/scripts/config.txt.original", "/boot/config.txt")
+  copyAndLog("/home/pi/.octoprint/config.yaml.backup", "/home/pi/.octoprint/config.yaml",logfile)
+  copyAndLog("/home/pi/.octoprint/users.yaml.backup", "/home/pi/.octoprint/users.yaml",logfile)
+  copyAndLog("/home/pi/.octoprint/scripts/interfaces", "/etc/network/interfaces",logfile)
+  copyAndLog("/etc/netconnectd.yaml.backup", "/etc/netconnectd.yaml",logfile)
+  copyAndLog("/home/pi/.octoprint/scripts/config.txt.original", "/boot/config.txt",logfile)
+
 
 
   #ensure all permissions are correctly set
-  chmodAndLog("/etc/netconnectd.yaml", 0600)
-  chmodAndLog("/etc/network/interfaces", 0644)
-  chmodAndLog("/home/pi/.octoprint/config.yaml", 0600)
-  chmodAndLog("/home/pi/.octoprint/users.yaml", 0600)
+  chmodAndLog("/etc/netconnectd.yaml", 0600,logfile)
+  chmodAndLog("/etc/network/interfaces", 0644,logfile)
+  chmodAndLog("/home/pi/.octoprint/config.yaml", 0600,logfile)
+  chmodAndLog("/home/pi/.octoprint/users.yaml", 0600,logfile)
 
   
-  chmodAndLog("/etc/netconnectd.yaml.userold", 0600)
-  chmodAndLog("/etc/network/interfaces.userold", 0644)
-  chmodAndLog("/home/pi/.octoprint/config.yaml.userold", 0600)
-  chmodAndLog("/home/pi/.octoprint/users.yaml.userold", 0600)
+  chmodAndLog("/etc/netconnectd.yaml.userold", 0600,logfile)
+  chmodAndLog("/etc/network/interfaces.userold", 0644,logfile)
+  chmodAndLog("/home/pi/.octoprint/config.yaml.userold", 0600,logfile)
+  chmodAndLog("/home/pi/.octoprint/users.yaml.userold", 0600,logfile)
 
-  chmodAndLog("/home/pi/", 0755)
+  chmodAndLog("/home/pi/", 0755,logfile)
 
 
   #get GID/UID
@@ -174,16 +228,20 @@ def resetPasswordHold():
 
 
   #ensure ownership on files is correct
-  chownAndLog("/etc/netconnectd.yaml.userold", uidRoot, gidRoot)
-  chownAndLog("/etc/network/interfaces.userold", uidRoot, gidRoot)
-  chownAndLog("/home/pi/.octoprint/config.yaml.userold", uidPi, gidPi)
-  chownAndLog("/home/pi/.octoprint/users.yaml.userold", uidPi, gidPi)
-  chownAndLog("/etc/netconnectd.yaml", uidRoot, gidRoot)
-  chownAndLog("/etc/network/interfaces", uidRoot, gidRoot)
-  chownAndLog("/home/pi/.octoprint/config.yaml", uidPi, gidPi)
-  chownAndLog("/home/pi/.octoprint/users.yaml", uidPi, gidPi)
+  chownAndLog("/etc/netconnectd.yaml.userold", uidRoot, gidRoot,logfile)
+  chownAndLog("/etc/network/interfaces.userold", uidRoot, gidRoot,logfile)
+  chownAndLog("/home/pi/.octoprint/config.yaml.userold", uidPi, gidPi,logfile)
+  chownAndLog("/home/pi/.octoprint/users.yaml.userold", uidPi, gidPi,logfile)
+  chownAndLog("/etc/netconnectd.yaml", uidRoot, gidRoot,logfile)
+  chownAndLog("/etc/network/interfaces", uidRoot, gidRoot,logfile)
+  chownAndLog("/home/pi/.octoprint/config.yaml", uidPi, gidPi,logfile)
+  chownAndLog("/home/pi/.octoprint/users.yaml", uidPi, gidPi,logfile)
 
 
+
+  # copyAndLog("/home/pi/there/is/no/spoon", "/home/pi/spoon",logfile)
+  # chmodAndLog("/home/pi/there/is/no/spoon", 0600,logfile)
+  # chownAndLog("/home/pi/there/is/no/spoon", uidRoot, gidRoot,logfile)
 
 
 
@@ -191,6 +249,21 @@ def resetPasswordHold():
   subprocess.call("sync")
   subprocess.call(["update-rc.d", "ssh", "enable"])
   subprocess.call(["invoke-rc.d", "ssh", "start"])
+
+
+  logfile.close()
+
+
+
+
+  logText = "System was restored because the RAMBo reset button  / reset line was held for more than 60 seconds at " + dateTimeVal + " See " + logFileName + "for more information"
+  persistentLogFileName = "/home/pi/.octoprint/logs/cancel_and_shutdown_from_reset.log"
+  persistentLogfile = open(persistentLogFileName, "a")
+  persistentLogfile.write(logText + "\n")
+  persistentLogfile.close()
+
+  subprocess.Popen('sudo -u pi /home/pi/oprint/bin/octoprint client post_json \'/api/plugin/mgsetup\' \'{"command":"mgLog","stringToLog":"' + logText + '","priority":"0"}\'',shell=True,stdout=subprocess.PIPE)
+
 
   #restart, force FSCK
   subprocess.call(["shutdown", "-r", "-F", "now"])
@@ -218,6 +291,7 @@ def sshOn():
   subprocess.call("sync")
   subprocess.call(["update-rc.d", "ssh", "enable"])
   subprocess.call(["invoke-rc.d", "ssh", "start"])
+
 
 
 
