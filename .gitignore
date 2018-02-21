@@ -17,7 +17,7 @@ dist
 
 *.webm
 
-
+*.log
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/

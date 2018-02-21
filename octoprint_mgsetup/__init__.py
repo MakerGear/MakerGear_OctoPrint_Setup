@@ -21,6 +21,8 @@ import datetime
 import errno
 import sys
 import urllib2
+from logging.handlers import TimedRotatingFileHandler
+from logging.handlers import RotatingFileHandler
 
 
 
@@ -59,13 +61,62 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.firmwareline = ""
 		self.localfirmwareline = ""
 		self.printActive = False
+		self.mgLogger = logging.getLogger("mgLumberJack")
+		self.mgLogger.setLevel(logging.DEBUG)
+		self.mgLoggerFirstRun = logging.getLogger("mgFirstRun")
+		self.mgLoggerFirstRun.setLevel(5)
+		self.mgLoggerPermanent = logging.getLogger("mgPermanent")
+		self.mgLoggerPermanent.setLevel(5)
+		self.mgLogger.info("right after init test!?")
 
 
+
+
+	def create_loggers(self):
+		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+		handler = logging.handlers.TimedRotatingFileHandler(self._basefolder+"/logs/mgsetup.log", when="d", interval=3, backupCount=10)
+		firstRunHandler = logging.handlers.RotatingFileHandler(self._basefolder+"/logs/mgsetupFirstRun.log", maxBytes=100000000, backupCount=20)
+		# firstRunHandler.setLevel(5)
+		permanentHandler = logging.handlers.RotatingFileHandler(self._basefolder+"/logs/mgsetupPermanent.log", maxBytes=100000000, backupCount=20)
+		# permanentHandler.setLevel(5)
+		handler.setFormatter(formatter)
+		firstRunHandler.setFormatter(formatter)
+		permanentHandler.setFormatter(formatter)
+		self.mgLogger.addHandler(handler)
+		# self.mgLogger.addHandler(firstRunHandler)
+		# self.mgLogger.addHandler(permanentHandler)
+		self.mgLoggerPermanent.addHandler(permanentHandler)
+		self.mgLoggerFirstRun.addHandler(firstRunHandler)
+
+
+		# self.mgLogger.info("on_after_startup mgLogger test!")
+		self.mgLog("general test",0)
+		# self.mgLog("permanent test",2)
+		# self.mgLog("firstrun test",3)
+		# self.mgLog("permanent and first run test",4)
+
+
+
+
+	def mgLog(self,message,level):
+		self._logger.info(message)
+		self.mgLogger.info(message)
+		if (level == 2):
+			self.mgLoggerPermanent.info(message)
+			self.mgLogger.info("Also logged to PERMANENT")
+		if (level == 3):
+			self.mgLoggerFirstRun.info(message)
+			self.mgLogger.info("Also logged to FIRST RUN")
+		if (level == 4):
+			self.mgLoggerPermanent.info(message)
+			self.mgLoggerFirstRun.info(message)
+			self.mgLogger.info("Also logged to PERMANENT and FIRST RUN")
 
 
 
 
 	def on_settings_initialized(self):
+		self.mgLogger.info("First mgLogger test!?")
 		self._logger.info("MGSetup on_settings_initialized triggered.")
 		# octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), dict(controls=dict(children=dict(name="Medium Quality"), dict(commands=["M201 X900 Y900", "M205 X20 Y20", "M220 S50"]))))
 		#octoprint.settings.Settings.set(octoprint.settings.settings(), ["controls", "children", "name"],["Fan Orn"])
@@ -139,6 +190,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 	def on_after_startup(self):
+		self.create_loggers()
 		self._logger.info("MGSetup on_after_startup triggered.")
 		self._logger.info("Hello Pablo!")
 		# self._logger.info("extruders: "+str(self._printer_profile_manager.get_current()))
@@ -360,6 +412,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					#_log_stderr(*lines)
 					all_stderr += list(lines)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
+					# self.mgLog(lines,2)
 
 				lines = p.stdout.readlines(timeout=0.5)
 				if lines:
@@ -369,6 +422,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._logger.info(lines)
 					self._logger.info(all_stdout)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
+					# self.mgLog(lines,2)
 
 		finally:
 			p.close()
@@ -380,6 +434,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			all_stderr += lines
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
 			self._logger.info(lines)
+			# self.mgLog(lines,2)
 
 		lines = p.stdout.readlines()
 		if lines:
@@ -440,31 +495,52 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
 			self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
 			self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
-			self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
+			self.activeProfile = (self._printer_profile_manager.get_current_or_default()["model"])
+			# self._logger.info(self._printer_profile_manager.get_current_or_default()["model"])
 			self._logger.info("Profile: "+self.activeProfile)
-			self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
-			self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
 
-			# self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
-			# self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
-			if (self.extruderCount == 2):
-				try:
-					shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
-					self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Dual configuration to Configuration_makergear.h"))
-				except IOError as e:
-					self._logger.info("Tried to copy Dual configuration but encountered an error!")
-					self._logger.info("Error: "+str(e))
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Dual configuration but encountered an error!  Error: "+str(e)))
-			else:
-				try:
-					shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
-					self._logger.info("Copied the Single configuration to Configuration_makergear.h")
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Single configuration to Configuration_makergear.h"))
-				except IOError as e:
-					self._logger.info("Tried to copy Single configuration but encountered an error!")
-					self._logger.info("Error: "+str(e))
-					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Single configuration but encountered an error!  Error: "+str(e)))
+			newProfileString = (re.sub('[^\w]','_',self.activeProfile)).upper()
+
+			with open('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h','r+') as f:
+				timeString = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
+				oldConfig = f.read()
+				f.seek(0,0)
+				if f.readline() == "\n":
+					f.seek(0,0)
+					f.write("#define " + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + oldConfig)
+				else:
+					f.seek(0,0)
+					oldLine = f.readline()
+					f.seek(0,0)
+					i = oldConfig.index("\n")
+					oldConfigStripped = oldConfig[i+1:]
+					f.write("#define " + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n" + oldConfigStripped)
+
+
+
+			# self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
+			# self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
+
+			# # self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
+			# # self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
+			# if (self.extruderCount == 2):
+			# 	try:
+			# 		shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+			# 		self._logger.info("Copied the Dual configuration to Configuration_makergear.h")
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Dual configuration to Configuration_makergear.h"))
+			# 	except IOError as e:
+			# 		self._logger.info("Tried to copy Dual configuration but encountered an error!")
+			# 		self._logger.info("Error: "+str(e))
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Dual configuration but encountered an error!  Error: "+str(e)))
+			# else:
+			# 	try:
+			# 		shutil.copyfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3SE','/home/pi/m3firmware/src/Marlin/Configuration_makergear.h')
+			# 		self._logger.info("Copied the Single configuration to Configuration_makergear.h")
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied the Single configuration to Configuration_makergear.h"))
+			# 	except IOError as e:
+			# 		self._logger.info("Tried to copy Single configuration but encountered an error!")
+			# 		self._logger.info("Error: "+str(e))
+			# 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Tried to copy Single configuration but encountered an error!  Error: "+str(e)))
 			self.getLocalFirmwareVersion()
 
 		else:
@@ -488,7 +564,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'])
+		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'], flushPrintActive=[], mgLog=['stringToLog','priority'])
 
 	def on_api_get(self, request):
 		self._logger.info("MGSetup on_api_get triggered.")
@@ -501,7 +577,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def process_z_offset(self, comm, line, *args, **kwargs):
 
 		if self.printActive:
-			self._logger.info("printActive true, skipping filters.")
+			# self._logger.debug("printActive true, skipping filters.")
+			# self._logger.info("printActive true, skipping filters - info")
 			return line
 
 		# if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line and "Error" not in line and "z_min" not in line and "Bed X:" not in line and "M851" not in line:
@@ -634,7 +711,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Wifi reset!")
 		elif action["action"] == 'uploadFirmware':
 			#subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
-			self._execute("/home/pi/.octoprint/scripts/upload.sh")
+			self.mgLog(self._execute("/home/pi/.octoprint/scripts/upload.sh"),2)
 			self._logger.info("Firmware uploaded!")
 		elif action["action"] == 'counterTest':
 			self.counterTest(action)
@@ -674,6 +751,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.enableRadios()
 		elif action["action"] == 'flushPrintActive':
 			self.printActive = False
+			self.mgLog("flushPrintActive called",0)
 
 
 
@@ -750,7 +828,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.adminAction(dict(action="sshState"))	
 
 	def on_api_command(self, command, data):
-		self._logger.info("MGSetup on_api_command triggered.")
+		self._logger.info("MGSetup on_api_command triggered.  Command: "+str(command)+" .  Data: "+str(data))
 		if command == 'turnSshOn':
 			self.turnSshOn()
 		elif command == 'turnSshOff':
@@ -773,6 +851,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.remindLater()
 		elif command == 'checkGoogle':
 			self.checkInternet(3,3, data['url'])
+		elif command == 'flushPrintActive':
+			self.printActive = False
+			self._logger.info("flushPrintActive executed.")
+		elif command == 'mgLog':
+			self.mgLog(data['stringToLog'],data['priority'])
 
 	def sendSerial(self):
 		self._logger.info("MGSetup sendSerial triggered.")
