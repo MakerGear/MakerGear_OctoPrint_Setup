@@ -15,3 +15,5 @@ gpio -g mode 4 up
 #
 
 /home/pi/oprint/bin/octoprint client command "/api/connection" "connect"
+
+/home/pi/oprint/bin/octoprint client command "/api/plugin/mgsetup" "flushPrintActive"
