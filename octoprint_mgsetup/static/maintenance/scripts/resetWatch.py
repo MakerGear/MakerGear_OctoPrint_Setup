@@ -180,7 +180,7 @@ def resetPasswordHold():
   ser.close()
   
 
-  #subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/stopOctoprint.sh',shell=True,stdout=subprocess.PIPE)
+  subprocess.Popen('sudo -u pi /home/pi/.octoprint/scripts/stopOctoprint.sh',shell=True,stdout=subprocess.PIPE)
 
 
   subprocess.call(["netconnectcli", "forget_wifi"])
