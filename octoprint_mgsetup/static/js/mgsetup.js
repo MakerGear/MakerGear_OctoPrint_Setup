@@ -1943,7 +1943,6 @@ $(function() {
 				self.mgLog("probeStep: "+self.probeStep().toString());
 				//fourth check - make sure the M851 Z offset is sane
 				if (self.probeOffset()!==undefined && 0>self.probeOffset()>-3 ){
-					self.mgLog("probeCheck step 3 failed; self.probeOffset() = "+self.probeOffset());
 					self.probeStep(4);
 					self.checkProbe();
 					return;
@@ -1951,6 +1950,7 @@ $(function() {
 					self.probeCheckReset();
 					self.goTo("24");
 					self.failedStep(3);
+					self.mgLog("probeCheck step 3 failed; self.probeOffset() = "+self.probeOffset());
 				}
 
 				// OctoPrint.control.sendGcode(["T0",
@@ -3499,6 +3499,11 @@ $(function() {
 		self.failedParameterCheckLines = ko.observable("");
 
 		self.checkParameters = function(){
+			if (self.isOperational() === false){
+				window.setTimeout(function() {self.checkParameters()},(10000));
+				self.mgLog("checkParameters called but not connected to printer!  Calling again in 10 seconds.");
+				return;
+			}
 			if (self.failedParameterChecks() > 3){
 				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
 				self.mgLog("Bailing on checkParameters, alerting user.");
