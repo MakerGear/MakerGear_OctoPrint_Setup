@@ -5,7 +5,7 @@ $(function() {
 		self.mgLog = function(stringToLog, priority){
 
 			if (priority === undefined){
-				priority = 0; //default priority level if not defined
+				priority = 1; //default priority level if not defined
 			}
 			if (stringToLog !== undefined){
 				if (priority === 0){
@@ -15,13 +15,13 @@ $(function() {
 					console.log(stringToLog);
 					//also send to Python side to log
 					var url = OctoPrint.getSimpleApiUrl("mgsetup");
-					console.log(url);
+					// console.log(url);
 					OctoPrint.issueCommand(url, "mgLog", {"stringToLog":stringToLog,"priority":priority})
 						.done(function(response) {
-							console.log("mgLog send to server-side done; response: "+response);
+							// console.log("mgLog send to server-side done; response: "+response);
 						})
 						.fail(function(response){
-							console.log("mgLog send to server-side failed!  Response: "+response);
+							console.log("mgLog send to server-side failed!  Response: "+response+" Original message: "+stringToLog);
 						});
 				}
 			}
@@ -1536,6 +1536,8 @@ $(function() {
 
 		self.showMaintenanceStep = function(inputStep, inputTab, subTab){
 			if(inputStep !== undefined && inputTab !== undefined){
+				self.requestEeprom();
+				self.checkParameters();
 				self.linkingToMaintenance(true);
 				if (typeof(inputStep)==="number"){
 					self.maintenancePage(inputStep);
@@ -1941,6 +1943,7 @@ $(function() {
 				self.mgLog("probeStep: "+self.probeStep().toString());
 				//fourth check - make sure the M851 Z offset is sane
 				if (self.probeOffset()!==undefined && 0>self.probeOffset()>-3 ){
+					self.mgLog("probeCheck step 3 failed; self.probeOffset() = "+self.probeOffset());
 					self.probeStep(4);
 					self.checkProbe();
 					return;
@@ -2788,7 +2791,7 @@ $(function() {
 		};
 
 		self.warnSshNotify = function() {
-			if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh()){
+			if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh() && self.loginState.isUser){
 				//self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button class=\"btngo\" data-bind=\"click: function() { $root.showSettings('settings_plugin_mgsetup') ; console.log('everything is broken') }\">Mark as last read</a>","error",false);
 				title = "SSH Is Enabled";
 				message = "The SSH Service is currently Enabled.  We strongly recommend Disabling the SSH Service for normal operation.";
@@ -2934,6 +2937,8 @@ $(function() {
 			self.T1ZWiggleHeight(self.stockZWiggleHeight);
 			self.WiggleToRun(2);
 			self.WiggleReady(true);
+
+			self.checkParameters();
 
 
 			if (targetStep === 0){
@@ -3149,6 +3154,7 @@ $(function() {
 			//self.checkGoogle();
 			if (self.isOperational()){
 				self.requestEeprom();
+
 			}
 
 
@@ -3344,8 +3350,8 @@ $(function() {
 			}
 			if (data.tooloffsetline !== undefined){
 				var re = /([XYZ])-?\d+\.\d+/g;
-				if (re.exec(data.tooloffsetline)){
-					var result = re.exec(data.tooloffsetline);
+				// if (re.exec(data.tooloffsetline)){
+				while (result = re.exec(data.tooloffsetline)){
 					//var result = re.exec(data.tooloffsetline);
 					self.mgLog("Parsed data from data.tooloffsetline: "+result);
 					if (result[1]==="X"){
@@ -3358,14 +3364,15 @@ $(function() {
 						self.tool1ZOffset(parseFloat(result[0].substr(1)));
 						self.mgLog("Tool 1 Z Offset: "+(result[0].substr(1)));
 					}
-					//self.tool1XOffset(parseFloat(result[0]));
-					//var result = re.exec(data.tooloffsetline);
-					//console.log(result[0]);
-					//self.tool1YOffset(parseFloat(result[1]));
-					//console.log(data.zoffsetline);
-					//console.log(result[1]);
+						//self.tool1XOffset(parseFloat(result[0]));
+						//var result = re.exec(data.tooloffsetline);
+						//console.log(result[0]);
+						//self.tool1YOffset(parseFloat(result[1]));
+						//console.log(data.zoffsetline);
+						//console.log(result[1]);
+					}
 
-				}
+				// }
 				self.tooloffsetline(data.tooloffsetline);
 			}
 			//self.tooloffsetline(data.tooloffsetline);
@@ -3489,17 +3496,17 @@ $(function() {
 		// };
 
 		self.failedParameterChecks = ko.observable(0);
-
+		self.failedParameterCheckLines = ko.observable("");
 
 		self.checkParameters = function(){
-			if (self.failedParameterChecks() > 15){
+			if (self.failedParameterChecks() > 3){
 				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
 				self.mgLog("Bailing on checkParameters, alerting user.");
-				self.notify("Printer Parameter Issue","It looks like one or more parameters that the Quick Check process requires are missing or invalid.  Please Restart OctoPrint and the printer and try again.  If this issue continues, please contact support.");
+				self.notify("Printer Parameter Issue","It looks like one or more parameters that the Quick Check process requires are missing or invalid.  Please Restart OctoPrint and the printer and try again.  If this issue continues, please contact support with the following information: \n"+self.failedParameterCheckLines());
 				self.failedParameterChecks(0);
 				return;
 			}
-
+			self.failedParameterCheckLines("");
 			var profileString = self.profileString();
 			var zOffsetLine = self.zoffsetline();
 			var probeOffset = self.probeOffset();
@@ -3510,6 +3517,7 @@ $(function() {
 				self.parseProfile();
 				failedThisRound = true;
 				self.mgLog("checkParameters failed!  Bad profileString:"+profileString);
+				self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad profileString:"+profileString);
 			}
 
 			if (!self.hasProbe()){
@@ -3517,6 +3525,7 @@ $(function() {
 					self.requestEeprom();
 					failedThisRound = true;
 					self.mgLog("checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
+					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
 				}
 			} else {
 				if (probeOffset === "" || probeOffset === undefined || probeOffset > 0 || probeOffset < -3){
@@ -3524,6 +3533,7 @@ $(function() {
 					self.requestEeprom();
 					failedThisRound = true;
 					self.mgLog("checkParameters failed!  Bad probeOffset:"+probeOffset);
+					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad probeOffset:"+probeOffset);
 				}
 			}
 
@@ -3553,6 +3563,7 @@ $(function() {
 			//self.waitingForM(true);
 			self.eepromData([]);
 			OctoPrint.control.sendGcode("M503");
+			// self.checkParameters();
 		//	self.fromCurrentData();
 		};
 
