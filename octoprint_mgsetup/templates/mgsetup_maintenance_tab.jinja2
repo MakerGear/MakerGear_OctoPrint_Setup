@@ -1416,9 +1416,13 @@ Y8,    ,d88       88
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
     </div><br>
 
-    <div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work without a raft.</div>
+<b>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work without a raft.</div>
 <div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.1 && Math.abs($root.tool1ZOffset()) > 0.05">Your T1 Z Offset is close enough that Duplication Mode printing should work with a raft.</div>
-<div data-bind="visible: Math.abs($root.tool1ZOffset()) > 0.1">Your T1 Z Offset is far enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted below:</div><br><br>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) > 0.1">Your T1 Z Offset is far enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted below:</div>
+</b>
+
+<br><br>
 
 
 In this step, we will physically adjust the height of both Extruders in the mounting plates.
@@ -2625,48 +2629,38 @@ Ignore everything below this statement.  And this statement.<br>
     88888888Y"'    88888888888  88888888P"    `"Y8888Y"'     `"Y88888P"   #}
 <div>
     Which step to show:
-    <div><input type="radio" name="setupStepSelect" value="0" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Zero - Welcome Page</div>
-    <div><input type="radio" name="setupStepSelect" value="1" data-bind="checked: setupStep, click: window.scroll(0,0)" /> One - Starting Height Check (Z head crash/gap)</div>
-    <div><input type="radio" name="setupStepSelect" value="2" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Two - Adjust Starting Height (cold)</div>
-    <div><input type="radio" name="setupStepSelect" value="3" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Three - Load Filament</div>
-    <div><input type="radio" name="setupStepSelect" value="4" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Four - Verify Starting Height (Wiggle)</div>
-    <div><input type="radio" name="setupStepSelect" value="5" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Five - Heated Corner Check (Wiggles)</div>
-    <div><input type="radio" name="setupStepSelect" value="6" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Six - Heated Leveling (Wiggles)</div>
-    <div><input type="radio" name="setupStepSelect" value="7" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Seven - Done</div>
-    <div><input type="radio" name="setupStepSelect" value="8" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eight - Dual Cold Starting Height Check</div>
-    <div><input type="radio" name="setupStepSelect" value="9" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Nine - Dual Cold Starting Height Adjustment</div>
-    <div><input type="radio" name="setupStepSelect" value="10" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Ten - Dual Load Filament Extruder 1</div>
-    <div><input type="radio" name="setupStepSelect" value="11" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eleven - Dual Extruder 1 Height Adjustment</div>
-    <div><input type="radio" name="setupStepSelect" value="12" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Twelve - Dual Extruder 1 First Print</div>
-    <div><input type="radio" name="setupStepSelect" value="13" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Thirteen - Dual Both Extruders Print</div>
-    <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X Offset Calibration</div>
-    <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Y Offset Calibration</div>
-    <div><input type="radio" name="setupStepSelect" value="16" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Sixteen - Done/Prints</div>
-    <div><input type="radio" name="setupStepSelect" value="17" data-bind="checked: setupStep, click: window.scroll(0,0)" />17 Probe Autocheck</div>
-    <div><input type="radio" name="setupStepSelect" value="18" data-bind="checked: setupStep, click: window.scroll(0,0)" />18 Probe Fail 1/2 - Probe Connection</div>
-    <div><input type="radio" name="setupStepSelect" value="19" data-bind="checked: setupStep, click: window.scroll(0,0)" />19 Probe Fail 3 - Nozzle vs Probe Height</div>
-    <div><input type="radio" name="setupStepSelect" value="20" data-bind="checked: setupStep, click: window.scroll(0,0)" />20 Probe Config 3.5 - Adjust Probe Height with Wiggles</div>
-    <div><input type="radio" name="setupStepSelect" value="21" data-bind="checked: setupStep, click: window.scroll(0,0)" />21 Probe Config 4 - Bed Level</div>
-    <div><input type="radio" name="setupStepSelect" value="22" data-bind="checked: setupStep, click: window.scroll(0,0)" />22 Probe Config 5 - Print</div>
-    <div><input type="radio" name="setupStepSelect" value="23" data-bind="checked: setupStep, click: window.scroll(0,0)" />23 extrude, test success</div>
-
-    <div><input type="radio" name="setupStepSelect" value="24" data-bind="checked: setupStep, click: window.scroll(0,0)" />24 extrude, test failure</div>
-    <div><input type="radio" name="setupStepSelect" value="25" data-bind="checked: setupStep, click: window.scroll(0,0)" />25 extrude, load both</div>
-    <div><input type="radio" name="setupStepSelect" value="26" data-bind="checked: setupStep, click: window.scroll(0,0)" />26 print dual pattern</div>
-    <div><input type="radio" name="setupStepSelect" value="27" data-bind="checked: setupStep, click: window.scroll(0,0)" />27 Too many bed level check</div>
-    <div><input type="radio" name="setupStepSelect" value="28" data-bind="checked: setupStep, click: window.scroll(0,0)" />28 guide & hotend question</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />   0 - Welcome Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 2 , click: window.scroll(0,0)" />   2 - Adjust Starting Height - Cold using Feeler Gauge</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 4 , click: window.scroll(0,0)" />   4 - T0 Verify Starting Height (Wiggle), No Probe</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 6 , click: window.scroll(0,0)" />   6 - Heated Leveling (Wiggles)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 9 , click: window.scroll(0,0)" />   9 - Dual Cold Starting Height Adjustment (Both)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 10, click: window.scroll(0,0)" />  10 - Broken Cold Bed Leveling page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 11, click: window.scroll(0,0)" />  11 - Dual Extruder 1 Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 14, click: window.scroll(0,0)" />  14 - Dual X Offset Calibration</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 15, click: window.scroll(0,0)" />  15 - Dual Y Offset Calibration</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 17, click: window.scroll(0,0)" />  17 - Probe Autocheck</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 18, click: window.scroll(0,0)" />  18 - Broken Filament Control Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 19, click: window.scroll(0,0)" />  19 - Broken Filament Control Page (redux)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 20, click: window.scroll(0,0)" />  20 - Hot Probe Height Adjustment (with Wiggles)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 21, click: window.scroll(0,0)" />  21 - Assisted Bed Leveling</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 41, click: window.scroll(0,0)" />  41 - T0 Z Home Offset Adjustment (no probe, combined default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 70, click: window.scroll(0,0)" />  70 - T0 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 71, click: window.scroll(0,0)" />  71 - T1 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 91, click: window.scroll(0,0)" />  91 - Duplication Check and T0/T1 Physical Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 111, click: window.scroll(0,0)" />111 - T1 Z Offset Adjustment (Hot, default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 200, click: window.scroll(0,0)" />200 - T0 Probe Offset Adjustment (Hot, combined default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
 </div>
 
 </div>
-
-
-
-
-
-
-
-
-
 
 
 
