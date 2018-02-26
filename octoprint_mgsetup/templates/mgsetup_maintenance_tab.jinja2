@@ -65,17 +65,7 @@
                                   </a>
 
                             </div>
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
-                                <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
-                                <br />
-                                Tool 0 (left) Starting Height Cold
-                                </a>
-
-                            </div>
-
-                        </div>
 
                         <div class="buttonRow" style="text-align:center;">
 
@@ -87,6 +77,18 @@
                                  </a>
 
                             </div>
+                        </div>
+
+                        <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
+                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+                                <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+                                <br />
+                                Tool 0 (left) Starting Height Cold
+                                </a>
+
+                            </div>
+
                         </div>
                     </li>
                 </ul>
@@ -146,7 +148,7 @@
             <hr>
 
 
-            <li class="panel">
+            <li class="panel" data-bind="visible: !$root.hideDebug()">
                  <h3><a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#physicalAdjustments">Physical Adjustments <i class="icon-chevron-down"></i></a></h3>
 
                  <p>
@@ -193,9 +195,9 @@
                      </li>
                 </ul>
             </li>
-        
+        <div data-bind="visible: !$root.hideDebug()">
             <hr>
-
+</div>
 
 
             <li class="panel">
