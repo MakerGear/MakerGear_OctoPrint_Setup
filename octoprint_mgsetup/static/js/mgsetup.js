@@ -1489,10 +1489,12 @@ $(function() {
 				self.goTo("10");
 			}
 			if (dualRightNozzleAdjustStep === '3-maintenance'){
-				OctoPrint.control.sendGcode(["M400",
+				OctoPrint.control.sendGcode(["M605 S1",
+					"M400",
 					"G1 F2000 Z20",
 					"T0",
-					"M84"
+					"M84",
+					"M605 S0"
 				]);
 				self.stepNineAtPosition(false);
 				//$('#maintenanceTabs').('#coldZ').tab('show')
@@ -1520,6 +1522,7 @@ $(function() {
 					"G1 F2000 X100 Y155 Z50 E0.001",
 					"G1 F1000 Z0",
 					"M400",
+					"M605 S0",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
 					"M300 S1040 P250"
@@ -3353,6 +3356,7 @@ $(function() {
 				self.mgLog("Serial number is an array, grabbing the first entry for serialNumber() .");
 				self.serialNumber(self.serialNumber()[0]);
 			}
+			self.checkParameters();
 		};
 
 		self.onAfterBinding = function() {
@@ -3586,66 +3590,69 @@ $(function() {
 		self.failedParameterCheckLines = ko.observable("");
 
 		self.checkParameters = function(){
-			if (self.isOperational() === false){
-				window.setTimeout(function() {self.checkParameters()},(10000));
-				self.mgLog("checkParameters called but not connected to printer!  Calling again in 10 seconds.");
-				return;
-			}
-			if (self.failedParameterChecks() > 3){
-				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
-				self.mgLog("Bailing on checkParameters, alerting user.");
-				self.notify("Printer Parameter Issue","It looks like one or more parameters that the Quick Check process requires are missing or invalid.  Please Restart OctoPrint and the printer and try again.  If this issue continues, please contact support with the following information: \n"+self.failedParameterCheckLines());
-				self.failedParameterChecks(0);
-				return;
-			}
-			self.failedParameterCheckLines("");
-			var profileString = self.profileString();
-			var zOffsetLine = self.zoffsetline();
-			var probeOffset = self.probeOffset();
-			var tooloffsetline = self.tooloffsetline();
-			var failedThisRound = false;
-
-			if (profileString === "" || profileString === undefined){
-				self.parseProfile();
-				failedThisRound = true;
-				self.mgLog("checkParameters failed!  Bad profileString:"+profileString);
-				self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad profileString:"+profileString);
-			}
-
-			if (!self.hasProbe()){
-				if (zOffsetLine === "" || zOffsetLine === undefined){
-					self.requestEeprom();
-					failedThisRound = true;
-					self.mgLog("checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
-					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
+			if (self.loginState.isUser()){
+				if (self.isOperational() === false){
+					window.setTimeout(function() {self.checkParameters()},(10000));
+					self.mgLog("checkParameters called but not connected to printer!  Calling again in 10 seconds.");
+					return;
 				}
-			} else {
-				if (probeOffset === "" || probeOffset === undefined || probeOffset > 0 || probeOffset < -3){
+				if (self.failedParameterChecks() > 3){
+					self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
+					self.mgLog("Bailing on checkParameters, alerting user.");
+					self.notify("Printer Parameter Issue","It looks like one or more parameters that the Quick Check process requires are missing or invalid.  Please Restart OctoPrint and the printer and try again.  If this issue continues, please contact support with the following information: \n"+self.failedParameterCheckLines());
+					self.failedParameterChecks(0);
+					return;
+				}
+				self.failedParameterCheckLines("");
+				var profileString = self.profileString();
+				var zOffsetLine = self.zoffsetline();
+				var probeOffset = self.probeOffset();
+				var tooloffsetline = self.tooloffsetline();
+				var failedThisRound = false;
+
+				if (profileString === "" || profileString === undefined){
 					self.parseProfile();
-					self.requestEeprom();
 					failedThisRound = true;
-					self.mgLog("checkParameters failed!  Bad probeOffset:"+probeOffset);
-					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad probeOffset:"+probeOffset);
+					self.mgLog("checkParameters failed!  Bad profileString:"+profileString);
+					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad profileString:"+profileString);
 				}
-			}
 
-
-			if (failedThisRound){
-				var timeScaler = 0;
-				self.failedParameterChecks(self.failedParameterChecks()+1);
-				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
-				if (self.failedParameterChecks()>=10){
-					timeScaler = 10;
+				if (!self.hasProbe()){
+					if (zOffsetLine === "" || zOffsetLine === undefined){
+						self.requestEeprom();
+						failedThisRound = true;
+						self.mgLog("checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
+						self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
+					}
 				} else {
-					timeScaler = self.failedParameterChecks();
+					if (probeOffset === "" || probeOffset === undefined || probeOffset > 0 || probeOffset < -3){
+						self.parseProfile();
+						self.requestEeprom();
+						failedThisRound = true;
+						self.mgLog("checkParameters failed!  Bad probeOffset:"+probeOffset);
+						self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad probeOffset:"+probeOffset);
+					}
 				}
-				window.setTimeout(function() {self.checkParameters()},(1000+(1000*timeScaler)));
+
+
+				if (failedThisRound){
+					var timeScaler = 0;
+					self.failedParameterChecks(self.failedParameterChecks()+1);
+					self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
+					if (self.failedParameterChecks()>=10){
+						timeScaler = 10;
+					} else {
+						timeScaler = self.failedParameterChecks();
+					}
+					window.setTimeout(function() {self.checkParameters()},(1000+(1000*timeScaler)));
+				} else {
+					self.failedParameterChecks(0);
+					self.mgLog("checkParameters passed!");
+				}
+
 			} else {
-				self.failedParameterChecks(0);
-				self.mgLog("checkParameters passed!");
+				self.mgLog("Not checking parameters - user not logged in!");
 			}
-
-
 		};
 
 
