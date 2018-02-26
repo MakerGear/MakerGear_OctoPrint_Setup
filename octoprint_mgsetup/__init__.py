@@ -112,6 +112,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.mgLoggerFirstRun.info(message)
 			self.mgLogger.info("Also logged to PERMANENT and FIRST RUN")
 
+			# Defined as an API target as well, so we can target it from octoprint client - [wherever]/octoprint client post_json '/api/plugin/mgsetup' '{"command":"mgLog","stringToLog":"[whateverYouWantToLog]","priority":"[priorityLevel]"}
+			
+
 
 
 
@@ -444,6 +447,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 			self._logger.info(all_stdout)
 			self._logger.info(all_stderr)
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
 		return p.returncode, all_stdout, all_stderr
 
 	def counterTest(self, actionMaybe):
@@ -491,10 +495,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._plugin_manager.send_plugin_message("mgsetup", dict(localfirmwareline = self.localfirmwareline))
 
 	def updateLocalFirmware(self):
+
+		#To create a fresh copy of the target folder, git clone -b 1.1.6 https://github.com/MakerGear/m3firmware.git src1.1.6
+		self._logger.info("Update Firmware started.")
 		self.backUpConfigYaml()
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
-			self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
-			self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
+			# self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
+			self._logger.info(self._execute("git -C /home/pi/m3firmware/src fetch --all; git -C /home/pi/m3firmware/src reset --hard; git -C /home/pi/m3firmware/src pull"))
+			# self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
 			self.activeProfile = (self._printer_profile_manager.get_current_or_default()["model"])
 			# self._logger.info(self._printer_profile_manager.get_current_or_default()["model"])
 			self._logger.info("Profile: "+self.activeProfile)
@@ -507,14 +515,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				f.seek(0,0)
 				if f.readline() == "\n":
 					f.seek(0,0)
-					f.write("#define " + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + oldConfig)
+					f.write("#define MAKERGEAR_MODEL_" + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + oldConfig)
 				else:
 					f.seek(0,0)
 					oldLine = f.readline()
 					f.seek(0,0)
 					i = oldConfig.index("\n")
 					oldConfigStripped = oldConfig[i+1:]
-					f.write("#define " + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n" + oldConfigStripped)
+					f.write("#define MAKERGEAR_MODEL_" + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n" + oldConfigStripped)
 
 
 
@@ -713,6 +721,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#subprocess.call("/home/pi/.octoprint/scripts/upload.sh")
 			self.mgLog(self._execute("/home/pi/.octoprint/scripts/upload.sh"),2)
 			self._logger.info("Firmware uploaded!")
+		elif action["action"] == 'uploadAndFlashFirmware':
+			self.updateLocalFirmware()
+			self.mgLog(self._execute("/home/pi/.octoprint/scripts/upload.sh"),2)
+
 		elif action["action"] == 'counterTest':
 			self.counterTest(action)
 		elif action["action"] == 'expandFilesystem':
@@ -726,7 +738,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Patch started.")
 			self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh")
 		elif action["action"] == 'updateFirmware':
-			self._logger.info("Update Firmware started.")
 			self.updateLocalFirmware()
 		elif action["action"] == 'showIfconfig':
 			self._logger.info("Showing ifconfig / netconnectcli status.")

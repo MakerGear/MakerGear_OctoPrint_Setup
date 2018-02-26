@@ -89,8 +89,11 @@ This will disconnect the printer from your current network and enable the defaul
 
 <hr />
 
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadAndFlashFirmware'), $root.showCommandResponse() }">
+Update and Install Firmware</button><br>This will Update the local copy of the firmware, and then Install the firmware to the printer.  Disconnect before Installing.<br><br><br><br>
+
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
-Upload Firmware</button><br>This will upload the bundled firmware to the printer.  Disconnect before uploading.<br><br>
+Install Firmware</button><br>This will Install the bundled firmware to the printer.  Disconnect before Installing.<br><br>
 
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('updateFirmware'), $root.showCommandResponse() }">Update Firmware</button><br>
 This will update the bundled firmware version to the most recent.  You will need to Upload Firmware after the update if desired.<br><br>

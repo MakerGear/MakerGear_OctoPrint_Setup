@@ -5,7 +5,7 @@ $(function() {
 		self.mgLog = function(stringToLog, priority){
 
 			if (priority === undefined){
-				priority = 0;
+				priority = 1; //default priority level if not defined
 			}
 			if (stringToLog !== undefined){
 				if (priority === 0){
@@ -15,13 +15,14 @@ $(function() {
 					console.log(stringToLog);
 					//also send to Python side to log
 					var url = OctoPrint.getSimpleApiUrl("mgsetup");
+					// console.log(url);
 					OctoPrint.issueCommand(url, "mgLog", {"stringToLog":stringToLog,"priority":priority})
 						.done(function(response) {
-							console.log("mgLog response: "+response);
+							// console.log("mgLog send to server-side done; response: "+response);
 						})
 						.fail(function(response){
-							console.log("mgLog fail response: "+response);
-				});
+							console.log("mgLog send to server-side failed!  Response: "+response+" Original message: "+stringToLog);
+						});
 				}
 			}
 		};
@@ -168,6 +169,7 @@ $(function() {
 		self.unlockAdvanced = ko.observable(false);
 		self.pluginVersion = ko.observable("");
 		self.firmwareline = ko.observable("");
+		self.profileString = ko.observable("");
 
 		// Quick Check Process starting/default values:
 		self.ZWiggleHeight = ko.observable(0.20);
@@ -228,6 +230,7 @@ $(function() {
 			}
 		},this);
 		self.setupStepSelect = ko.observable(7);
+		self.maintenancePageSelect = ko.observable(0);
 		self.setupStepOne = ko.observable(true);
 		self.setupStepTwo = ko.observable(false);
 		self.setupStepThree = ko.observable(false);
@@ -1522,32 +1525,62 @@ $(function() {
 
 			}
 			if (dualRightNozzleAdjustStep === 'simple91a'){
-				OctoPrint.control.sendGcode(["M300 S1040 P250",
-					"M300 S1312 P250", 
-					"M300 S1392 P250",
-					"G4 S1",
-					"G28 Z",
-					"M218 T1 Z0",
-					"M500",
-					"M605 S0",
-					"T0",
-					"G28 X",
-					"T1",
-					"G28 X",
-					"M605 S1",
-					"G28",
-					"T0",
-					"G1 F2000 X100 Y155 Z50 E0.001",
-					"G1 F1000 Z0",
-					"M400",
-					"M300 S1392 P250",
-					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
-				]);
-				OctoPrint.printer.extrude(10);
-				self.cooldown();
+				if (!self.hasProbe()){
+					OctoPrint.control.sendGcode(["M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 S1",
+						"G28 Z",
+						"M218 T1 Z0",
+						"M500",
+						"M605 S0",
+						"T0",
+						"G28 X",
+						"T1",
+						"G28 X",
+						"M605 S1",
+						"G28",
+						"T0",
+						"G1 F2000 X100 Y155 Z50 E0.001",
+						"G1 F1000 Z0",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250",
+						"G4 S1"
+					]);
+					OctoPrint.printer.extrude(10);
+					self.cooldown();
+				} else {
+					OctoPrint.control.sendGcode(["M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 S1",
+						"T0",
+						"G28 XYZ",
+						"M218 T1 Z0",
+						"M500",
+						"M605 S0",
+						"T0",
+						"G28 X",
+						"T1",
+						"G28 X",
+						"M605 S1",
+						"T0",
+						"G1 F2000 X100 Y155 Z25 E0.001",
+						"G1 F1000 Z0",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250",
+						"G4 S1"
+					]);
+					self.requestEeprom();
+					self.checkParameters();
+					// OctoPrint.printer.extrude(10);
+					self.cooldown();
 
+				}
 			}
 			if (dualRightNozzleAdjustStep === 'simple91b'){
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
@@ -1568,7 +1601,7 @@ $(function() {
 					"M300 S1040 P250",
 					"G4 S1"
 				]);
-				OctoPrint.printer.extrude(10);
+				// OctoPrint.printer.extrude(10);
 				self.cooldown();
 
 			}
@@ -1578,8 +1611,36 @@ $(function() {
 
 		self.showMaintenanceStep = function(inputStep, inputTab, subTab){
 			if(inputStep !== undefined && inputTab !== undefined){
+				self.requestEeprom();
+				self.checkParameters();
 				self.linkingToMaintenance(true);
-				self.maintenancePage(inputStep);
+				if (typeof(inputStep)==="number"){
+					self.maintenancePage(inputStep);
+				} else {
+					// if (inputStep === "hotendReplacement"){
+					// 	if (self.isDual()){
+					// 		self.maintenancePage();
+					// 	} else {
+					// 		self.maintenancePage();
+					// 	}
+					// }
+					if (inputStep === "hotBedLevel"){
+						if (self.hasProbe()){
+							self.maintenancePage(21);
+						} else {
+							self.maintenancePage(6);
+						}
+					}
+
+					if (inputStep === "hotZOffset"){
+						if (self.hasProbe()){
+							self.maintenancePage(200);
+						} else {
+							self.maintenancePage(41);
+						}
+					}
+
+				}
 				$('.nav-tabs a[href='+'\''+inputTab.toString()+'\']').click();
 				
 				//return true;
@@ -1964,6 +2025,7 @@ $(function() {
 					self.probeCheckReset();
 					self.goTo("24");
 					self.failedStep(3);
+					self.mgLog("probeCheck step 3 failed; self.probeOffset() = "+self.probeOffset());
 				}
 
 				// OctoPrint.control.sendGcode(["T0",
@@ -2804,7 +2866,7 @@ $(function() {
 		};
 
 		self.warnSshNotify = function() {
-			if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh()){
+			if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh() && self.loginState.isUser){
 				//self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button class=\"btngo\" data-bind=\"click: function() { $root.showSettings('settings_plugin_mgsetup') ; console.log('everything is broken') }\">Mark as last read</a>","error",false);
 				title = "SSH Is Enabled";
 				message = "The SSH Service is currently Enabled.  We strongly recommend Disabling the SSH Service for normal operation.";
@@ -2950,6 +3012,8 @@ $(function() {
 			self.T1ZWiggleHeight(self.stockZWiggleHeight);
 			self.WiggleToRun(2);
 			self.WiggleReady(true);
+
+			self.checkParameters();
 
 
 			if (targetStep === 0){
@@ -3165,6 +3229,7 @@ $(function() {
 			//self.checkGoogle();
 			if (self.isOperational()){
 				self.requestEeprom();
+
 			}
 
 
@@ -3210,6 +3275,7 @@ $(function() {
 			// 	self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button data-bind=\"click: function() { $root.showSettings() }\">Mark as last read</button>","error",false);
 			// }
 			self.parseProfile();
+			self.checkParameters();
 			window.setTimeout(function() {self.urlLogin()},500);
 		
 		};
@@ -3359,8 +3425,8 @@ $(function() {
 			}
 			if (data.tooloffsetline !== undefined){
 				var re = /([XYZ])-?\d+\.\d+/g;
-				if (re.exec(data.tooloffsetline)){
-					var result = re.exec(data.tooloffsetline);
+				// if (re.exec(data.tooloffsetline)){
+				while (result = re.exec(data.tooloffsetline)){
 					//var result = re.exec(data.tooloffsetline);
 					self.mgLog("Parsed data from data.tooloffsetline: "+result);
 					if (result[1]==="X"){
@@ -3373,14 +3439,15 @@ $(function() {
 						self.tool1ZOffset(parseFloat(result[0].substr(1)));
 						self.mgLog("Tool 1 Z Offset: "+(result[0].substr(1)));
 					}
-					//self.tool1XOffset(parseFloat(result[0]));
-					//var result = re.exec(data.tooloffsetline);
-					//console.log(result[0]);
-					//self.tool1YOffset(parseFloat(result[1]));
-					//console.log(data.zoffsetline);
-					//console.log(result[1]);
+						//self.tool1XOffset(parseFloat(result[0]));
+						//var result = re.exec(data.tooloffsetline);
+						//console.log(result[0]);
+						//self.tool1YOffset(parseFloat(result[1]));
+						//console.log(data.zoffsetline);
+						//console.log(result[1]);
+					}
 
-				}
+				// }
 				self.tooloffsetline(data.tooloffsetline);
 			}
 			//self.tooloffsetline(data.tooloffsetline);
@@ -3503,7 +3570,71 @@ $(function() {
 		// 	}
 		// };
 
+		self.failedParameterChecks = ko.observable(0);
+		self.failedParameterCheckLines = ko.observable("");
 
+		self.checkParameters = function(){
+			if (self.isOperational() === false){
+				window.setTimeout(function() {self.checkParameters()},(10000));
+				self.mgLog("checkParameters called but not connected to printer!  Calling again in 10 seconds.");
+				return;
+			}
+			if (self.failedParameterChecks() > 3){
+				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
+				self.mgLog("Bailing on checkParameters, alerting user.");
+				self.notify("Printer Parameter Issue","It looks like one or more parameters that the Quick Check process requires are missing or invalid.  Please Restart OctoPrint and the printer and try again.  If this issue continues, please contact support with the following information: \n"+self.failedParameterCheckLines());
+				self.failedParameterChecks(0);
+				return;
+			}
+			self.failedParameterCheckLines("");
+			var profileString = self.profileString();
+			var zOffsetLine = self.zoffsetline();
+			var probeOffset = self.probeOffset();
+			var tooloffsetline = self.tooloffsetline();
+			var failedThisRound = false;
+
+			if (profileString === "" || profileString === undefined){
+				self.parseProfile();
+				failedThisRound = true;
+				self.mgLog("checkParameters failed!  Bad profileString:"+profileString);
+				self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad profileString:"+profileString);
+			}
+
+			if (!self.hasProbe()){
+				if (zOffsetLine === "" || zOffsetLine === undefined){
+					self.requestEeprom();
+					failedThisRound = true;
+					self.mgLog("checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
+					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad zOffsetLine:"+zOffsetLine);
+				}
+			} else {
+				if (probeOffset === "" || probeOffset === undefined || probeOffset > 0 || probeOffset < -3){
+					self.parseProfile();
+					self.requestEeprom();
+					failedThisRound = true;
+					self.mgLog("checkParameters failed!  Bad probeOffset:"+probeOffset);
+					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad probeOffset:"+probeOffset);
+				}
+			}
+
+
+			if (failedThisRound){
+				var timeScaler = 0;
+				self.failedParameterChecks(self.failedParameterChecks()+1);
+				self.mgLog("failedParameterChecks: "+self.failedParameterChecks());
+				if (self.failedParameterChecks()>=10){
+					timeScaler = 10;
+				} else {
+					timeScaler = self.failedParameterChecks();
+				}
+				window.setTimeout(function() {self.checkParameters()},(1000+(1000*timeScaler)));
+			} else {
+				self.failedParameterChecks(0);
+				self.mgLog("checkParameters passed!");
+			}
+
+
+		};
 
 
 
@@ -3512,6 +3643,7 @@ $(function() {
 			//self.waitingForM(true);
 			self.eepromData([]);
 			OctoPrint.control.sendGcode("M503");
+			// self.checkParameters();
 		//	self.fromCurrentData();
 		};
 
@@ -3544,12 +3676,12 @@ $(function() {
 			// MakerGear M3 Independent Dual Rev 0		M3-ID Rev0-005
 			// MakerGear M3 Single Extruder Rev 1		M3-SE Rev1-000
 			// MakerGear M3 Independent Dual Rev 1		M3-ID Rev1-000
-			var profileString = self.settings.printerProfiles.currentProfileData().model().toString();
+			self.profileString(self.settings.printerProfiles.currentProfileData().model().toString());
 			self.mgLog("profileString:");
-			self.mgLog(profileString);
-			if (profileString === ""){
-				self.mgLog("profileString seems to be blank, checking again.");
-				window.setTimeout(function() {self.parseProfile()},2000);
+			self.mgLog(self.profileString());
+			if (self.profileString() === ""){
+				//self.mgLog("profileString seems to be blank, checking again.");
+				//window.setTimeout(function() {self.parseProfile()},2000);
 				return;
 			}
 			// if (profileString.indexOf("ID")!==-1){
@@ -3558,7 +3690,7 @@ $(function() {
 			// 	self.isDual(false);
 			// }
 
-			if (profileString.indexOf("M3-SE Rev0-005") !== -1 || profileString.indexOf("Rev1-000") !== -1){
+			if (self.profileString().indexOf("M3-SE Rev0-005") !== -1 || self.profileString().indexOf("Rev1-000") !== -1){
 				self.hasProbe(true);
 				self.mgLog("hasProbe true!");
 			} else {
