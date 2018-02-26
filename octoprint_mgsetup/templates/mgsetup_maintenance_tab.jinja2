@@ -110,14 +110,7 @@
 
                      
 
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                <br />
-                                 Duplication Mode Check
-                                 </a>
 
-                            </div>
 
 
                             <div class="buttonColumn">
@@ -134,6 +127,14 @@
                                  <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/yAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
                                 <br />
                                  Dual Y Offset Calibration
+                                 </a>
+
+                            </div>
+                            <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
+                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
+                                <br />
+                                 Duplication Mode Check
                                  </a>
 
                             </div>
