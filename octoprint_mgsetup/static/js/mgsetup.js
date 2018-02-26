@@ -1490,7 +1490,8 @@ $(function() {
 			}
 			if (dualRightNozzleAdjustStep === '3-maintenance'){
 				OctoPrint.control.sendGcode(["M400",
-					"G28 Z",
+					"G1 F2000 Z20",
+					"T0",
 					"M84"
 				]);
 				self.stepNineAtPosition(false);
