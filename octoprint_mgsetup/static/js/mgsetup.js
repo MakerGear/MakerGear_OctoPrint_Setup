@@ -680,14 +680,14 @@ $(function() {
 			}
 			if (targetTool == "tool0"){
 				OctoPrint.control.sendGcode(["M300 S1040 P700",
-					"G4 S1",
+					"G4 P750",
 					"T0",
 					"G91",
 					"G1 E75 F400",
 					"G90"]);
 			} else if (targetTool == "tool1"){
 				OctoPrint.control.sendGcode(["M300 S1040 P700",
-					"G4 S1",
+					"G4 P750",
 					"T1",
 					"G91",
 					"G1 E75 F400",
@@ -706,14 +706,14 @@ $(function() {
 			}
 			if (targetTool == "tool0"){
 				OctoPrint.control.sendGcode(["M300 S1040 P700",
-					"G4 S1",
+					"G4 P750",
 					"T0",
 					"G91",
 					"G1 E-75 F400",
 					"G90"]);
 			} else if (targetTool == "tool1"){
 				OctoPrint.control.sendGcode(["M300 S1040 P700",
-					"G4 S1",
+					"G4 P750",
 					"T1",
 					"G91",
 					"G1 E-75 F400",
@@ -748,7 +748,7 @@ $(function() {
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G28 Z",
 					"G28 Y X",
 					"T0",
@@ -757,8 +757,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 			} else if (hotend == "T1"){
 				OctoPrint.control.sendGcode([
@@ -767,7 +767,7 @@ $(function() {
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G28 Z",
 					"G28 Y X",
 					"T0",
@@ -777,8 +777,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 			} else if (hotend == "both"){
 				OctoPrint.control.sendGcode([
@@ -788,7 +788,7 @@ $(function() {
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G28 Z",
 					"G1 F1500 Z50",
 					"G28 Y X",
@@ -800,8 +800,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 			}
 		};
@@ -830,7 +830,7 @@ $(function() {
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G28 Z",
 					"G28 Y X",
 					"G1 F1500 X20 Z100",
@@ -838,8 +838,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 			} else if (hotend == "T1"){
 				OctoPrint.control.sendGcode([
@@ -847,7 +847,7 @@ $(function() {
 					"M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G28 Z",
 					"G28 Y X",
 					"G1 F1500 X20 Y100 Z100",
@@ -856,8 +856,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 			}
 		};
@@ -883,6 +883,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
 				"M300 S1392 P250",
+				"G4 P750",
 				"T0",
 				"M605 S1",
 				"G28",
@@ -893,8 +894,8 @@ $(function() {
 				"M400",
 				"M300 S1392 P250",
 				"M300 S1312 P250", 
-				"M300 S1040 P250",
-				"G4 S1"
+				"M300 S1040 P250"
+				
 				]);//changed to X217 for Demeter
 				self.stepOnePrepared(1);
 			}
@@ -903,7 +904,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
 				"M300 S1392 P250",
-				"G4 S1",
+				"G4 P750",
 				"T0",
 				"G28",
 				"G1 F2000 X205 Y125",
@@ -912,8 +913,8 @@ $(function() {
 				"M400",
 				"M300 S1392 P250",
 				"M300 S1312 P250", 
-				"M300 S1040 P250",
-				"G4 S1"
+				"M300 S1040 P250"
+				
 				]);
 //				OctoPrint.control.sendGcode("G1 F2000 X205 Y125");
 //				OctoPrint.control.sendGcode("G1 F1400 Z1");
@@ -924,7 +925,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
 				"M300 S1392 P250",
-				"G4 S1",
+				"G4 P750",
 				"T0",
 				"G1 F1400 Z2",
 				"G1 F2000 X20 Y220",
@@ -932,8 +933,8 @@ $(function() {
 				"M400",
 				"M300 S1392 P250",
 				"M300 S1312 P250", 
-				"M300 S1040 P250",
-				"G4 S1"
+				"M300 S1040 P250"
+				
 				]);
 //				OctoPrint.control.sendGcode("G1 F2000 X20 Y220");
 //				OctoPrint.control.sendGcode("G1 F1400 Z0.2");
@@ -943,7 +944,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
 				"M300 S1392 P250",
-				"G4 S1",
+				"G4 P750",
 				"T0",
 				"G1 F1400 Z2",
 				"G1 F2000 X20 Y20",
@@ -951,8 +952,8 @@ $(function() {
 				"M400",
 				"M300 S1392 P250",
 				"M300 S1312 P250", 
-				"M300 S1040 P250",
-				"G4 S1"
+				"M300 S1040 P250"
+				
 				]);
 //				OctoPrint.control.sendGcode("G1 F2000 X20 Y20");
 //				OctoPrint.control.sendGcode("G1 F1400 Z-0.05");
@@ -962,7 +963,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G28",
 					"T0",
 					"G1 F2000 X217 Y125",
@@ -975,8 +976,7 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"]);
+					"M300 S1040 P250"]);
 			}
 			OctoPrint.control.sendGcode("M114");
 		};
@@ -1043,7 +1043,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
 				"M300 S1392 P250",
-				"G4 S1",
+				"G4 P750",
 				"T0",
 				"G28",
 				"G1 F1400 X100 Y125 Z50",
@@ -1052,8 +1052,8 @@ $(function() {
 				"M400",
 				"M300 S1392 P250",
 				"M300 S1312 P250", 
-				"M300 S1040 P250",
-				"G4 S1"
+				"M300 S1040 P250"
+				
 				]);
 				//new PNotify({
 				//	title: 'Starting Height Check',
@@ -1067,7 +1067,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 				"M300 S1312 P250", 
 				"M300 S1392 P250",
-				"G4 S1",
+				"G4 P750",
 				"M605 S0",
 				"T0",
 				"G28 X",
@@ -1082,8 +1082,8 @@ $(function() {
 				"M400",
 				"M300 S1392 P250",
 				"M300 S1312 P250", 
-				"M300 S1040 P250",
-				"G4 S1"
+				"M300 S1040 P250"
+				
 				]);
 				//new PNotify({
 				//	title: 'Starting Height Check',
@@ -1361,7 +1361,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
-						"G4 S1",
+						"G4 P750",
 						"G28 Z",
 						"M218 T1 Z0",
 						"M500",
@@ -1379,14 +1379,14 @@ $(function() {
 						"M400",
 						"M300 S1392 P250",
 						"M300 S1312 P250", 
-						"M300 S1040 P250",
-						"G4 S1"
+						"M300 S1040 P250"
+						
 					]);
 				} else {
 					OctoPrint.control.sendGcode(["M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
-						"G4 S1",
+						"G4 P750",
 						"G28 Z",
 						"M218 T1 Z0",
 						"M500",
@@ -1407,8 +1407,8 @@ $(function() {
 						"M400",
 						"M300 S1392 P250",
 						"M300 S1312 P250", 
-						"M300 S1040 P250",
-						"G4 S1"
+						"M300 S1040 P250"
+						
 					]);
 				}
 
@@ -1432,7 +1432,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"M106 S0",
 
 					"M218 T1 Z0",
@@ -1445,8 +1445,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 				OctoPrint.printer.extrude(10);
 				self.cooldown();
@@ -1456,7 +1456,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"M106 S0",
 					"T1",
 					"G92 E0",
@@ -1470,8 +1470,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 			}
 			if (dualRightNozzleAdjustStep === 2){
@@ -1500,7 +1500,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G28 Z",
 					"M218 T1 Z0",
 					"M500",
@@ -1517,8 +1517,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 				OctoPrint.printer.extrude(10);
 				self.cooldown();
@@ -1529,7 +1529,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
-						"G4 S1",
+						"G4 P750",
 						"G28 Z",
 						"M218 T1 Z0",
 						"M500",
@@ -1546,8 +1546,8 @@ $(function() {
 						"M400",
 						"M300 S1392 P250",
 						"M300 S1312 P250", 
-						"M300 S1040 P250",
-						"G4 S1"
+						"M300 S1040 P250"
+						
 					]);
 					OctoPrint.printer.extrude(10);
 					self.cooldown();
@@ -1555,7 +1555,7 @@ $(function() {
 					OctoPrint.control.sendGcode(["M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
-						"G4 S1",
+						"G4 P750",
 						"T0",
 						"G28 XYZ",
 						"M218 T1 Z0",
@@ -1572,8 +1572,8 @@ $(function() {
 						"M400",
 						"M300 S1392 P250",
 						"M300 S1312 P250", 
-						"M300 S1040 P250",
-						"G4 S1"
+						"M300 S1040 P250"
+						
 					]);
 					self.requestEeprom();
 					self.checkParameters();
@@ -1586,7 +1586,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["M300 S1040 P250",
 					"M300 S1312 P250", 
 					"M300 S1392 P250",
-					"G4 S1",
+					"G4 P750",
 					"G1 F2000 Z20",
 					"M605 S0",
 					"T0",
@@ -1598,8 +1598,8 @@ $(function() {
 					"M400",
 					"M300 S1392 P250",
 					"M300 S1312 P250", 
-					"M300 S1040 P250",
-					"G4 S1"
+					"M300 S1040 P250"
+					
 				]);
 				// OctoPrint.printer.extrude(10);
 				self.cooldown();
