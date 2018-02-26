@@ -20,7 +20,6 @@ M190 S70
 M109 T{{tool}} S220
 {% endif %}
 {% if tohome == true %}
-G28 Z
 G28 X
 T0
 G28 X

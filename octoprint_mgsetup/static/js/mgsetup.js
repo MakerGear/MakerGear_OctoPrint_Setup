@@ -558,7 +558,11 @@ $(function() {
 					tohome: true,
 					wigglenumber: parseFloat(1),
 					tool: 1};
-				OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+				if (self.hasProbe()){
+					OctoPrint.control.sendGcodeScriptWithParameters("probeWiggle", context, parameters);
+				} else {
+					OctoPrint.control.sendGcodeScriptWithParameters("newWiggle", context, parameters);
+				}
 			}
 
 			if (wigglePosition === "T1-2"){
@@ -1611,6 +1615,12 @@ $(function() {
 
 		self.showMaintenanceStep = function(inputStep, inputTab, subTab){
 			if(inputStep !== undefined && inputTab !== undefined){
+				if (self.maintenancePage() === 14 || self.maintenancePage() === 15){
+					self.skipConfirm(false);
+						self.calibrationStep(0);
+						self.calibrationAxis("X");
+						self.sawBinPrinted(false);
+				}
 				self.requestEeprom();
 				self.checkParameters();
 				self.linkingToMaintenance(true);
@@ -1799,7 +1809,7 @@ $(function() {
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
 						if (self.maintenancePage() === 14){
-							self.maintenancePage(15);
+							self.maintenancePage(0);
 						} else {
 							self.goTo("15");
 						}
@@ -2103,6 +2113,7 @@ $(function() {
 			self.autoCheckClicked(false);
 			self.bedAdjustmentRounds(0);
 			self.noTurns(false);
+
 
 			clearTimeout(self.probeFail);
 			return;

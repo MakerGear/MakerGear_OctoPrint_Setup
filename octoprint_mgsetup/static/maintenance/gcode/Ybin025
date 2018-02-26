@@ -7,9 +7,11 @@ M109 T0 S220
 M109 T1 S220
 M605 S0
 T0
+{% if tohome == true %}
 G28 X
 T0
 G28
+{% endif %}
 M605 S1
 G92 E0
 G1 F1000 Y75 X44.5 Z2

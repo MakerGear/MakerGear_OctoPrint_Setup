@@ -46,8 +46,18 @@
                 <ul id="softwareOffsets" class="collapse">
                     <li>
                         <div class="buttonRow" style="text-align:center;">
-                            <div class="buttonColumn">
+                            <div class="buttonColumn" data-bind="visible:!$root.hasProbe()">
                                 <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(4); window.scroll(0,0); return true}">
+
+                                  <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
+
+                                <br />
+                                Tool 0 (left) Starting Height Hot (recommended)
+                                </a>
+
+                            </div>
+                            <div class="buttonColumn" data-bind="visible:$root.hasProbe()">
+                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(20); window.scroll(0,0); return true}">
 
                                   <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
@@ -1947,10 +1957,10 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 <p>
     Once both extruders have printed the pattern, choose from positions 1 – 5 to identify which set of 'sawteeth' are most closely aligned. 
-    The ideal result will show perfectly-aligned features for position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the X offset before prompting you print the same pattern again.
+    The ideal result will show perfectly-aligned features for position number 3 — if positions 1 or 5 are selected, the printer will automatically adjust the X offset before prompting you to print the same pattern again.  If positions 2 or 4 are selected, the printer will automatically adjust the X offset before prompting you to print the next pattern.
 </p>
 <p>
-    Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time. After completing the third procedure, you will automatically be sent ot the next step.
+    Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time. After completing the third procedure, you will automatically be sent to the next step.
 </p>
 
 
@@ -2019,10 +2029,10 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 <p>
     Once both extruders have printed the pattern, choose from positions 1 – 5 to identify which set of 'sawteeth' are most closely aligned. 
-    The ideal result will show perfectly-aligned features for position number 3 — if positions 1, 2, 4, or 5 are selected, the printer will automatically adjust the Y offset before prompting you print the same pattern again.
+    The ideal result will show perfectly-aligned features for position number 3 — if positions 1 or 5 are selected, the printer will automatically adjust the X offset before prompting you to print the same pattern again.  If positions 2 or 4 are selected, the printer will automatically adjust the X offset before prompting you to print the next pattern.
 </p>
 <p>
-    Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time. After completing the third procedure, you will automatically be sent ot the next step.
+    Once you’ve achieved alignment at position 3, you’ve reached the target position. Next, we'll follow the same procedure two more times, using finer tolerances each time. After completing the third procedure, you will automatically be sent to the next step.
 </p>
 
 
