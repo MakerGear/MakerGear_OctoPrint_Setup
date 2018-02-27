@@ -313,7 +313,8 @@
 
 <div data-bind="visible: $root.maintenancePage()!==0">
 
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(0); window.scroll(0,0); $root.probeCheckReset(); return true}"><h3>Return to Maintenance Index</h3></a>
+<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(0); window.scroll(0,0); $root.probeCheckReset(); return true}"><h4>Return to Maintenance Index</h4></a>
+<hr>
 
 </div>
 
@@ -355,7 +356,9 @@ Here we will adjust the starting height of the printer with the feeler gauge.  C
 <br>
 <center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
 </div>
-<center><button id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight('00') ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center><br>
+<center><button id="control-yinc" class="btnstay" data-bind="visible: !$root.hasProbe(), enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight('00') ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button><button id="control-yinc" class="btnstay" data-bind="visible: $root.hasProbe(), enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight('00-probe') ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center>
+
+<br>
 <div data-bind="visible:!$root.isDual()">
 During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
 </div>
@@ -381,13 +384,21 @@ During this step, you'll use the <strong>Bed Height Buttons</strong> below to ad
 </p>
 
 
-<div class="fileupload-new thumbnail" style="width: 95%; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/13.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===2" /><center>
-        </center>
-    </div><br>
-    <div data-bind="visible: !$root.hideDebug()"><br>Original Z Offset : <span data-bind="text: $root.ZOffset"></span><br></div>
-Current Z Position : <span data-bind="text: $root.ZPos"></span>
-<div data-bind="visible: !$root.hideDebug()"><br>Fresh data : <span data-bind="text: $root.ZPosFresh"></span></div><br>
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+  <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/13.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===2" />
+</div>
+<br>
+<div data-bind="visible: !$root.hideDebug()">
+  <br>
+  Original Z Offset : <span data-bind="text: $root.ZOffset"></span>
+  <br>
+</div>
+  Current Z Position : <span data-bind="text: $root.ZPos"></span>
+<div data-bind="visible: !$root.hideDebug()">
+  <br>
+  Fresh data : <span data-bind="text: $root.ZPosFresh"></span>
+</div>
+<br>
 
 <!-- Z jogging control panel -->
 
@@ -426,8 +437,9 @@ Current Z Position : <span data-bind="text: $root.ZPos"></span>
 
 <br><br><br><br><br> <br><br><br>  <br>    
 
-<center><button id="control-yinc" class="btnstayBig" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
-click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeightSaved(true); $root.goTo('3'); window.scroll(0,0) }">{{ _('Save New Starting Height') }}</button></center>
+<center><button id="control-yinc" class="btnstayBig" data-bind="visible: !$root.hasProbe(), enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
+click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeightSaved(true); $root.goTo('3'); window.scroll(0,0) }">{{ _('Save New Starting Height') }}</button><button id="control-yinc" class="btnstayBig" data-bind="visible: $root.hasProbe(), enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
+click: function() { $root.setupSetStartingHeight('1-probe'); $root.stepTwoStartingHeightSaved(true); $root.goTo('3'); window.scroll(0,0) }">{{ _('Save New Starting Height') }}</button></center>
 <br><br>
 
 {# <center><button class="btngoBig" data-bind="enable: $root.stepTwoPrepared && $root.stepTwoStartingHeightSaved(), click: function() { $root.goTo('3'); window.scroll(0,0) }">Next Step</button></center> #}
@@ -2544,36 +2556,33 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 8P'              "Y8888P"     
                             #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===70">
-This article will walk you through the removal and installation of the V4 hotend on the M3-SE and M3-ID 3D printer: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a> .
+<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===70" />
+    </div>
+<h1><span data-bind="visible: $root.isDual()">T0 Left Extruder Hotend Swap</span><span data-bind="visible: !$root.isDual()">Hotend Swap</span></h1>
 <br>
-Following the instructions will have you turn off the printer - please either open the article in a separate tab, or download this .pdf copy for local browsing:
-
+This Maintenance Operation will guide you through the removal and installation of the V4 Hotend.  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
+<br><br>
+<ul>
+<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
+<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
+</ul>
+<br>
+After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely.
+<br><br><br>
+<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly</center>
 <br><br>
 
-Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.
 
-<br><br>
-Once you have followed the instructions in that article, you will need to teach the printer about the new hotend position:
-
-<br><br>
-
-<div data-bind="visible: $root.isDual() || !$root.hideDebug()">
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(91,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust T0 Cold - For Duplication Mode Printing</a>
 <br>
 
-<a href='#maintenanceTabs' data-bind="visible: !$root.hasProbe(), click: function() {$root.showMaintenanceStep(41,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust T0 Hot - Duplication Mode Final Step, and Other Modes</a><a href='#maintenanceTabs' data-bind="visible: $root.hasProbe(), click: function() {$root.showMaintenanceStep(20,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust T0 Probe Offset - Duplication Mode Final Step, and Other Modes</a>
-</div>
-<br>
-
-
-<div data-bind="visible: (!$root.hasProbe() && !$root.isDual()) || !$root.hideDebug()">
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(4,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust Starting Height</a>
+<div>
+<button class="btnstay" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(2), $root.hotendSwapComplete(false) }">Adjust Starting Height</button>
 </div>
 
-<div data-bind="visible: ($root.hasProbe() && !$root.isDual()) || !$root.hideDebug()">
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(20,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust Probe Offset</a>
-</div>
 
+
+{# </div> #}
 </div>
 
 
@@ -2595,40 +2604,35 @@ Once you have followed the instructions in that article, you will need to teach 
                       
                     #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===71">
-This article will walk you through the removal and installation of the V4 hotend on the M3-SE and M3-ID 3D printer: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a> .
+  <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===71" />
+    </div>
+<h1><span data-bind="visible: $root.isDual()">T1 Right Extruder Hotend Swap</span></h1>
 <br>
-Following the instructions will have you turn off the printer - please either open the article in a separate tab, or download this .pdf copy for local browsing:
-
+This Maintenance Operation will guide you through the removal and installation of the V4 Hotend.  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
+<br><br>
+<ul>
+<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
+<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
+</ul>
+<br>
+After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely.
+<br><br><br>
+<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly</center>
 <br><br>
 
-Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.
-
-<br><br>
-Once you have followed the instructions in that article, you will need to teach the printer about the new hotend position:
-
-<br><br>
-
-<div data-bind="visible: $root.isDual() || !$root.hideDebug()">
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(91,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust T1 Cold - For Duplication Mode Printing</a>
 <br>
 
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(111,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust T1 Hot - Duplication Mode Final Step, and Other Modes</a>
-</div>
-<br>
+{# <center> #}<button class="btnstay" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(9), $root.hotendSwapComplete(false) }">Adjust T1 Height</button>{# </center> #}
 
 
-<div data-bind="visible: (!$root.hasProbe() && !$root.isDual()) || !$root.hideDebug()">
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(4,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust Starting Height</a>
+{# </div> #}
 </div>
 
-<div data-bind="visible: ($root.hasProbe() && !$root.isDual()) || !$root.hideDebug()">
-<a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(20,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}">Adjust Probe Offset</a>
-</div>
-
-</div>
 
 <div data-bind= "visible: !$root.hideDebug()"><hr />
 <input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.
+<input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
 <hr />
 Ignore everything below this statement.  And this statement.<br>
 

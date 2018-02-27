@@ -95,6 +95,7 @@ $(function() {
 		self.displayTool1TempTarget = ko.observable(undefined);
 		self.displayBedTemp(self.temperatures.bedTemp.actual);
 		self.displayBedTempTarget(self.temperatures.bedTemp.target);
+		self.preventTabReset = ko.observable(false);
 
 		self.untouchable = ko.computed(function(){
 			if (self.temperatures.bedTemp !== undefined && self.temperatures.bedTemp.target() !== undefined && self.temperatures.tools()[0] !== undefined && self.temperatures.tools()[0].target() !== undefined ){
@@ -170,6 +171,7 @@ $(function() {
 		self.pluginVersion = ko.observable("");
 		self.firmwareline = ko.observable("");
 		self.profileString = ko.observable("");
+		self.hotendSwapComplete = ko.observable(false);
 
 		// Quick Check Process starting/default values:
 		self.ZWiggleHeight = ko.observable(0.20);
@@ -1284,7 +1286,59 @@ $(function() {
 					self.goTo("26");
 				}
 			}
+			if (startingHeightStep == "00-probe") { //for maintenance step
 
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+				"M300 S1312 P250", 
+				"M300 S1392 P250",
+				"G4 P750",
+				"M605 S0",
+				"T0",
+				"G28 X Y Z",
+				"G1 F1400 X100 Y125 Z20",
+				"G1 F1400 Z5",
+				"M114",
+				"M400",
+				"M300 S1392 P250",
+				"M300 S1312 P250", 
+				"M300 S1040 P250",
+				"M211 S0"
+				
+				]);
+				//new PNotify({
+				//	title: 'Starting Height Check',
+				//	text: "Moving to check the Starting Height",
+				//	type: 'success',
+				//	//hide: self.settingsViewModel.settings.plugins.M117PopUp.autoClose()
+				//	});
+			}
+			if (startingHeightStep == "1-probe") {
+				self.newProbeOffset = (parseFloat(self.probeOffset())+parseFloat(self.ZPos()));
+
+				if (self.newProbeOffset.toString() == "NaN") {
+					self.notify("Offset Setting Error","There was an error when setting the Probe Offset.  Please refresh the page and try again.  Support values: self.newProbeOffset="+self.newProbeOffset.toString()+" ; self.probeOffset="+self.probeOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
+					self.mgLog("Offset setting error:");
+					self.mgLog("self.newProbeOffset = "+self.newProbeOffset.toString());
+					self.mgLog("self.probeOffset = "+self.probeOffset().toString());
+					self.mgLog("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());
+					return;
+				}
+				self.ProbeOffString = "M851 Z"+self.newProbeOffset.toString();
+				self.mgLog("newProbeOffset: "+self.newProbeOffset.toString());
+				self.mgLog("ProbeOffString: "+self.ProbeOffString);
+				OctoPrint.control.sendGcode([self.ProbeOffString,
+					"M500",
+					"M211 S1"					
+				]);
+				self.probeOffset(self.newProbeOffset);
+				self.requestEeprom();
+					//new PNotify({
+					//	title: 'Starting Height Adjustment',
+					//	text: "Starting Height Set to : "+self.newZOffset.toString(),
+					//	type: 'success',
+					//});
+
+			}
 
 			OctoPrint.control.sendGcode("M114");
 		};
@@ -2062,6 +2116,7 @@ $(function() {
 					"G29 P2",
 					"M400",
 					"G1 F1000 X100 Y125 Z20 F10000",
+					"M84 Y",
 					"M400"]);
 				self.waitingForProbeResponse(true);
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
@@ -2465,13 +2520,16 @@ $(function() {
 				OctoPrint.control.sendGcode(["T0",
 					"G28 XYZ",
 					"G29 P2",
-					"G1 F6000 X100 Y125"]);
+					"G1 F6000 X100 Y125",
+					"M84 Y"]);
 				self.probeLevelFirstCheckClicked(true);
 			}
 			if(levelStep === 1){
 				OctoPrint.control.sendGcode(["T0",
+					"G28 Y",
 					"G29 P2",
-					"G1 F6000 X100 Y125"]);
+					"G1 F6000 X100 Y125",
+					"M84 Y"]);
 				self.probeLevelActiveCorner(0);
 				return;
 			}
@@ -3323,6 +3381,10 @@ $(function() {
 		};
 
 		self.onAfterTabChange = function(current, previous){
+			if (self.preventTabReset()){
+				self.mgLog("preventTabReset set to true - skipping onAfterTabChange event code");
+				return;
+			}
 			self.mgLog("Current tab:"+current);
 			self.mgLog("Previous tab:"+previous);
 			if(previous === "#tab_plugin_mgsetup_maintenance"){
