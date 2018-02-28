@@ -3,310 +3,282 @@
 
 
 <div data-bind="visible: $root.maintenancePage()===0">
-<style>
-                .buttonColumn {
-                    float: left;
-                    width: 33.33%;
-                }
+  <style>
+    .buttonColumn {
+      float: left;
+      width: 33.33%;
+    }
 
-                .buttonRow
-                {
-                    margin-top:20px;
+    .buttonRow {
+      margin-top:20px;
+    }
+
+      /* Clear floats after the columns */
+    .buttonRow:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
 
-                }
+    .maintenanceImage {
+      border:solid black 2px;
+    }
 
+  </style>
+
+  <ul class="nav nav-stacked" id="maintenanceAccordion">
+    <li class="panel">
+      <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#softwareOffsets">Starting Height Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
+
+      <p>
+      Adjust the starting height on your M3 to get the perfect first layer.
+      </p>
+      <ul id="softwareOffsets" class="collapse">
+        <li>
+          <div class="buttonRow" style="text-align:center;">
+            <div class="buttonColumn" data-bind="visible:!$root.hasProbe()">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(4); window.scroll(0,0); return true}">
 
-                /* Clear floats after the columns */
-                .buttonRow:after {
-                    content: "";
-                    display: table;
-                    clear: both;
-                }
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
-                .maintenanceImage {
-                    border:solid black 2px;
-                }
+              <br />
+              Tool 0 (left) Starting Height Hot (recommended)
+              </a>
 
-            </style>
+            </div>
+            <div class="buttonColumn" data-bind="visible:$root.hasProbe()">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(20); window.scroll(0,0); return true}">
 
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
-               
+              <br />
+              Tool 0 (left) Starting Height Hot (recommended)
+              </a>
 
-               
+            </div>
 
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(11); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
+              <br />
+              Tool 1 (right) Starting Height Hot (recommended)
+              </a>
 
-               
-        <ul class="nav nav-stacked" id="maintenanceAccordion">
-            <li class="panel">
-                <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#softwareOffsets">Starting Height Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
-                
-                <p>
-                    Adjust the starting height on your M3 to get the perfect first layer.
-                </p>
-                <ul id="softwareOffsets" class="collapse">
-                    <li>
-                        <div class="buttonRow" style="text-align:center;">
-                            <div class="buttonColumn" data-bind="visible:!$root.hasProbe()">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(4); window.scroll(0,0); return true}">
+            </div>
 
-                                  <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
-                                <br />
-                                Tool 0 (left) Starting Height Hot (recommended)
-                                </a>
+            <div class="buttonRow" style="text-align:center;">
 
-                            </div>
-                            <div class="buttonColumn" data-bind="visible:$root.hasProbe()">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(20); window.scroll(0,0); return true}">
+              <div class="buttonColumn">
+                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(9); window.scroll(0,0); return true}">
+                <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+                <br />
+                Tool 1 (right) Starting Height Cold
+                </a>
 
-                                  <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
+              </div>
+            </div>
 
-                                <br />
-                                Tool 0 (left) Starting Height Hot (recommended)
-                                </a>
+            <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
-                            </div>
+              <br />
+              Tool 0 (left) Starting Height Cold
+              </a>
 
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(11); window.scroll(0,0); return true}">
-                                  <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                 <br />
-                                Tool 1 (right) Starting Height Hot (recommended)
-                                  </a>
+            </div>
 
-                            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
 
+    <hr>
 
-                        <div class="buttonRow" style="text-align:center;">
+    <li class="panel">
+      <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#dualOffsets">Independent Dual Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
 
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(9); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                 <br />
-                                Tool 1 (right) Starting Height Cold
-                                 </a>
+      <p>
+      Set X, Y and Duplication Calibration.
+      </p>
+      <ul id="dualOffsets" class="collapse">
+        <li>
 
-                            </div>
-                        </div>
+          <div class="buttonRow" style="text-align:center;">
 
-                        <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
-                                <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(14); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/xAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
+              <br />
+              Dual X Offset Calibration
+                     </a>
 
-                                <br />
-                                Tool 0 (left) Starting Height Cold
-                                </a>
+            </div>
 
-                            </div>
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(15); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/yAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
+              <br />
+              Dual Y Offset Calibration
+              </a>
 
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        
-            <hr>
+            </div>
+            <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(92); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
+              <br />
+              Duplication Mode Check
+              </a>
 
-                       <li class="panel">
-                <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#dualOffsets">Independent Dual Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
-                
-                <p>
-                    Set X, Y and Duplication Calibration.
-                </p>
-                <ul id="dualOffsets" class="collapse">
-                    <li>
-                       
-                        <div class="buttonRow" style="text-align:center;">
+            </div>
 
 
-                     
-
-
-
-
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(14); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/xAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                 <br />
-                                Dual X Offset Calibration
-                                                     </a>
-
-                            </div>
-
-                             <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(15); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/yAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                <br />
-                                 Dual Y Offset Calibration
-                                 </a>
-
-                            </div>
-                            <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                <br />
-                                 Duplication Mode Check
-                                 </a>
-
-                            </div>
-
-
-                        </div>
-
-                    </li>
-                </ul>
-            </li>
-        
-            <hr>
-
-
-            <li class="panel" data-bind="visible: !$root.hideDebug()">
-                 <h3><a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#physicalAdjustments">Physical Adjustments <i class="icon-chevron-down"></i></a></h3>
-
-                 <p>
-                    Adjust and calibrate Hotends.
-                 </p>
-                <ul id="physicalAdjustments" class="collapse">
-                    <li>
-                        <div class="buttonRow" style="text-align:center;">
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(70); window.scroll(0,0); return true}">
-                                   <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                    <br />
-                                    T0 Hotend / Nozzle Change
-                                </a>
-
-                            </div>
-
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
-                                    <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT1.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                     <br />
-                                    T1 Hotend / Nozzle Change
-                                </a>
-
-                             </div>
-                                
-                                <div class="buttonColumn">
-                                 <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(91); window.scroll(0,0); return true}">
-                                     <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
-
-                                    <br />
-                                    T0 and T1 Cold/Mechanical Height Adjustment for Duplication Mode
-                                     </a>
-
-                                </div>
-
-                            
-
-                        </div>
-
-
-
-
-                     </li>
-                </ul>
-            </li>
-        <div data-bind="visible: !$root.hideDebug()">
-            <hr>
-</div>
-
-
-            <li class="panel">
-
-                <h3><a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#bedLeveling"> Bed Leveling <i class="icon-chevron-down"></i></a></h3>
-
-                <p>
-                    Check and adjust how level your bed is.
-                </p>
-
-                <ul id="bedLeveling" class="collapse">
-                     <li>
-                        <div class="buttonRow" style="text-align:center;">
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(6); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
-
-                                <br />
-                                Hot Bed Leveling (recommended)
-                                 </a>
-
-                            </div>
-
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(10); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                 <br />
-                                Cold Bed Leveling
-                                 </a>
-
-                            </div>
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(21); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelAssisted.jpg', 'width': '100px',} , visible: loginState.isUser " />
-
-                                <br />
-                                Assisted Bed Leveling
-                                 </a>
-
-                            </div>
-
-
-
-
-                        </div>
-                    </li>
-                </ul>
-            </li>
-
-
-            <!--
-            <li class="panel">
-
-                        <h3>
-                            <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#guides">Automated....wizard? <i class="icon-chevron-down"></i> </a>
-                        </h3>
-                       
-                        <p>
-                            Check and adjust how level your bed is.
-                        </p>
-
-            <ul id="guides" class="collapse">
-                <li>
-                        <div class="buttonRow" style="text-align:center;">
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
-
-                                <br />
-                                Cold Pull Hot-End unclogging
-                                 </a>
-
-                            </div>
-
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
-                                 <br />
-                                Collision Test
-                                 </a>
-
-                            </div>
-                            <div class="buttonColumn">
-                                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
-                                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelAssisted.jpg', 'width': '100px',} , visible: loginState.isUser " />
-
-                                <br />
-                                Component Test (tests each component, endstop, motors, thermistor, heater, fan)
-                                 </a>
-
-                            </div>
-
-                        </div>
-                </li>
-            </ul>
-            -->
+          </div>
 
         </li>
+      </ul>
+    </li>
+
+    <hr>
+
+
+    <li class="panel" data-bind="visible: !$root.hideDebug()">
+      <h3><a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#physicalAdjustments">Physical Adjustments <i class="icon-chevron-down"></i></a></h3>
+
+      <p>
+      Adjust and calibrate Hotends.
+      </p>
+      <ul id="physicalAdjustments" class="collapse">
+        <li>
+          <div class="buttonRow" style="text-align:center;">
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(70); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
+              <br />
+              T0 Hotend / Nozzle Change
+              </a>
+
+            </div>
+
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT1.jpg', 'width': '100px',} , visible: loginState.isUser " />
+              <br />
+              T1 Hotend / Nozzle Change
+              </a>
+            </div>
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(72); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+              <br />
+              T0 and T1 Cold/Mechanical Height Adjustment for Duplication Mode
+              </a>
+            </div>
+          </div>
+
+
+
+
+        </li>
+      </ul>
+    </li>
+    <div data-bind="visible: !$root.hideDebug()">
+    <hr>
+    </div>
+
+
+    <li class="panel">
+
+      <h3><a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#bedLeveling"> Bed Leveling <i class="icon-chevron-down"></i></a></h3>
+
+      <p>
+      Check and adjust how level your bed is.
+      </p>
+
+      <ul id="bedLeveling" class="collapse">
+        <li>
+          <div class="buttonRow" style="text-align:center;">
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(6); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+              <br />
+              Hot Bed Leveling (recommended)
+              </a>
+            </div>
+
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(10); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+              <br />
+              Cold Bed Leveling
+              </a>
+
+            </div>
+            <div class="buttonColumn">
+              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(21); window.scroll(0,0); return true}">
+              <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelAssisted.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+              <br />
+              Assisted Bed Leveling
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </li>
+
+
+    <!--
+    <li class="panel">
+
+    <h3>
+    <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#guides">Automated....wizard? <i class="icon-chevron-down"></i> </a>
+    </h3>
+
+    <p>
+    Check and adjust how level your bed is.
+    </p>
+
+    <ul id="guides" class="collapse">
+    <li>
+    <div class="buttonRow" style="text-align:center;">
+    <div class="buttonColumn">
+    <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+    <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+    <br />
+    Cold Pull Hot-End unclogging
+    </a>
+
+    </div>
+
+    <div class="buttonColumn">
+    <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+    <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
+    <br />
+    Collision Test
+    </a>
+
+    </div>
+    <div class="buttonColumn">
+    <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+    <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelAssisted.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+    <br />
+    Component Test (tests each component, endstop, motors, thermistor, heater, fan)
+    </a>
+
+    </div>
+
+    </div>
+    </li>
+    </ul>
+    -->
+
+    </li>
 
     </ul>
 </div>
@@ -438,10 +410,11 @@ During this step, you'll use the <strong>Bed Height Buttons</strong> below to ad
 <br><br><br><br><br> <br><br><br>  <br>    
 
 <center><button id="control-yinc" class="btnstayBig" data-bind="visible: !$root.hasProbe(), enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
-click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeightSaved(true); $root.goTo('3'); window.scroll(0,0) }">{{ _('Save New Starting Height') }}</button><button id="control-yinc" class="btnstayBig" data-bind="visible: $root.hasProbe(), enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
-click: function() { $root.setupSetStartingHeight('1-probe'); $root.stepTwoStartingHeightSaved(true); $root.goTo('3'); window.scroll(0,0) }">{{ _('Save New Starting Height') }}</button></center>
+click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Starting Height') }}</button><button id="control-yinc" class="btnstayBig" data-bind="visible: $root.hasProbe(), enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
+click: function() { $root.setupSetStartingHeight('1-probe'); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Probe Offset') }}</button></center>
 <br><br>
-
+<center><button style="width:100%;" class="btngoBig" data-bind="visible: !$root.hasProbe(), enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(4); $root.stepTwoStartingHeightSaved(false) }">Hot Starting Height Adjustment<br /></button></center>
+<center><button style="width:100%;" class="btngoBig" data-bind="visible: $root.hasProbe(), enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(20); $root.stepTwoStartingHeightSaved(false) }">Hot Probe Offset Adjustment<br /></button></center>
 {# <center><button class="btngoBig" data-bind="enable: $root.stepTwoPrepared && $root.stepTwoStartingHeightSaved(), click: function() { $root.goTo('3'); window.scroll(0,0) }">Next Step</button></center> #}
 
 <br><br></div>
@@ -2577,7 +2550,9 @@ After completing the V4 Hotend installation, please perform a final inspection, 
 <br>
 
 <div>
-<button class="btnstay" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(2), $root.hotendSwapComplete(false) }">Adjust Starting Height</button>
+  <center>
+<button class="btngoBig " data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(2), $root.hotendSwapComplete(false) }">Adjust Starting Height</button>
+</center>
 </div>
 
 
@@ -2623,15 +2598,171 @@ After completing the V4 Hotend installation, please perform a final inspection, 
 
 <br>
 
-{# <center> #}<button class="btnstay" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(9), $root.hotendSwapComplete(false) }">Adjust T1 Height</button>{# </center> #}
+<center><button class="btngoBig" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(9), $root.hotendSwapComplete(false) }">Adjust T1 Height</button></center>
 
 
 {# </div> #}
 </div>
 
 
+{#                         
+888888888888   ad888888b,  
+        ,8P'  d8"     "88  
+       d8"            a8P  
+     ,8P'          ,d8P"   
+    d8"          a8P"      
+  ,8P'         a8P'        
+ d8"          d8"          
+8P'           88888888888  
+                           
+                         #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===72">
+  <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===72" />
+    </div>
+<h1><span data-bind="visible: $root.isDual()">T0 Left and T1 Right Extruder Hotend Swap - For Duplication Mode</span></h1>
+<br>
+This Maintenance Operation will guide you through the removal and installation of both the T0 Left and T1 Right V4 Hotends on your M3 Independent Dual.
+<br>
+
+
+  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
+<br><br>
+<ul>
+<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
+<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
+</ul>
+<center><b>Note: These instructions cover the removal and installation of a single hotend; the process is the same for each of the Independent Dual extruders as well.</b></center>
+<br>
+After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely, on both extruders.
+<br><br><br>
+<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly</center>
+<br><br>
+
+<br>
+
+<center><button class="btngoBig" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(9), $root.hotendSwapComplete(false) }">Adjust Height of Both Extruders</button></center>
+
+
+{# </div> #}
+</div>
+
+
+
+
+
+
+{#                        
+ ad88888ba    ad888888b,  
+d8"     "88  d8"     "88  
+8P       88          a8P  
+Y8,    ,d88       ,d8P"   
+ "PPPPPP"88     a8P"      
+         8P   a8P'        
+8b,    a8P   d8"          
+`"Y8888P'    88888888888  
+                          
+                        #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===92">
+  <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===92" />
+    </div>
+<br>
+
+
+
+Duplication mode printing requires that the T0 Left Extruder and T1 Left Extruder are very close to the same height relative to the bed, and that the bed itself is very close to being perfectly level.
+<br><br>
+If you have not changed physically adjusted T0 or T1 since setting the T1 Z Offset, the
+
+
+
+
+
+
+
+
+
+<b>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.05">Your T1 Z Offset is small enough that Duplication Mode printing should work without a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.1 && Math.abs($root.tool1ZOffset()) > 0.05">Your T1 Z Offset is small enough that Duplication Mode printing should work with a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) > 0.1">Your T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted below:</div>
+</b>
+
+
+
+
+
+
+<h1><span data-bind="visible: $root.isDual()">T0 Left and T1 Right Extruder Hotend Swap - For Duplication Mode</span></h1>
+<br>
+This Maintenance Operation will guide you through the removal and installation of both the T0 Left and T1 Right V4 Hotends on your M3 Independent Dual.
+<br>
+
+
+  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
+<br><br>
+<ul>
+<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
+<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
+</ul>
+<center><b>Note: These instructions cover the removal and installation of a single hotend; the process is the same for each of the Independent Dual extruders as well.</b></center>
+<br>
+After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely, on both extruders.
+<br><br><br>
+<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly</center>
+<br><br>
+
+<br>
+
+<center><button class="btngoBig" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(9), $root.hotendSwapComplete(false) }">Adjust Height of Both Extruders</button></center>
+
+
+{# </div> #}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div data-bind= "visible: !$root.hideDebug()"><hr />
-<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.
+<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.<br>
 <input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
 <hr />
 Ignore everything below this statement.  And this statement.<br>
@@ -2663,10 +2794,12 @@ Ignore everything below this statement.  And this statement.<br>
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 41, click: window.scroll(0,0)" />  41 - T0 Z Home Offset Adjustment (no probe, combined default and alternative materials)</div>
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 70, click: window.scroll(0,0)" />  70 - T0 Hotend Change</div>
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 71, click: window.scroll(0,0)" />  71 - T1 Hotend Change</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 91, click: window.scroll(0,0)" />  91 - Duplication Check and T0/T1 Physical Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 72, click: window.scroll(0,0)" />  72 - T0 and T1 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 91, click: window.scroll(0,0)" />  91 - T0/T1 Physical Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 92 , click: window.scroll(0,0)" /> 92 - Duplication Mode Check</div>
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 111, click: window.scroll(0,0)" />111 - T1 Z Offset Adjustment (Hot, default and alternative materials)</div>
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 200, click: window.scroll(0,0)" />200 - T0 Probe Offset Adjustment (Hot, combined default and alternative materials)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
+
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>
     <div><input type="radio" name="maintenancePageSelect" data-bind="checked: maintenancePage, checkedValue: 0 , click: window.scroll(0,0)" />  0 - Maintenance Page</div>

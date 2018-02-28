@@ -2975,7 +2975,7 @@ Once the print has finished, inspect it and compare it to the images below:<br><
         </tr>
         <tr>
         <td class="buttonCell">
-         <center><button class="btngoBig" data-bind="click: function() { $root.goTo('22'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center>
+         <center><button class="btngoBig" data-bind="visible: $root.hasProbe(), click: function() { $root.goTo('22'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button><button class="btngoBig" data-bind="visible: !$root.hasProbe(), click: function() { $root.goTo('16'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center>
         </td>
         </tr>
         </table><br>
@@ -3009,7 +3009,7 @@ Once the print has finished, inspect it and compare it to the images below:<br><
     </tr>
     <tr>
         <td class="buttonCell">
-         <center><button class="btngoBig" data-bind="click: function() { $root.goTo('20'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T0 Height</button></center>
+         <center><button class="btngoBig" data-bind="visible: $root.hasProbe(), click: function() { $root.goTo('20'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T0 Height</button><button class="btngoBig" data-bind="visible: !$root.hasProbe(), click: function() { $root.goTo('4'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T0 Height</button></center>
         </td>
         <td class="buttonCell">
         <center><button class="btngoBig" data-bind="click: function() { $root.goTo('11'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T1 Height</button></center>
@@ -3245,7 +3245,7 @@ d8"         Y8a     a8P
 <br><br><button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasHistory(), click: function() {$root.stepBack()}" style="float:left;"><i class="icon-circle-arrow-left"></i></button><button class="arrowbtn" data-bind="visible: loginState.isUser, enable: $root.hasFuture(), click: function() {$root.stepForward()}" style="float:right;"><i class="icon-circle-arrow-right"></i></button><br><br><br>
 
 <div data-bind= "visible: !$root.hideDebug()">
-<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.
+<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.<br>
 <input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
 <hr />
 Ignore everything below this statement.  And this statement.<br>
@@ -3260,23 +3260,23 @@ Ignore everything below this statement.  And this statement.<br>
     88888888Y"'    88888888888  88888888P"    `"Y8888Y"'     `"Y88888P"   #}
 <div>
     Which step to show:
-    <div><input type="radio" name="setupStepSelect" value="0" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Zero - Welcome Page</div>
-    <div><input type="radio" name="setupStepSelect" value="1" data-bind="checked: setupStep, click: window.scroll(0,0)" /> One - Starting Height Check (Z head crash/gap)</div>
-    <div><input type="radio" name="setupStepSelect" value="2" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Two - Adjust Starting Height (cold)</div>
-    <div><input type="radio" name="setupStepSelect" value="3" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Three - Load Filament</div>
-    <div><input type="radio" name="setupStepSelect" value="4" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Four - Verify Starting Height (Wiggle)</div>
-    <div><input type="radio" name="setupStepSelect" value="5" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Five - Heated Corner Check (Wiggles)</div>
-    <div><input type="radio" name="setupStepSelect" value="6" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Six - Heated Leveling (Wiggles)</div>
-    <div><input type="radio" name="setupStepSelect" value="7" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Seven - Done</div>
-    <div><input type="radio" name="setupStepSelect" value="8" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eight - Dual Cold Starting Height Check</div>
-    <div><input type="radio" name="setupStepSelect" value="9" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Nine - Dual Cold Starting Height Adjustment</div>
-    <div><input type="radio" name="setupStepSelect" value="10" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Ten - Dual Load Filament Extruder 1</div>
-    <div><input type="radio" name="setupStepSelect" value="11" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Eleven - Dual Extruder 1 Height Adjustment</div>
-    <div><input type="radio" name="setupStepSelect" value="12" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Twelve - Dual Extruder 1 First Print</div>
-    <div><input type="radio" name="setupStepSelect" value="13" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Thirteen - Dual Both Extruders Print</div>
-    <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fourteen - Dual X Offset Calibration</div>
-    <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Fifteen - Dual Y Offset Calibration</div>
-    <div><input type="radio" name="setupStepSelect" value="16" data-bind="checked: setupStep, click: window.scroll(0,0)" /> Sixteen - Done/Prints</div>
+    <div><input type="radio" name="setupStepSelect" value="0" data-bind="checked: setupStep, click: window.scroll(0,0)" />0 Welcome Page</div>
+    <div><input type="radio" name="setupStepSelect" value="1" data-bind="checked: setupStep, click: window.scroll(0,0)" />1 Starting Height Check (Z head crash/gap)</div>
+    <div><input type="radio" name="setupStepSelect" value="2" data-bind="checked: setupStep, click: window.scroll(0,0)" />2 Adjust Starting Height (cold)</div>
+    <div><input type="radio" name="setupStepSelect" value="3" data-bind="checked: setupStep, click: window.scroll(0,0)" />3 Load Filament</div>
+    <div><input type="radio" name="setupStepSelect" value="4" data-bind="checked: setupStep, click: window.scroll(0,0)" />4 Verify Starting Height (Wiggle)</div>
+    <div><input type="radio" name="setupStepSelect" value="5" data-bind="checked: setupStep, click: window.scroll(0,0)" />5 Heated Corner Check (Wiggles)</div>
+    <div><input type="radio" name="setupStepSelect" value="6" data-bind="checked: setupStep, click: window.scroll(0,0)" />6 Heated Leveling (Wiggles)</div>
+    <div><input type="radio" name="setupStepSelect" value="7" data-bind="checked: setupStep, click: window.scroll(0,0)" />7 Done</div>
+    <div><input type="radio" name="setupStepSelect" value="8" data-bind="checked: setupStep, click: window.scroll(0,0)" />8 Dual Cold Starting Height Check</div>
+    <div><input type="radio" name="setupStepSelect" value="9" data-bind="checked: setupStep, click: window.scroll(0,0)" />9 Dual Cold Starting Height Adjustment</div>
+    <div><input type="radio" name="setupStepSelect" value="10" data-bind="checked: setupStep, click: window.scroll(0,0)" />10 Dual Load Filament Extruder 1</div>
+    <div><input type="radio" name="setupStepSelect" value="11" data-bind="checked: setupStep, click: window.scroll(0,0)" />11 Dual Extruder 1 Height Adjustment</div>
+    <div><input type="radio" name="setupStepSelect" value="12" data-bind="checked: setupStep, click: window.scroll(0,0)" />12 Dual Extruder 1 First Print</div>
+    <div><input type="radio" name="setupStepSelect" value="13" data-bind="checked: setupStep, click: window.scroll(0,0)" />13 Dual Both Extruders Print</div>
+    <div><input type="radio" name="setupStepSelect" value="14" data-bind="checked: setupStep, click: window.scroll(0,0)" />14 Dual X Offset Calibration</div>
+    <div><input type="radio" name="setupStepSelect" value="15" data-bind="checked: setupStep, click: window.scroll(0,0)" />15 Dual Y Offset Calibration</div>
+    <div><input type="radio" name="setupStepSelect" value="16" data-bind="checked: setupStep, click: window.scroll(0,0)" />16 Done/Prints</div>
     <div><input type="radio" name="setupStepSelect" value="17" data-bind="checked: setupStep, click: window.scroll(0,0)" />17 Probe Autocheck</div>
     <div><input type="radio" name="setupStepSelect" value="18" data-bind="checked: setupStep, click: window.scroll(0,0)" />18 Probe Fail 1/2 - Probe Connection</div>
     <div><input type="radio" name="setupStepSelect" value="19" data-bind="checked: setupStep, click: window.scroll(0,0)" />19 Probe Fail 3 - Nozzle vs Probe Height</div>
