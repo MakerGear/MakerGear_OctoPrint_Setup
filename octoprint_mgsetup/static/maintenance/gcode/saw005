@@ -43,9 +43,9 @@ G92 E0
 G1 F300 E-5
 G92 E0
 T1
-G1 F1000 X{% 59.9 + printOffset %} Y190.5 Z2
+G1 F1000 X{{% 59.9 + printOffset %}} Y190.5 Z2
 G1 Z0.25
-G1 F1000 X{% 59.9 + printOffset %} Y140.5 E30
+G1 F1000 X{{% 59.9 + printOffset %}} Y140.5 E30
 G92 E0
 G91
 G1 F500 X0 Y0 E0
