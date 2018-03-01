@@ -63,6 +63,7 @@ $(function() {
 		self.controlsFromServer = [];
 		self.additionalControls = [];
 
+
 		// UI history:
 		self.setupStepHistory = ko.observableArray([]);
 		self.setupStepFuture = ko.observableArray([]);
@@ -1738,6 +1739,7 @@ $(function() {
 				return 0.05;
 			}
 		},this);
+		self.sawPrintOffset = ko.observable(0);
 		self.sawBinPrinted = ko.observable(false);
 		self.chosenSawBin = ko.observable(0);
 
@@ -1783,9 +1785,9 @@ $(function() {
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
 					if (self.stepFourteenToHome()){
-						var parameters = {tohome: true};
+						var parameters = {tohome: true, offset: self.sawPrintOffset()};
 					} else {
-						var parameters = {};
+						var parameters = {offset: self.sawPrintOffset()};
 					}
 					var context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
@@ -1793,12 +1795,12 @@ $(function() {
 					self.stepFourteenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
-					var parameters = {};
+					var parameters = {offset: self.sawPrintOffset()};
 					var context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
 				}
 				if (self.calibrationStep() === 2){
-					var parameters = {};
+					var parameters = {offset: self.sawPrintOffset()};
 					var context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
 				}
@@ -1806,9 +1808,9 @@ $(function() {
 			if (self.calibrationAxis()=="Y"){
 				if (self.calibrationStep() === 0){
 					if (self.stepFifteeenToHome()){
-						var parameters = {tohome: true};
+						var parameters = {tohome: true, offset: self.sawPrintOffset()};
 					} else {
-						var parameters = {};
+						var parameters = {offset: self.sawPrintOffset()};
 					}
 					var context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
@@ -1816,12 +1818,12 @@ $(function() {
 					self.stepFifteeenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
-					var parameters = {};
+					var parameters = {offset: self.sawPrintOffset()};
 					var context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
 				}
 				if (self.calibrationStep() === 2){
-					var parameters = {};
+					var parameters = {offset: self.sawPrintOffset()};
 					var context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
 				}
@@ -1841,6 +1843,7 @@ $(function() {
 				if (chosenMatch === 1){
 					self.mgLog("PickSawBin 1, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1849,6 +1852,7 @@ $(function() {
 				if (chosenMatch === 2){
 					self.mgLog("PickSawBin 2, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(1*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1866,6 +1870,7 @@ $(function() {
 						self.calibrationAxis("Y");
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
+						self.sawPrintOffset(0);
 						if (self.maintenancePage() === 14){
 							self.maintenancePage(0);
 						} else {
@@ -1878,6 +1883,7 @@ $(function() {
 				if (chosenMatch === 4){
 					self.mgLog("PickSawBin 4, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-1*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1887,6 +1893,7 @@ $(function() {
 				if (chosenMatch === 5){
 					self.mgLog("PickSawBin 5, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-2*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1899,6 +1906,7 @@ $(function() {
 				if (chosenMatch === 1){
 					self.mgLog("PickSawBin 1, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
@@ -1907,6 +1915,7 @@ $(function() {
 				if (chosenMatch === 2){
 					self.mgLog("PickSawBin 2, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(1*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
@@ -1923,6 +1932,7 @@ $(function() {
 					if (self.calibrationStep() === 3){
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
+						self.sawPrintOffset(0);
 						if(!self.hasProbe()){
 							self.goTo("16");
 						} else {
@@ -1937,6 +1947,7 @@ $(function() {
 				if (chosenMatch === 4){
 					self.mgLog("PickSawBin 4, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-1*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
@@ -1946,6 +1957,7 @@ $(function() {
 				if (chosenMatch === 5){
 					self.mgLog("PickSawBin 5, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-2*self.calibrationOffset())).toString());
+					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
