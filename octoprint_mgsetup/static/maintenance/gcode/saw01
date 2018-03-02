@@ -1,5 +1,5 @@
 {% set tohome = parameters.tohome %}
-{% set printOffset = parameters.offset %}
+{% set printOffset = 59.8 + parameters.offset %}
 
 M300 S1040 P250
 M300 S1312 P250 
@@ -43,9 +43,9 @@ G92 E0
 G1 F300 E-5
 G92 E0
 T1
-G1 F1000 X{{% 59.8 + printOffset %}} Y190.5 Z2
+G1 F1000 X{{printOffset}} Y190.5 Z2
 G1 Z0.25
-G1 F1000 X{{% 59.8 + printOffset %}} Y140.5 E30
+G1 F1000 X{{printOffset}} Y140.5 E30
 G92 E0
 G91
 G1 F500 X0 Y0 E0
@@ -63,7 +63,8 @@ G1 F500 X10 Y15 E1.1068
 G1 F500 X10.1 Y0 E0.525
 G1 F500 X0 Y-15 E0.6329
 G1 F500 X10 Y15 E1.1068
-G92 E0
 G90
+G92 E0
+
 G1 F1000 X59.8 Y140.5 E45
 G1 F1000 Y240 Z90
