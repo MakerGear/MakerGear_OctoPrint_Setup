@@ -1843,7 +1843,7 @@ $(function() {
 				if (chosenMatch === 1){
 					self.mgLog("PickSawBin 1, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1852,7 +1852,7 @@ $(function() {
 				if (chosenMatch === 2){
 					self.mgLog("PickSawBin 2, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(1*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1883,7 +1883,7 @@ $(function() {
 				if (chosenMatch === 4){
 					self.mgLog("PickSawBin 4, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-1*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1893,7 +1893,7 @@ $(function() {
 				if (chosenMatch === 5){
 					self.mgLog("PickSawBin 5, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-2*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
 						"M501"]);
@@ -1906,7 +1906,7 @@ $(function() {
 				if (chosenMatch === 1){
 					self.mgLog("PickSawBin 1, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
@@ -1915,7 +1915,7 @@ $(function() {
 				if (chosenMatch === 2){
 					self.mgLog("PickSawBin 2, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(1*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
@@ -1947,7 +1947,7 @@ $(function() {
 				if (chosenMatch === 4){
 					self.mgLog("PickSawBin 4, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-1*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
@@ -1957,7 +1957,7 @@ $(function() {
 				if (chosenMatch === 5){
 					self.mgLog("PickSawBin 5, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-2*self.calibrationOffset())).toString());
-					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
+					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
 						"M501"]);
