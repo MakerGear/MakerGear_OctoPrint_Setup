@@ -60,6 +60,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.ip = ""
 		self.firmwareline = ""
 		self.localfirmwareline = ""
+		self.probeline = ""
 		self.printActive = False
 		self.mgLogger = logging.getLogger("mgLumberJack")
 		self.mgLogger.setLevel(logging.DEBUG)
@@ -336,6 +337,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = self.probeline))
 			self._logger.info(str(self.nextReminder))
 			#if (self.internetConnection == False ):
 			self.checkInternet(3,5, 'none')
@@ -584,6 +586,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def process_z_offset(self, comm, line, *args, **kwargs):
 
+		if "MGERR" in line:
+			self._logger.info("process_z_offset triggered - MGERR !")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(mgerrorline = line))
+
 		if self.printActive:
 			# self._logger.debug("printActive true, skipping filters.")
 			# self._logger.info("printActive true, skipping filters - info")
@@ -601,6 +607,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# 	return line
 
 		# logging.getLogger("octoprint.plugin." + __name__ + "process_z_offset triggered")
+		if "MGERR" in line:
+			self._logger.info("process_z_offset triggered - MGERR !")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(mgerrorline = line))
+
 		if "M206" in line:
 			self._logger.info("process_z_offset triggered - Z offset")
 			self.zoffsetline = line
@@ -633,6 +643,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		if "M851" in line:
 			self._logger.info("Z Probe Offset received")
+			self.probeline = line
 			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
 
 		if "= [[ " in line:

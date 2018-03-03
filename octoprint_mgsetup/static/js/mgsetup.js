@@ -3185,6 +3185,7 @@ $(function() {
 				self.calibrationStep(0);
 				self.calibrationAxis("X");
 				self.sawBinPrinted(false);
+				self.sawPrintOffset(0);
 			}
 			if (targetStep === 15){
 				self.mgLog("resetStep targetStep = 15");
@@ -3192,12 +3193,13 @@ $(function() {
 				self.calibrationStep(0);
 				self.calibrationAxis("Y");
 				self.sawBinPrinted(false);
+				self.sawPrintOffset(0);
 			}
 			if (targetStep === 16){
 				self.mgLog("resetStep targetStep = 16");
 			}
 			if (16<targetStep<22){
-				self.mgLog("resetStep targetStep = 17~21");
+				self.mgLog("resetStep targetStep = 17~21; actual: " + targetStep.toString());
 				self.probeCheckReset();
 			}
 			if (targetStep === 26){
@@ -3611,20 +3613,26 @@ $(function() {
 				self.mgLog("probeline: "+data.probeline);
 				self.probeReceived(data.probeline);
 			}
-			if (data.probeOffsetLine !== undefined){
+			if (data.probeOffsetLine !== undefined && data.probeOffsetLine !== ""){
 				self.mgLog("probeOffsetline: "+data.probeOffsetLine);
 				self.filter = /M851 Z(.?\d+\.\d+)/;
 				var match = self.filter.exec(data.probeOffsetLine);
-				if (match !== undefined){
+				if (match[1] !== undefined){
 					self.mgLog("probeOffsetLine match: "+match);
 					self.mgLog("probeOffsetLine match[1]: "+match[1]);
+					self.probeOffset(parseFloat(match[1]));
+				} else {
+					self.mgLog("Tried to parse received probeOffsetline, but match[1] is undefined; probeOffsetline: "+data.probeOffset);
 				}
-				self.probeOffset(parseFloat(match[1]));
 			}
 			if (data.bedLevelLine !== undefined){
 				self.mgLog("bedLevelLine: "+data.bedLevelLine);
 				self.processBedLevel(data.bedLevelLine);
 
+			}
+			if (data.mgerrorline !== undefined){
+				self.mgLog("Received mgerrorline: "+data.mgerrorline);
+				self.mgErrorHandler(data.mgerrorline);
 			}
 
 		};
@@ -3659,6 +3667,94 @@ $(function() {
 		// 		}
 		// 	}
 		// };
+
+
+		self.errLongMessage = ko.observable("");
+		self.errLongMessageWaiting = ko.observable(false);
+		self.errLongMessageLength = ko.observable(0);
+		self.errLongMessagePosition = ko.observable(0);
+//		self.mgErrorHandlerTimer = 
+
+		self.mgErrorHandler = function(errorLine){
+			if (errorLine === undefined){
+				if (self.errLongMessage()!== "" && self.errLongMessageWaiting()){
+					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported multi-line message is: \n"+self.errLongMessage());
+					self.errLongMessage("");
+					self.errLongMessageWaiting(false);
+					clearTimeout(self.mgErrorHandlerTimer);
+					return;
+				} else {
+					// return;
+				}
+			}
+			//if (self.mgErrorHandler !== undefined)
+
+
+
+			
+
+			var errCodeFilter = /\[(\d\d\d)\]-/;
+			var errCodeCountFilter = /-\[(\d\d)\]/;
+			var errCode = (errCodeFilter.exec(errorLine))[1];
+			var errLineCountLine = (errCodeCountFilter.exec(errorLine))[1];
+			self.errLongMessageLength(parseFloat(errLineCountLine.substr(1,1)));
+			self.errLongMessagePosition(parseFloat(errLineCountLine.substr(0,1)));
+			self.mgLog("mgErrorHandlerCalled.  errorLine: "+errorLine+" ; errCode: "+errCode+"; errLinePosition: "+errLineCountLine.substr(0,1)+"; errLineTotal: "+errLineCountLine.substr(1,1));
+
+			switch(errCode){
+				case "000":
+					self.mgLog("Error 000 received, returning.");
+					return;
+				case "001":
+					self.mgLog("Error 001 received, returning.");
+					return;
+				case "002":
+					self.mgLog("Error 002 received, letting everything continue.");
+
+
+
+			}
+
+
+
+
+
+			if (self.errLongMessageLength() === 0){
+				self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+errorLine);
+			} else {
+
+				if (self.errLongMessagePosition() === self.errLongMessageLength()){
+					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported multi-line message is: \n"+self.errLongMessage()+errorLine);
+					self.errLongMessage("");
+					self.errLongMessageWaiting(false);
+					clearTimeout(self.mgErrorHandlerTimer);
+					return;
+				} else {
+					self.errLongMessageWaiting(true);
+					self.errLongMessage(self.errLongMessage()+errorLine);
+					clearTimeout(self.mgErrorHandlerTimer);
+					self.mgErrorHandlerTimer = window.setTimeout(function() {self.mgErrorHandler()},(3000));
+
+
+
+				}
+
+			}
+
+			// 	self.filter = /([Z]):.*(\d+\.\d+)/;
+			// var match = self.filter.exec(probeLine);
+			// if (match !== undefined){
+			// 	self.mgLog("processProbeValue match: "+match);
+			// 	self.mgLog("match[2]: "+match[2]);
+			// 	return parseFloat(match[2]);
+
+
+
+
+
+		};
+
+
 
 		self.failedParameterChecks = ko.observable(0);
 		self.failedParameterCheckLines = ko.observable("");
