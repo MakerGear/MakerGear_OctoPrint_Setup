@@ -1917,27 +1917,30 @@ $(function() {
 		self.maintenanceTaskHardwareRevision = ko.observable("");
 		self.maintenanceTaskHotend = ko.observable("");
 		self.maintenanceTask = ko.observable("");
-		self.shownTask = ko.observable("");
-
+		self.shownTask = ko.observable("home");
+		self.taskRadio = ko.observable("home");
 
 
 
 		self.nextMaintenanceTask = function(nextTask){
+			self.mgLog("nextMaintenanceTask called with: "+nextTask);
 			if (nextTask === "home"){
 				self.maintenanceOperation("home");
 				self.maintenanceTaskPrinterType("");
 				self.maintenanceTaskHardwareRevision("");
 				self.maintenanceTaskHotend("");
 				self.maintenanceTask("");
-				self.shownTask("");
+				self.shownTask("home");
 				return;
 			}
 
 			if (nextTask !== undefined){
-				self.shownTask(nextTask);
+				// self.shownTask(nextTask);
 				var taskSplit = nextTask.split("_");
 				self.maintenanceOperation(taskSplit[0]);
-				self.maintenanceTask([taskSplit[2]]);
+				self.maintenanceTask(taskSplit[2]);
+				self.shownTask(self.maintenanceTask());
+				shownTaskRegular = self.shownTask();
 
 				if (taskSplit[1].includes("T0")){self.maintenanceTaskHotend("T0");}
 				if (taskSplit[1].includes("T1")){self.maintenanceTaskHotend("T1");}
@@ -4695,7 +4698,7 @@ $(function() {
 		["loginStateViewModel","settingsViewModel","temperatureViewModel","userSettingsViewModel"],
 
 		// Finally, this is the list of selectors for all elements we want this view model to be bound to.
-		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance"]
+		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance","#tab_plugin_mgsetup_maintenance-cleanup"]
 		//["#tab_plugin_mgsetup"]
 	]);
 });

@@ -293,7 +293,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			dict(type="navbar", custom_bindings=True),
 			dict(type="settings", custom_bindings=True),
 			dict(type="tab", template="mgsetup_tab.jinja2", div="tab_plugin_mgsetup"),
-			dict(type="tab", template="mgsetup_maintenance_tab.jinja2", div="tab_plugin_mgsetup_maintenance", name="MakerGear Maintenance")
+			dict(type="tab", template="mgsetup_maintenance_tab.jinja2", div="tab_plugin_mgsetup_maintenance", name="MakerGear Maintenance"),
+			dict(type="tab", template="mgsetup_maintenance_tab-cleanup.jinja2", div="tab_plugin_mgsetup_maintenance-cleanup", name="MakerGear Maintenance Cleanup")
 		]
 
 	def get_settings_defaults(self):
@@ -586,7 +587,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def process_z_offset(self, comm, line, *args, **kwargs):
 
-		if "MGERR" in line:
+		if "Error: " in line:
 			self._logger.info("process_z_offset triggered - MGERR !")
 			self._plugin_manager.send_plugin_message("mgsetup", dict(mgerrorline = line))
 

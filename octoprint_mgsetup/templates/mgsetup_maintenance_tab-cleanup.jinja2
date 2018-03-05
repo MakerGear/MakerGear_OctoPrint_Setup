@@ -1,8 +1,8 @@
 
-<div id="maintenanceTabs">
+<div id="maintenanceTabsCleanup">
 
 
-<div data-bind="visible: shownTask==='home'">
+<div data-bind="visible: $root.shownTask()==='home'">
   <style>
     .buttonColumn {
       float: left;
@@ -26,18 +26,18 @@
 
   </style>
 
-  <ul class="nav nav-stacked" id="maintenanceAccordion">
+  <ul class="nav nav-stacked" id="maintenanceAccordionTasks">
     <li class="panel">
-      <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#softwareOffsets">Starting Height Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
+      <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#softwareOffsetsTasks">Starting Height Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
 
       <p>
       Adjust the starting height on your M3 to get the perfect first layer.
       </p>
-      <ul id="softwareOffsets" class="collapse">
+      <ul id="softwareOffsetsTasks" class="collapse">
         <li>
           <div class="buttonRow" style="text-align:center;">
             <div class="buttonColumn" data-bind="visible:!$root.hasProbe()">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(4); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(4); window.scroll(0,0); return true}">
 
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
@@ -47,7 +47,7 @@
 
             </div>
             <div class="buttonColumn" data-bind="visible:$root.hasProbe()">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(20); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(20); window.scroll(0,0); return true}">
 
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
@@ -58,7 +58,7 @@
             </div>
 
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(11); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(11); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
               <br />
               Tool 1 (right) Starting Height Hot (recommended)
@@ -70,7 +70,7 @@
             <div class="buttonRow" style="text-align:center;">
 
               <div class="buttonColumn">
-                <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(9); window.scroll(0,0); return true}">
+                <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(9); window.scroll(0,0); return true}">
                 <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
                 <br />
                 Tool 1 (right) Starting Height Cold
@@ -80,7 +80,7 @@
             </div>
 
             <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
               <br />
@@ -97,18 +97,18 @@
     <hr>
 
     <li class="panel">
-      <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#dualOffsets">Independent Dual Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
+      <h3> <a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#dualOffsetsTasks">Independent Dual Adjustments <i class="icon-chevron-down"></i></i></button> </a></h3>
 
       <p>
       Set X, Y and Duplication Calibration.
       </p>
-      <ul id="dualOffsets" class="collapse">
+      <ul id="dualOffsetsTasks" class="collapse">
         <li>
 
           <div class="buttonRow" style="text-align:center;">
 
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(14); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(14); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/xAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
               <br />
               Dual X Offset Calibration
@@ -117,7 +117,7 @@
             </div>
 
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(15); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(15); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/yAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
               <br />
               Dual Y Offset Calibration
@@ -125,7 +125,7 @@
 
             </div>
             <div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(92); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(92); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
               <br />
               Duplication Mode Check
@@ -144,16 +144,16 @@
 
 
     <li class="panel" data-bind="visible: !$root.hideDebug()">
-      <h3><a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#physicalAdjustments">Physical Adjustments <i class="icon-chevron-down"></i></a></h3>
+      <h3><a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#physicalAdjustmentsTasks">Physical Adjustments <i class="icon-chevron-down"></i></a></h3>
 
       <p>
       Adjust and calibrate Hotends.
       </p>
-      <ul id="physicalAdjustments" class="collapse">
+      <ul id="physicalAdjustmentsTasks" class="collapse">
         <li>
           <div class="buttonRow" style="text-align:center;">
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(70); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(70); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
               <br />
               T0 Hotend / Nozzle Change
@@ -162,14 +162,14 @@
             </div>
 
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT1.jpg', 'width': '100px',} , visible: loginState.isUser " />
               <br />
               T1 Hotend / Nozzle Change
               </a>
             </div>
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(72); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(72); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
               <br />
@@ -191,17 +191,17 @@
 
     <li class="panel">
 
-      <h3><a data-toggle="collapse" data-parent="#maintenanceAccordion" href="#bedLeveling"> Bed Leveling <i class="icon-chevron-down"></i></a></h3>
+      <h3><a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#bedLevelingTasks"> Bed Leveling <i class="icon-chevron-down"></i></a></h3>
 
       <p>
       Check and adjust how level your bed is.
       </p>
 
-      <ul id="bedLeveling" class="collapse">
+      <ul id="bedLevelingTasks" class="collapse">
         <li>
           <div class="buttonRow" style="text-align:center;">
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(6); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(6); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
               <br />
@@ -210,7 +210,7 @@
             </div>
 
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(10); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(10); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
               <br />
               Cold Bed Leveling
@@ -218,7 +218,7 @@
 
             </div>
             <div class="buttonColumn">
-              <a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(21); window.scroll(0,0); return true}">
+              <a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(21); window.scroll(0,0); return true}">
               <img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelAssisted.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
               <br />
@@ -283,9 +283,9 @@
     </ul>
 </div>
 
-<div data-bind="visible: shownTask()!==''">
+<div data-bind="visible: $root.shownTask()!=='home'">
 
-<a href='#maintenanceTabs' data-bind="click: function() {nextMaintenanceTask('home'); window.scroll(0,0); $root.probeCheckReset(); return true}"><h4>Return to Maintenance Index</h4></a>
+<a href='#maintenanceTabsTasks' data-bind="click: function() {nextMaintenanceTask('home'); window.scroll(0,0); $root.probeCheckReset(); return true}"><h4>Return to Maintenance Index</h4></a>
 <hr>
 
 </div>
@@ -306,7 +306,7 @@
 88           "8a,   ,a8"  88,    ,88  "8a,   ,d88  88           88  88  88,    ,88  88      88      88  "8b,   ,aa  88       88    88,    
 88888888888   `"YbbdP"'   `"8bbdP"Y8   `"8bbdP"Y8  88           88  88  `"8bbdP"Y8  88      88      88   `"Ybbd8"'  88       88    "Y888  
                                                                                                                                         #}
-<div data-bind="visible: loginState.isUser && (shownTask() === 'Load') ">
+<div data-bind="visible: loginState.isUser && ($root.shownTask() === 'Load') ">
   <div data-bind="visible: maintenanceTaskHotend() === 'Both'">
   <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
       <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
@@ -449,7 +449,7 @@ Y8a.    .a8P  88       88  88  "8a,   ,a8"  88,    ,88  "8a,   ,d88
                                                                    #}
 
 
-<div data-bind="visible: loginState.isUser && shownTask() === 'Unload'">
+<div data-bind="visible: loginState.isUser && $root.shownTask() === 'Unload'">
 
 Don't actually have an unload filament set either...
 
@@ -482,7 +482,7 @@ Y8a     a8P  "8b,   ,aa    88,    88        88  "8a,   ,a8"    88,
 
 
 
-<div data-bind="visible: loginState.isUser && shownTask() === 'SetHot'">
+<div data-bind="visible: loginState.isUser && $root.shownTask() === 'SetHot'">
 
   <div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R0'">
       <div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser ">
@@ -988,7 +988,7 @@ Y8a     a8P  "8b,   ,aa    88,     Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88
 
 
 
-<div data-bind="visible: shownTask()==='SetCold'">
+<div data-bind="visible: $root.shownTask()==='SetCold'">
 
 
 
@@ -1141,12 +1141,12 @@ Y8a     a8P  "8b,   ,aa    88,         88           88  88        88  "8a,   ,a8
 
 
 
-<div data-bind="visible: shownTask==='SetT1Hot'">
+<div data-bind="visible: $root.shownTask==='SetT1Hot'">
 
 
-<div data-bind="visible: loginState.isUser && maintenancePage()===111">
+<div data-bind="visible: loginState.isUser">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===111" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
     </div><br>
 
 <h1 style="text-align:left">Verify T1 Starting Height</h1>
@@ -1225,7 +1225,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
    
-   <video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  maintenancePage() == 111" onclick="this.paused ? this.play() : this.pause();">
+   <video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -1245,13 +1245,13 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 <table>
     <tr>
         <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
-            <a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===111" /></a>
+            <a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
  
         </td>
 
         <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
 
-            <a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===111" /></a>
+            <a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
  
         </td>
  
@@ -1260,7 +1260,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
         <td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
 
-             <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===111" /></a>
+             <a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
          </td>
  
     </tr>
@@ -1388,11 +1388,11 @@ Y8a     a8P  "8b,   ,aa    88,         88           88   Y8a.    .a8P  "8a,   ,a
 
 
 
-<div data-bind="visible: shownTask==='SetT1Cold'">
+<div data-bind="visible: $root.shownTask==='SetT1Cold'">
 
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===9">
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===9" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
     </div><br>
 
 In this step, we will physically adjust the height of the Right Extruder (T1) in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
@@ -1427,10 +1427,10 @@ Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
 
 Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt. Now click "Move to Position" to move the build plate to the correct position.<br><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===9" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===9" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div><br>
 
 <center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
@@ -1445,10 +1445,10 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
     <li>Secure the T1 clamping bolt.
 </ol><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===9" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===9" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div><br><br>
 <strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
 <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br /></button></center>
@@ -1490,13 +1490,13 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
                                                             #}
 
 
-<div data-bind="visible: shownTask==='XSaw'">
+<div data-bind="visible: $root.shownTask==='XSaw'">
 
 
 
-<div data-bind="visible: loginState.isUser && maintenancePage()===14">
+<div data-bind="visible: loginState.isUser ">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===14" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
     </div><br><br>
     <p>
     In this step we will calibrate the distance between the 2 extruders on the X axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the X axis is completely calibrated.
@@ -1547,8 +1547,8 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
 <div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
 <center>
 <div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===14 && $root.calibrationStep() < 1" /> #}
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===14 && $root.calibrationStep() > -1" />
+        {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser  && $root.calibrationStep() < 1" /> #}
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser  && $root.calibrationStep() > -1" />
 </div></center><br>
 <br>
 <center>
@@ -1598,15 +1598,15 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
 
 
 
-<div data-bind="visible: shownTask()==='YSaw'">
+<div data-bind="visible: $root.shownTask()==='YSaw'">
 
 
 
 
 
-<div data-bind="visible: loginState.isUser && maintenancePage()===15">
+<div data-bind="visible: loginState.isUser ">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===15" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
     </div><br><br>
     <p>
     In this step we will calibrate the distance between the 2 extruders on the Y axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the Y axis is completely calibrated.
@@ -1660,8 +1660,8 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
 
 <div style="width: 100%; margin:auto;vertical-align: middle; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
 <div style="display: inline-block; width:75%">
-        {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===15 && $root.calibrationStep() < 1" /> #}
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===15 && $root.calibrationStep() > -1" />
+        {# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser  && $root.calibrationStep() < 1" /> #}
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser && $root.calibrationStep() > -1" />
         </div>
 <div style="display: inline-block; width:20%; vertical-align: middle; ">
 <button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button>
@@ -1742,12 +1742,12 @@ Y8a     a8P    `8bd8'  `8bd8'    88,    ,88  88b,   ,a8"  88  88       88  aa   
 
 
 
-<div data-bind="visible: shownTask()==='ChangeInstructions'">
+<div data-bind="visible: $root.shownTask()==='ChangeInstructions'">
 
 
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===70">
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===70" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
     </div>
 <h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T0 Left Extruder Hotend Swap</span><span data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">Hotend Swap</span></h1>
 <br>
@@ -1795,9 +1795,9 @@ After completing the V4 Hotend installation, please perform a final inspection, 
 8P'               88  
                       
                     #}
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===71">
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
   <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===71" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
     </div>
 <h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T1 Right Extruder Hotend Swap</span></h1>
 <br>
@@ -1834,9 +1834,9 @@ After completing the V4 Hotend installation, please perform a final inspection, 
                            
                          #}
 
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===72">
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
   <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===72" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
     </div>
 <h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T0 Left and T1 Right Extruder Hotend Swap - For Duplication Mode</span></h1>
 <br>
@@ -1899,12 +1899,12 @@ After completing the V4 Hotend installation, please perform a final inspection, 
                                                                                                                                     #}
 
 
-<div data-bind="visible: shownTask==='T0T1SetCold'">
+<div data-bind="visible: $root.shownTask()==='T0T1SetCold'">
 
 
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===91">
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
     </div><br>
 
 <b>
@@ -1949,10 +1949,10 @@ Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
 
 Ensure that both extruders are below 50°C, then loosen the clamping bolts that secure each hot end in their mounting plates.  Apply gentle pressure to slide each hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt.  Now click "Move to Position" to move the build plate to the correct position for adjusting the T0 hot end mounting position.<br><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div><br>
 
 <center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple91a'), $root.stepNineAtPosition(true) }">Move T0 to Position<br /></button></center><br><br>
@@ -1967,10 +1967,10 @@ Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room t
     <li>Secure the T0 clamping bolt.
 </ol><br>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div>
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===91" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser " />
 </div><br><br>
 <strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
 <br><br>
@@ -2048,14 +2048,14 @@ Now that T0 is adjusted and fully secured, we will adjust T1.  Click "Move T1 to
                                                                                            #}
 
 
-<div data-bind="visible: shownTask==='HotLevel'">
+<div data-bind="visible: $root.shownTask()==='HotLevel'">
 
 
 
 
-<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && maintenancePage()===6">
+<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser ">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===6" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
     </div><br>
 <br>
 
@@ -2094,7 +2094,7 @@ Once the printer has stopped moving, use the four Zigzag pattern position button
 
 If the entire Zigzag pattern was completely stuck to the bed, the bed leveling screw needs to be loosened by turning it counter-clockwise, to lower the bed at this position.<br><br>
    
-   <video controls id="ccw" class="video-js"  preload="none"  data-setup='{ "fluid": true}'  data-bind="attr: {  autoplay: 'true', loop: 'true', poster:'/plugin/mgsetup/static/img/ccwposter.jpg' }, if:  maintenancePage() == 6" onclick="this.paused ? this.play() : this.pause();">
+   <video controls id="ccw" class="video-js"  preload="none"  data-setup='{ "fluid": true}'  data-bind="attr: {  autoplay: 'true', loop: 'true', poster:'/plugin/mgsetup/static/img/ccwposter.jpg' }" onclick="this.paused ? this.play() : this.pause();">
     <source src="/plugin/mgsetup/video/ccw.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -2109,7 +2109,7 @@ If the entire Zigzag pattern was completely stuck to the bed, the bed leveling s
 If the entire Zigzag pattern was loose or not adhered to the bed at all, the bed leveling screw needs to be tightened by turning it clockwise, to raise the bed at this position.<br><br>
 
 
-   <video controls id="cw" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true', poster:'/plugin/mgsetup/static/img/cwposter.jpg'}, if:  maintenancePage() == 6" onclick="this.paused ? this.play() : this.pause();" >
+   <video controls id="cw" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true', poster:'/plugin/mgsetup/static/img/cwposter.jpg'}" onclick="this.paused ? this.play() : this.pause();" >
     <source src="/plugin/mgsetup/video/cw.mp4" type='video/mp4'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -2177,12 +2177,12 @@ Y8,            8b       d8  88  8b       88  88           8PP"""""""   `8b   d8'
                                                                                                    
                                                                                                     #}
 
-<div data-bind="visible: shownTask==='ColdLevel'">
+<div data-bind="visible: $root.shownTask()==='ColdLevel'">
 
 
 
 
-<div id="ten" data-bind="visible: loginState.isUser && maintenancePage()===10">
+<div id="ten" data-bind="visible: loginState.isUser ">
 
 
 <h1 style="text-align:left;">Cold Bed Leveling</h1>
@@ -2282,11 +2282,11 @@ d8'          `8b  `"YbbdP"'  `"YbbdP"'  88  `"YbbdP"'    "Y888   `"Ybbd8"'   `"8
  #}
 
 
-<div data-bind="visible: shownTask==='Assisted'">
+<div data-bind="visible: $root.shownTask()==='Assisted'">
 
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && maintenancePage()===21">
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenancePage()===21" />
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
     </div><br><br>
 
 
@@ -2640,36 +2640,173 @@ Ignore everything below this statement.  And this statement.<br>
     88888888Y"'    88888888888  88888888P"    `"Y8888Y"'     `"Y88888P"   #}
 <div>
     Which step to show:
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue: 'home'                     , click: window.scroll(0,0)" /> Home                                               - Welcome Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue: 'Load'                     , click: window.scroll(0,0)" /> Load                                               - Load Filament</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Verify Starting Height (Wiggle), No Probe</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Heated Leveling (Wiggles)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Cold Starting Height Adjustment (Both)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Cold Bed Leveling page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Extruder 1 Height Adjustment</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual X Offset Calibration</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Y Offset Calibration</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Probe Autocheck</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Filament Control Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Filament Control Page (redux)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Hot Probe Height Adjustment (with Wiggles)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Assisted Bed Leveling</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Z Home Offset Adjustment (no probe, combined default and alternative materials)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Hotend Change</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T1 Hotend Change</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 and T1 Hotend Change</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0/T1 Physical Height Adjustment</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Duplication Mode Check</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T1 Z Offset Adjustment (Hot, default and alternative materials)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Probe Offset Adjustment (Hot, combined default and alternative materials)</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                 ) ; return true; }" /> Home                                                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Load'                                 ) ; return true; }" /> Load                                                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_Load'                  ) ; return true; }" /> T0Hot_T0-SE-R0_Load                                  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_SetHot'                ) ; return true; }" /> T0Hot_T0-SE-R0_SetHot                </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_Load'                  ) ; return true; }" /> T0Hot_T0-SE-R1_Load                    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_SetHot'                ) ; return true; }" /> T0Hot_T0-SE-R1_SetHot                </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_Load'                  ) ; return true; }" /> T0Hot_T0-ID-R0_Load                    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_SetHot'                ) ; return true; }" /> T0Hot_T0-ID-R0_SetHot                </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_Load'                  ) ; return true; }" /> T0Hot_T0-ID-R1_Load                    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_SetHot'                ) ; return true; }" /> T0Hot_T0-ID-R1_SetHot                </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetCold'              ) ; return true; }" /> T0Cold_T0-SE-R0_SetCold            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_Load'                 ) ; return true; }" /> T0Cold_T0-SE-R0_Load                  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetHot'               ) ; return true; }" /> T0Cold_T0-SE-R0_SetHot              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetCold'              ) ; return true; }" /> T0Cold_T0-ID-R0_SetCold            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_Load'                 ) ; return true; }" /> T0Cold_T0-ID-R0_Load                  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetHot'               ) ; return true; }" /> T0Cold_T0-ID-R0_SetHot              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_Load'                  ) ; return true; }" /> T1Hot_T1-ID-R0_Load                    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_SetT1Hot'              ) ; return true; }" /> T1Hot_T1-ID-R0_SetT1Hot            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_Load'                  ) ; return true; }" /> T1Hot_T1-ID-R1_Load                    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_SetT1Hot'              ) ; return true; }" /> T1Hot_T1-ID-R1_SetT1Hot            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Unload'               ) ; return true; }" /> T1Cold_T1-ID-R0_Unload              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_SetT1Cold'            ) ; return true; }" /> T1Cold_T1-ID-R0_SetT1Cold        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Load'                 ) ; return true; }" /> T1Cold_T1-ID-R0_Load                  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_SetT1Hot'             ) ; return true; }" /> T1Cold_T1-ID-R0_SetT1Hot          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Unload'               ) ; return true; }" /> T1Cold_T1-ID-R1_Unload                    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_SetT1Cold'            ) ; return true; }" /> T1Cold_T1-ID-R1_SetT1Cold                 </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Load'                 ) ; return true; }" /> T1Cold_T1-ID-R1_Load                      </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_SetT1Hot'             ) ; return true; }" /> T1Cold_T1-ID-R1_SetT1Hot                  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R0_Load'                   ) ; return true; }" /> XOff_T1-ID-R0_Load                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R0_XSaw'                   ) ; return true; }" /> XOff_T1-ID-R0_XSaw                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R1_Load'                   ) ; return true; }" /> XOff_T1-ID-R1_Load                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R1_XSaw'                   ) ; return true; }" /> XOff_T1-ID-R1_XSaw                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R0_Load'                   ) ; return true; }" /> YOff_T1-ID-R0_Load                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R0_YSaw'                   ) ; return true; }" /> YOff_T1-ID-R0_YSaw                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R1_Load'                   ) ; return true; }" /> YOff_T1-ID-R1_Load                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R1_YSaw'                   ) ; return true; }" /> YOff_T1-ID-R1_YSaw                        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R0_Check'              ) ; return true; }" /> DCheck_Both-ID-R0_Check                   </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R1_Check'              ) ; return true; }" /> DCheck_Both-ID-R1_Check                   </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Unload'             ) ; return true; }" /> T0Change_T0-SE-R0_Unload                  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_ChangeInstructions' ) ; return true; }" /> T0Change_T0-SE-R0_ChangeInstructions      </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_SetCold'            ) ; return true; }" /> T0Change_T0-SE-R0_SetCold        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Load'               ) ; return true; }" /> T0Change_T0-SE-R0_Load              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_SetHot'             ) ; return true; }" /> T0Change_T0-SE-R0_SetHot          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Unload'             ) ; return true; }" /> T0Change_T0-SE-R1_Unload          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_ChangeInstructions' ) ; return true; }" /> T0Change_T0-SE-R1_ChangeInstructions        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_SetCold'            ) ; return true; }" /> T0Change_T0-SE-R1_SetCold        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Load'               ) ; return true; }" /> T0Change_T0-SE-R1_Load              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_SetHot'             ) ; return true; }" /> T0Change_T0-SE-R1_SetHot          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Unload'             ) ; return true; }" /> T0Change_T0-ID-R0_Unload          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_ChangeInstructions' ) ; return true; }" /> T0Change_T0-ID-R0_ChangeInstructions     </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetCold'            ) ; return true; }" /> T0Change_T0-ID-R0_SetCold        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Load'               ) ; return true; }" /> T0Change_T0-ID-R0_Load              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetHot'             ) ; return true; }" /> T0Change_T0-ID-R0_SetHot          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetT1Hot'           ) ; return true; }" /> T0Change_T0-ID-R0_SetT1Hot      </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Unload'             ) ; return true; }" /> T0Change_T0-ID-R1_Unload          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_ChangeInstructions' ) ; return true; }" /> T0Change_T0-ID-R1_ChangeInstructions    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetCold'            ) ; return true; }" /> T0Change_T0-ID-R1_SetCold        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Load'               ) ; return true; }" /> T0Change_T0-ID-R1_Load              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetHot'             ) ; return true; }" /> T0Change_T0-ID-R1_SetHot          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetT1Hot'           ) ; return true; }" /> T0Change_T0-ID-R1_SetT1Hot      </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Unload'         ) ; return true; }" /> T0T1Change_Both-ID-R0_Unload  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_ChangeInstructi') ; return true; }" /> T0T1Change_Both-ID-R0_ChangeInstructions    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_T0T1SetCold'    ) ; return true; }" /> T0T1Change_Both-ID-R0_T0T1SetCold  </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Load'           ) ; return true; }" /> T0T1Change_Both-ID-R0_Load                </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_SetHot'         ) ; return true; }" /> T0T1Change_Both-ID-R0_SetHot            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_SetT1Hot'       ) ; return true; }" /> T0T1Change_Both-ID-R0_SetT1Hot        </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Unload'         ) ; return true; }" /> T0T1Change_Both-ID-R1_Unload            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_ChangeInstructi') ; return true; }" /> T0T1Change_Both-ID-R1_ChangeInstructions              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_T0T1SetCold'    ) ; return true; }" /> T0T1Change_Both-ID-R1_T0T1SetCold                </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Load'           ) ; return true; }" /> T0T1Change_Both-ID-R1_Load                              </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_SetHot'         ) ; return true; }" /> T0T1Change_Both-ID-R1_SetHot                          </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_SetT1Hot'       ) ; return true; }" /> T0T1Change_Both-ID-R1_SetT1Hot                      </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_Load'               ) ; return true; }" /> HotLevel_T0-SE-R0_Load            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_HotLevel'           ) ; return true; }" /> HotLevel_T0-SE-R0_HotLevel    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_Load'               ) ; return true; }" /> HotLevel_T0-ID-R0_Load            </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_HotLevel'           ) ; return true; }" /> HotLevel_T0-ID-R0_HotLevel    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-SE-R0_ColdLevel'         ) ; return true; }" /> ColdLevel_T0-SE-R0_ColdLevel</div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-ID-R0_ColdLevel'         ) ; return true; }" /> ColdLevel_T0-ID-R0_ColdLevel</div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'           ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
+    <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'           ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                             , click: window.scroll(0,0)" />                                                     - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Verify Starting Height (Wiggle), No Probe</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Heated Leveling (Wiggles)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Cold Starting Height Adjustment (Both)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Cold Bed Leveling page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Extruder 1 Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual X Offset Calibration</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Y Offset Calibration</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Probe Autocheck</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Filament Control Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Filament Control Page (redux)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Hot Probe Height Adjustment (with Wiggles)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Assisted Bed Leveling</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Z Home Offset Adjustment (no probe, combined default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T1 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 and T1 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0/T1 Physical Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Duplication Mode Check</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T1 Z Offset Adjustment (Hot, default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Probe Offset Adjustment (Hot, combined default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Verify Starting Height (Wiggle), No Probe</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Heated Leveling (Wiggles)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Cold Starting Height Adjustment (Both)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Cold Bed Leveling page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Extruder 1 Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual X Offset Calibration</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Dual Y Offset Calibration</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Probe Autocheck</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Filament Control Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Broken Filament Control Page (redux)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Hot Probe Height Adjustment (with Wiggles)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Assisted Bed Leveling</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Z Home Offset Adjustment (no probe, combined default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T1 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 and T1 Hotend Change</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0/T1 Physical Height Adjustment</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Duplication Mode Check</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T1 Z Offset Adjustment (Hot, default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - T0 Probe Offset Adjustment (Hot, combined default and alternative materials)</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+    <div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 </div>
