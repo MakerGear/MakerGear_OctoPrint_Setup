@@ -1668,8 +1668,6 @@ $(function() {
 				self.cooldown();
 
 			}
-
-
 		};
 
 		self.showMaintenanceStep = function(inputStep, inputTab, subTab){
@@ -1679,7 +1677,7 @@ $(function() {
 						self.calibrationStep(0);
 						self.calibrationAxis("X");
 						self.sawBinPrinted(false);
-				}
+				} //TODO - figure out just what the heck is going on above here.  Did I put this in showMaintenanceStep instead of resetStep?
 				self.requestEeprom();
 				self.checkParameters();
 				self.linkingToMaintenance(true);
@@ -1725,6 +1723,681 @@ $(function() {
 
 			//$(".nav-tabs a[href='#coldZ']").click();
 		};
+
+		// T0Hot
+		// 	Load
+		// 		SE
+		// 			R0
+		// 				T0Hot_T0-SE-R0_SetHot
+		// 			R1
+		// 				T0Hot_T0-SE-R1_SetHot
+		// 		ID
+		// 			R0
+		// 				T0Hot_T0-ID-R0_SetHot
+		// 			R1
+		// 				T0Hot_T0-ID-R1_SetHot
+		// 	SetHot
+		// 		home
+		// T0Cold
+		// 	SetCold
+		// 		SE
+		// 			R0
+		// 				T0Cold_T0-SE-R0_Load
+		// 			R1
+		// 				T0Cold_T0-SE-R1_Load
+		// 		ID
+		// 			R0
+		// 				T0Cold_T0-ID-R0_Load
+		// 			R1
+		// 				T0Cold_T0-ID-R1_Load
+		// 	Load
+		// 		SE
+		// 			R0
+		// 				T0Cold_T0-SE-R0_SetHot
+		// 			R1
+		// 				T0Cold_T0-SE-R1_SetHot
+		// 		ID
+		// 			R0
+		// 				T0Cold_T0-ID-R0_SetHot
+		// 			R1
+		// 				T0Cold_T0-ID-R1_SetHot
+		// 	SetHot
+		// 		home
+		// T1Hot
+		// 	Load
+		// 		R0
+		// 			T1Hot_T1-ID-R0_SetT1Hot
+		// 		R1
+		// 			T1Hot_T1-ID-R1_SetT1Hot
+		// 	SetT1Hot
+		// 		home
+		// T1Cold
+		// 	Unload
+		// 		R0
+		// 			T1Cold_T1-ID-R0_SetT1Cold
+		// 		R1
+		// 			T1Cold_T1-ID-R1_SetT1Cold
+		// 	SetT1Cold
+		// 		R0
+		// 			T1Cold_T1-ID-R0_Load
+		// 		R1
+		// 			T1Cold_T1-ID-R1_Load
+		// 	Load
+		// 		R0
+		// 			T1Cold_T1-ID-R0_SetT1Hot
+		// 		R1
+		// 			T1Cold_T1-ID-R1_SetT1Hot
+		// 	SetT1Hot
+		// 		home
+		// XOff
+		// 	Load
+		// 		R0
+		// 			XOff_T1-ID-R0_XSaw
+		// 		R1
+		// 			XOff_T1-ID-R1_XSaw
+		// 	XSaw
+		// 		home
+		// YOff
+		// 	Load
+		// 		R0
+		// 			YOff_T1-ID-R0_YSaw
+		// 		R1
+		// 			YOff_T1-ID-R1_YSaw
+		// 	YSaw
+		// 		home
+		// DCheck
+		// 	Check
+		// 		home
+		// T0Change
+		// 	Unload
+		// 		SE
+		// 			R0
+		// 				T0Change_T0-SE-R0_ChangeInstructions
+		// 			R1
+		// 				T0Change_T0-SE-R1_ChangeInstructions
+		// 		ID
+		// 			R0
+		// 				T0Change_T0-ID-R0_ChangeInstructions
+		// 			R1
+		// 				T0Change_T0-ID-R1_ChangeInstructions
+		// 	ChangeInstructions
+		// 		SE
+		// 			R0
+		// 				T0Change_T0-SE-R0_Load
+		// 			R1
+		// 				T0Change_T0-SE-R1_Load
+		// 		ID
+		// 			R0
+		// 				T0Change_T0-ID-R0_SetCold
+		// 			R1
+		// 				T0Change_T0-ID-R1_SetCold
+		// 	Load
+		// 		SE
+		// 			R0
+		// 				T0Change_T0-SE-R0_SetCold
+		// 			R1
+		// 				T0Change_T0-SE-R1_SetCold
+		// 		ID
+		// 			R0
+		// 				T0Change_T0-ID-R0_SetHot
+		// 			R1
+		// 				T0Change_T0-ID-R1_SetHot
+		// 	SetCold
+		// 		SE
+		// 			R0
+		// 				T0Change_T0-SE-R0_SetHot
+		// 			R1
+		// 				T0Change_T0-SE-R1_SetHot
+		// 		ID
+		// 			R0
+		// 				T0Change_T0-ID-R0_Load
+		// 			R1
+		// 				T0Change_T0-ID-R1_Load
+		// 	SetHot
+		// 		SE
+		// 			home
+		// 		ID
+		// 			R0
+		// 				T0Change_T0-ID-R0_SetT1Hot
+		// 			R1
+		// 				T0Change_T0-ID-R1_SetT1Hot
+		// 	SetT1Hot
+		// 		home
+		// T0T1Change
+		// 	Unload
+		// 		R0
+		// 			T0T1Change_Both-ID-R0_ChangeInstructions
+		// 		R1
+		// 			T0T1Change_Both-ID-R1_ChangeInstructions
+		// 	ChangeInstructions
+		// 		R0
+		// 			T0T1Change_Both-ID-R0_T0T1SetCold
+		// 		R1
+		// 			T0T1Change_Both-ID-R1_T0T1SetCold
+		// 	T0T1SetCold
+		// 		R0
+		// 			T0T1Change_Both-ID-R0_Load
+		// 		R1
+		// 			T0T1Change_Both-ID-R1_Load
+		// 	Load
+		// 		R0
+		// 			T0T1Change_Both-ID-R0_SetHot
+		// 		R1
+		// 			T0T1Change_Both-ID-R1_SetHot
+		// 	SetHot
+		// 		R0
+		// 			T0T1Change_Both-ID-R0_SetT1Hot
+		// 		R1
+		// 			T0T1Change_Both-ID-R1_SetT1Hot
+		// 	SetT1Hot
+		// 		home
+		// HotLevel
+		// 	Load
+		// 		SE
+		// 			HotLevel_T0-SE-R0_HotLevel
+		// 		ID
+		// 			HotLevel_T0-ID-R0_HotLevel
+		// 	HotLevel
+		// 		home
+		// ColdLevel
+		// 	ColdLevel
+		// 		home
+		// Assisted
+		// 	Assisted
+		// 		home
+
+
+
+
+
+
+
+		self.maintenanceOperation = ko.observable("home");
+		self.maintenanceTaskPrinterType = ko.observable("");
+		self.maintenanceTaskHardwareRevision = ko.observable("");
+		self.maintenanceTaskHotend = ko.observable("");
+		self.maintenanceTask = ko.observable("");
+		self.shownTask = ko.observable("");
+
+
+
+
+		self.nextMaintenanceTask = function(nextTask){
+			if (nextTask === "home"){
+				self.maintenanceOperation("home");
+				self.maintenanceTaskPrinterType("");
+				self.maintenanceTaskHardwareRevision("");
+				self.maintenanceTaskHotend("");
+				self.maintenanceTask("");
+				self.shownTask("");
+				return;
+			}
+
+			if (nextTask !== undefined){
+				self.shownTask(nextTask);
+				var taskSplit = nextTask.split("_");
+				self.maintenanceOperation(taskSplit[0]);
+				self.maintenanceTask([taskSplit[2]]);
+
+				if (taskSplit[1].includes("T0")){self.maintenanceTaskHotend("T0");}
+				if (taskSplit[1].includes("T1")){self.maintenanceTaskHotend("T1");}
+				if (taskSplit[1].includes("Both")){self.maintenanceTaskHotend("Both");}
+
+				if (taskSplit[1].includes("R0")){self.maintenanceTaskHardwareRevision("R0");} else {self.maintenanceTaskHardwareRevision("R1");}
+				if (taskSplit[1].includes("SE")){self.maintenanceTaskPrinterType("SE");} else {self.maintenanceTaskPrinterType("ID");}
+
+
+
+
+			} else {
+
+
+				switch(self.maintenanceOperation()){
+
+					case "T0Hot":
+						switch(self.maintenanceTask()){
+							case "Load":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Hot_T0-SE-R0_SetHot");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Hot_T0-SE-R1_SetHot");
+												break;
+										}
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Hot_T0-ID-R0_SetHot");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Hot_T0-ID-R1_SetHot");
+												break;
+										}
+								}
+								break;
+
+							case "SetHot":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "T0Cold":
+						switch(self.maintenanceTask()){
+							case "SetCold":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Cold_T0-SE-R0_Load");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Cold_T0-SE-R1_Load");
+												break;
+										}
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Cold_T0-ID-R0_Load");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Cold_T0-ID-R1_Load");
+												break;
+										}
+								}
+								break;
+
+								
+							case "Load":
+								switch(self.maintenanceTaskPrinterType()){
+										case "SE":
+											switch(self.maintenanceTaskHardwareRevision()){
+												case "R0":
+													self.nextMaintenanceTask("T0Cold_T0-SE-R0_SetHot");
+													break;
+												case "R1":
+													self.nextMaintenanceTask("T0Cold_T0-SE-R1_SetHot");
+													break;
+											}
+											break;
+
+										case "ID":
+											switch(self.maintenanceTaskHardwareRevision()){
+												case "R0":
+													self.nextMaintenanceTask("T0Cold_T0-ID-R0_SetHot");
+													break;
+												case "R1":
+													self.nextMaintenanceTask("T0Cold_T0-ID-R1_SetHot");
+													break;
+											}
+									}
+
+								break;
+
+							case "SetHot":
+								self.nextMaintenanceTask("home");
+
+								break;
+
+						}
+
+						break;
+
+					case "T1Hot":
+						switch(self.maintenanceTask()){
+							case "Load":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T1Hot_T1-ID-R0_SetT1Hot");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T1Hot_T1-ID-R1_SetT1Hot");
+										break;
+								}
+								break;
+
+							case "SetT1Hot":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "T1Cold":
+						switch(self.maintenanceTask()){
+							case "Unload":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T1Cold_T1-ID-R0_SetT1Cold");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T1Cold_T1-ID-R1_SetT1Cold");
+										break;
+								}
+
+								break;
+
+							case "SetT1Cold":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T1Cold_T1-ID-R0_Load");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T1Cold_T1-ID-R1_Load");
+										break;
+								}
+
+								break;
+
+							case "Load":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T1Cold_T1-ID-R0_SetT1Hot");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T1Cold_T1-ID-R1_SetT1Hot");
+										break;
+								}
+
+								break;
+
+							case "SetT1Hot":
+								self.nextMaintenanceTask("home");
+
+								break;
+						}
+
+						break;
+
+					case "XOff":
+						switch(self.maintenanceTask()){
+							case "Load":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("XOff_T1-ID-R0_XSaw");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("XOff_T1-ID-R1_XSaw");
+										break;
+								}
+								break;
+
+							case "XSaw":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "YOff":
+						switch(self.maintenanceTask()){
+							case "Load":
+								switch(self.maintenanceTaskHardwareRevision()){
+										case "R0":
+											self.nextMaintenanceTask("YOff_T1-ID-R0_YSaw");
+											break;
+										case "R1":
+											self.nextMaintenanceTask("YOff_T1-ID-R1_YSaw");
+											break;
+								}
+								break;
+
+							case "YSaw":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "DCheck":
+						switch(self.maintenanceTask()){
+							case "Check":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "T0Change":
+						switch(self.maintenanceTask()){
+							case "Unload":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-SE-R0_ChangeInstructions");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-SE-R1_ChangeInstructions");
+												break;
+										}
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-ID-R0_ChangeInstructions");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-ID-R1_ChangeInstructions");
+												break;
+										}
+								}
+								break;
+
+							case "ChangeInstructions":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-SE-R0_SetCold");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-SE-R1_SetCold");
+												break;
+										}
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-ID-R0_SetCold");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-ID-R1_SetCold");
+												break;
+										}
+								}
+
+								break;
+
+							case "Load":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-SE-R0_SetHot");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-SE-R1_SetHot");
+												break;
+										}
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-ID-R0_SetHot");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-ID-R1_SetHot");
+												break;
+										}
+								}
+
+								break;
+
+							case "SetCold":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-SE-R0_Load");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-SE-R1_Load");
+												break;
+										}
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-ID-R0_Load");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-ID-R1_Load");
+												break;
+										}
+								}
+								break;
+
+							case "SetHot":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										self.nextMaintenanceTask("home");
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-ID-R0_SetT1Hot");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-ID-R1_SetT1Hot");
+												break;
+										}
+								}
+								break;
+
+							case "SetT1Hot":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "T0T1Change":
+						switch(self.maintenanceTask()){
+							case "Unload":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_ChangeInstructions");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_ChangeInstructions");
+										break;
+								}
+
+								break;
+
+							case "ChangeInstructions":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_T0T1SetCold");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_T0T1SetCold");
+										break;
+								}
+								break;
+
+							case "T0T1SetCold":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_Load");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_Load");
+										break;
+								}
+								break;
+
+							case "Load":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_SetHot");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_SetHot");
+										break;
+								}
+								break;
+
+							case "SetHot":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_SetT1Hot");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_SetT1Hot");
+										break;
+								}
+								break;
+
+							case "SetT1Hot":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "HotLevel":
+						switch(self.maintenanceTask()){
+							case "Load":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										self.nextMaintenanceTask("HotLevel_T0-SE-R0_HotLevel");
+										break;
+									case "ID":
+										self.nextMaintenanceTask("HotLevel_T0-ID-R0_HotLevel");
+										break;
+								}
+								break;
+
+							case "HotLevel":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "ColdLevel":
+						switch(self.maintenanceTask()){
+							case "ColdLevel":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
+					case "Assisted":
+						switch(self.maintenanceTask()){
+							case "Assisted":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+				}
+			}
+		};
+
+
+
+
+
+
+
+
 
 
 		self.skipConfirm = ko.observable(false);
@@ -3186,6 +3859,7 @@ $(function() {
 				self.calibrationAxis("X");
 				self.sawBinPrinted(false);
 				self.sawPrintOffset(0);
+				self.stepFourteenToHome(true);
 			}
 			if (targetStep === 15){
 				self.mgLog("resetStep targetStep = 15");
@@ -3194,6 +3868,7 @@ $(function() {
 				self.calibrationAxis("Y");
 				self.sawBinPrinted(false);
 				self.sawPrintOffset(0);
+				self.stepFifteeenToHome(true);
 			}
 			if (targetStep === 16){
 				self.mgLog("resetStep targetStep = 16");
@@ -3688,11 +4363,6 @@ $(function() {
 				}
 			}
 			//if (self.mgErrorHandler !== undefined)
-
-
-
-			
-
 			var errCodeFilter = /\[(\d\d\d)\]-/;
 			var errCodeCountFilter = /-\[(\d\d)\]/;
 			var errCode = (errCodeFilter.exec(errorLine))[1];
@@ -3700,7 +4370,6 @@ $(function() {
 			self.errLongMessageLength(parseFloat(errLineCountLine.substr(1,1)));
 			self.errLongMessagePosition(parseFloat(errLineCountLine.substr(0,1)));
 			self.mgLog("mgErrorHandlerCalled.  errorLine: "+errorLine+" ; errCode: "+errCode+"; errLinePosition: "+errLineCountLine.substr(0,1)+"; errLineTotal: "+errLineCountLine.substr(1,1));
-
 			switch(errCode){
 				case "000":
 					self.mgLog("Error 000 received, returning.");
@@ -3710,19 +4379,10 @@ $(function() {
 					return;
 				case "002":
 					self.mgLog("Error 002 received, letting everything continue.");
-
-
-
 			}
-
-
-
-
-
 			if (self.errLongMessageLength() === 0){
 				self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+errorLine);
 			} else {
-
 				if (self.errLongMessagePosition() === self.errLongMessageLength()){
 					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported multi-line message is: \n"+self.errLongMessage()+errorLine);
 					self.errLongMessage("");
@@ -3734,24 +4394,8 @@ $(function() {
 					self.errLongMessage(self.errLongMessage()+errorLine);
 					clearTimeout(self.mgErrorHandlerTimer);
 					self.mgErrorHandlerTimer = window.setTimeout(function() {self.mgErrorHandler()},(3000));
-
-
-
 				}
-
 			}
-
-			// 	self.filter = /([Z]):.*(\d+\.\d+)/;
-			// var match = self.filter.exec(probeLine);
-			// if (match !== undefined){
-			// 	self.mgLog("processProbeValue match: "+match);
-			// 	self.mgLog("match[2]: "+match[2]);
-			// 	return parseFloat(match[2]);
-
-
-
-
-
 		};
 
 
