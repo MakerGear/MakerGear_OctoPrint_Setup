@@ -3634,7 +3634,12 @@ $(function() {
 		};
 
 		self.warnSshNotify = function() {
-			if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh() && self.loginState.isUser){
+			self.mgLog("warnSshNotify called.");
+			if (!self.loginState.isUser()){
+				self.mgLog("warnSshNotify called but user not logged in!  Returning.");
+				return;
+			}
+			if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh() && self.loginState.isUser()){
 				//self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button class=\"btngo\" data-bind=\"click: function() { $root.showSettings('settings_plugin_mgsetup') ; console.log('everything is broken') }\">Mark as last read</a>","error",false);
 				title = "SSH Is Enabled";
 				message = "The SSH Service is currently Enabled.  We strongly recommend Disabling the SSH Service for normal operation.";
@@ -4120,11 +4125,12 @@ $(function() {
 				self.serialNumber(self.serialNumber()[0]);
 			}
 			self.checkParameters();
+			self.warnSshNotify();
 		};
 
 		self.onAfterBinding = function() {
 			self.mgLog("onAfterBinding triggered.");
-			self.warnSshNotify();
+			// self.warnSshNotify();
 
 			//self.support_widget = $("#mgsetup_support_widget");
 		};
