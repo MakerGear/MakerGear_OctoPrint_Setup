@@ -1913,7 +1913,7 @@ Once the Zigzag pattern has printed, and the printer has fully parked, you can u
 
 
         Click "Print First Pattern” when you are ready to begin.
-        <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.printSawBinConfirm() }">Print First Pattern</button>
+        <br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 0, click: function() { $root.calibrationAxis('X'), $root.printSawBinConfirm() }">Print First Pattern</button>
         {# <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 1, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 2</button>
         <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && !$root.sawBinPrinted() && $root.calibrationStep() === 2, click: function() { $root.printSawBinConfirm() }">Print X-Axis Pattern 3</button> #}</center><br>
 

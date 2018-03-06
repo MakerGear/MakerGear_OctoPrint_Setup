@@ -2525,7 +2525,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					self.printSawBin();
 				}
 				if (chosenMatch === 2){
@@ -2534,7 +2534,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -2543,7 +2543,7 @@ $(function() {
 					// self.newT1XOffset = ((self.tool1XOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 					// 	"M500",
-					// 	"M501"]);
+					// 	"M503"]);
 					self.calibrationStep(self.calibrationStep()+1);
 					if (self.calibrationStep() === 3){
 						self.calibrationAxis("Y");
@@ -2567,7 +2567,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -2577,7 +2577,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					self.printSawBin();
 				}
 			} else if (self.calibrationAxis()=="Y"){
@@ -2590,7 +2590,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					self.printSawBin();
 				}
 				if (chosenMatch === 2){
@@ -2599,7 +2599,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -2608,7 +2608,7 @@ $(function() {
 					// self.newT1YOffset = ((self.tool1YOffset()+(0*self.calibrationOffset())).toString());
 					// OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 					// 	"M500",
-					// 	"M501"]);
+					// 	"M503"]);
 					self.calibrationStep(self.calibrationStep()+1);
 					if (self.calibrationStep() === 3){
 						self.calibrationStep(0);
@@ -2633,7 +2633,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -2643,7 +2643,7 @@ $(function() {
 					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
 					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
 						"M500",
-						"M501"]);
+						"M503"]);
 					self.printSawBin();
 				}
 			}
