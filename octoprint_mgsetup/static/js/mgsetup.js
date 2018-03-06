@@ -1677,6 +1677,8 @@ $(function() {
 						self.calibrationStep(0);
 						self.calibrationAxis("X");
 						self.sawBinPrinted(false);
+						self.stepFourteenToHome(true);
+						self.stepFifteeenToHome(true);
 				} //TODO - figure out just what the heck is going on above here.  Did I put this in showMaintenanceStep instead of resetStep?
 				self.requestEeprom();
 				self.checkParameters();
@@ -2456,51 +2458,52 @@ $(function() {
 
 		self.printSawBin = function(){
 
-			
+			var parameters;
+			var context;
 			self.mgLog("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
 					if (self.stepFourteenToHome()){
-						var parameters = {tohome: true, offset: self.sawPrintOffset()};
+						parameters = {tohome: true, offset: self.sawPrintOffset()};
 					} else {
-						var parameters = {offset: self.sawPrintOffset()};
+						parameters = {offset: self.sawPrintOffset()};
 					}
-					var context = {};
+					context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
 					OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025", context, parameters);
 					self.stepFourteenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
-					var parameters = {offset: self.sawPrintOffset()};
-					var context = {};
+					parameters = {offset: self.sawPrintOffset()};
+					context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
 				}
 				if (self.calibrationStep() === 2){
-					var parameters = {offset: self.sawPrintOffset()};
-					var context = {};
+					parameters = {offset: self.sawPrintOffset()};
+					context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
 				}
 			}
 			if (self.calibrationAxis()=="Y"){
 				if (self.calibrationStep() === 0){
 					if (self.stepFifteeenToHome()){
-						var parameters = {tohome: true, offset: self.sawPrintOffset()};
+						parameters = {tohome: true, offset: self.sawPrintOffset()};
 					} else {
-						var parameters = {offset: self.sawPrintOffset()};
+						parameters = {offset: self.sawPrintOffset()};
 					}
-					var context = {};
+					context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025", context, parameters);
 					self.stepFifteeenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
-					var parameters = {offset: self.sawPrintOffset()};
-					var context = {};
+					parameters = {offset: self.sawPrintOffset()};
+					context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
 				}
 				if (self.calibrationStep() === 2){
-					var parameters = {offset: self.sawPrintOffset()};
-					var context = {};
+					parameters = {offset: self.sawPrintOffset()};
+					context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
 				}
 			}
@@ -2546,6 +2549,8 @@ $(function() {
 						self.calibrationAxis("Y");
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
+						self.stepFourteenToHome(true);
+						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
 						if (self.maintenancePage() === 14){
 							self.maintenancePage(0);
@@ -2608,6 +2613,8 @@ $(function() {
 					if (self.calibrationStep() === 3){
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
+						self.stepFourteenToHome(true);
+						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
 						if(!self.hasProbe()){
 							self.goTo("16");
@@ -3863,6 +3870,7 @@ $(function() {
 				self.sawBinPrinted(false);
 				self.sawPrintOffset(0);
 				self.stepFourteenToHome(true);
+				self.stepFifteeenToHome(true);
 			}
 			if (targetStep === 15){
 				self.mgLog("resetStep targetStep = 15");
@@ -3871,6 +3879,7 @@ $(function() {
 				self.calibrationAxis("Y");
 				self.sawBinPrinted(false);
 				self.sawPrintOffset(0);
+				self.stepFourteenToHome(true);
 				self.stepFifteeenToHome(true);
 			}
 			if (targetStep === 16){
@@ -4356,7 +4365,7 @@ $(function() {
 		self.mgErrorHandler = function(errorLine){
 			if (errorLine === undefined){
 				if (self.errLongMessage()!== "" && self.errLongMessageWaiting()){
-					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported multi-line message is: \n"+self.errLongMessage());
+					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+self.errLongMessage());
 					self.errLongMessage("");
 					self.errLongMessageWaiting(false);
 					clearTimeout(self.mgErrorHandlerTimer);
@@ -4387,7 +4396,7 @@ $(function() {
 				self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+errorLine);
 			} else {
 				if (self.errLongMessagePosition() === self.errLongMessageLength()){
-					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported multi-line message is: \n"+self.errLongMessage()+errorLine);
+					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+self.errLongMessage()+errorLine);
 					self.errLongMessage("");
 					self.errLongMessageWaiting(false);
 					clearTimeout(self.mgErrorHandlerTimer);

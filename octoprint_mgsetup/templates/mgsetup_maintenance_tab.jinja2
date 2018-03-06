@@ -2823,7 +2823,7 @@ Ignore everything below this statement.  And this statement.<br>
 <div data-bind="visible: $root.calibrationStep() === 1">This will print Pattern 2, Medium Adjustment.</div>
 <div data-bind="visible: $root.calibrationStep() === 2">This will print Pattern 3, Fine Adjustment.</div>
     </center><br><br>
-    <button style="float: left; width: 35%;" data-bind="click: function() { $root.printSawBinDialog.modal('hide'); $root.skipConfirm(false) }">Cancel Pattern</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.pickSawBin(); $root.printSawBinDialog.modal('hide') }">Bed Is Clear - Print</button><br><br>
+    <button style="float: left; width: 35%;" data-bind="click: function() { $root.printSawBinDialog.modal('hide'); $root.skipConfirm(false); $root.chosenSawBin(0) }">Cancel Pattern</button><button style="float: right; width: 45%;" data-bind="click: function() { $root.pickSawBin(); $root.printSawBinDialog.modal('hide') }">Bed Is Clear - Print</button><br><br>
     {# <div style="float:right"><input type="checkbox" data-bind="checked: $root.skipConfirm" /> Don't warn me again.</div><br> #}
 
     </div><br>
