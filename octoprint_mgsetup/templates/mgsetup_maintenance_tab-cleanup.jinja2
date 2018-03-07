@@ -1,5 +1,98 @@
 
 <div id="maintenanceTabsCleanup">
+	<div>
+		<hr>
+		Active Hotend:
+		<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T0',  click: $root.updateTask()  " /> T0 
+		<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T1',  click: $root.updateTask()  " /> T1 
+		<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'Both',  click: $root.updateTask()  " /> Both
+		<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: '',  click: $root.updateTask()  " /> Null
+		<br>
+		<br>
+		Printer Type:
+		<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: 'SE',  click: $root.updateTask()  " /> SE
+		<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: 'ID',  click: $root.updateTask()  " /> ID
+		<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: '',  click: $root.updateTask()  " /> Null
+		<br>
+		<br>
+		Hardware Revision:
+		<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R0',  click: $root.updateTask()  " /> R0
+		<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R1',  click: $root.updateTask()  " /> R1
+		<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: '',  click: $root.updateTask()  " /> Null
+		<br>
+		<br>
+		Task:
+		<br>
+		<table>
+			<tr>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Assisted',  click: $root.updateTask()  " /> Assisted</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions',  click: $root.updateTask()  " /> ChangeInstructions</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Check',  click: $root.updateTask()  " /> Check</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ColdLevel',  click: $root.updateTask()  " /> ColdLevel</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'home',  click: $root.updateTask()  " /> home</td>
+			</tr>
+			<tr>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'HotLevel',  click: $root.updateTask()  " /> HotLevel</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Load',  click: $root.updateTask()  " /> Load</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetCold',  click: $root.updateTask()  " /> SetCold</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetHot',  click: $root.updateTask()  " /> SetHot</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Cold',  click: $root.updateTask()  " /> SetT1Cold</td>
+			</tr>
+			<tr>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot',  click: $root.updateTask()  " /> SetT1Hot</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'T0T1SetCold',  click: $root.updateTask()  " /> T0T1SetCold</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Unload',  click: $root.updateTask()  " /> Unload</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'XSaw',  click: $root.updateTask()  " /> XSaw</td>
+				<td></td>
+				<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'YSaw',  click: $root.updateTask()  " /> YSaw</td>
+			</tr>
+		</table>
+		<br>
+		<br>
+		Operation:
+		<br>
+
+		<table>
+			<tr>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Hot' ,   " /> T0Hot</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Cold' ,   " /> T0Cold</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T1Hot' ,   " /> T1Hot</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T1Cold' ,   " /> T1Cold</td>
+			</tr>
+			<tr>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'XOff' ,  " /> XOff</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'YOff' ,  " /> YOff</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'DCheck' ,  " /> DCheck</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Change' ,    " /> T0Change</td>
+			</tr>
+			<tr>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0T1Change' ,  " /> T0T1Change</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'HotLevel' ,  " /> HotLevel</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'ColdLevel' ,  " /> ColdLevel</td>
+				<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'Assisted' ,  " /> Assisted</td>
+			</tr>
+		</table>
+
+<br>
+<br>
+<span data-bind="visible: $root.validTask()"><strong>Valid</strong> Task Combination</span><span data-bind="visible: !$root.validTask()"><strong>Invalid Task Combination!</strong></span>
+
+
+
+		<hr>
+	</div>
+
 	<div data-bind="visible: $root.shownTask()==='home'">
 		<style>
 		.buttonColumn {
@@ -39,7 +132,7 @@
 
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
-								<br />
+								<br>
 								Tool 0 (left) Starting Height Hot (recommended)
 							</a>
 
@@ -49,7 +142,7 @@
 
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
-								<br />
+								<br>
 								Tool 0 (left) Starting Height Hot (recommended)
 							</a>
 
@@ -58,7 +151,7 @@
 						<div class="buttonColumn">
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(11); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
-								<br />
+								<br>
 								Tool 1 (right) Starting Height Hot (recommended)
 							</a>
 
@@ -68,7 +161,7 @@
 							<div class="buttonColumn">
 								<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(9); window.scroll(0,0); return true}">
 									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
-									<br />
+									<br>
 									Tool 1 (right) Starting Height Cold
 								</a>
 
@@ -79,7 +172,7 @@
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
-								<br />
+								<br>
 								Tool 0 (left) Starting Height Cold
 							</a>
 
@@ -106,7 +199,7 @@
 						<div class="buttonColumn">
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(14); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/xAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
-								<br />
+								<br>
 								Dual X Offset Calibration
 							</a>
 
@@ -115,7 +208,7 @@
 						<div class="buttonColumn">
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(15); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/yAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
-								<br />
+								<br>
 								Dual Y Offset Calibration
 							</a>
 
@@ -123,7 +216,7 @@
 						<div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(92); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
-								<br />
+								<br>
 								Duplication Mode Check
 							</a>
 
@@ -147,7 +240,7 @@
 						<div class="buttonColumn">
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(70); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
-								<br />
+								<br>
 								T0 Hotend / Nozzle Change
 							</a>
 
@@ -156,7 +249,7 @@
 						<div class="buttonColumn">
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT1.jpg', 'width': '100px',} , visible: loginState.isUser " />
-								<br />
+								<br>
 								T1 Hotend / Nozzle Change
 							</a>
 						</div>
@@ -164,7 +257,7 @@
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(72); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
-								<br />
+								<br>
 								T0 and T1 Cold/Mechanical Height Adjustment for Duplication Mode
 							</a>
 						</div>
@@ -190,7 +283,7 @@
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(6); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
-								<br />
+								<br>
 								Hot Bed Leveling (recommended)
 							</a>
 						</div>
@@ -198,7 +291,7 @@
 						<div class="buttonColumn">
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(10); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
-								<br />
+								<br>
 								Cold Bed Leveling
 							</a>
 
@@ -207,7 +300,7 @@
 							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(21); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelAssisted.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
-								<br />
+								<br>
 								Assisted Bed Leveling
 							</a>
 						</div>
@@ -241,18 +334,15 @@
 #}
 <div data-bind="visible: loginState.isUser && ($root.shownTask() === 'Load') ">
 	<div data-bind="visible: maintenanceTaskHotend() === 'Both'">
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
-		</div>
+		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
 		<br><br>
 		<h1 style="text-align:left">Extrude Filament</h1>
 
 		<p>
-			<div data-bind="visible: $root.maintenanceTaskPrinterType() === 'ID'">
-				Now you need to load filament into your Left Extruder (T0) and Right Extruder (T1). 
-			</div>
+			
+			Now you need to load filament into your Left Extruder (T0) and Right Extruder (T1). 
 
-			<br />
+			<br>
 
 			<p>
 				Click 'Prepare' and then continue reading the instructions while you wait for your printer to move into position and heat up.
@@ -269,7 +359,7 @@
 			<br>
 			This shows the Left Extruder (T0) being loaded - the process is the same for the Right Extruder (T1).  Load the Right Extruder at this time as well.
 
-			<br /><br />
+			<br><br>
 			<p>
 				Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
 			</p>
@@ -280,7 +370,7 @@
 				</p>
 			</video>
 
-			<br /><br />
+			<br><br>
 
 			<p>
 				Next insert the filament into the hole on top of the extruder. 
@@ -292,7 +382,7 @@
 					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
 				</p>
 			</video>
-			<br /><br />
+			<br><br>
 
 			<p>Below you can see your extruder temperatures. Once both extruder temperatures match the target temperature within 2 degrees,  click "Feed Filament" on either the Left Extruder (T0) or Right Extruder (T1) to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder.<br>
 				Extruder filament on both extruders before continuing.
@@ -305,13 +395,8 @@
 
 				<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
 					Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
-					<div data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">
-						Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-					</div>
-					<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-						Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-						Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
-					</div>
+					Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+					Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
 				</div>
 			</div>
 			<br>
@@ -350,9 +435,138 @@
 			<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0) }">Next Step</button></center>
 		</p>
 	</div>
+
+
+
+
+
+
+
 	<div data-bind="visible: maintenanceTaskHotend() === 'T0' || maintenanceTaskHotend() === 'T1'">
 
-		Pretend that this chunk has only T0 and only T1 filament loading instructions...
+
+
+		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
+
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T0'" />
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T1'" />
+		</div><br>
+		<h1 style="text-align:left">Extrude Filament</h1>
+
+
+
+
+
+
+
+		<div data-bind="visible:maintenanceTaskPrinterType()==='SE'">
+			Now you need to load filament into your extruder. 
+		</div>
+		<div data-bind="visible: maintenanceTaskPrinterType()==='ID'">
+			<div data-bind="visible: maintenanceTaskHotend() === 'T0'">Now you need to load filament into your Left Extruder (T0).</div>
+			<div data-bind="visible: maintenanceTaskHotend() === 'T1'">Now you need to load filament into your Right Extruder (T1).</div>
+		</div>
+
+		<br>
+
+		<p>
+			Click 'Prepare' and then continue reading the instructions while you wait for your printer to move into position and heat up.
+		</p>
+
+		<p>
+
+			<i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
+
+			Your extruder and build surface will start to heat up. Do not touch the extruder's nozzle or the build surface.
+		</p>
+
+		TODO: fix this to heat up correctly
+		<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
+
+
+
+
+
+		Place the PLA filament spool on the spool holder so that the loose end points directly upwards into the filament guide. You may need to flip your spool in order to achieve the proper orientation. Cut the end of the filament so that the tip is flat.
+
+		<br><br>
+
+
+		<p>
+			Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
+		</p>
+		<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered><source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
+			<p class="vjs-no-js">
+				To view this video please enable JavaScript, and consider upgrading to a web browser that
+				<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+			</p>
+		</video>
+
+		<br><br>
+
+
+
+		<p>
+			Next insert the filament into the hole on top of the extruder. 
+		</p>
+
+		<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}" onclick="this.paused ? this.play() : this.pause();"><source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
+			<p class="vjs-no-js">
+				To view this video please enable JavaScript, and consider upgrading to a web browser that
+				<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+			</p>
+		</video>
+		<br><br>
+
+		<p>Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees, click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
+		</p>
+
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+			</div>
+
+			<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+				Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+				<div data-bind="visible: maintenanceTaskPrinterType()==='SE'">
+					Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+				</div>
+				<div data-bind="visible: maintenanceTaskPrinterType()==='ID'">
+					Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+					Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+				</div>
+			</div>
+		</div>
+
+		<br>
+		<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament(); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180), visible: maintenanceTaskHotend() === 'T0' ">Feed Filament</button></center>
+		<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180), visible: maintenanceTaskHotend() === 'T1' ">Feed Filament</button></center>
+		<br>
+		<p>
+			Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
+
+		</p>
+		<p>
+			Push the filament guide tube down into the plastic extruder hole. 
+
+		</p>
+		<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}" onclick="this.paused ? this.play() : this.pause();"><source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
+			<p class="vjs-no-js">
+				To view this video please enable JavaScript, and consider upgrading to a web browser that
+				<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+			</p>
+		</video>
+
+		Once filament is consistently extruding, click to "Next Step" proceed:<br>
+
+
+		<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0) }">Next Step</button></center>
+
+
+
+
+
+
 
 	</div>
 </div>
@@ -365,11 +579,80 @@
 88        88  88       88  88  8b       d8  ,adPPPPP88  8b       88  
 Y8a.    .a8P  88       88  88  "8a,   ,a8"  88,    ,88  "8a,   ,d88  
 `"Y8888Y"'   88       88  88   `"YbbdP"'   `"8bbdP"Y8   `"8bbdP"Y8  
-                                               
+
 #}
 <div data-bind="visible: loginState.isUser && $root.shownTask() === 'Unload'">
 
 	Don't actually have an unload filament set either...
+
+{# 
+<div data-bind="visible: ($root.shownTask() === '')">
+
+	Both "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract and Extrude filament as needed.
+	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
+	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
+
+	<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="">
+		<br>
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+			</div>
+
+			<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+				Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+			</div>
+		</div>
+		<br>
+
+	</div>
+	<br><br>
+
+	<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center><br><br>
+
+	<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center>
+</div>
+<div data-bind="visible: maintenancePage()===19">
+
+	Both "Prepare" buttons will position the printer and start heating the Right Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract and Extrude filament as needed.
+	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
+	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
+
+	<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="">
+		<br>
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+			</div>
+
+			<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+				Extruder Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+			</div>
+		</div>
+		<br>
+
+	</div>
+	<br><br>
+
+	<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center><br><br>
+
+	<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center>
+
+</div>
+
+#}
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 {#                                                                       
@@ -381,7 +664,7 @@ Y8,                        88     88        88                 88
 `8b  8PP"""""""    88     88        88  8b       d8    88     
 Y8a     a8P  "8b,   ,aa    88,    88        88  "8a,   ,a8"    88,    
 "Y88888P"    `"Ybbd8"'    "Y888  88        88   `"YbbdP"'     "Y888  
-                                                
+
 #}
 
 <div data-bind="visible: loginState.isUser && $root.shownTask() === 'SetHot'">
@@ -464,272 +747,270 @@ Y8a     a8P  "8b,   ,aa    88,    88        88  "8a,   ,a8"    88,
 
 			Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
 
-			<video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}" onclick="this.paused ? this.play() : this.pause();">
-				<source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
-					<p class="vjs-no-js">
-						To view this video please enable JavaScript, and consider upgrading to a web browser that
-						<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-					</p>
-				</video>
-
-				<br />
-				<p >
-					<strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
+			<video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}" onclick="this.paused ? this.play() : this.pause();"><source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
+				<p class="vjs-no-js">
+					To view this video please enable JavaScript, and consider upgrading to a web browser that
+					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
 				</p>
+			</video>
 
-				<table>
-					<tr>
-						<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
-							<a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
+			<br>
+			<p >
+				<strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
+			</p>
 
-						</td>
+			<table>
+				<tr>
+					<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+						<a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
 
-						<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+					</td>
 
-							<a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
+					<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
 
-						</td>
-						<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+						<a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
 
-							<a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
-						</td>
+					</td>
+					<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
 
-					</tr>
-					<tr>
+						<a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
+					</td>
 
-						<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-							If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Starting Height</strong>. Click below to proceed to the next step. 
-							<br />
-							<br />
+				</tr>
+				<tr>
 
-							<strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+					<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+						If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Starting Height</strong>. Click below to proceed to the next step. 
+						<br>
+						<br>
 
-						</td>
+						<strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
 
-						<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-							If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Starting Height is too low</strong>. Click below to adjust the starting height and print a new zigzag. 
+					</td>
 
-						</td>
-						<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+					<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+						If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Starting Height is too low</strong>. Click below to adjust the starting height and print a new zigzag. 
 
-							If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
-							<strong>the Starting Height is too high</strong>. Click below to adjust the starting height and print a new zigzag. 
+					</td>
+					<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
 
-						</td>
-					</tr>
+						If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
+						<strong>the Starting Height is too high</strong>. Click below to adjust the starting height and print a new zigzag. 
 
-					<tr>
+					</td>
+				</tr>
 
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+				<tr>
 
-							<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance'); window.scroll(0,0); $root.stepElevenFirstWiggleClicked(false) }">Save<br /></button></center>
+					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 
-							<!--Too far-->
-						</td>
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-							<div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
-							</div>
-							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
+						<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance'); window.scroll(0,0); $root.stepElevenFirstWiggleClicked(false) }">Save<br></button></center>
 
-						</td>
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-							<div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
-							</div>
-							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
-							<!--Too Close-->
-						</td>
-					</tr>
+						<!--Too far-->
+					</td>
+					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+						<div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
+							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+						</div>
+						<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
 
-				</table>
-				<button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+					</td>
+					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+						<div data-bind="visible: $root.stepFourShowFineAdjustments()==false"><br>
+							<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==false, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+						</div>
+						<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
+						<!--Too Close-->
+					</td>
+				</tr>
 
-				<input type="checkbox" data-bind="checked: $root.stepFourShowFineAdjustments" /> Show Advanced Options.
-			</div>
+			</table>
+			<button class="btnstay" data-bind="visible: $root.stepFourShowFineAdjustments()==true, enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+
+			<input type="checkbox" data-bind="checked: $root.stepFourShowFineAdjustments" /> Show Advanced Options.
 		</div>
+	</div>
 
-		<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R1'">
-			<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
-				<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
-					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
-				</div><br>
+	<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R1'">
+		<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
+			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+			</div><br>
 
-				<h1 style="text-align:left">Adjust Probe Offset</h1>
+			<h1 style="text-align:left">Adjust Probe Offset</h1>
 
-				<p>
+			<p>
 
-					<i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
-					<div data-bind="visible:maintenanceTaskPrinterType()!=='ID'">
-						The printer's extruder and build platform are hot - do not touch them!
-					</div>
-					<div data-bind="visible: maintenanceTaskPrinterType()==='ID'">
-						The printer's Left Extruder (T0) and build platform are hot - do not touch them! 
-					</div>
-
-				</p>
-
-				<p>
-					During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your probe-to-nozzle offset with a non-standard material or nozzle diameter.  Before starting the print, select your printer configuration:
-				</p>
-
-				<div class="thumbnail" style="margin:auto; width:60%"><br>
-					<div style="margin:auto; width:90%">
-						<div><b><input type="radio" name="customWiggleSelect" value="defaultProbe" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.35mm Standard Brass Nozzle, PLA - Default</b></div>
-						<hr>
-						<div><input type="radio" name="customWiggleSelect" value="035absrounded" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.35mm Rounded Brass Nozzle, ABS</div>
-						<hr>
-						<div><input type="radio" name="customWiggleSelect" value="025absflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, ABS</div>
-						<div><input type="radio" name="customWiggleSelect" value="050absflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, ABS</div>
-						<div><input type="radio" name="customWiggleSelect" value="075absflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, ABS</div>
-						<hr>
-						<div><input type="radio" name="customWiggleSelect" value="025plaflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, PLA</div>
-						<div><input type="radio" name="customWiggleSelect" value="075plaflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, PLA</div>
-						<hr>
-						<div><input type="radio" name="customWiggleSelect" value="050psflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, PolySupport</div>
-						<hr>
-					</div>
+				<i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
+				<div data-bind="visible:maintenanceTaskPrinterType()!=='ID'">
+					The printer's extruder and build platform are hot - do not touch them!
 				</div>
-				<p>
-					Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
-				</p>
-
-				<ol>
-					<li>Start to heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.</li>
-					<li>Move components to their home positions.</li>
-					<li>Move extruder to its purge position.</li>
-					<li>Purge and wipe the extruder on the lower right-hand corner of the build plate.</li>
-					<li>Print a Zigzag pattern on the center of the build plate.</li>
-					<li>Move components to their final position.</li>
-				</ol>
-				<p>
-					When you are ready to begin this process, click "Print Zigzag Pattern":
-				</p>
-				<br>
-
-				<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
-
-				<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
-					<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
-						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
-					</div>
-
-					<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
-						Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
-						<div data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">
-							Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-						</div>
-						<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-							Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-							Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
-						</div>
-					</div>
+				<div data-bind="visible: maintenanceTaskPrinterType()==='ID'">
+					The printer's Left Extruder (T0) and build platform are hot - do not touch them! 
 				</div>
 
-				Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The  Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
+			</p>
 
-				<video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  ($root.shownTask() === 'SetHot')" onclick="this.paused ? this.play() : this.pause();">
-					<source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
-						<p class="vjs-no-js">
-							To view this video please enable JavaScript, and consider upgrading to a web browser that
-							<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-						</p>
-					</video>
+			<p>
+				During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your probe-to-nozzle offset with a non-standard material or nozzle diameter.  Before starting the print, select your printer configuration:
+			</p>
 
-					<br />
-					<p >
-						<strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
-					</p>
+			<div class="thumbnail" style="margin:auto; width:60%"><br>
+				<div style="margin:auto; width:90%">
+					<div><b><input type="radio" name="customWiggleSelect" value="defaultProbe" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.35mm Standard Brass Nozzle, PLA - Default</b></div>
+					<hr>
+					<div><input type="radio" name="customWiggleSelect" value="035absrounded" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.35mm Rounded Brass Nozzle, ABS</div>
+					<hr>
+					<div><input type="radio" name="customWiggleSelect" value="025absflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, ABS</div>
+					<div><input type="radio" name="customWiggleSelect" value="050absflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, ABS</div>
+					<div><input type="radio" name="customWiggleSelect" value="075absflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, ABS</div>
+					<hr>
+					<div><input type="radio" name="customWiggleSelect" value="025plaflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.25mm Flat Brass Nozzle, PLA</div>
+					<div><input type="radio" name="customWiggleSelect" value="075plaflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.75mm Flat Brass Nozzle, PLA</div>
+					<hr>
+					<div><input type="radio" name="customWiggleSelect" value="050psflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, PolySupport</div>
+					<hr>
+				</div>
+			</div>
+			<p>
+				Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
+			</p>
 
-					<table>
-						<tr>
-							<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
-								<a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
+			<ol>
+				<li>Start to heat the extruder and build platform to their target temperatures — you will see actual temperatures shown in red and target temperatures shown in black directly below the "Print Zigzag Pattern" button.</li>
+				<li>Move components to their home positions.</li>
+				<li>Move extruder to its purge position.</li>
+				<li>Purge and wipe the extruder on the lower right-hand corner of the build plate.</li>
+				<li>Print a Zigzag pattern on the center of the build plate.</li>
+				<li>Move components to their final position.</li>
+			</ol>
+			<p>
+				When you are ready to begin this process, click "Print Zigzag Pattern":
+			</p>
+			<br>
 
-							</td>
+			<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
-							<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+				</div>
 
-								<a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
-
-							</td>
-							<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
-
-								<a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
-							</td>
-
-						</tr>
-						<tr>
-
-							<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-								If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Probe Offset</strong>. Click below to proceed to the next step. 
-								<br />
-								<br />
-
-								<strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
-
-							</td>
-
-							<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-								If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Probe Offset is too low</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
-
-								<br />
-								<br />
-								<a href="/plugin/mgsetup/static/img/stringZigzag.jpg" data-lightbox="step8-1">Click here to see other examples of zigzags printed too low.</a>
-
-							</td>
-							<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
-
-								If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
-								<strong>the Probe Offset is too high</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
-								<br />
-								<br />
-								<a href="/plugin/mgsetup/static/img/squishZigzag.jpg" data-lightbox="step8-2">Click here to see other examples of zigzags printed too high.</a>
-
-							</td>
-						</tr>
-
-						<tr>
-
-							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-
-								<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0) }">Save Offset<br /></button></center>
-
-								<!--Too far-->
-							</td>
-							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-								<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-									<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
-								</div>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
-
-							</td>
-							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-								<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-									<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
-								</div>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
-								<!--Too Close-->
-							</td>
-						</tr>
-
-					</table>
-					<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
-
-					<input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
-
+				<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+					Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+					<div data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">
+						Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+					</div>
+					<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+						Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+						Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+					</div>
 				</div>
 			</div>
 
+			Once the Zigzag pattern has printed, and the printer has fully parked, you can use your tweezers to remove any material on the side of the bed. Next, carefully remove the Zigzag pattern by using your tweezers to lift it off the bed from the rear left "tail".  The  Zigzag pattern will peel off of the build plate differently according to the printer's current starting height.<br><br>
+
+			<video controls id="filamentVideo1" class="video-js"  preload="none"     data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/wiggleposter.jpg'}, if:  ($root.shownTask() === 'SetHot')" onclick="this.paused ? this.play() : this.pause();"><source src="/plugin/mgsetup/video/wiggleMiddle.mp4" type='video/mp4'>
+				<p class="vjs-no-js">
+					To view this video please enable JavaScript, and consider upgrading to a web browser that
+					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+				</p>
+			</video>
+
+			<br>
+			<p >
+				<strong style="font-size:20px;" >Which of the following options best describes your Zigzag pattern? Click the photos to zoom in.</strong>
+			</p>
+
+			<table>
+				<tr>
+					<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+						<a href="/plugin/mgsetup/static/img/10.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/10.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
+
+					</td>
+
+					<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+						<a href="/plugin/mgsetup/static/img/11.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/11.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
+
+					</td>
+					<td style="width:33%;padding:10px;border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;">
+
+						<a href="/plugin/mgsetup/static/img/12.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/12.jpg', 'width': '100%',} , visible: loginState.isUser" /></a>
+					</td>
+
+				</tr>
+				<tr>
+
+					<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+						If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Probe Offset</strong>. Click below to proceed to the next step. 
+						<br>
+						<br>
+
+						<strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
+
+					</td>
+
+					<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+						If the Zigzag pattern peels-off as an even strand made with little to no small section of connected segments at the end, <strong>the Probe Offset is too low</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
+
+						<br>
+						<br>
+						<a href="/plugin/mgsetup/static/img/stringZigzag.jpg" data-lightbox="step8-1">Click here to see other examples of zigzags printed too low.</a>
+
+					</td>
+					<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
+
+						If the Zigzag pattern peels-off in one solid piece, with most/all segments of the zig-zag pattern connected, 
+						<strong>the Probe Offset is too high</strong>. Click below to adjust the Probe Offset and print a new zigzag. 
+						<br>
+						<br>
+						<a href="/plugin/mgsetup/static/img/squishZigzag.jpg" data-lightbox="step8-2">Click here to see other examples of zigzags printed too high.</a>
+
+					</td>
+				</tr>
+
+				<tr>
+
+					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+
+						<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0) }">Save Offset<br></button></center>
+
+						<!--Too far-->
+					</td>
+					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+						<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+						</div>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
+
+					</td>
+					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+						<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+						</div>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
+						<!--Too Close-->
+					</td>
+				</tr>
+
+			</table>
+			<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+
+			<input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
+
 		</div>
+	</div>
+
+</div>
 								{#                                                                                
 ad88888ba                          ,ad8888ba,                88           88  
 d8"     "8b                ,d      d8"'    `"8b               88           88  
@@ -739,7 +1020,7 @@ Y8,                        88     d8'                         88           88
 `8b  8PP"""""""    88     Y8,            8b       d8  88  8b       88  
 Y8a     a8P  "8b,   ,aa    88,     Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  
 "Y88888P"    `"Ybbd8"'    "Y888    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  
-                                                         
+
 #}
 
 <div data-bind="visible: $root.shownTask()==='SetCold'">
@@ -843,19 +1124,25 @@ Y8a     a8P  "8b,   ,aa    88,     Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88
 				<button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button> .01 mm Down
 			</div>
 		</div>
-		<br><br><br><br><br> <br><br><br>  <br>    
+		<br><br><br><br><br><br><br><br><br>
 
-		<center><button id="control-yinc" class="btnstayBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R0', enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
-			click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Starting Height') }}</button><button id="control-yinc" class="btnstayBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R1', enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), 
-			click: function() { $root.setupSetStartingHeight('1-probe'); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Probe Offset') }}</button></center>
-			<br><br>
-			<center><button style="width:100%;" class="btngoBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R0', enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(4); $root.stepTwoStartingHeightSaved(false) }">Hot Starting Height Adjustment<br /></button></center>
-			<center><button style="width:100%;" class="btngoBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R1', enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(20); $root.stepTwoStartingHeightSaved(false) }">Hot Probe Offset Adjustment<br /></button></center>
-			{# <center><button class="btngoBig" data-bind="enable: $root.stepTwoPrepared && $root.stepTwoStartingHeightSaved(), click: function() { $root.goTo('3'); window.scroll(0,0) }">Next Step</button></center> #}
+		<center>
+			<button id="control-yinc" class="btnstayBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R0', enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Starting Height') }}</button>
+			<button id="control-yinc" class="btnstayBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R1', enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), click: function() { $root.setupSetStartingHeight('1-probe'); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Probe Offset') }}</button>
+		</center>
+		<br><br>
+		<center>
+			<button style="width:100%;" class="btngoBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R0', enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(4); $root.stepTwoStartingHeightSaved(false) }">Hot Starting Height Adjustment<br></button>
+		</center>
+		<center>
+			<button style="width:100%;" class="btngoBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R1', enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(20); $root.stepTwoStartingHeightSaved(false) }">Hot Probe Offset Adjustment<br></button>
+		</center>
+		{# <center><button class="btngoBig" data-bind="enable: $root.stepTwoPrepared && $root.stepTwoStartingHeightSaved(), click: function() { $root.goTo('3'); window.scroll(0,0) }">Next Step</button></center> #}
 
-			<br><br></div>
+		<br><br>
+	</div>
 
-		</div>
+</div>
 
 		{#                                                                                             
 ad88888ba                        888888888888      88  88        88                        
@@ -866,10 +1153,10 @@ Y8,                        88          88       888888  88        88            
 `8b  8PP"""""""    88          88           88  88        88  8b       d8    88     
 Y8a     a8P  "8b,   ,aa    88,         88           88  88        88  "8a,   ,a8"    88,    
 "Y88888P"    `"Ybbd8"'    "Y888       88           88  88        88   `"YbbdP"'     "Y888  
-                                                                      
+
 #}
 
-<div data-bind="visible: $root.shownTask==='SetT1Hot'">
+<div data-bind="visible: $root.shownTask()==='SetT1Hot'">
 	<div data-bind="visible: loginState.isUser">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
 			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
@@ -975,8 +1262,8 @@ Y8a     a8P  "8b,   ,aa    88,         88           88  88        88  "8a,   ,a8
 
 				<td style="border-left:2px;border-right:2px;border-bottom:0px;border-top:0px;border:solid #ddd;">
 					If the  Zigzag pattern peels off with fifty percent of the zigzag pattern as loose segments and fifty percent as connected segments, you have <strong>a perfect Starting Height</strong>. Click below to proceed to the next step. 
-					<br />
-					<br />
+					<br>
+					<br>
 
 					<strong>NOTE:</strong> If the last few segments break off from the rest of the strand, don't worry - just use your tweezers to pull them off the bed. 
 
@@ -999,7 +1286,7 @@ Y8a     a8P  "8b,   ,aa    88,         88           88  88        88  "8a,   ,a8
 
 				<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 
-					<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('T1-maintenance'); window.scroll(0,0) }">Save Starting Height<br /></button></center>
+					<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('T1-maintenance'); window.scroll(0,0) }">Save Starting Height<br></button></center>
 
 					<!--Too far-->
 				</td>
@@ -1041,9 +1328,9 @@ Y8,                        88          88       888888  d8'                     
 `8b  8PP"""""""    88          88           88  Y8,            8b       d8  88  8b       88  
 Y8a     a8P  "8b,   ,aa    88,         88           88   Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  
 "Y88888P"    `"Ybbd8"'    "Y888       88           88    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  
-                                                                               
+
 #}
-<div data-bind="visible: $root.shownTask==='SetT1Cold'">
+<div data-bind="visible: $root.shownTask()==='SetT1Cold'">
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
@@ -1084,7 +1371,7 @@ Y8a     a8P  "8b,   ,aa    88,         88           88   Y8a.    .a8P  "8a,   ,a
 			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser " />
 		</div><br>
 
-		<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br /></button></center><br><br>
+		<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br></button></center><br><br>
 
 		Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room temperature before touching any of the printer’s components.
 		<br><br>
@@ -1102,7 +1389,7 @@ Y8a     a8P  "8b,   ,aa    88,         88           88   Y8a.    .a8P  "8a,   ,a
 			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser " />
 		</div><br><br>
 		<strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
-		<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br /></button></center>
+		<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br></button></center>
 	</div>
 
 </div>
@@ -1115,12 +1402,12 @@ d88b        `"""""8b,  ""     `Y8  `8b    d88b    d8'
 ,8P  Y8,            `8b  ,adPPPPP88   `8b  d8'`8b  d8'   
 d8'    `8b   Y8a     a8P  88,    ,88    `8bd8'  `8bd8'    
 8P        Y8   "Y88888P"   `"8bbdP"Y8      YP      YP      
-                                     
+
 #}
-<div data-bind="visible: $root.shownTask==='XSaw'">
+<div data-bind="visible: $root.shownTask()==='XSaw'">
 
 	<div data-bind="visible: loginState.isUser ">
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
 			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
 		</div><br><br>
 		<p>
@@ -1165,19 +1452,22 @@ d8'    `8b   Y8a     a8P  88,    ,88    `8bd8'  `8bd8'
 		<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
 		<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
 		<center>
-			<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+			<div class="fileupload-new thumbnail" style="width: 95%; " >
 				{# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser  && $root.calibrationStep() < 1" /> #}
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/x-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser  && $root.calibrationStep() > -1" />
-			</div></center><br>
-			<br>
-			<center>
-				{# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span> #}
-				<span data-bind="text: 'At which position (1-5) are the vertical lines most closely aligned?', visible: $root.calibrationStep() > -1"></span>
-			</center><br><br>
-			<center><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button></center>
-		</div>
-
+			</div>
+		</center><br>
+		<br>
+		<center>
+			{# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span> #}
+			<span data-bind="text: 'At which position (1-5) are the vertical lines most closely aligned?', visible: $root.calibrationStep() > -1"></span>
+		</center><br><br>
+		<center>
+			<button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button><button style="width:20%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button>
+		</center>
 	</div>
+
+</div>
 
 {#                                                            
 8b        d8   ad88888ba                                   
@@ -1188,13 +1478,13 @@ Y8,  ,8P    Y8,
 88               `8b  ,adPPPPP88   `8b  d8'`8b  d8'   
 88       Y8a     a8P  88,    ,88    `8bd8'  `8bd8'    
 88        "Y88888P"   `"8bbdP"Y8      YP      YP      
-                                     
+
 #}
 
 <div data-bind="visible: $root.shownTask()==='YSaw'">
 
 	<div data-bind="visible: loginState.isUser ">
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
 			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
 		</div><br><br>
 		<p>
@@ -1240,28 +1530,29 @@ Y8,  ,8P    Y8,
 		<br>
 		<center>
 			{# <span data-bind="text: 'Which bin is closest to having the sawtooth perfectly centered?', visible: $root.calibrationStep() < 1"></span> #}
-			<span data-bind="text: 'At which position (1-5) are the horizontal lines most closely aligned?', visible: $root.calibrationStep() > -1"></span></center><br>
-			<div style="font-size:20px;" data-bind="visible: $root.calibrationStep() === 0">Pattern 1: Coarse Adjustment</div>
-			<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
-			<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
-			<div>
+			<span data-bind="text: 'At which position (1-5) are the horizontal lines most closely aligned?', visible: $root.calibrationStep() > -1"></span>
+		</center><br>
+		<div style="font-size:20px;" data-bind="visible: $root.calibrationStep() === 0">Pattern 1: Coarse Adjustment</div>
+		<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 1">Pattern 2: Medium Adjustment</div>
+		<div style="font-size:20px;"  data-bind="visible: $root.calibrationStep() === 2">Pattern 3: Fine Adjustment</div>
+		<div>
 
-				<div style="width: 100%; margin:auto;vertical-align: middle; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-					<div style="display: inline-block; width:75%">
-						{# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser  && $root.calibrationStep() < 1" /> #}
-						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser && $root.calibrationStep() > -1" />
-					</div>
-					<div style="display: inline-block; width:20%; vertical-align: middle; ">
-						<button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button>
-						<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button>
-						<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button>
-						<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button>
-						<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button>
-					</div>
+			<div style="width: 100%; margin:auto;vertical-align: middle; " >
+				<div style="display: inline-block; width:75%">
+					{# <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-bin-zoom.png', 'width': '100%',} , visible: loginState.isUser  && $root.calibrationStep() < 1" /> #}
+					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/y-saw-zoom.jpg', 'width': '100%',} , visible: loginState.isUser && $root.calibrationStep() > -1" />
 				</div>
-			</div><br><br>
-		</div>
+				<div style="display: inline-block; width:20%; vertical-align: middle; ">
+					<button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 5), click: function() { $root.printSawBinConfirm(5) }">5</button>
+					<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 4), click: function() { $root.printSawBinConfirm(4) }">4</button>
+					<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 3), click: function() { $root.printSawBinConfirm(3) }">3</button>
+					<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 2), click: function() { $root.printSawBinConfirm(2) }">2</button>
+					<br><button style="width:100%; height:20%; " class="btngoBig" data-bind="enable: loginState.isUser && $root.lockButton() && $root.sawBinPrinted() && ($root.chosenSawBin() === 0 || $root.chosenSawBin() === 1), click: function() { $root.printSawBinConfirm(1) }">1</button>
+				</div>
+			</div>
+		</div><br><br>
 	</div>
+</div>
 
 {#                                                                                                                 
 ad88888ba                                                88                                                    
@@ -1272,39 +1563,39 @@ Y8,                                                       88                    
 `8b   `8b  d8'`8b  d8'   ,adPPPPP88  88       d8  88  88       88   `"Y8ba,     88     88               
 Y8a     a8P    `8bd8'  `8bd8'    88,    ,88  88b,   ,a8"  88  88       88  aa    ]8I    88,    88          888  
 "Y88888P"       YP      YP      `"8bbdP"Y8  88`YbbdP"'   88  88       88  `"YbbdP"'    "Y888  88          888  
-                       88                                                                 
-                       88                                                                  #}
-                       <div data-bind="visible: $root.shownTask()==='ChangeInstructions'">
-                       	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
-                       		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-                       			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
-                       		</div>
-                       		<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T0 Left Extruder Hotend Swap</span><span data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">Hotend Swap</span></h1>
-                       		<br>
-                       		This Maintenance Operation will guide you through the removal and installation of the V4 Hotend.  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
-                       		<br><br>
-                       		<ul>
-                       			<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
-                       			<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
-                       		</ul>
-                       		<br>
-                       		After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely.
-                       		<br><br><br>
-                       		<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly</center>
-                       		<br><br>
-                       		<br>
+88                                                                 
+88                                                                  #}
+<div data-bind="visible: $root.shownTask()==='ChangeInstructions'">
+	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
+		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+		</div>
+		<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T0 Left Extruder Hotend Swap</span><span data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">Hotend Swap</span></h1>
+		<br>
+		This Maintenance Operation will guide you through the removal and installation of the V4 Hotend.  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
+		<br><br>
+		<ul>
+			<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
+			<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
+		</ul>
+		<br>
+		After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely.
+		<br><br><br>
+		<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly
+		</center>
+		<br><br>
+		<br>
 
-                       		<div>
-                       			<center>
-                       				<button class="btngoBig " data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(2), $root.hotendSwapComplete(false) }">Adjust Starting Height</button>
-                       			</center>
-                       		</div>
+		<div>
+			<center>
+				<button class="btngoBig " data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(2), $root.hotendSwapComplete(false) }">Adjust Starting Height</button>
+			</center>
+		</div>
 
-                       	{# </div> #}
-                       </div>
-                       {#                    
-    888888888888      88  
-            ,8P'    ,d88  
+	</div>
+{#                    
+888888888888      88  
+,8P'    ,d88  
 d8"    888888  
 ,8P'         88  
 d8"           88  
@@ -1314,7 +1605,7 @@ d8"              88
 
 #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
-	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
 		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
 	</div>
 	<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T1 Right Extruder Hotend Swap</span></h1>
@@ -1346,7 +1637,7 @@ d8"              88
 {#  d8"          d8"          #}
 {# 8P'           88888888888  #}
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
-	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
 		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
 	</div>
 	<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T0 Left and T1 Right Extruder Hotend Swap - For Duplication Mode</span></h1>
@@ -1386,7 +1677,7 @@ d8"              88
 
 <div data-bind="visible: $root.shownTask()==='T0T1SetCold'">
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
 			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
 		</div><br>
 
@@ -1411,10 +1702,7 @@ d8"              88
 
 				<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
 					Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
-					<div data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">
-						Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-					</div>
-					<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+					<div >
 						Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
 						Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
 					</div>
@@ -1432,7 +1720,7 @@ d8"              88
 			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser " />
 		</div><br>
 
-		<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple91a'), $root.stepNineAtPosition(true) }">Move T0 to Position<br /></button></center><br><br>
+		<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple91a'), $root.stepNineAtPosition(true) }">Move T0 to Position<br></button></center><br><br>
 
 		Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room temperature before touching any of the printer’s components.
 		<br><br>
@@ -1453,11 +1741,11 @@ d8"              88
 		<br><br>
 		Now that T0 is adjusted and fully secured, we will adjust T1.  Click "Move T1 to Position" to proceed.<br><br>
 
-		<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple91b') }">Move T1 to Position<br /></button></center>
+		<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple91b') }">Move T1 to Position<br></button></center>
 
 		<strong>You must recalibrate the Starting Height after this process.</strong>  Click below to perform either the Cold or Hot Starting Height Adjustment:<br><br>
-		<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0); maintenancePage(2) }">Cold Starting Height Adjustment<br /></button></center>
-		<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0); maintenancePage(4) }">Hot Starting Height Adjustment<br /></button></center>
+		<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0); maintenancePage(2) }">Cold Starting Height Adjustment<br></button></center>
+		<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0); maintenancePage(4) }">Hot Starting Height Adjustment<br></button></center>
 	</div>
 </div>
 						{#                                                                                           
@@ -1507,7 +1795,7 @@ d8"              88
 			</p>
 		</video>
 
-		<hr />
+		<hr>
 
 		If the entire Zigzag pattern was loose or not adhered to the bed at all, the bed leveling screw needs to be tightened by turning it clockwise, to raise the bed at this position.<br><br>
 		<video controls id="cw" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true', poster:'/plugin/mgsetup/static/img/cwposter.jpg'}" onclick="this.paused ? this.play() : this.pause();" ><source src="/plugin/mgsetup/video/cw.mp4" type='video/mp4'>
@@ -1517,7 +1805,7 @@ d8"              88
 			</p>
 		</video>
 
-		<hr />
+		<hr>
 
 		A quarter-turn should be the largest adjustment made between tests.<br><br>
 		Note: All positions wait for the bed and hotend temperatures to stabilize before starting, so it may take a moment to begin printing.<br><br>
@@ -1620,8 +1908,8 @@ d8YaaaaY8b     I8[    ""  I8[    ""  88  I8[    ""    88     a8P_____88  a8"    
 d8""""""""8b     `"Y8ba,    `"Y8ba,   88   `"Y8ba,     88     8PP"""""""  8b       88  
 d8'        `8b   aa    ]8I  aa    ]8I  88  aa    ]8I    88,    "8b,   ,aa  "8a,   ,d88  
 d8'          `8b  `"YbbdP"'  `"YbbdP"'  88  `"YbbdP"'    "Y888   `"Ybbd8"'   `"8bbdP"Y8  
-                                                                   
-                                                                   
+
+
 #}
 <div data-bind="visible: $root.shownTask()==='Assisted'">
 
@@ -1798,81 +2086,17 @@ d8'          `8b  `"YbbdP"'  `"YbbdP"'  88  `"YbbdP"'    "Y888   `"Ybbd8"'   `"8
 					<td ><span data-bind="text: $root.rearRightDisplayMm()"></span></td>
 				</tr>
 			</table>
-							{# 
-<div data-bind="visible: bedLevelResults().length === 0"><b>
-No data yet!  Click "Run First Bed Check" to acquire the first set of measurements.</b><br><br></div>
-
-The second run will only update the bed level data:<br><center>
-<button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() == 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(10000) }">Check Again</button><br><br></center>
-
-<br><br><br>Once all four corners no longer require adjustment, click "Load Filament" to proceed.
-<button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && ($root.zLevelError() != undefined) && ($root.zLevelError() < 0.5) , click: function() { $root.goTo('3','22') ; $root.probeHomeOffsetAdjust() }">Load Filament</button> #}
 </div>
 </div>
 
 
-<div data-bind="visible: ($root.shownTask() === '')">
-
-	Both "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract and Extrude filament as needed.
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
-
-	<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="">
-		<br>
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
-			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
-			</div>
-
-			<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
-				Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-			</div>
-		</div>
-		<br>
-
-	</div>
-	<br><br>
-
-	<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center><br><br>
-
-	<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center>
-</div>
-<div data-bind="visible: maintenancePage()===19">
-
-	Both "Prepare" buttons will position the printer and start heating the Right Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract and Extrude filament as needed.
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
-
-	<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="">
-		<br>
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
-			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
-			</div>
-
-			<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
-				Extruder Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
-			</div>
-		</div>
-		<br>
-
-	</div>
-	<br><br>
-
-	<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center><br><br>
-
-	<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center>
-
-</div>
 
 
 
-
-
-<div data-bind= "visible: !$root.hideDebug()"><hr />
+<div data-bind= "visible: !$root.hideDebug()"><hr>
 	<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.<br>
 	<input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
-	<hr />
+	<hr>
 	Ignore everything below this statement.  And this statement.<br>
 
 {#  88888888ba,    88888888888  88888888ba   88        88    ,ad8888ba,   
@@ -1883,88 +2107,151 @@ The second run will only update the bed level data:<br><center>
 88         8P  88           88      `8b  88        88  Y8,        88  
 88      .a8P   88           88      a8P  Y8a.    .a8P   Y8a.    .a88  
 88888888Y"'    88888888888  88888888P"    `"Y8888Y"'     `"Y88888P"   #}
+
+{# <div>
+<hr>
+Hotend:
+<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T0'" /> T0 
+<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T1'" /> T1 
+<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'Both'" /> Both
+<br>
+<br>
+Hardward Revision:
+<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R0'" /> R0
+<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R1'" /> R1
+<br>
+<br>
+Task:
+<br>
+<table>
+	<tr>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'Assisted'" /> Assisted</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'ChangeInstructions'" /> ChangeInstructions</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'Check'" /> Check</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'ColdLevel'" /> ColdLevel</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'home'" /> home</td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'HotLevel'" /> HotLevel</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'Load'" /> Load</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'SetCold'" /> SetCold</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'SetHot'" /> SetHot</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'SetT1Cold'" /> SetT1Cold</td>
+	</tr>
+	<tr>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'SetT1Hot'" /> SetT1Hot</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'T0T1SetCold'" /> T0T1SetCold</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'Unload'" /> Unload</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'XSaw'" /> XSaw</td>
+		<td></td>
+		<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.maintenanceTask, checkedValue: 'YSaw'" /> YSaw</td>
+	</tr>
+</table>
+
+
+
+
+
+
+<hr>
+</div>
+#}
+
+
+
 <div>
 	Which step to show:
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'home'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                      ) ; return true; }" /> Home                                                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Load'                                      ) ; return true; }" /> Load                                                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_Load'                       ) ; return true; }" /> T0Hot_T0-SE-R0_Load                                  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_SetHot'                     ) ; return true; }" /> T0Hot_T0-SE-R0_SetHot                </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_Load'                       ) ; return true; }" /> T0Hot_T0-SE-R1_Load                    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_SetHot'                     ) ; return true; }" /> T0Hot_T0-SE-R1_SetHot                </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_Load'                       ) ; return true; }" /> T0Hot_T0-ID-R0_Load                    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_SetHot'                     ) ; return true; }" /> T0Hot_T0-ID-R0_SetHot                </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_Load'                       ) ; return true; }" /> T0Hot_T0-ID-R1_Load                    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_SetHot'                     ) ; return true; }" /> T0Hot_T0-ID-R1_SetHot                </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetCold'                   ) ; return true; }" /> T0Cold_T0-SE-R0_SetCold            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_Load'                      ) ; return true; }" /> T0Cold_T0-SE-R0_Load                  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetHot'                    ) ; return true; }" /> T0Cold_T0-SE-R0_SetHot              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetCold'                   ) ; return true; }" /> T0Cold_T0-ID-R0_SetCold            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_Load'                      ) ; return true; }" /> T0Cold_T0-ID-R0_Load                  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetHot'                    ) ; return true; }" /> T0Cold_T0-ID-R0_SetHot              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_Load'                       ) ; return true; }" /> T1Hot_T1-ID-R0_Load                    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_SetT1Hot'                   ) ; return true; }" /> T1Hot_T1-ID-R0_SetT1Hot            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_Load'                       ) ; return true; }" /> T1Hot_T1-ID-R1_Load                    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_SetT1Hot'                   ) ; return true; }" /> T1Hot_T1-ID-R1_SetT1Hot            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Unload'                    ) ; return true; }" /> T1Cold_T1-ID-R0_Unload              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Cold'               ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_SetT1Cold'                 ) ; return true; }" /> T1Cold_T1-ID-R0_SetT1Cold        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Load'                      ) ; return true; }" /> T1Cold_T1-ID-R0_Load                  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_SetT1Hot'                  ) ; return true; }" /> T1Cold_T1-ID-R0_SetT1Hot          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Unload'                    ) ; return true; }" /> T1Cold_T1-ID-R1_Unload                    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Cold'               ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_SetT1Cold'                 ) ; return true; }" /> T1Cold_T1-ID-R1_SetT1Cold                 </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Load'                      ) ; return true; }" /> T1Cold_T1-ID-R1_Load                      </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_SetT1Hot'                  ) ; return true; }" /> T1Cold_T1-ID-R1_SetT1Hot                  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R0_Load'                        ) ; return true; }" /> XOff_T1-ID-R0_Load                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'XSaw'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R0_XSaw'                        ) ; return true; }" /> XOff_T1-ID-R0_XSaw                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R1_Load'                        ) ; return true; }" /> XOff_T1-ID-R1_Load                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'XSaw'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R1_XSaw'                        ) ; return true; }" /> XOff_T1-ID-R1_XSaw                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R0_Load'                        ) ; return true; }" /> YOff_T1-ID-R0_Load                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'YSaw'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R0_YSaw'                        ) ; return true; }" /> YOff_T1-ID-R0_YSaw                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R1_Load'                        ) ; return true; }" /> YOff_T1-ID-R1_Load                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'YSaw'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R1_YSaw'                        ) ; return true; }" /> YOff_T1-ID-R1_YSaw                        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Check'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R0_Check'                   ) ; return true; }" /> DCheck_Both-ID-R0_Check                   </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Check'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R1_Check'                   ) ; return true; }" /> DCheck_Both-ID-R1_Check                   </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Unload'                  ) ; return true; }" /> T0Change_T0-SE-R0_Unload                  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-SE-R0_ChangeInstructions      </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_SetCold'                 ) ; return true; }" /> T0Change_T0-SE-R0_SetCold        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Load'                    ) ; return true; }" /> T0Change_T0-SE-R0_Load              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_SetHot'                  ) ; return true; }" /> T0Change_T0-SE-R0_SetHot          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Unload'                  ) ; return true; }" /> T0Change_T0-SE-R1_Unload          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-SE-R1_ChangeInstructions        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_SetCold'                 ) ; return true; }" /> T0Change_T0-SE-R1_SetCold        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Load'                    ) ; return true; }" /> T0Change_T0-SE-R1_Load              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_SetHot'                  ) ; return true; }" /> T0Change_T0-SE-R1_SetHot          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Unload'                  ) ; return true; }" /> T0Change_T0-ID-R0_Unload          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-ID-R0_ChangeInstructions     </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetCold'                 ) ; return true; }" /> T0Change_T0-ID-R0_SetCold        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Load'                    ) ; return true; }" /> T0Change_T0-ID-R0_Load              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetHot'                  ) ; return true; }" /> T0Change_T0-ID-R0_SetHot          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetT1Hot'                ) ; return true; }" /> T0Change_T0-ID-R0_SetT1Hot      </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Unload'                  ) ; return true; }" /> T0Change_T0-ID-R1_Unload          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-ID-R1_ChangeInstructions    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetCold'                 ) ; return true; }" /> T0Change_T0-ID-R1_SetCold        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Load'                    ) ; return true; }" /> T0Change_T0-ID-R1_Load              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetHot'                  ) ; return true; }" /> T0Change_T0-ID-R1_SetHot          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetT1Hot'                ) ; return true; }" /> T0Change_T0-ID-R1_SetT1Hot      </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Unload'              ) ; return true; }" /> T0T1Change_Both-ID-R0_Unload  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_ChangeInstructions'  ) ; return true; }" /> T0T1Change_Both-ID-R0_ChangeInstructions    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'T0T1SetCold'             ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_T0T1SetCold'         ) ; return true; }" /> T0T1Change_Both-ID-R0_T0T1SetCold  </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Load'                ) ; return true; }" /> T0T1Change_Both-ID-R0_Load                </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_SetHot'              ) ; return true; }" /> T0T1Change_Both-ID-R0_SetHot            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_SetT1Hot'            ) ; return true; }" /> T0T1Change_Both-ID-R0_SetT1Hot        </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Unload'              ) ; return true; }" /> T0T1Change_Both-ID-R1_Unload            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_ChangeInstructions'  ) ; return true; }" /> T0T1Change_Both-ID-R1_ChangeInstructions              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'T0T1SetCold'             ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_T0T1SetCold'         ) ; return true; }" /> T0T1Change_Both-ID-R1_T0T1SetCold                </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Load'                ) ; return true; }" /> T0T1Change_Both-ID-R1_Load                              </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_SetHot'              ) ; return true; }" /> T0T1Change_Both-ID-R1_SetHot                          </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_SetT1Hot'            ) ; return true; }" /> T0T1Change_Both-ID-R1_SetT1Hot                      </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_Load'                    ) ; return true; }" /> HotLevel_T0-SE-R0_Load            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'HotLevel'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_HotLevel'                ) ; return true; }" /> HotLevel_T0-SE-R0_HotLevel    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_Load'                    ) ; return true; }" /> HotLevel_T0-ID-R0_Load            </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'HotLevel'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_HotLevel'                ) ; return true; }" /> HotLevel_T0-ID-R0_HotLevel    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ColdLevel'               ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-SE-R0_ColdLevel'              ) ; return true; }" /> ColdLevel_T0-SE-R0_ColdLevel</div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'ColdLevel'               ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-ID-R0_ColdLevel'              ) ; return true; }" /> ColdLevel_T0-ID-R0_ColdLevel</div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Assisted'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.shownTask, checkedValue: 'Assisted'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'home'                                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                      ) ; return true; }" /> Home                                                        </div>
+	{# <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'Load'                                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Load'                                      ) ; return true; }" /> Load                                                        </div> #}
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-SE-R0_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_Load'                       ) ; return true; }" /> T0Hot_T0-SE-R0_Load                                  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-SE-R0_SetHot'                     ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_SetHot'                     ) ; return true; }" /> T0Hot_T0-SE-R0_SetHot                </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-SE-R1_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_Load'                       ) ; return true; }" /> T0Hot_T0-SE-R1_Load                    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-SE-R1_SetHot'                     ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_SetHot'                     ) ; return true; }" /> T0Hot_T0-SE-R1_SetHot                </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-ID-R0_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_Load'                       ) ; return true; }" /> T0Hot_T0-ID-R0_Load                    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-ID-R0_SetHot'                     ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_SetHot'                     ) ; return true; }" /> T0Hot_T0-ID-R0_SetHot                </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-ID-R1_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_Load'                       ) ; return true; }" /> T0Hot_T0-ID-R1_Load                    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-ID-R1_SetHot'                     ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_SetHot'                     ) ; return true; }" /> T0Hot_T0-ID-R1_SetHot                </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Cold_T0-SE-R0_SetCold'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetCold'                   ) ; return true; }" /> T0Cold_T0-SE-R0_SetCold            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Cold_T0-SE-R0_Load'                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_Load'                      ) ; return true; }" /> T0Cold_T0-SE-R0_Load                  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Cold_T0-SE-R0_SetHot'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetHot'                    ) ; return true; }" /> T0Cold_T0-SE-R0_SetHot              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Cold_T0-ID-R0_SetCold'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetCold'                   ) ; return true; }" /> T0Cold_T0-ID-R0_SetCold            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Cold_T0-ID-R0_Load'                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_Load'                      ) ; return true; }" /> T0Cold_T0-ID-R0_Load                  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Cold_T0-ID-R0_SetHot'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetHot'                    ) ; return true; }" /> T0Cold_T0-ID-R0_SetHot              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Hot_T1-ID-R0_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_Load'                       ) ; return true; }" /> T1Hot_T1-ID-R0_Load                    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Hot_T1-ID-R0_SetT1Hot'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_SetT1Hot'                   ) ; return true; }" /> T1Hot_T1-ID-R0_SetT1Hot            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Hot_T1-ID-R1_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_Load'                       ) ; return true; }" /> T1Hot_T1-ID-R1_Load                    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Hot_T1-ID-R1_SetT1Hot'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_SetT1Hot'                   ) ; return true; }" /> T1Hot_T1-ID-R1_SetT1Hot            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R0_Unload'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Unload'                    ) ; return true; }" /> T1Cold_T1-ID-R0_Unload              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R0_SetT1Cold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_SetT1Cold'                 ) ; return true; }" /> T1Cold_T1-ID-R0_SetT1Cold        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R0_Load'                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Load'                      ) ; return true; }" /> T1Cold_T1-ID-R0_Load                  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R0_SetT1Hot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_SetT1Hot'                  ) ; return true; }" /> T1Cold_T1-ID-R0_SetT1Hot          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R1_Unload'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Unload'                    ) ; return true; }" /> T1Cold_T1-ID-R1_Unload                    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R1_SetT1Cold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_SetT1Cold'                 ) ; return true; }" /> T1Cold_T1-ID-R1_SetT1Cold                 </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R1_Load'                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Load'                      ) ; return true; }" /> T1Cold_T1-ID-R1_Load                      </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T1Cold_T1-ID-R1_SetT1Hot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_SetT1Hot'                  ) ; return true; }" /> T1Cold_T1-ID-R1_SetT1Hot                  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'XOff_T1-ID-R0_Load'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R0_Load'                        ) ; return true; }" /> XOff_T1-ID-R0_Load                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'XOff_T1-ID-R0_XSaw'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R0_XSaw'                        ) ; return true; }" /> XOff_T1-ID-R0_XSaw                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'XOff_T1-ID-R1_Load'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R1_Load'                        ) ; return true; }" /> XOff_T1-ID-R1_Load                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'XOff_T1-ID-R1_XSaw'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_T1-ID-R1_XSaw'                        ) ; return true; }" /> XOff_T1-ID-R1_XSaw                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'YOff_T1-ID-R0_Load'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R0_Load'                        ) ; return true; }" /> YOff_T1-ID-R0_Load                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'YOff_T1-ID-R0_YSaw'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R0_YSaw'                        ) ; return true; }" /> YOff_T1-ID-R0_YSaw                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'YOff_T1-ID-R1_Load'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R1_Load'                        ) ; return true; }" /> YOff_T1-ID-R1_Load                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'YOff_T1-ID-R1_YSaw'                        ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_T1-ID-R1_YSaw'                        ) ; return true; }" /> YOff_T1-ID-R1_YSaw                        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'DCheck_Both-ID-R0_Check'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R0_Check'                   ) ; return true; }" /> DCheck_Both-ID-R0_Check                   </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'DCheck_Both-ID-R1_Check'                   ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R1_Check'                   ) ; return true; }" /> DCheck_Both-ID-R1_Check                   </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R0_Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Unload'                  ) ; return true; }" /> T0Change_T0-SE-R0_Unload                  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R0_ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-SE-R0_ChangeInstructions      </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R0_SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_SetCold'                 ) ; return true; }" /> T0Change_T0-SE-R0_SetCold        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R0_Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Load'                    ) ; return true; }" /> T0Change_T0-SE-R0_Load              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R0_SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_SetHot'                  ) ; return true; }" /> T0Change_T0-SE-R0_SetHot          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R1_Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Unload'                  ) ; return true; }" /> T0Change_T0-SE-R1_Unload          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R1_ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-SE-R1_ChangeInstructions        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R1_SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_SetCold'                 ) ; return true; }" /> T0Change_T0-SE-R1_SetCold        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R1_Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Load'                    ) ; return true; }" /> T0Change_T0-SE-R1_Load              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-SE-R1_SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_SetHot'                  ) ; return true; }" /> T0Change_T0-SE-R1_SetHot          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R0_Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Unload'                  ) ; return true; }" /> T0Change_T0-ID-R0_Unload          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R0_ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-ID-R0_ChangeInstructions     </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R0_SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetCold'                 ) ; return true; }" /> T0Change_T0-ID-R0_SetCold        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R0_Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Load'                    ) ; return true; }" /> T0Change_T0-ID-R0_Load              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R0_SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetHot'                  ) ; return true; }" /> T0Change_T0-ID-R0_SetHot          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R0_SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_SetT1Hot'                ) ; return true; }" /> T0Change_T0-ID-R0_SetT1Hot      </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R1_Unload'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Unload'                  ) ; return true; }" /> T0Change_T0-ID-R1_Unload          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R1_ChangeInstructions'      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_ChangeInstructions'      ) ; return true; }" /> T0Change_T0-ID-R1_ChangeInstructions    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R1_SetCold'                 ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetCold'                 ) ; return true; }" /> T0Change_T0-ID-R1_SetCold        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R1_Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Load'                    ) ; return true; }" /> T0Change_T0-ID-R1_Load              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R1_SetHot'                  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetHot'                  ) ; return true; }" /> T0Change_T0-ID-R1_SetHot          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Change_T0-ID-R1_SetT1Hot'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_SetT1Hot'                ) ; return true; }" /> T0Change_T0-ID-R1_SetT1Hot      </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R0_Unload'              ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Unload'              ) ; return true; }" /> T0T1Change_Both-ID-R0_Unload  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R0_ChangeInstructions'  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_ChangeInstructions'  ) ; return true; }" /> T0T1Change_Both-ID-R0_ChangeInstructions    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R0_T0T1SetCold'         ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_T0T1SetCold'         ) ; return true; }" /> T0T1Change_Both-ID-R0_T0T1SetCold  </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R0_Load'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Load'                ) ; return true; }" /> T0T1Change_Both-ID-R0_Load                </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R0_SetHot'              ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_SetHot'              ) ; return true; }" /> T0T1Change_Both-ID-R0_SetHot            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R0_SetT1Hot'            ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_SetT1Hot'            ) ; return true; }" /> T0T1Change_Both-ID-R0_SetT1Hot        </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R1_Unload'              ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Unload'              ) ; return true; }" /> T0T1Change_Both-ID-R1_Unload            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R1_ChangeInstructions'  ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_ChangeInstructions'  ) ; return true; }" /> T0T1Change_Both-ID-R1_ChangeInstructions              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R1_T0T1SetCold'         ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_T0T1SetCold'         ) ; return true; }" /> T0T1Change_Both-ID-R1_T0T1SetCold                </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R1_Load'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Load'                ) ; return true; }" /> T0T1Change_Both-ID-R1_Load                              </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R1_SetHot'              ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_SetHot'              ) ; return true; }" /> T0T1Change_Both-ID-R1_SetHot                          </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0T1Change_Both-ID-R1_SetT1Hot'            ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_SetT1Hot'            ) ; return true; }" /> T0T1Change_Both-ID-R1_SetT1Hot                      </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'HotLevel_T0-SE-R0_Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_Load'                    ) ; return true; }" /> HotLevel_T0-SE-R0_Load            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'HotLevel_T0-SE-R0_HotLevel'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_HotLevel'                ) ; return true; }" /> HotLevel_T0-SE-R0_HotLevel    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'HotLevel_T0-ID-R0_Load'                    ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_Load'                    ) ; return true; }" /> HotLevel_T0-ID-R0_Load            </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'HotLevel_T0-ID-R0_HotLevel'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_HotLevel'                ) ; return true; }" /> HotLevel_T0-ID-R0_HotLevel    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'ColdLevel_T0-SE-R0_ColdLevel'              ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-SE-R0_ColdLevel'              ) ; return true; }" /> ColdLevel_T0-SE-R0_ColdLevel</div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'ColdLevel_T0-ID-R0_ColdLevel'              ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-ID-R0_ColdLevel'              ) ; return true; }" /> ColdLevel_T0-ID-R0_ColdLevel</div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'Assisted_T0-SE-R1_Assisted'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'Assisted_T0-SE-R1_Assisted'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                             , click: window.scroll(0,0)" />                                                     - Maintenance Page</div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>

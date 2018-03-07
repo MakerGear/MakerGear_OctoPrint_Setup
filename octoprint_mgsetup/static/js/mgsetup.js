@@ -1921,8 +1921,31 @@ $(function() {
 		self.maintenanceTask = ko.observable("");
 		self.shownTask = ko.observable("home");
 		self.taskRadio = ko.observable("home");
+		self.validTask = ko.observable(true);
+		self.validTaskList = ["T0-SE-R1_Assisted","Both-ID-R0_ChangeInstructions","Both-ID-R0_Load","Both-ID-R0_SetHot","Both-ID-R0_SetT1Hot","Both-ID-R0_T0T1SetCold","Both-ID-R1_ChangeInstructions","Both-ID-R1_Load","Both-ID-R1_SetHot","Both-ID-R1_SetT1Hot","Both-ID-R1_T0T1SetCold","T0-ID-R0_ChangeInstructions","T0-ID-R0_HotLevel","T0-ID-R0_Load","T0-ID-R0_SetCold","T0-ID-R0_SetHot","T0-ID-R0_SetT1Hot","T0-ID-R1_ChangeInstructions","T0-ID-R1_Load","T0-ID-R1_SetCold","T0-ID-R1_SetHot","T0-ID-R1_SetT1Hot","T0-SE-R0_ChangeInstructions","T0-SE-R0_HotLevel","T0-SE-R0_Load","T0-SE-R0_SetCold","T0-SE-R0_SetHot","T0-SE-R1_ChangeInstructions","T0-SE-R1_Load","T0-SE-R1_SetCold","T0-SE-R1_SetHot","T1-ID-R0_Load","T1-ID-R0_SetT1Cold","T1-ID-R0_SetT1Hot","T1-ID-R0_XSaw","T1-ID-R0_YSaw","T1-ID-R1_Load","T1-ID-R1_SetT1Cold","T1-ID-R1_SetT1Hot","T1-ID-R1_XSaw","T1-ID-R1_YSaw"];
+
+		self.updateTask = function(){
+			if (self.shownTask() === 'home'){
+				self.taskRadio('home');
+				self.validTask(true);
+				return;
+			}
+			if (self.maintenanceTaskPrinterType() !== undefined && self.maintenanceTaskHardwareRevision() !== undefined && self.maintenanceTaskHotend() !== undefined && self.shownTask() !== undefined){
+				self.taskRadio(self.maintenanceTaskHotend()+"-"+self.maintenanceTaskPrinterType()+"-"+self.maintenanceTaskHardwareRevision()+"_"+self.shownTask());
+				self.maintenanceOperation("home");
+				self.mgLog(self.taskRadio());
+				if (self.validTaskList.indexOf(self.taskRadio())===-1){
+					self.validTask(false);
+					self.mgLog("Not a valid task combination.");
+				} else {
+					self.validTask(true);
+				}
+
+			}
 
 
+
+		};
 
 		self.nextMaintenanceTask = function(nextTask){
 			self.mgLog("nextMaintenanceTask called with: "+nextTask);
@@ -1933,6 +1956,7 @@ $(function() {
 				self.maintenanceTaskHotend("");
 				self.maintenanceTask("");
 				self.shownTask("home");
+				self.taskRadio("home");
 				return;
 			}
 
@@ -1941,8 +1965,9 @@ $(function() {
 				var taskSplit = nextTask.split("_");
 				self.maintenanceOperation(taskSplit[0]);
 				self.maintenanceTask(taskSplit[2]);
-				self.shownTask(self.maintenanceTask());
-				shownTaskRegular = self.shownTask();
+				self.shownTask(taskSplit[2]);
+				self.taskRadio(nextTask);
+				// shownTaskRegular = self.shownTask();
 
 				if (taskSplit[1].includes("T0")){self.maintenanceTaskHotend("T0");}
 				if (taskSplit[1].includes("T1")){self.maintenanceTaskHotend("T1");}
@@ -1953,11 +1978,13 @@ $(function() {
 
 
 
-
 			} else {
 
 
 				switch(self.maintenanceOperation()){
+					case undefined:
+						self.mgLog("nextMaintenanceTask called without nextTask, and maintenanceOperation() is not defined - error during debugging?");
+						return;
 
 					case "T0Hot":
 						switch(self.maintenanceTask()){
