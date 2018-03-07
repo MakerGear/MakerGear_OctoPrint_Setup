@@ -1113,6 +1113,9 @@ $(function() {
 					]);
 					self.ZOffset(self.newZOffset);
 					self.requestEeprom();
+					if (self.maintenanceOperation()!==""){
+						self.nextMaintenanceTask();
+					}
 					//new PNotify({
 					//	title: 'Starting Height Adjustment',
 					//	text: "Starting Height Set to : "+self.newZOffset.toString(),
@@ -1253,6 +1256,9 @@ $(function() {
 				} else if(Math.abs(self.tool1ZOffset())>0.10){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
+				if (self.maintenanceOperation()!==""){
+					self.nextMaintenanceTask();
+				}
 			}
 			if (startingHeightStep == "probe") {
 				self.newProbeOffset = (parseFloat(self.probeOffset())+parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
@@ -1281,10 +1287,14 @@ $(function() {
 				self.stepTwentyFirstWiggleClicked(false);
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("17");
-				if (!self.isDual()){
-					self.goTo("22");
+				if (self.maintenanceOperation()!==""){
+					self.nextMaintenanceTask();
 				} else {
-					self.goTo("26");
+					if (!self.isDual()){
+						self.goTo("22");
+					} else {
+						self.goTo("26");
+					}
 				}
 			}
 			if (startingHeightStep == "00-probe") { //for maintenance step
@@ -1333,6 +1343,9 @@ $(function() {
 				]);
 				self.probeOffset(self.newProbeOffset);
 				self.requestEeprom();
+				if (self.maintenanceOperation()!==""){
+					self.nextMaintenanceTask();
+				}
 					//new PNotify({
 					//	title: 'Starting Height Adjustment',
 					//	text: "Starting Height Set to : "+self.newZOffset.toString(),
@@ -1553,7 +1566,11 @@ $(function() {
 				]);
 				self.stepNineAtPosition(false);
 				//$('#maintenanceTabs').('#coldZ').tab('show')
-				$(".nav-tabs a[href='#coldZ']").click();
+				if (self.maintenanceOperation()!==""){
+					self.nextMaintenanceTask();
+				} else {
+					$(".nav-tabs a[href='#coldZ']").click();
+				}
 			}
 
 
@@ -1922,7 +1939,7 @@ $(function() {
 		self.shownTask = ko.observable("home");
 		self.taskRadio = ko.observable("home");
 		self.validTask = ko.observable(true);
-		self.validTaskList = ["T0-SE-R1_Assisted","Both-ID-R0_ChangeInstructions","Both-ID-R0_Load","Both-ID-R0_SetHot","Both-ID-R0_SetT1Hot","Both-ID-R0_T0T1SetCold","Both-ID-R1_ChangeInstructions","Both-ID-R1_Load","Both-ID-R1_SetHot","Both-ID-R1_SetT1Hot","Both-ID-R1_T0T1SetCold","T0-ID-R0_ChangeInstructions","T0-ID-R0_HotLevel","T0-ID-R0_Load","T0-ID-R0_SetCold","T0-ID-R0_SetHot","T0-ID-R0_SetT1Hot","T0-ID-R1_ChangeInstructions","T0-ID-R1_Load","T0-ID-R1_SetCold","T0-ID-R1_SetHot","T0-ID-R1_SetT1Hot","T0-SE-R0_ChangeInstructions","T0-SE-R0_HotLevel","T0-SE-R0_Load","T0-SE-R0_SetCold","T0-SE-R0_SetHot","T0-SE-R1_ChangeInstructions","T0-SE-R1_Load","T0-SE-R1_SetCold","T0-SE-R1_SetHot","T1-ID-R0_Load","T1-ID-R0_SetT1Cold","T1-ID-R0_SetT1Hot","T1-ID-R0_XSaw","T1-ID-R0_YSaw","T1-ID-R1_Load","T1-ID-R1_SetT1Cold","T1-ID-R1_SetT1Hot","T1-ID-R1_XSaw","T1-ID-R1_YSaw"];
+		self.validTaskList = ["T0-SE-R1_Assisted","Both-ID-R0_ChangeInstructions","Both-ID-R0_Load","Both-ID-R0_SetHot","Both-ID-R0_SetT1Hot","Both-ID-R0_T0T1SetCold","Both-ID-R1_ChangeInstructions","Both-ID-R1_Load","Both-ID-R1_SetHot","Both-ID-R1_SetT1Hot","Both-ID-R1_T0T1SetCold","T0-ID-R0_ChangeInstructions","T0-ID-R0_HotLevel","T0-ID-R0_Load","T0-ID-R0_SetCold","T0-ID-R0_SetHot","T0-ID-R0_SetT1Hot","T0-ID-R1_ChangeInstructions","T0-ID-R1_Load","T0-ID-R1_SetCold","T0-ID-R1_SetHot","T0-ID-R1_SetT1Hot","T0-SE-R0_ChangeInstructions","T0-SE-R0_HotLevel","T0-SE-R0_Load","T0-SE-R0_SetCold","T0-SE-R0_SetHot","T0-SE-R1_ChangeInstructions","T0-SE-R1_Load","T0-SE-R1_SetCold","T0-SE-R1_SetHot","T1-ID-R0_Load","T1-ID-R0_SetT1Cold","T1-ID-R0_SetT1Hot","Both-ID-R0_XSaw","Both-ID-R0_YSaw","T1-ID-R1_Load","T1-ID-R1_SetT1Cold","T1-ID-R1_SetT1Hot","Both-ID-R1_XSaw","Both-ID-R1_YSaw"];
 
 		self.updateTask = function(){
 			if (self.shownTask() === 'home'){
@@ -2152,10 +2169,10 @@ $(function() {
 							case "Load":
 								switch(self.maintenanceTaskHardwareRevision()){
 									case "R0":
-										self.nextMaintenanceTask("XOff_T1-ID-R0_XSaw");
+										self.nextMaintenanceTask("XOff_Both-ID-R0_XSaw");
 										break;
 									case "R1":
-										self.nextMaintenanceTask("XOff_T1-ID-R1_XSaw");
+										self.nextMaintenanceTask("XOff_Both-ID-R1_XSaw");
 										break;
 								}
 								break;
@@ -2171,10 +2188,10 @@ $(function() {
 							case "Load":
 								switch(self.maintenanceTaskHardwareRevision()){
 										case "R0":
-											self.nextMaintenanceTask("YOff_T1-ID-R0_YSaw");
+											self.nextMaintenanceTask("YOff_Both-ID-R0_YSaw");
 											break;
 										case "R1":
-											self.nextMaintenanceTask("YOff_T1-ID-R1_YSaw");
+											self.nextMaintenanceTask("YOff_Both-ID-R1_YSaw");
 											break;
 								}
 								break;
@@ -2579,6 +2596,10 @@ $(function() {
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
+						if (self.maintenanceOperation()!==""){
+							self.nextMaintenanceTask();
+							return;
+						}
 						if (self.maintenancePage() === 14){
 							self.maintenancePage(0);
 						} else {
@@ -2643,6 +2664,10 @@ $(function() {
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
+						if (self.maintenanceOperation()!==""){
+							self.nextMaintenanceTask();
+							return;
+						}
 						if(!self.hasProbe()){
 							self.goTo("16");
 						} else {
@@ -3212,11 +3237,17 @@ $(function() {
 					}
 				}
 				if (self.setupStep() === "21" || self.maintenancePage() === 21){
-					if (self.bedAdjustmentRounds() >= 3 && !self.maintenancePage() === 21){
+					if (self.bedAdjustmentRounds() >= 3 && self.maintenancePage() !== 21){
 						self.mgLog("Adjustment rounds greater than 3: "+self.bedAdjustmentRounds().toString());
 						// self.bedConfigDialog.modal("show");
 						self.bedConfigDialog.modal({keyboard: true, backdrop: "static", show: true});
 					} else {
+						self.probeLevelActiveCorner(0);
+						self.lastCorner(false);
+						self.probeLevelAssist("next");
+					}
+				} else {
+					if (self.maintenanceOperation() !== ""){
 						self.probeLevelActiveCorner(0);
 						self.lastCorner(false);
 						self.probeLevelAssist("next");
@@ -3262,6 +3293,11 @@ $(function() {
 				if ( nextCorner === -1){ //check if the turn array does NOT contain any more corners to adjust
 					if(self.probeLevelActiveCorner() === 0){ //if no corners left to adjust and at position 0, we're done
 						self.mgLog("next corner probs.  Pretty sure Kyle wrote this one.  Still not actually sure what it means.");
+						if (self.maintenanceOperation()!==""){
+							self.nextMaintenanceTask();
+							self.lastCorner(false);
+							return;
+						}
 						if (self.maintenancePage() === 21){
 							self.noTurns(true);
 							return;
