@@ -549,7 +549,7 @@ $(function() {
 			}
 
 			if (wigglePosition === "T1-maintenance"){
-				if (self.maintenancePage() === 11){
+				if (self.maintenancePage() === 11 || self.maintenanceOperation() === "T0Hot"){
 					self.stepElevenFirstWiggleClicked(true);
 				}
 
@@ -673,7 +673,7 @@ $(function() {
 				var context = {};
 				self.mgLog("parameters.wiggleHeight: "+parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("customProbeWiggle", context, parameters);
-				if (self.setupStep() === '20' || self.maintenancePage() === 200){
+				if (self.setupStep() === '20' || self.maintenancePage() === 200 || self.maintenanceOperation() === "T0Hot"){
 					self.stepTwentyFirstWiggleClicked(true);
 				}
 			}
@@ -749,67 +749,131 @@ $(function() {
 			}
 			if (hotend == "T0"){
 
-				OctoPrint.control.sendGcode([
-					"M104 T0 S"+temperature.toString(),
-					"M140 S70",
-					"M300 S1040 P250",
-					"M300 S1312 P250", 
-					"M300 S1392 P250",
-					"G4 P750",
-					"G28 Z",
-					"G28 Y X",
-					"T0",
-					"G1 F1500 X20 Y100 Z100",
-					"M109 S"+temperature.toString()+" T0",
-					"M400",
-					"M300 S1392 P250",
-					"M300 S1312 P250", 
-					"M300 S1040 P250"
-					
-				]);
+				if (self.hasProbe()){
+					OctoPrint.control.sendGcode([
+						"M104 T0 S"+temperature.toString(),
+						"M140 S70",
+						"M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 P750",
+						"G28 XYZ",
+						"T0",
+						"G1 F1500 X20 Y100 Z100",
+						"M109 S"+temperature.toString()+" T0",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+						
+					]);
+				} else {
+					OctoPrint.control.sendGcode([
+						"M104 T0 S"+temperature.toString(),
+						"M140 S70",
+						"M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 P750",
+						"G28 Z",
+						"G28 Y X",
+						"T0",
+						"G1 F1500 X20 Y100 Z100",
+						"M109 S"+temperature.toString()+" T0",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+						
+					]);
+				}
 			} else if (hotend == "T1"){
-				OctoPrint.control.sendGcode([
-					"M104 T1 S"+temperature.toString(),
-					"M140 S70",
-					"M300 S1040 P250",
-					"M300 S1312 P250", 
-					"M300 S1392 P250",
-					"G4 P750",
-					"G28 Z",
-					"G28 Y X",
-					"T0",
-					"G1 F1500 X20 Y100 Z100",
-					"M109 S"+temperature.toString()+" T1",
-					"T1",
-					"M400",
-					"M300 S1392 P250",
-					"M300 S1312 P250", 
-					"M300 S1040 P250"
-					
-				]);
+					if (self.hasProbe()){
+						OctoPrint.control.sendGcode([
+							"M104 T1 S"+temperature.toString(),
+							"M140 S70",
+							"M300 S1040 P250",
+							"M300 S1312 P250", 
+							"M300 S1392 P250",
+							"G4 P750",
+							"G28 XYZ",
+							"T0",
+							"G1 F1500 X20 Y100 Z100",
+							"M109 S"+temperature.toString()+" T1",
+							"T1",
+							"M400",
+							"M300 S1392 P250",
+							"M300 S1312 P250", 
+							"M300 S1040 P250"
+							
+						]);
+				} else {
+					OctoPrint.control.sendGcode([
+						"M104 T1 S"+temperature.toString(),
+						"M140 S70",
+						"M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 P750",
+						"G28 Z",
+						"G28 Y X",
+						"T0",
+						"G1 F1500 X20 Y100 Z100",
+						"M109 S"+temperature.toString()+" T1",
+						"T1",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+						
+					]);
+				}
 			} else if (hotend == "both"){
-				OctoPrint.control.sendGcode([
-					"M104 T0 S"+temperature.toString(),
-					"M104 T1 S"+temperature.toString(),
-					"M140 S70",
-					"M300 S1040 P250",
-					"M300 S1312 P250", 
-					"M300 S1392 P250",
-					"G4 P750",
-					"G28 Z",
-					"G1 F1500 Z50",
-					"G28 Y X",
-					"T0",
-					"G1 F1500 X20 Y100 Z100",
-					"M109 S"+temperature.toString()+" T0",
-					"M109 S"+temperature.toString()+" T1",
-					"T1",
-					"M400",
-					"M300 S1392 P250",
-					"M300 S1312 P250", 
-					"M300 S1040 P250"
-					
-				]);
+					if (self.hasProbe()){
+						OctoPrint.control.sendGcode([
+							"M104 T0 S"+temperature.toString(),
+							"M104 T1 S"+temperature.toString(),
+							"M140 S70",
+							"M300 S1040 P250",
+							"M300 S1312 P250", 
+							"M300 S1392 P250",
+							"G4 P750",
+							"G28 XYZ",
+							"G1 F1500 Z50",
+							"T0",
+							"G1 F1500 X20 Y100 Z100",
+							"M109 S"+temperature.toString()+" T0",
+							"M109 S"+temperature.toString()+" T1",
+							"M400",
+							"M300 S1392 P250",
+							"M300 S1312 P250", 
+							"M300 S1040 P250"
+						
+					]);
+				} else {
+					OctoPrint.control.sendGcode([
+						"M104 T0 S"+temperature.toString(),
+						"M104 T1 S"+temperature.toString(),
+						"M140 S70",
+						"M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 P750",
+						"G28 Z",
+						"G1 F1500 Z50",
+						"G28 Y X",
+						"T0",
+						"G1 F1500 X20 Y100 Z100",
+						"M109 S"+temperature.toString()+" T0",
+						"M109 S"+temperature.toString()+" T1",
+						"T1",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+						
+					]);
+				}
 			}
 		};
 
@@ -1113,7 +1177,7 @@ $(function() {
 					]);
 					self.ZOffset(self.newZOffset);
 					self.requestEeprom();
-					if (self.maintenanceOperation()!==""){
+					if (self.maintenanceOperation()!=="home"){
 						self.nextMaintenanceTask();
 					}
 					//new PNotify({
@@ -1256,7 +1320,7 @@ $(function() {
 				} else if(Math.abs(self.tool1ZOffset())>0.10){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
-				if (self.maintenanceOperation()!==""){
+				if (self.maintenanceOperation()!=="home"){
 					self.nextMaintenanceTask();
 				}
 			}
@@ -1287,7 +1351,7 @@ $(function() {
 				self.stepTwentyFirstWiggleClicked(false);
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("17");
-				if (self.maintenanceOperation()!==""){
+				if (self.maintenanceOperation()!=="home"){
 					self.nextMaintenanceTask();
 				} else {
 					if (!self.isDual()){
@@ -1343,7 +1407,7 @@ $(function() {
 				]);
 				self.probeOffset(self.newProbeOffset);
 				self.requestEeprom();
-				if (self.maintenanceOperation()!==""){
+				if (self.maintenanceOperation()!=="home"){
 					self.nextMaintenanceTask();
 				}
 					//new PNotify({
@@ -1566,7 +1630,7 @@ $(function() {
 				]);
 				self.stepNineAtPosition(false);
 				//$('#maintenanceTabs').('#coldZ').tab('show')
-				if (self.maintenanceOperation()!==""){
+				if (self.maintenanceOperation()!=="home"){
 					self.nextMaintenanceTask();
 				} else {
 					$(".nav-tabs a[href='#coldZ']").click();
@@ -2531,9 +2595,11 @@ $(function() {
 			if (self.calibrationAxis()=="Y"){
 				if (self.calibrationStep() === 0){
 					if (self.stepFifteeenToHome()){
-						parameters = {tohome: true, offset: self.sawPrintOffset()};
+						// parameters = {tohome: true, offset: self.sawPrintOffset()};
+						parameters = {tohome: true, offset: 0};
 					} else {
-						parameters = {offset: self.sawPrintOffset()};
+						//parameters = {offset: self.sawPrintOffset()};
+						parameters = {offset: 0};
 					}
 					context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
@@ -2541,12 +2607,14 @@ $(function() {
 					self.stepFifteeenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
-					parameters = {offset: self.sawPrintOffset()};
+					// parameters = {offset: self.sawPrintOffset()};
+					parameters = {offset: 0};
 					context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
 				}
 				if (self.calibrationStep() === 2){
-					parameters = {offset: self.sawPrintOffset()};
+					// parameters = {offset: self.sawPrintOffset()};
+					parameters = {offset: 0};
 					context = {};
 					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
 				}
@@ -2596,8 +2664,11 @@ $(function() {
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
-						if (self.maintenanceOperation()!==""){
+						if (self.maintenanceOperation()!=="home"){
 							self.nextMaintenanceTask();
+							self.chosenSawBin(0);
+							self.resetStep(14);
+							self.resetStep(15);
 							return;
 						}
 						if (self.maintenancePage() === 14){
@@ -2664,8 +2735,11 @@ $(function() {
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
-						if (self.maintenanceOperation()!==""){
+						if (self.maintenanceOperation()!=="home"){
 							self.nextMaintenanceTask();
+							self.chosenSawBin(0);
+							self.resetStep(14);
+							self.resetStep(15);
 							return;
 						}
 						if(!self.hasProbe()){
@@ -3293,7 +3367,7 @@ $(function() {
 				if ( nextCorner === -1){ //check if the turn array does NOT contain any more corners to adjust
 					if(self.probeLevelActiveCorner() === 0){ //if no corners left to adjust and at position 0, we're done
 						self.mgLog("next corner probs.  Pretty sure Kyle wrote this one.  Still not actually sure what it means.");
-						if (self.maintenanceOperation()!==""){
+						if (self.maintenanceOperation()!=="home"){
 							self.nextMaintenanceTask();
 							self.lastCorner(false);
 							return;
@@ -4181,6 +4255,10 @@ $(function() {
 			if (self.googleGood()===-1 || self.googleGood()===0){
 				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
+			if (self.temperatures.tools()[1] !== undefined){
+				self.displayTool1Temp(self.temperatures.tools()[1].actual);
+				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			}
 			OctoPrint.settings.get();
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 			if (Array.isArray(self.serialNumber())){
@@ -4210,6 +4288,10 @@ $(function() {
 			self.registered(self.settings.settings.plugins.mgsetup.registered());
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
 			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
+			if (self.temperatures.tools()[1] !== undefined){
+				self.displayTool1Temp(self.temperatures.tools()[1].actual);
+				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			}
 			self.parseProfile();
 
 			window.setTimeout(function() {self.warnSshNotify()},5000);
@@ -4776,7 +4858,8 @@ $(function() {
 		["loginStateViewModel","settingsViewModel","temperatureViewModel","userSettingsViewModel"],
 
 		// Finally, this is the list of selectors for all elements we want this view model to be bound to.
-		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance","#tab_plugin_mgsetup_maintenance-cleanup"]
+		// ["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance","#tab_plugin_mgsetup_maintenance-cleanup"]
+		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance-cleanup"]
 		//["#tab_plugin_mgsetup"]
 	]);
 });

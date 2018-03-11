@@ -23,7 +23,7 @@ G28 X
 T0
 G28 X
 T0
-G28
+G28 XYZ
 T{{tool}}
 {% endif %}
 T{{tool}}

@@ -1,6 +1,6 @@
 
 <div id="maintenanceTabsCleanup">
-	<div>
+	<div data-bind="visible: !$root.hideDebug()">
 		<hr>
 		Active Hotend:
 		<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T0',  click: $root.updateTask()  " /> T0 
@@ -116,6 +116,38 @@
 		}
 
 	</style>
+	<br>
+<div data-bind="visible: !$root.hideDebug()">
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                      ) ; return true; }">  'home'                          </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_Load'                       ) ; return true; }">  'T0Hot_T0-SE-R0_Load'           </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_Load'                       ) ; return true; }">  'T0Hot_T0-SE-R1_Load'           </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_Load'                       ) ; return true; }">  'T0Hot_T0-ID-R0_Load'           </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_Load'                       ) ; return true; }">  'T0Hot_T0-ID-R1_Load'           </button><br>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetCold'                   ) ; return true; }">  'T0Cold_T0-SE-R0_SetCold'       </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetCold'                   ) ; return true; }">  'T0Cold_T0-ID-R0_SetCold'       </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_Load'                       ) ; return true; }">  'T1Hot_T1-ID-R0_Load'           </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_Load'                       ) ; return true; }">  'T1Hot_T1-ID-R1_Load'           </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Unload'                    ) ; return true; }">  'T1Cold_T1-ID-R0_Unload'        </button><br>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Unload'                    ) ; return true; }">  'T1Cold_T1-ID-R1_Unload'        </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_Both-ID-R0_Load'                      ) ; return true; }">  'XOff_Both-ID-R0_Load'          </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_Both-ID-R1_Load'                      ) ; return true; }">  'XOff_Both-ID-R1_Load'          </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_Both-ID-R0_Load'                      ) ; return true; }">  'YOff_Both-ID-R0_Load'          </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_Both-ID-R1_Load'                      ) ; return true; }">  'YOff_Both-ID-R1_Load'          </button><br>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R0_Check'                   ) ; return true; }">  'DCheck_Both-ID-R0_Check'       </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R1_Check'                   ) ; return true; }">  'DCheck_Both-ID-R1_Check'       </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Unload'                  ) ; return true; }">  'T0Change_T0-SE-R0_Unload'      </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Unload'                  ) ; return true; }">  'T0Change_T0-SE-R1_Unload'      </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Unload'                  ) ; return true; }">  'T0Change_T0-ID-R0_Unload'      </button><br>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Unload'                  ) ; return true; }">  'T0Change_T0-ID-R1_Unload'      </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Unload'              ) ; return true; }">  'T0T1Change_Both-ID-R0_Unload'  </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Unload'              ) ; return true; }">  'T0T1Change_Both-ID-R1_Unload'  </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_Load'                    ) ; return true; }">  'HotLevel_T0-SE-R0_Load'        </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_Load'                    ) ; return true; }">  'HotLevel_T0-ID-R0_Load'        </button><br>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-SE-R0_ColdLevel'              ) ; return true; }">  'ColdLevel_T0-SE-R0_ColdLevel'  </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-ID-R0_ColdLevel'              ) ; return true; }">  'ColdLevel_T0-ID-R0_ColdLevel'  </button>
+<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }">  'Assisted_T0-SE-R1_Assisted'    </button>
+</div>
+
 
 	<ul class="nav nav-stacked" id="maintenanceAccordionTasks">
 		<li class="panel">
@@ -127,29 +159,45 @@
 			<ul id="softwareOffsetsTasks" class="collapse">
 				<li>
 					<div class="buttonRow" style="text-align:center;">
-						<div class="buttonColumn" data-bind="visible:$root.maintenanceTaskHardwareRevision() === 'R1'">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(4); window.scroll(0,0); return true}">
+						<div class="buttonColumn" ">
+							<a data-bind="visible: $root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0Hot_T0-ID-R1_Load'); window.scroll(0,0); return true}">
 
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
 								<br>
 								Tool 0 (left) Starting Height Hot (recommended)
 							</a>
-
-						</div>
-						<div class="buttonColumn" data-bind="visible:$root.maintenanceTaskHardwareRevision() === 'R1'">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(20); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0Hot_T0-ID-R0_Load'); window.scroll(0,0); return true}">
 
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
 
 								<br>
 								Tool 0 (left) Starting Height Hot (recommended)
 							</a>
+							<a data-bind="visible: $root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('T0Hot_T0-SE-R1_Load'); window.scroll(0,0); return true}">
 
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
+
+								<br>
+								Tool 0 (left) Starting Height Hot (recommended)
+							</a>
+							<a data-bind="visible: !$root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('T0Hot_T0-SE-R0_Load'); window.scroll(0,0); return true}">
+
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Hot.jpg', 'width': '100px',} , visible: loginState.isUser" />
+
+								<br>
+								Tool 0 (left) Starting Height Hot (recommended)
+							</a>
 						</div>
+
 
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(11); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe(), click: function() {$root.nextMaintenanceTask('T1Hot_T1-ID-R0_Load'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								Tool 1 (right) Starting Height Hot (recommended)
+							</a>
+							<a data-bind="visible: $root.hasProbe(), click: function() {$root.nextMaintenanceTask('T1Hot_T1-ID-R1_Load'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								Tool 1 (right) Starting Height Hot (recommended)
@@ -159,7 +207,12 @@
 						<div class="buttonRow" style="text-align:center;">
 
 							<div class="buttonColumn">
-								<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(9); window.scroll(0,0); return true}">
+								<a data-bind="visible: !$root.hasProbe(), click: function() {$root.nextMaintenanceTask('T1Cold_T1-ID-R0_Unload'); window.scroll(0,0); return true}">
+									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+									<br>
+									Tool 1 (right) Starting Height Cold
+								</a>
+								<a data-bind="visible: $root.hasProbe(), click: function() {$root.nextMaintenanceTask('T1Cold_T1-ID-R1_Unload'); window.scroll(0,0); return true}">
 									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 									<br>
 									Tool 1 (right) Starting Height Cold
@@ -169,7 +222,13 @@
 						</div>
 
 						<div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(2); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('T0Cold_T0-SE-R0_SetCold'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+								<br>
+								Tool 0 (left) Starting Height Cold
+							</a>
+							<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0Cold_T0-ID-R0_SetCold'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
 								<br>
@@ -186,7 +245,7 @@
 		<hr>
 
 		<li class="panel">
-			<h3> <a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#dualOffsetsTasks">Independent Dual Adjustments <i class="icon-chevron-down"></i> </a></h3>
+			<h3> <a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" data-bind="visible: $root.isDual()" href="#dualOffsetsTasks">Independent Dual Adjustments <i class="icon-chevron-down"></i> </a></h3>
 
 			<p>
 				Set X, Y and Duplication Calibration.
@@ -197,7 +256,12 @@
 					<div class="buttonRow" style="text-align:center;">
 
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(14); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe(), click: function() {$root.nextMaintenanceTask('XOff_Both-ID-R0_Load'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/xAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								Dual X Offset Calibration
+							</a>
+							<a data-bind="visible: $root.hasProbe(), click: function() {$root.nextMaintenanceTask('XOff_Both-ID-R1_Load'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/xAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								Dual X Offset Calibration
@@ -206,7 +270,12 @@
 						</div>
 
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(15); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe(), click: function() {$root.nextMaintenanceTask('YOff_Both-ID-R0_Load'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/yAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								Dual Y Offset Calibration
+							</a>
+							<a data-bind="visible: $root.hasProbe(), click: function() {$root.nextMaintenanceTask('YOff_Both-ID-R1_Load'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/yAlign.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								Dual Y Offset Calibration
@@ -214,7 +283,7 @@
 
 						</div>
 						<div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(92); window.scroll(0,0); return true}">
+							<a data-bind="click: function() {$root.showMaintenanceStep(92); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								Duplication Mode Check
@@ -238,7 +307,22 @@
 				<li>
 					<div class="buttonRow" style="text-align:center;">
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(70); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('T0Change_T0-SE-R0_Unload'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								T0 Hotend / Nozzle Change
+							</a>
+							<a data-bind="visible: $root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('T0Change_T0-SE-R1_Unload'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								T0 Hotend / Nozzle Change
+							</a>
+							<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0Change_T0-ID-R0_Unload'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								T0 Hotend / Nozzle Change
+							</a>
+							<a data-bind="visible: $root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0Change_T0-ID-R1_Unload'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT0.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								T0 Hotend / Nozzle Change
@@ -247,14 +331,14 @@
 						</div>
 
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hideDebug(), click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT1.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								T1 Hotend / Nozzle Change
 							</a>
 						</div>
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(72); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hideDebug(), click: function() {$root.showMaintenanceStep(72); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
 								<br>
@@ -280,7 +364,13 @@
 				<li>
 					<div class="buttonRow" style="text-align:center;">
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(6); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('HotLevel_T0-SE-R0_Load'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+								<br>
+								Hot Bed Leveling (recommended)
+							</a>
+							<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('HotLevel_T0-ID-R0_Load'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
 								<br>
@@ -289,7 +379,12 @@
 						</div>
 
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(10); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('ColdLevel_T0-SE-R0_ColdLevel'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								Cold Bed Leveling
+							</a>
+							<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('ColdLevel_T0-ID-R0_ColdLevel'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelCold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								Cold Bed Leveling
@@ -297,7 +392,7 @@
 
 						</div>
 						<div class="buttonColumn">
-							<a href='#maintenanceTabsTasks' data-bind="click: function() {$root.showMaintenanceStep(21); window.scroll(0,0); return true}">
+							<a data-bind="visible: $root.hasProbe(), click: function() {$root.nextMaintenanceTask('Assisted_T0-SE-R1_Assisted'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelAssisted.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
 								<br>
@@ -385,7 +480,7 @@
 			<br><br>
 
 			<p>Below you can see your extruder temperatures. Once both extruder temperatures match the target temperature within 2 degrees,  click "Feed Filament" on either the Left Extruder (T0) or Right Extruder (T1) to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder.<br>
-				Extruder filament on both extruders before continuing.
+				Extrude filament on both extruders before continuing.
 			</p>
 
 			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
@@ -432,7 +527,7 @@
 
 			Once filament is consistently extruding through both the Left Extruder (T0) and Right Extruder (T1), click to "Next Step" proceed:<br>
 
-			<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0) }">Next Step</button></center>
+			<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0); $root.stepThreeStartHeatingClicked(false) }">Next Step</button></center>
 		</p>
 	</div>
 
@@ -480,8 +575,8 @@
 			Your extruder and build surface will start to heat up. Do not touch the extruder's nozzle or the build surface.
 		</p>
 
-		TODO: fix this to heat up correctly
-		<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
+
+		<center><button id="control-yinc" class="btnstay" data-bind="visible: maintenanceTaskHotend()==='T0', enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button><button id="control-yinc" class="btnstay" data-bind="visible: maintenanceTaskHotend()==='T1', enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat('T1'); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
 
 
 
@@ -560,7 +655,7 @@
 		Once filament is consistently extruding, click to "Next Step" proceed:<br>
 
 
-		<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0) }">Next Step</button></center>
+		<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0); $root.stepThreeStartHeatingClicked(false) }">Next Step</button></center>
 
 
 
@@ -2177,8 +2272,8 @@ Task:
 
 <div>
 	Which step to show:
-	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'home'                                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                      ) ; return true; }" /> Home                                                        </div>
 	{# <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'Load'                                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Load'                                      ) ; return true; }" /> Load                                                        </div> #}
+	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'home'                                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                      ) ; return true; }" /> Home                                                        </div>
 	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-SE-R0_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_Load'                       ) ; return true; }" /> T0Hot_T0-SE-R0_Load                                  </div>
 	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-SE-R0_SetHot'                     ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_SetHot'                     ) ; return true; }" /> T0Hot_T0-SE-R0_SetHot                </div>
 	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'T0Hot_T0-SE-R1_Load'                       ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_Load'                       ) ; return true; }" /> T0Hot_T0-SE-R1_Load                    </div>

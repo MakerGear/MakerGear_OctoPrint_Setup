@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="buttonColumn">
-                     <button style="width:130px;height:100px;" class="btngo"  data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}" ><span class="icon-stethoscope" style="font-size:40px;"></span><br /> {{ _('Maintenance') }}</button>
+                     <button style="width:130px;height:100px;" class="btngo"  data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance-cleanup'); window.scroll(0,0); return true}" ><span class="icon-stethoscope" style="font-size:40px;"></span><br /> {{ _('Maintenance') }}</button>
                     <br />
                      Perform routine maintenance tasks.
 
@@ -3143,7 +3143,7 @@ d8"         Y8a     a8P
         </p>
 
         <p>
-            The User Guides for each printer model are also available online at the links below. (Interent connection required to download manuals)
+            The User Guides for each printer model are also available online at the links below. (Internet connection required to download manuals)
         </p>
 
         <ul>
@@ -3192,7 +3192,7 @@ d8"         Y8a     a8P
 
     <div data-bind="visible: $root.stepTwentyEightHotendReplaced()== true">
         <p>
-            Before proceeding to quick check, please make sure you have followed the instructions for replacing and setting the start height on your hot-end. 
+            Before proceeding to quick check, please make sure you have followed the instructions for replacing and setting the start height on your hotend. 
         </p>
 
         <p>
@@ -3203,9 +3203,9 @@ d8"         Y8a     a8P
 
 
 
-        <button class="btngoBig" data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}" }">Change T0 Hotend (Left)</button>
+        <button class="btngoBig" data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance-cleanup'); window.scroll(0,0); return true}" }">Change T0 Hotend (Left)</button>
 
-        <button class="btngoBig" data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance'); window.scroll(0,0); return true}" }">Change T1 Hotend (Right)</button>
+        <button class="btngoBig" data-bind="click: function() {$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance-cleanup'); window.scroll(0,0); return true}" }">Change T1 Hotend (Right)</button>
 
 
             
@@ -3361,8 +3361,8 @@ Tool0: <span data-bind="text: $root.displayToolTemp()"></span><br>
 		<div style="text-align:center;">
 		
 			<span style="margin-left:auto;margin-right:auto;display:inline-block;">
-				<button style=" width: 40%;" data-bind=" click: function() {  $root.hotendChangeDialog.modal('hide');$root.showMaintenanceStep(70,'#tab_plugin_mgsetup_maintenance'); }">T0 Hotend Replacement Instructions</button>
-				<button style="width: 40%;" data-bind=" click: function() {  $root.hotendChangeDialog.modal('hide');$root.showMaintenanceStep(71,'#tab_plugin_mgsetup_maintenance'); }">T1 Hotend Replacement Instructions</button><br><br>
+				<button style=" width: 40%;" data-bind=" click: function() {  $root.hotendChangeDialog.modal('hide');$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance-cleanup'); }">T0 Hotend Replacement Instructions</button>
+				<button style="width: 40%;" data-bind=" click: function() {  $root.hotendChangeDialog.modal('hide');$root.showMaintenanceStep(0,'#tab_plugin_mgsetup_maintenance-cleanup'); }">T1 Hotend Replacement Instructions</button><br><br>
 			</span>
 		</div>
 

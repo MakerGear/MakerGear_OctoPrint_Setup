@@ -22,7 +22,7 @@ G28 X
 T0
 G28 X
 T0
-G28
+G28 XYZ
 {% endif %}
 G1 F1000 X205 Y{{ ypurge }} Z10
 G1 F1000 Z{{ zpos }}

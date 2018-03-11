@@ -18,7 +18,7 @@ M190 S70
 M109 S220
 {% endif %}
 {% if tohome == true %}
-G28
+G28 XYZ
 {% endif %}
 G1 F1000 X205 Y{{ ypurge }} Z10
 G1 F1000 Z{{ zpos }}
