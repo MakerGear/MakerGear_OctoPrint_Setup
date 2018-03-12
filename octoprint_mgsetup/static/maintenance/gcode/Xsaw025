@@ -12,7 +12,7 @@ M605 S0
 {% if tohome == true %}
 G28 X
 T0
-G28 XYZ
+G28
 {% endif %}
 
 T0
