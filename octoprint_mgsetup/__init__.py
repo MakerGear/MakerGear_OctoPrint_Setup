@@ -588,8 +588,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def process_z_offset(self, comm, line, *args, **kwargs):
 
 		if "Error: " in line:
-			self._logger.info("process_z_offset triggered - MGERR !")
+			self._logger.info("process_z_offset triggered - Error !")
 			self._plugin_manager.send_plugin_message("mgsetup", dict(mgerrorline = line))
+		if "Warning: " in line:
+			self._logger.info("process_z_offset triggered - Warning !")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(mgwarnline = line))
 
 		if self.printActive:
 			# self._logger.debug("printActive true, skipping filters.")

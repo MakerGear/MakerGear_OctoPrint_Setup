@@ -4472,6 +4472,10 @@ $(function() {
 				self.mgLog("Received mgerrorline: "+data.mgerrorline);
 				self.mgErrorHandler(data.mgerrorline);
 			}
+			if (data.mgwarnline !== undefined){
+				self.mgLog("Received mgwarnline: "+data.mgwarnline);
+				self.mgWarningHandler(data.mgwarnline);
+			}
 
 		};
 
@@ -4511,12 +4515,18 @@ $(function() {
 		self.errLongMessageWaiting = ko.observable(false);
 		self.errLongMessageLength = ko.observable(0);
 		self.errLongMessagePosition = ko.observable(0);
+		self.warnLongMessage = ko.observable("");
+		self.warnLongMessageWaiting = ko.observable(false);
+		self.warnLongMessageLength = ko.observable(0);
+		self.warnLongMessagePosition = ko.observable(0);
+
+
 //		self.mgErrorHandlerTimer = 
 
 		self.mgErrorHandler = function(errorLine){
 			if (errorLine === undefined){
 				if (self.errLongMessage()!== "" && self.errLongMessageWaiting()){
-					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+self.errLongMessage());
+					self.notify("Firmware Reported Error","The printer firmware has reported an error.\nThe reported message is: \n"+self.errLongMessage(),"error");
 					self.errLongMessage("");
 					self.errLongMessageWaiting(false);
 					clearTimeout(self.mgErrorHandlerTimer);
@@ -4544,10 +4554,10 @@ $(function() {
 					self.mgLog("Error 002 received, letting everything continue.");
 			}
 			if (self.errLongMessageLength() === 0){
-				self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+errorLine);
+				self.notify("Firmware Reported Error","The printer firmware has reported an error.\nThe reported message is: \n"+errorLine,"error");
 			} else {
 				if (self.errLongMessagePosition() === self.errLongMessageLength()){
-					self.notify("Firmware Reported Error","The printer firmware has reported an error.  The reported message is: \n"+self.errLongMessage()+errorLine);
+					self.notify("Firmware Reported Error","The printer firmware has reported an error.\nThe reported message is: \n"+self.errLongMessage()+errorLine,"error");
 					self.errLongMessage("");
 					self.errLongMessageWaiting(false);
 					clearTimeout(self.mgErrorHandlerTimer);
@@ -4557,6 +4567,55 @@ $(function() {
 					self.errLongMessage(self.errLongMessage()+errorLine);
 					clearTimeout(self.mgErrorHandlerTimer);
 					self.mgErrorHandlerTimer = window.setTimeout(function() {self.mgErrorHandler()},(3000));
+				}
+			}
+		};
+
+
+		self.mgWarningHandler = function(warnLine){
+			if (warnLine === undefined){
+				if (self.warnLongMessage()!== "" && self.warnLongMessageWaiting()){
+					self.notify("Firmware Reported Warning","The printer firmware has reported a Warning.\nThe reported message is: \n"+self.warnLongMessage());
+					self.warnLongMessage("");
+					self.warnLongMessageWaiting(false);
+					clearTimeout(self.mgWarnHandlerTimer);
+					return;
+				} else {
+					// return;
+				}
+			}
+			//if (self.mgErrorHandler !== undefined)
+			var warnCodeFilter = /\[(\d\d\d)\]-/;
+			var warnCodeCountFilter = /-\[(\d\d)\]/;
+			var warnCode = (warnCodeFilter.exec(warnLine))[1];
+			var warnLineCountLine = (warnCodeCountFilter.exec(warnLine))[1];
+			self.warnLongMessageLength(parseFloat(warnLineCountLine.substr(1,1)));
+			self.warnLongMessagePosition(parseFloat(warnLineCountLine.substr(0,1)));
+			self.mgLog("mgWarningHandlerCalled.  warnLine: "+warnLine+" ; warnCode: "+warnCode+"; warnLinePosition: "+warnLineCountLine.substr(0,1)+"; warnLineTotal: "+warnLineCountLine.substr(1,1));
+			switch(warnCode){
+				case "000":
+					self.mgLog("Warning 000 received, returning.");
+					return;
+				case "001":
+					self.mgLog("Warning 001 received, returning.");
+					return;
+				case "002":
+					self.mgLog("Warning 002 received, letting everything continue.");
+			}
+			if (self.warnLongMessageLength() === 0){
+				self.notify("Firmware Reported Warning","The printer firmware has reported a Warning.\nThe reported message is: \n"+warnLine);
+			} else {
+				if (self.warnLongMessagePosition() === self.warnLongMessageLength()){
+					self.notify("Firmware Reported Warning","The printer firmware has reported a Warning.\nThe reported message is: \n"+self.warnLongMessage()+warnLine);
+					self.warnLongMessage("");
+					self.warnLongMessageWaiting(false);
+					clearTimeout(self.mgWarningHandlerTimer);
+					return;
+				} else {
+					self.warnLongMessageWaiting(true);
+					self.warnLongMessage(self.warnLongMessage()+warnLine);
+					clearTimeout(self.mgWarningHandlerTimer);
+					self.mgWarningHandlerTimer = window.setTimeout(function() {self.mgWarningHandler()},(3000));
 				}
 			}
 		};
