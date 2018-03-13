@@ -1,7 +1,7 @@
-var hostName = "M3Printer51G90";
-    var generate = 1519618972.03;
+var hostName = "M3Printer37K03";
+    var generate = 1520946699.74;
 
-        var ip = ["141","-1"];
+        var ip = ["1","244"];
         for (i = 0; i < ip.length; i++) 
         { 
         id1 = ("ip"+ip[i].toString());
