@@ -1989,6 +1989,41 @@ $(function() {
 		// 	Assisted
 		// 		home
 
+		// T1 Hotend / Nozzle Change ID
+		// 	Unload Filament
+		// 	Change Hotend Instructions
+		// 	Set T1 Starting Height Cold
+		// 	Load Filament
+		// 	Set T1 Z Offset Hot
+		// R0
+		// 	Unload Filament
+		// 		T1Change_T1-ID-R0_Unload
+		// 	Change Hotend Instructions
+		// 		T1Change_T1-ID-R0_ChangeInstructions
+		// 	Set T0 Starting Height Cold
+		// 		T1Change_T1-ID-R0_SetT1Cold
+		// 	Load Filament
+		// 		T1Change_T1-ID-R0_Load
+		// 	Set T1 Z Offset Hot
+		// 		T1Change_T1-ID-R0_SetT1Hot
+		// R1
+		// 	Unload Filament
+		// 		T1Change_T1-ID-R1_Unload
+		// 	Change Hotend Instructions
+		// 		T1Change_T1-ID-R1_ChangeInstructions
+		// 	Set T1 Starting Height Cold
+		// 	T1Change_T1-ID-R1_SetCold
+		// 	Load Filament
+		// 		T1Change_T1-ID-R1_Load
+		// 	Set T1 Z Offset Hot
+		// 		T1Change_T1-ID-R1_SetT1Hot
+
+
+
+
+
+
+
 
 
 
@@ -2003,7 +2038,7 @@ $(function() {
 		self.shownTask = ko.observable("home");
 		self.taskRadio = ko.observable("home");
 		self.validTask = ko.observable(true);
-		self.validTaskList = ["T0-SE-R1_Assisted","Both-ID-R0_ChangeInstructions","Both-ID-R0_Load","Both-ID-R0_SetHot","Both-ID-R0_SetT1Hot","Both-ID-R0_T0T1SetCold","Both-ID-R1_ChangeInstructions","Both-ID-R1_Load","Both-ID-R1_SetHot","Both-ID-R1_SetT1Hot","Both-ID-R1_T0T1SetCold","T0-ID-R0_ChangeInstructions","T0-ID-R0_HotLevel","T0-ID-R0_Load","T0-ID-R0_SetCold","T0-ID-R0_SetHot","T0-ID-R0_SetT1Hot","T0-ID-R1_ChangeInstructions","T0-ID-R1_Load","T0-ID-R1_SetCold","T0-ID-R1_SetHot","T0-ID-R1_SetT1Hot","T0-SE-R0_ChangeInstructions","T0-SE-R0_HotLevel","T0-SE-R0_Load","T0-SE-R0_SetCold","T0-SE-R0_SetHot","T0-SE-R1_ChangeInstructions","T0-SE-R1_Load","T0-SE-R1_SetCold","T0-SE-R1_SetHot","T1-ID-R0_Load","T1-ID-R0_SetT1Cold","T1-ID-R0_SetT1Hot","Both-ID-R0_XSaw","Both-ID-R0_YSaw","T1-ID-R1_Load","T1-ID-R1_SetT1Cold","T1-ID-R1_SetT1Hot","Both-ID-R1_XSaw","Both-ID-R1_YSaw"];
+		self.validTaskList = ["T0-SE-R1_Assisted","Both-ID-R0_ChangeInstructions","Both-ID-R0_Load","Both-ID-R0_SetHot","Both-ID-R0_SetT1Hot","Both-ID-R0_T0T1SetCold","Both-ID-R1_ChangeInstructions","Both-ID-R1_Load","Both-ID-R1_SetHot","Both-ID-R1_SetT1Hot","Both-ID-R1_T0T1SetCold","T0-ID-R0_ChangeInstructions","T0-ID-R0_HotLevel","T0-ID-R0_Load","T0-ID-R0_SetCold","T0-ID-R0_SetHot","T0-ID-R0_SetT1Hot","T0-ID-R1_ChangeInstructions","T0-ID-R1_Load","T0-ID-R1_SetCold","T0-ID-R1_SetHot","T0-ID-R1_SetT1Hot","T0-SE-R0_ChangeInstructions","T0-SE-R0_HotLevel","T0-SE-R0_Load","T0-SE-R0_SetCold","T0-SE-R0_SetHot","T0-SE-R1_ChangeInstructions","T0-SE-R1_Load","T0-SE-R1_SetCold","T0-SE-R1_SetHot","T1-ID-R0_Load","T1-ID-R0_SetT1Cold","T1-ID-R0_SetT1Hot","Both-ID-R0_XSaw","Both-ID-R0_YSaw","T1-ID-R1_Load","T1-ID-R1_SetT1Cold","T1-ID-R1_SetT1Hot","Both-ID-R1_XSaw","Both-ID-R1_YSaw","T1-ID-R0_Unload","TT1-ID-R0_ChangeInstructions","T1-ID-R0_SetT1Cold","T1-ID-R0_Load","T1-ID-R0_SetT1Hot","T1-ID-R1_Unload","T1-ID-R1_ChangeInstructions","T1-ID-R1_Load","T1-ID-R1_SetT1Hot","Both-ID-R0_SetCold","Both-ID-R1_SetCold","Both-ID-R0_SetT1Cold","Both-ID-R1_SetT1Cold"];
 
 		self.updateTask = function(){
 			if (self.shownTask() === 'home'){
@@ -2402,6 +2437,47 @@ $(function() {
 						}
 						break;
 
+					case "T1Change":
+						switch(self.maintenanceTask()){
+							case "Unload":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T1Change_T1-ID-R0_ChangeInstructions");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T1Change_T1-ID-R1_ChangeInstructions");
+										break;
+								}
+								break;
+
+							case "ChangeInstructions":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T1Change_T1-ID-R0_SetCold");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T1Change_T1-ID-R1_SetCold");
+										break;
+								}
+								break;
+
+							case "Load":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T1Change_T1-ID-R0_SetHot");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T1Change_T1-ID-R1_SetHot");
+										break;
+								}
+								break;
+
+							case "SetT1Hot":
+								self.nextMaintenanceTask("home");
+								break;
+						}
+						break;
+
 					case "T0T1Change":
 						switch(self.maintenanceTask()){
 							case "Unload":
@@ -2419,15 +2495,27 @@ $(function() {
 							case "ChangeInstructions":
 								switch(self.maintenanceTaskHardwareRevision()){
 									case "R0":
-										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_T0T1SetCold");
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_SetCold");
 										break;
 									case "R1":
-										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_T0T1SetCold");
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_SetCold");
 										break;
 								}
 								break;
 
-							case "T0T1SetCold":
+							case "SetCold":
+								switch(self.maintenanceTaskHardwareRevision()){
+									case "R0":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_SetT1Cold");
+										break;
+									case "R1":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_SetT1Cold");
+										break;
+								}
+								break;
+
+
+							case "SetT1Cold":
 								switch(self.maintenanceTaskHardwareRevision()){
 									case "R0":
 										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_Load");

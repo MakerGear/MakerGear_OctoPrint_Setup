@@ -968,7 +968,7 @@ Note: All positions wait for the bed and hotend temperatures to stabilize before
 
 
     <h1 style="text-align:left;">Your First Print</h1>
-
+    <h3>Before printing, always make sure that the bed is clear of previous prints, and that the tips of the nozzles are clean.</h3>
 
     <p> 
         In the left <strong>Files</strong> menu, you'll see the file <strong>mgkeychain.stl</strong>. This is a 3D model of a small MakerGear keychain. Before you can print it, you need to generate a GCode version of the file. This GCode file will instruct the printer how to make the 3D Model. To generate the GCode, click on the <span class="icon-magic"></span> icon. You will see the slicing dialog - hit <strong>Slice</strong> to start generating your Gcode. (You can leave all the settings at their default values.)
@@ -1790,7 +1790,7 @@ TODO - pictures, pick and test a model, add buttons here, etc. etc.
         <em>How to print Video</em>
     </p>
 -->
-
+    <h3>Before printing, always make sure that the bed is clear of previous prints, and that the tips of the nozzles are clean.</h3>
 
     <p>
         We've already sliced the same keychain as before for T1 - you should see 'mgkeychainT1.gco' with several buttons below it in the file menu. Press the <span class="icon-print"></span> icon to start the keychain printing on T1.
@@ -2570,13 +2570,22 @@ d8"          d8"
 
 
     <h1 style="text-align:left;">Your First Print</h1>
+    
+
+
 <div data-bind="visible: !$root.isDual()">
+
+    <h3>Before printing, always make sure that the bed is clear of previous prints, and that the tips of the nozzle is clean.</h3>
+
     <p style="margin-top:21px;">
         In the file menu to the left, you should see 'mgkeychain.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
     </p>
     <img src="/plugin/mgsetup/static/img/gcode.png" style="display:block;width::50%;margin-left:auto;margin-right:auto;margin-top:21px;"">
 </div>
 <div data-bind="visible: $root.isDual()">
+
+    <h3>Before printing, always make sure that the bed is clear of previous prints, and that the tips of the nozzles are clean.</h3>
+
     <p style="margin-top:21px;">
         In the file menu to the left, you should see 'mgkeychain-dual.gco' with several buttons below it. Press the <span class="icon-print"></span> icon to start your first print.
     </p>

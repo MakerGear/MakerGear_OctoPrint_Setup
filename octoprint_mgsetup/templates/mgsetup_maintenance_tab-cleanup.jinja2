@@ -84,13 +84,19 @@
 			</tr>
 		</table>
 
-<br>
-<br>
-<span data-bind="visible: $root.validTask()"><strong>Valid</strong> Task Combination</span><span data-bind="visible: !$root.validTask()"><strong>Invalid Task Combination!</strong></span>
+		<br>
+		<br>
+		<span data-bind="visible: $root.validTask()"><strong>Valid</strong> Task Combination</span><span data-bind="visible: !$root.validTask()"><strong>Invalid Task Combination!</strong></span>
 
 
 
 		<hr>
+		<center>
+			<button data-bind="click: $root.nextMaintenanceTask()">Force Next Task</button>
+			<br>
+			Danger - this button will go to the next Task in the Operation Tasklist, which could leave things in an unknown and incorrect or indeterminate state.
+		</center>
+
 	</div>
 
 	<div data-bind="visible: $root.shownTask()==='home'">
@@ -117,36 +123,7 @@
 
 	</style>
 	<br>
-<div data-bind="visible: !$root.hideDebug()">
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                      ) ; return true; }">  'home'                          </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R0_Load'                       ) ; return true; }">  'T0Hot_T0-SE-R0_Load'           </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-SE-R1_Load'                       ) ; return true; }">  'T0Hot_T0-SE-R1_Load'           </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R0_Load'                       ) ; return true; }">  'T0Hot_T0-ID-R0_Load'           </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Hot_T0-ID-R1_Load'                       ) ; return true; }">  'T0Hot_T0-ID-R1_Load'           </button><br>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-SE-R0_SetCold'                   ) ; return true; }">  'T0Cold_T0-SE-R0_SetCold'       </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Cold_T0-ID-R0_SetCold'                   ) ; return true; }">  'T0Cold_T0-ID-R0_SetCold'       </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R0_Load'                       ) ; return true; }">  'T1Hot_T1-ID-R0_Load'           </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Hot_T1-ID-R1_Load'                       ) ; return true; }">  'T1Hot_T1-ID-R1_Load'           </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R0_Unload'                    ) ; return true; }">  'T1Cold_T1-ID-R0_Unload'        </button><br>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T1Cold_T1-ID-R1_Unload'                    ) ; return true; }">  'T1Cold_T1-ID-R1_Unload'        </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_Both-ID-R0_Load'                      ) ; return true; }">  'XOff_Both-ID-R0_Load'          </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'XOff_Both-ID-R1_Load'                      ) ; return true; }">  'XOff_Both-ID-R1_Load'          </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_Both-ID-R0_Load'                      ) ; return true; }">  'YOff_Both-ID-R0_Load'          </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'YOff_Both-ID-R1_Load'                      ) ; return true; }">  'YOff_Both-ID-R1_Load'          </button><br>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R0_Check'                   ) ; return true; }">  'DCheck_Both-ID-R0_Check'       </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'DCheck_Both-ID-R1_Check'                   ) ; return true; }">  'DCheck_Both-ID-R1_Check'       </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R0_Unload'                  ) ; return true; }">  'T0Change_T0-SE-R0_Unload'      </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-SE-R1_Unload'                  ) ; return true; }">  'T0Change_T0-SE-R1_Unload'      </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R0_Unload'                  ) ; return true; }">  'T0Change_T0-ID-R0_Unload'      </button><br>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0Change_T0-ID-R1_Unload'                  ) ; return true; }">  'T0Change_T0-ID-R1_Unload'      </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R0_Unload'              ) ; return true; }">  'T0T1Change_Both-ID-R0_Unload'  </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'T0T1Change_Both-ID-R1_Unload'              ) ; return true; }">  'T0T1Change_Both-ID-R1_Unload'  </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-SE-R0_Load'                    ) ; return true; }">  'HotLevel_T0-SE-R0_Load'        </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'HotLevel_T0-ID-R0_Load'                    ) ; return true; }">  'HotLevel_T0-ID-R0_Load'        </button><br>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-SE-R0_ColdLevel'              ) ; return true; }">  'ColdLevel_T0-SE-R0_ColdLevel'  </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-ID-R0_ColdLevel'              ) ; return true; }">  'ColdLevel_T0-ID-R0_ColdLevel'  </button>
-<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }">  'Assisted_T0-SE-R1_Assisted'    </button>
-</div>
+
 
 
 	<ul class="nav nav-stacked" id="maintenanceAccordionTasks">
@@ -221,7 +198,7 @@
 							</div>
 						</div>
 
-						<div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
+						<div class="buttonColumn" >
 							<a data-bind="visible: !$root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('T0Cold_T0-SE-R0_SetCold'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
@@ -283,7 +260,7 @@
 
 						</div>
 						<div class="buttonColumn" data-bind="visible: !$root.hideDebug()">
-							<a data-bind="click: function() {$root.showMaintenanceStep(92); window.scroll(0,0); return true}">
+							<a data-bind="click: function() {$root.nextMaintenanceTask(''); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								Duplication Mode Check
@@ -331,14 +308,25 @@
 						</div>
 
 						<div class="buttonColumn">
-							<a data-bind="visible: !$root.hideDebug(), click: function() {$root.showMaintenanceStep(71); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T1Change_T1-ID-R0_Unload'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT1.jpg', 'width': '100px',} , visible: loginState.isUser " />
+								<br>
+								T1 Hotend / Nozzle Change
+							</a>
+							<a data-bind="visible: $root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T1Change_T1-ID-R1_Unload'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/hotEndT1.jpg', 'width': '100px',} , visible: loginState.isUser " />
 								<br>
 								T1 Hotend / Nozzle Change
 							</a>
 						</div>
 						<div class="buttonColumn">
-							<a data-bind="visible: !$root.hideDebug(), click: function() {$root.showMaintenanceStep(72); window.scroll(0,0); return true}">
+							<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0T1Change_Both-ID-R0_Unload'); window.scroll(0,0); return true}">
+								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+								<br>
+								T0 and T1 Cold/Mechanical Height Adjustment for Duplication Mode
+							</a>
+							<a data-bind="visible: $root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0T1Change_Both-ID-R1_Unload'); window.scroll(0,0); return true}">
 								<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/dupeCheck.jpg', 'width': '100px',} , visible: loginState.isUser " />
 
 								<br>
@@ -414,19 +402,36 @@
 
 	<a href='#maintenanceTabsTasks' data-bind="click: function() {nextMaintenanceTask('home'); window.scroll(0,0); $root.probeCheckReset(); return true}"><h4>Return to Maintenance Index</h4></a>
 	<hr>
+{# 
+	You are performing the <span data-bind="text: $root.maintenanceOperation()"></span> Operation.
+	<br>
+	Task List:<br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R0_Unload') ? 'bold' : '' }">Unload Filament</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R0_ChangeInstructions') ? 'bold' : '' }">Change Hotend Instructions</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R0_SetT1Cold') ? 'bold' : '' }">Set T0 Starting Height Cold</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R0_Load') ? 'bold' : '' }">Load Filament</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R0_SetT1Hot') ? 'bold' : '' }">Set T1 Z Offset Hot</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R1_Unload') ? 'bold' : '' }">Unload Filament</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R1_ChangeInstructions') ? 'bold' : '' }">Change Hotend Instructions</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R1_SetCold') ? 'bold' : '' }">Set T1 Starting Height Cold</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R1_Load') ? 'bold' : '' }">Load Filament</span><br>
+<span data-bind="visible: $root.maintenanceOperation()==='T1Change', style: { fontWeight: ($root.taskRadio()==='T1Change_T1-ID-R1_SetT1Hot') ? 'bold' : '' }">Set T1 Z Offset Hot</span><br>
+
+ #}
+
 
 </div>
 
-{#                                                                                                                                        
-88                                             88  88888888888  88  88                                                                    
-88                                             88  88           ""  88                                                             ,d     
-88                                             88  88               88                                                             88     
-88            ,adPPYba,   ,adPPYYba,   ,adPPYb,88  88aaaaa      88  88  ,adPPYYba,  88,dPYba,,adPYba,    ,adPPYba,  8b,dPPYba,   MM88MMM  
-88           a8"     "8a  ""     `Y8  a8"    `Y88  88"""""      88  88  ""     `Y8  88P'   "88"    "8a  a8P_____88  88P'   `"8a    88     
-88           8b       d8  ,adPPPPP88  8b       88  88           88  88  ,adPPPPP88  88      88      88  8PP"""""""  88       88    88     
-88           "8a,   ,a8"  88,    ,88  "8a,   ,d88  88           88  88  88,    ,88  88      88      88  "8b,   ,aa  88       88    88,    
-88888888888   `"YbbdP"'   `"8bbdP"Y8   `"8bbdP"Y8  88           88  88  `"8bbdP"Y8  88      88      88   `"Ybbd8"'  88       88    "Y888  
-#}
+{#                                                                                                                                            #}
+{#  88                                             88  88888888888  88  88                                                                    #}
+{#  88                                             88  88           ""  88                                                             ,d     #}
+{#  88                                             88  88               88                                                             88     #}
+{#  88            ,adPPYba,   ,adPPYYba,   ,adPPYb,88  88aaaaa      88  88  ,adPPYYba,  88,dPYba,,adPYba,    ,adPPYba,  8b,dPPYba,   MM88MMM  #}
+{#  88           a8"     "8a  ""     `Y8  a8"    `Y88  88"""""      88  88  ""     `Y8  88P'   "88"    "8a  a8P_____88  88P'   `"8a    88     #}
+{#  88           8b       d8  ,adPPPPP88  8b       88  88           88  88  ,adPPPPP88  88      88      88  8PP"""""""  88       88    88     #}
+{#  88           "8a,   ,a8"  88,    ,88  "8a,   ,d88  88           88  88  88,    ,88  88      88      88  "8b,   ,aa  88       88    88,    #}
+{#  88888888888   `"YbbdP"'   `"8bbdP"Y8   `"8bbdP"Y8  88           88  88  `"8bbdP"Y8  88      88      88   `"Ybbd8"'  88       88    "Y888  #}
+
 <div data-bind="visible: loginState.isUser && ($root.shownTask() === 'Load') ">
 	<div data-bind="visible: maintenanceTaskHotend() === 'Both'">
 		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
@@ -483,7 +488,7 @@
 				Extrude filament on both extruders before continuing.
 			</p>
 
-			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 				</div>
@@ -616,7 +621,7 @@
 		<p>Below you can see your extruder temperature. Once the extruder temperature matches the target temperature within 2 degrees, click "Feed Filament" to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder. 
 		</p>
 
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 			</div>
@@ -665,102 +670,168 @@
 
 	</div>
 </div>
-{#                                                                     #}
-{#88        88               88                                    88  #}
-{#88        88               88                                    88  #}
-{#88        88               88                                    88  #}
-{#88        88  8b,dPPYba,   88   ,adPPYba,   ,adPPYYba,   ,adPPYb,88  #}
-{#88        88  88P'   `"8a  88  a8"     "8a  ""     `Y8  a8"    `Y88  #}
-{#88        88  88       88  88  8b       d8  ,adPPPPP88  8b       88  #}
-{#Y8a.    .a8P  88       88  88  "8a,   ,a8"  88,    ,88  "8a,   ,d88  #}
-{# `"Y8888Y"'   88       88  88   `"YbbdP"'   `"8bbdP"Y8   `"8bbdP"Y8  #}
-{#                                                                     #}
-{#                                                                     #}
+{#                                                                       #}
+{#  88        88               88                                    88  #}
+{#  88        88               88                                    88  #}
+{#  88        88               88                                    88  #}
+{#  88        88  8b,dPPYba,   88   ,adPPYba,   ,adPPYYba,   ,adPPYb,88  #}
+{#  88        88  88P'   `"8a  88  a8"     "8a  ""     `Y8  a8"    `Y88  #}
+{#  88        88  88       88  88  8b       d8  ,adPPPPP88  8b       88  #}
+{#  Y8a.    .a8P  88       88  88  "8a,   ,a8"  88,    ,88  "8a,   ,d88  #}
+{#   `"Y8888Y"'   88       88  88   `"YbbdP"'   `"8bbdP"Y8   `"8bbdP"Y8  #}
+{#                                                                       #}
+{#                                                                       #}
 <div data-bind="visible: loginState.isUser && $root.shownTask() === 'Unload'">
+	<div data-bind="visible: ($root.shownTask() === 'Unload') ">
+		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T0'" />
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T1'" />
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'Both'" />
+		</div>
+		<br>
 
-	Don't actually have an unload filament set either...
 
+
+
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='SE')">
+			Both "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract filament as needed.
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
+		</div>
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T0')">
+			Both "Prepare" buttons will position the printer and start heating the Left Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract filament as needed.
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare T0 at PLA Extruder Temperature') }}</button></center><br><br>
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare T0 at ABS Extruder Temperature') }}</button></center><br><br>
+		</div>
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T1')">
+			Both "Prepare" buttons will position the printer and start heating the Right Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract filament as needed.
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare T0 at PLA Extruder Temperature') }}</button></center><br><br>
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare T0 at ABS Extruder Temperature') }}</button></center><br><br>
+		</div>
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='Both')">
+			Both Material "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract filament as needed.  Click "Prepare" and then Retract filament on any hotend that currently has filament loaded.
+			<br><br>
+			<center>
+				<table>
+					<tr>
+						<td>
+							<center><h3>Left Extruder T0</h3></center>
+						</td>
+						<td>
+							<center><h3>Right Extruder T1</h3></center>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare T0 at PLA Extruder Temperature') }}</button></center><br><br>
+							<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare T0 at ABS Extruder Temperature') }}</button></center><br><br>
+						</td>
+						<td>
+							<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare T1 at PLA Extruder Temperature') }}</button></center><br><br>
+							<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare T1 at ABS Extruder Temperature') }}</button></center><br><br>
+						</td>
+					</tr>
+				</table>
+			</center>
+		</div>
+		<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible: ($root.maintenanceTaskPrinterType()==='SE')">
+			<br>
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
+				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+				</div>
+
+				<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+					Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+				</div>
+			</div>
+			<br>
+
+		</div>
+		<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID')">
+			<br>
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
+				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+				</div>
+
+				<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:right;">
+					Left Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+					Right Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+				</div>
+			</div>
+			<br>
+
+		</div>
+		<br><br>
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='SE')">
+			<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center>
+			<br><br>
 {# 
-<div data-bind="visible: ($root.shownTask() === '')">
+			<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center> #}
 
-	Both "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract and Extrude filament as needed.
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
-
-	<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="">
-		<br>
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
-			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
-			</div>
-
-			<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
-				Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-			</div>
 		</div>
-		<br>
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T0')">
+			<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center>
+			<br><br>
+{# 
+			<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center> #}
 
-	</div>
-	<br><br>
-
-	<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center><br><br>
-
-	<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center>
-</div>
-<div data-bind="visible: maintenancePage()===19">
-
-	Both "Prepare" buttons will position the printer and start heating the Right Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract and Extrude filament as needed.
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
-	<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
-
-	<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="">
-		<br>
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
-			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
-			</div>
-
-			<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
-				Extruder Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
-			</div>
 		</div>
-		<br>
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T1')">
+			<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Retract Filament</button></center>
+			<br><br>
+{# 
+			<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Extrude Filament</button></center> #}
 
+		</div>
+		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='Both')">
+			<center>
+				<table>
+					<tr>
+						<td>
+							<center><h3>Left Extruder T0</h3></center>
+						</td>
+						<td>
+							<center><h3>Right Extruder T1</h3></center>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center>
+							<br><br>
+{# 
+							<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center> #}
+
+						</td>
+						<td>
+							<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Retract Filament</button></center>
+							<br><br>
+{# 
+							<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Extrude Filament</button></center> #}
+
+						</td>
+					</tr>
+				</table>
+			</center>
+		</div>
+		<br><br>
+		<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0) }">Next Step</button></center>
 	</div>
-	<br><br>
-
-	<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Retract Filament</button></center><br><br>
-
-	<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Extrude Filament</button></center>
 
 </div>
 
-#}
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-{#                                                                      #}
-{# ad88888ba                        88        88                        #}
-{#d8"     "8b                ,d     88        88                 ,d     #}
-{#Y8,                        88     88        88                 88     #}
-{#`Y8aaaaa,     ,adPPYba,  MM88MMM  88aaaaaaaa88   ,adPPYba,   MM88MMM  #}
-{#  `"""""8b,  a8P_____88    88     88""""""""88  a8"     "8a    88     #}
-{#        `8b  8PP"""""""    88     88        88  8b       d8    88     #}
-{#Y8a     a8P  "8b,   ,aa    88,    88        88  "8a,   ,a8"    88,    #}
-{# "Y88888P"    `"Ybbd8"'    "Y888  88        88   `"YbbdP"'     "Y888  #}
-{#                                                                      #}
-{#                                                                      #}
+{#                                                                        #}
+{#   ad88888ba                        88        88                        #}
+{#  d8"     "8b                ,d     88        88                 ,d     #}
+{#  Y8,                        88     88        88                 88     #}
+{#  `Y8aaaaa,     ,adPPYba,  MM88MMM  88aaaaaaaa88   ,adPPYba,   MM88MMM  #}
+{#    `"""""8b,  a8P_____88    88     88""""""""88  a8"     "8a    88     #}
+{#          `8b  8PP"""""""    88     88        88  8b       d8    88     #}
+{#  Y8a     a8P  "8b,   ,aa    88,    88        88  "8a,   ,a8"    88,    #}
+{#   "Y88888P"    `"Ybbd8"'    "Y888  88        88   `"YbbdP"'     "Y888  #}
+{#                                                                        #}
+{#                                                                        #}
 <div data-bind="visible: loginState.isUser && $root.shownTask() === 'SetHot'">
 
 	<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R0'">
@@ -786,7 +857,7 @@
 				During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your starting height (also known as "Z Offset") with a non-standard material or nozzle diameter.  Before starting the print, select your printer configuration:
 			</p>
 
-			<div class="thumbnail" style="margin:auto; width:60%"><br>
+			<div class="thumbnail" style="margin:auto; width:70%"><br>
 				<div style="margin:auto; width:90%">
 					<div><b><input type="radio" name="customWiggleSelect" value="defaultT0" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.35mm Standard Brass Nozzle, PLA - Default</b></div>
 					<hr>
@@ -822,7 +893,7 @@
 
 			<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
-			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 				</div>
@@ -953,7 +1024,7 @@
 				During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your probe-to-nozzle offset with a non-standard material or nozzle diameter.  Before starting the print, select your printer configuration:
 			</p>
 
-			<div class="thumbnail" style="margin:auto; width:60%"><br>
+			<div class="thumbnail" style="margin:auto; width:70%"><br>
 				<div style="margin:auto; width:90%">
 					<div><b><input type="radio" name="customWiggleSelect" value="defaultProbe" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.35mm Standard Brass Nozzle, PLA - Default</b></div>
 					<hr>
@@ -989,7 +1060,7 @@
 
 			<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
-			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 				</div>
@@ -1082,7 +1153,7 @@
 						</div>
 						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
 						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>            
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
 
 					</td>
 					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
@@ -1091,7 +1162,7 @@
 						</div>
 						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
 						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>  
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
 						<!--Too Close-->
 					</td>
 				</tr>
@@ -1105,17 +1176,17 @@
 	</div>
 
 </div>
-{#                                                                               #}
-{# ad88888ba                          ,ad8888ba,                88           88  #}
-{#d8"     "8b                ,d      d8"'    `"8b               88           88  #}
-{#Y8,                        88     d8'                         88           88  #}
-{#`Y8aaaaa,     ,adPPYba,  MM88MMM  88              ,adPPYba,   88   ,adPPYb,88  #}
-{#  `"""""8b,  a8P_____88    88     88             a8"     "8a  88  a8"    `Y88  #}
-{#        `8b  8PP"""""""    88     Y8,            8b       d8  88  8b       88  #}
-{#Y8a     a8P  "8b,   ,aa    88,     Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  #}
-{# "Y88888P"    `"Ybbd8"'    "Y888    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  #}
-{#                                                                               #}
-{#                                                                               #}
+{#                                                                                 #}
+{#   ad88888ba                          ,ad8888ba,                88           88  #}
+{#  d8"     "8b                ,d      d8"'    `"8b               88           88  #}
+{#  Y8,                        88     d8'                         88           88  #}
+{#  `Y8aaaaa,     ,adPPYba,  MM88MMM  88              ,adPPYba,   88   ,adPPYb,88  #}
+{#    `"""""8b,  a8P_____88    88     88             a8"     "8a  88  a8"    `Y88  #}
+{#          `8b  8PP"""""""    88     Y8,            8b       d8  88  8b       88  #}
+{#  Y8a     a8P  "8b,   ,aa    88,     Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  #}
+{#   "Y88888P"    `"Ybbd8"'    "Y888    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  #}
+{#                                                                                 #}
+{#                                                                                 #}
 
 <div data-bind="visible: $root.shownTask()==='SetCold'">
 
@@ -1128,7 +1199,7 @@
 		Here we will adjust the starting height of the printer with the feeler gauge.  Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
 		<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.untouchable()">
 			<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br><br>
-			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 				</div>
@@ -1238,17 +1309,17 @@
 
 </div>
 
-{#                                                                      #}
-{# ad88888ba                        88        88                        #}
-{#d8"     "8b                ,d     88        88                 ,d     #}
-{#Y8,                        88     88        88                 88     #}
-{#`Y8aaaaa,     ,adPPYba,  MM88MMM  88aaaaaaaa88   ,adPPYba,   MM88MMM  #}
-{#  `"""""8b,  a8P_____88    88     88""""""""88  a8"     "8a    88     #}
-{#        `8b  8PP"""""""    88     88        88  8b       d8    88     #}
-{#Y8a     a8P  "8b,   ,aa    88,    88        88  "8a,   ,a8"    88,    #}
-{# "Y88888P"    `"Ybbd8"'    "Y888  88        88   `"YbbdP"'     "Y888  #}
-{#                                                                      #}
-{#                                                                      #}
+{#                                                                                              #}
+{#   ad88888ba                        888888888888      88  88        88                        #}
+{#  d8"     "8b                ,d          88         ,d88  88        88                 ,d     #}
+{#  Y8,                        88          88       888888  88        88                 88     #}
+{#  `Y8aaaaa,     ,adPPYba,  MM88MMM       88           88  88aaaaaaaa88   ,adPPYba,   MM88MMM  #}
+{#    `"""""8b,  a8P_____88    88          88           88  88""""""""88  a8"     "8a    88     #}
+{#          `8b  8PP"""""""    88          88           88  88        88  8b       d8    88     #}
+{#  Y8a     a8P  "8b,   ,aa    88,         88           88  88        88  "8a,   ,a8"    88,    #}
+{#   "Y88888P"    `"Ybbd8"'    "Y888       88           88  88        88   `"YbbdP"'     "Y888  #}
+{#                                                                                              #}
+{#                                                                                              #}
 
 <div data-bind="visible: $root.shownTask()==='SetT1Hot'">
 	<div data-bind="visible: loginState.isUser">
@@ -1280,7 +1351,7 @@
 			<li>Move to its final position</li>
 		</ol>
 
-		<div class="thumbnail" style="margin:auto; width:60%"><br>
+		<div class="thumbnail" style="margin:auto; width:70%"><br>
 			<div style="margin:auto; width:90%">
 				<div><b><input type="radio" name="customWiggleSelect" value="defaultT1" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.35mm Standard Brass Nozzle, PLA - Default</b></div>
 				<hr>
@@ -1305,7 +1376,7 @@
 
 		<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('T1-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 			</div>
@@ -1413,17 +1484,17 @@
 </div>
 
 
-{#                                                                                                     #}
-{# ad88888ba                        888888888888      88    ,ad8888ba,                88           88  #}
-{#d8"     "8b                ,d          88         ,d88   d8"'    `"8b               88           88  #}
-{#Y8,                        88          88       888888  d8'                         88           88  #}
-{#`Y8aaaaa,     ,adPPYba,  MM88MMM       88           88  88              ,adPPYba,   88   ,adPPYb,88  #}
-{#  `"""""8b,  a8P_____88    88          88           88  88             a8"     "8a  88  a8"    `Y88  #}
-{#        `8b  8PP"""""""    88          88           88  Y8,            8b       d8  88  8b       88  #}
-{#Y8a     a8P  "8b,   ,aa    88,         88           88   Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  #}
-{# "Y88888P"    `"Ybbd8"'    "Y888       88           88    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  #}
-{#                                                                                                     #}
-{#                                                                                                     #}
+{#                                                                                                       #}
+{#   ad88888ba                        888888888888      88    ,ad8888ba,                88           88  #}
+{#  d8"     "8b                ,d          88         ,d88   d8"'    `"8b               88           88  #}
+{#  Y8,                        88          88       888888  d8'                         88           88  #}
+{#  `Y8aaaaa,     ,adPPYba,  MM88MMM       88           88  88              ,adPPYba,   88   ,adPPYb,88  #}
+{#    `"""""8b,  a8P_____88    88          88           88  88             a8"     "8a  88  a8"    `Y88  #}
+{#          `8b  8PP"""""""    88          88           88  Y8,            8b       d8  88  8b       88  #}
+{#  Y8a     a8P  "8b,   ,aa    88,         88           88   Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  #}
+{#   "Y88888P"    `"Ybbd8"'    "Y888       88           88    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  #}
+{#                                                                                                       #}
+{#                                                                                                       #}
 <div data-bind="visible: $root.shownTask()==='SetT1Cold'">
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
@@ -1435,9 +1506,9 @@
 		<br><br>This adjustment process involves mechanical calibration between both extruders, and can take some time. However, following the instructions carefully will reward you with high quality dual-material prints.<br><br>
 
 		<strong>Before proceeding, remove any material from the tip of the T1 nozzle to ensure accurate height adjustment.</strong><br><br>
-		<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:($root.shownTask() === 'SetCold')">
+		<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:($root.shownTask() === 'SetT1Cold')">
 			Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
-			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 				</div>
@@ -1457,48 +1528,53 @@
 			<center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
 		</div><br>
 
-		Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt. Now click "Move to Position" to move the build plate to the correct position.<br><br>
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser " />
+		<div data-bind="visible: $root.untouchable()">
+			<H2>Please wait until the printer is cool enough to touch before proceeding.</H2>
 		</div>
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser " />
-		</div><br>
+		<div data-bind="visible: !$root.untouchable()">
+			Ensure that the T1 extruder is below 50°C, then loosen the clamping bolt that secures the T1 hot end. Apply gentle pressure to slide the T1 hot end upward into the mounting plate as far as possible, and then gently secure the clamping bolt. Now click "Move to Position" to move the build plate to the correct position.<br><br>
+			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-1.jpg', 'width': '100%',} , visible: loginState.isUser " />
+			</div>
+			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-2.jpg', 'width': '100%',} , visible: loginState.isUser " />
+			</div><br>
 
-		<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br></button></center><br><br>
+			<center><button style="width:100%;" class="btnstay" data-bind="enable: loginState.isUser && !$root.untouchable() && !$root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('simple'), $root.stepNineAtPosition(true) }">Move to Position<br></button></center><br><br>
 
-		Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room temperature before touching any of the printer’s components.
-		<br><br>
+			Ensure that all components (Extruders 0 and 1 and the Build Plate) are at room temperature before touching any of the printer’s components.
+			<br><br>
 
-		<br><br>
-		<ol>
-			<li>Now move the feeler gauge under the tip of the T1 nozzle.</li>
-			<li>Loosen the T1 clamping bolt until the T1 hot end slides downward and touches the bed.</li>
-			<li>Secure the T1 clamping bolt.</li>
-		</ol><br>
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser " />
+			<br><br>
+			<ol>
+				<li>Now move the feeler gauge under the tip of the T1 nozzle.</li>
+				<li>Loosen the T1 clamping bolt until the T1 hot end slides downward and touches the bed.</li>
+				<li>Secure the T1 clamping bolt.</li>
+			</ol><br>
+			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-3.jpg', 'width': '100%',} , visible: loginState.isUser " />
+			</div>
+			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser " />
+			</div><br><br>
+			<strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
+			<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br></button></center>
 		</div>
-		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/d9-4.jpg', 'width': '100%',} , visible: loginState.isUser " />
-		</div><br><br>
-		<strong><center>Tighten the clamping bolt completely - this is a safety hazard if not secured.</center></strong>
-		<br><br><center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0) }">Extruder 1 is touching feeler gauge<br></button></center>
 	</div>
 
 </div>
 
 
 
-{#                                                           #}
-{#8b        d8   ad88888ba                                   #}
-{# Y8,    ,8P   d8"     "8b                                  #}
-{#  `8b  d8'    Y8,                                          #}
-{#    Y88P      `Y8aaaaa,    ,adPPYYba,  8b      db      d8  #}
-{#    d88b        `"""""8b,  ""     `Y8  `8b    d88b    d8'  #}
-{#  ,8P  Y8,            `8b  ,adPPPPP88   `8b  d8'`8b  d8'   #}
-{# d8'    `8b   Y8a     a8P  88,    ,88    `8bd8'  `8bd8'    #}
-{#8P        Y8   "Y88888P"   `"8bbdP"Y8      YP      YP      #}
+{#                                                             #}
+{#  8b        d8   ad88888ba                                   #}
+{#   Y8,    ,8P   d8"     "8b                                  #}
+{#    `8b  d8'    Y8,                                          #}
+{#      Y88P      `Y8aaaaa,    ,adPPYYba,  8b      db      d8  #}
+{#      d88b        `"""""8b,  ""     `Y8  `8b    d88b    d8'  #}
+{#    ,8P  Y8,            `8b  ,adPPPPP88   `8b  d8'`8b  d8'   #}
+{#   d8'    `8b   Y8a     a8P  88,    ,88    `8bd8'  `8bd8'    #}
+{#  8P        Y8   "Y88888P"   `"8bbdP"Y8      YP      YP      #}
 
 
 <div data-bind="visible: $root.shownTask()==='XSaw'">
@@ -1520,7 +1596,7 @@
 			It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:<br>
 		</p>
 
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 			</div>
@@ -1566,17 +1642,17 @@
 
 </div>
 
-{#                                                           #}
-{#8b        d8   ad88888ba                                   #}
-{# Y8,    ,8P   d8"     "8b                                  #}
-{#  Y8,  ,8P    Y8,                                          #}
-{#   "8aa8"     `Y8aaaaa,    ,adPPYYba,  8b      db      d8  #}
-{#    `88'        `"""""8b,  ""     `Y8  `8b    d88b    d8'  #}
-{#     88               `8b  ,adPPPPP88   `8b  d8'`8b  d8'   #}
-{#     88       Y8a     a8P  88,    ,88    `8bd8'  `8bd8'    #}
-{#     88        "Y88888P"   `"8bbdP"Y8      YP      YP      #}
-{#                                                           #}
-{#                                                           #}
+{#                                                            #}
+{#  b        d8   ad88888ba                                   #}
+{#  Y8,    ,8P   d8"     "8b                                  #}
+{#   Y8,  ,8P    Y8,                                          #}
+{#    "8aa8"     `Y8aaaaa,    ,adPPYYba,  8b      db      d8  #}
+{#     `88'        `"""""8b,  ""     `Y8  `8b    d88b    d8'  #}
+{#      88               `8b  ,adPPPPP88   `8b  d8'`8b  d8'   #}
+{#      88       Y8a     a8P  88,    ,88    `8bd8'  `8bd8'    #}
+{#      88        "Y88888P"   `"8bbdP"Y8      YP      YP      #}
+{#                                                            #}
+{#                                                            #}
 
 <div data-bind="visible: $root.shownTask()==='YSaw'">
 
@@ -1599,7 +1675,7 @@
 			It may take a few minutes for each pattern to begin printing, as the printer will wait until the heated bed and extruders have reached their target temperatures:
 		</p>
 
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 			</div>
@@ -1665,112 +1741,68 @@
 <div data-bind="visible: $root.shownTask()==='ChangeInstructions'">
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='T0')" />
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='T1')" />
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='Both')" />
 		</div>
-		<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T0 Left Extruder Hotend Swap</span><span data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">Hotend Swap</span></h1>
-		<br>
-		This Maintenance Operation will guide you through the removal and installation of the V4 Hotend.  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
+		<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID' && $root.maintenanceTaskHotend()==='T0'">T0 Left Extruder Hotend Swap</span><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID' && $root.maintenanceTaskHotend()==='T1'">T1 Right Extruder Hotend Swap</span><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID' && $root.maintenanceTaskHotend()==='Both'">T0 Left and T1 Right Extruder Hotend Swap - For Duplication Mode</span><span data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">Hotend Swap</span></h1>
 		<br><br>
+
+		<span data-bind="visible:$root.maintenanceTaskHotend()==='Both'">This Maintenance Operation will guide you through the removal and installation of both the T0 Left and T1 Right V4 Hotends on your M3 Independent Dual.</span><span data-bind="visible:$root.maintenanceTaskHotend()!=='Both'">This Maintenance Operation will guide you through the removal and installation of the V4 Hotend.</span>
+		<br>
+		You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
+		<br><br>
+
 		<ul>
 			<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
 			<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
 		</ul>
 		<br>
-		After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely.
-		<br><br><br>
-		<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly
-		</center>
+		<div data-bind="visible: $root.maintenanceTaskHotend()==='Both'">
+			<center><b>Note: These instructions cover the removal and installation of a single hotend; the process is the same for each of the Independent Dual extruders as well.</b></center>
+			<br>
+			After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely, on both extruders.
+			<br><br><br>
+		</div>
+		<div data-bind="visible: $root.maintenanceTaskHotend()!=='Both'">
+			After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely.
+			<br><br><br>
+		</div>
+
+		<div data-bind="visible: ($root.maintenanceTaskHotend()!=='Both')" style="width:50%; margin:auto;">
+			<input type="checkbox" id="hotendSwapCompleteOneHotend" data-bind="checked: $root.hotendSwapComplete">
+			<label for="hotendSwapCompleteOneHotend" style="display:inline-block;"> The Hotend is Installed Correctly</label>
+		</div>
+		<div data-bind="visible: ($root.maintenanceTaskHotend()==='Both')" style="width:50%; margin:auto;">
+			<input type="checkbox" id="hotendSwapCompleteBoth" data-bind="checked: $root.hotendSwapComplete">
+			<label for="hotendSwapCompleteBoth" style="display:inline-block;"> Both Hotends are Installed Correctly</label>
+		</div>
+
 		<br><br>
 		<br>
 
+
 		<div>
 			<center>
-				<button class="btngoBig " data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(2), $root.hotendSwapComplete(false) }">Adjust Starting Height</button>
+				<button class="btngoBig " data-bind="visible: $root.maintenanceTaskHotend()!=='Both', enable: $root.hotendSwapComplete(), click: function() { $root.nextMaintenanceTask(), $root.hotendSwapComplete(false) }">Adjust Starting Height</button>
+				<button class="btngoBig " data-bind="visible: $root.maintenanceTaskHotend()==='Both', enable: $root.hotendSwapComplete(), click: function() { $root.nextMaintenanceTask(), $root.hotendSwapComplete(false) }">Adjust Height of Both Extruders</button>
 			</center>
 		</div>
 
 	</div>
-{#                      #}
-{#888888888888      88  #}
-{#        ,8P'    ,d88  #}
-{#       d8"    888888  #}
-{#     ,8P'         88  #}
-{#    d8"           88  #}
-{#  ,8P'            88  #}
-{# d8"              88  #}
-{#8P'               88  #}
-{#                      #}
-{#                      #}
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
-	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
-	</div>
-	<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T1 Right Extruder Hotend Swap</span></h1>
-	<br>
-	This Maintenance Operation will guide you through the removal and installation of the V4 Hotend.  You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
-	<br><br>
-	<ul>
-		<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
-		<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
-	</ul>
-	<br>
-	After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely.
-	<br><br><br>
-	<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly</center>
-	<br><br>
 
-	<br>
-
-	<center><button class="btngoBig" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(9), $root.hotendSwapComplete(false) }">Adjust T1 Height</button></center>
-{# </div> #}
-</div>
-{#                         #}
-{# 888888888888   ad888888b,  #}
-{#         ,8P'  d8"     "88  #}
-{#        d8"            a8P  #}
-{#      ,8P'          ,d8P"   #}
-{#     d8"          a8P"      #}
-{#   ,8P'         a8P'        #}
-{#  d8"          d8"          #}
-{# 8P'           88888888888  #}
-<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
-	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
-	</div>
-	<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">T0 Left and T1 Right Extruder Hotend Swap - For Duplication Mode</span></h1>
-	<br>
-	This Maintenance Operation will guide you through the removal and installation of both the T0 Left and T1 Right V4 Hotends on your M3 Independent Dual.
-	<br>
-	You will need to turn off the printer during this process, at which point this page may become unavailable - please download or open the instructions in a new tab before beginning:
-	<br><br>
-	<ul>
-		<li>The most up-to-date instructions for this process are available in our Zendesk Help Center: <a href="https://makergear.zendesk.com/hc/en-us/articles/115005730183"> Hotend Swap Article </a>.</li>
-		<li>If you do not have an active Internet connection, a .pdf version of this article is included for local browsing: Right-click and select "Save File As" or "Save Link As": <a href="/plugin/mgsetup/static/img/download/swapHotend.pdf">Download Hotend Swap Instructions</a>.</li>
-	</ul>
-	<center><b>Note: These instructions cover the removal and installation of a single hotend; the process is the same for each of the Independent Dual extruders as well.</b></center>
-	<br>
-	After completing the V4 Hotend installation, please perform a final inspection, ensuring that both the Extruder Heater and Thermistor cables are securely connected, and that the clamping bolt is tightened completely, on both extruders.
-	<br><br><br>
-	<center><input type="checkbox" data-bind="checked: $root.hotendSwapComplete" /> The Hotend is Installed Correctly</center>
-	<br><br>
-
-	<br>
-
-	<center><button class="btngoBig" data-bind="enable: $root.hotendSwapComplete(), click: function() { $root.showMaintenanceStep(9), $root.hotendSwapComplete(false) }">Adjust Height of Both Extruders</button></center>
-{# </div> #}
-</div>
 </div>
 
-{#                                                                                                                                    #}
-{#888888888888     ,a8888a,     888888888888      88   ad88888ba                          ,ad8888ba,                88           88  #}
-{#     88        ,8P"'  88Y8,        88         ,d88  d8"     "8b                ,d      d8"'    `"8b               88           88  #}
-{#     88       ,8P    88  Y8,       88       888888  Y8,                        88     d8'                         88           88  #}
-{#     88       88    88    88       88           88  `Y8aaaaa,     ,adPPYba,  MM88MMM  88              ,adPPYba,   88   ,adPPYb,88  #}
-{#     88       88   88     88       88           88    `"""""8b,  a8P_____88    88     88             a8"     "8a  88  a8"    `Y88  #}
-{#     88       `8b 88     d8'       88           88          `8b  8PP"""""""    88     Y8,            8b       d8  88  8b       88  #}
-{#     88        `888,  ,ad8'        88           88  Y8a     a8P  "8b,   ,aa    88,     Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  #}
-{#     88          "Y8888P"          88           88   "Y88888P"    `"Ybbd8"'    "Y888    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  #}
-{#                                                                                                             #}
+{#                                                                                                                                     #}
+{#  888888888888     ,a8888a,     888888888888      88   ad88888ba                          ,ad8888ba,                88           88  #}
+{#       88        ,8P"'  88Y8,        88         ,d88  d8"     "8b                ,d      d8"'    `"8b               88           88  #}
+{#       88       ,8P    88  Y8,       88       888888  Y8,                        88     d8'                         88           88  #}
+{#       88       88    88    88       88           88  `Y8aaaaa,     ,adPPYba,  MM88MMM  88              ,adPPYba,   88   ,adPPYb,88  #}
+{#       88       88   88     88       88           88    `"""""8b,  a8P_____88    88     88             a8"     "8a  88  a8"    `Y88  #}
+{#       88       `8b 88     d8'       88           88          `8b  8PP"""""""    88     Y8,            8b       d8  88  8b       88  #}
+{#       88        `888,  ,ad8'        88           88  Y8a     a8P  "8b,   ,aa    88,     Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  #}
+{#       88          "Y8888P"          88           88   "Y88888P"    `"Ybbd8"'    "Y888    `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  #}
+{#                                                                                                               #}
 
 <div data-bind="visible: $root.shownTask()==='T0T1SetCold'">
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
@@ -1792,7 +1824,7 @@
 		<strong>Before proceeding, remove any material from the tip of both nozzles to ensure accurate height adjustment.</strong><br><br>
 		<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:($root.shownTask() === 'T0T1SetCold')">
 			Click <strong>Cooldown</strong> to turn off all heaters if necessary.<br><br>
-			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 				</div>
@@ -1845,16 +1877,16 @@
 		<center><button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser && $root.stepNineAtPosition(), click: function() { $root.dualRightNozzleAdjust('3-maintenance'); window.scroll(0,0) }">Hot Starting Height Adjustment<br></button></center>
 	</div>
 </div>
-						{#                                                                                           
-88        88                        88                                                88  
-88        88                 ,d     88                                                88  
-88        88                 88     88                                                88  
-88aaaaaaaa88   ,adPPYba,   MM88MMM  88            ,adPPYba,  8b       d8   ,adPPYba,  88  
-88""""""""88  a8"     "8a    88     88           a8P_____88  `8b     d8'  a8P_____88  88  
-88        88  8b       d8    88     88           8PP"""""""   `8b   d8'   8PP"""""""  88  
-88        88  "8a,   ,a8"    88,    88           "8b,   ,aa    `8b,d8'    "8b,   ,aa  88  
-88        88   `"YbbdP"'     "Y888  88888888888   `"Ybbd8"'      "8"       `"Ybbd8"'  88  
-#}
+{#                                                                                            #}
+{#  88        88                        88                                                88  #}
+{#  88        88                 ,d     88                                                88  #}
+{#  88        88                 88     88                                                88  #}
+{#  88aaaaaaaa88   ,adPPYba,   MM88MMM  88            ,adPPYba,  8b       d8   ,adPPYba,  88  #}
+{#  88""""""""88  a8"     "8a    88     88           a8P_____88  `8b     d8'  a8P_____88  88  #}
+{#  88        88  8b       d8    88     88           8PP"""""""   `8b   d8'   8PP"""""""  88  #}
+{#  88        88  "8a,   ,a8"    88,    88           "8b,   ,aa    `8b,d8'    "8b,   ,aa  88  #}
+{#  88        88   `"YbbdP"'     "Y888  88888888888   `"Ybbd8"'      "8"       `"Ybbd8"'  88  #}
+
 <div data-bind="visible: $root.shownTask()==='HotLevel'">
 	<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser ">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
@@ -1865,7 +1897,7 @@
 		Here you will be able to print Zigzag patterns in each corner and then adjust the bed leveling screw in that corner until the Zigzag pattern is acceptable. To begin, please click "Prepare" to Home the printer:
 		<center><button class="btnstay" data-bind="enable: !$root.stepSixPrepared(), click: function() { $root.setupSetStartingHeight('0') ; $root.stepSixPrepared(true) }">Prepare</button></center><br>
 
-		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 			</div>
@@ -1940,7 +1972,7 @@
 		Click <strong>Prepare</strong> to begin the Cold Bed Leveling process:<br><br>
 		<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.untouchable()">
 			<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br><br>
-			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:60%;">
+			<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 				<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
 				</div>
@@ -1999,18 +2031,18 @@
 		<center><button class="btngoBig" data-bind="enable: !$root.untouchable(), click: function() { $root.nextMaintenanceTask()}">Continue</button></center>
 	{# </div> #}
 </div>
-	{#                                                                                          
-db                               88                                           88  
-d88b                              ""               ,d                          88  
-d8'`8b                                              88                          88  
-d8'  `8b      ,adPPYba,  ,adPPYba,  88  ,adPPYba,  MM88MMM   ,adPPYba,   ,adPPYb,88  
-d8YaaaaY8b     I8[    ""  I8[    ""  88  I8[    ""    88     a8P_____88  a8"    `Y88  
-d8""""""""8b     `"Y8ba,    `"Y8ba,   88   `"Y8ba,     88     8PP"""""""  8b       88  
-d8'        `8b   aa    ]8I  aa    ]8I  88  aa    ]8I    88,    "8b,   ,aa  "8a,   ,d88  
-d8'          `8b  `"YbbdP"'  `"YbbdP"'  88  `"YbbdP"'    "Y888   `"Ybbd8"'   `"8bbdP"Y8  
+{#                                                                                           #}
+{#  db                               88                                           88    #}
+{#  d88b                              ""               ,d                          88    #}
+{#  d8'`8b                                              88                          88    #}
+{#  d8'  `8b      ,adPPYba,  ,adPPYba,  88  ,adPPYba,  MM88MMM   ,adPPYba,   ,adPPYb,88    #}
+{#  d8YaaaaY8b     I8[    ""  I8[    ""  88  I8[    ""    88     a8P_____88  a8"    `Y88    #}
+{#  d8""""""""8b     `"Y8ba,    `"Y8ba,   88   `"Y8ba,     88     8PP"""""""  8b       88    #}
+{#  d8'        `8b   aa    ]8I  aa    ]8I  88  aa    ]8I    88,    "8b,   ,aa  "8a,   ,d88    #}
+{#  d8'          `8b  `"YbbdP"'  `"YbbdP"'  88  `"YbbdP"'    "Y888   `"Ybbd8"'   `"8bbdP"Y8    #}
+{#    #}
+{#    #}
 
-
-#}
 <div data-bind="visible: $root.shownTask()==='Assisted'">
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
@@ -2186,18 +2218,121 @@ d8'          `8b  `"YbbdP"'  `"YbbdP"'  88  `"YbbdP"'    "Y888   `"Ybbd8"'   `"8
 					<td ><span data-bind="text: $root.rearRightDisplayMm()"></span></td>
 				</tr>
 			</table>
+		</div>
+	</div>
+
+
+
+{#                                                                 #}
+{#    ,ad8888ba,   88                                   88         #}
+{#   d8"'    `"8b  88                                   88         #}
+{#  d8'            88                                   88         #}
+{#  88             88,dPPYba,    ,adPPYba,   ,adPPYba,  88   ,d8   #}
+{#  88             88P'    "8a  a8P_____88  a8"     ""  88 ,a8"    #}
+{#  Y8,            88       88  8PP"""""""  8b          8888[      #}
+{#   Y8a.    .a8P  88       88  "8b,   ,aa  "8a,   ,aa  88`"Yba,   #}
+{#    `"Y8888Y"'   88       88   `"Ybbd8"'   `"Ybbd8"'  88   `Y8a  #}
+{#                                                                 #}
+{#                                                                 #}
+
+<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='Check'">
+  <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+    </div>
+<br>
+
+
+
+Duplication mode printing requires that the T0 Left Extruder and T1 Left Extruder are very close to the same height relative to the bed, and that the bed itself is very close to being perfectly level.
+<br><br>
+If you have not changed physically adjusted T0 or T1 since setting the T1 Z Offset, the
+
+
+
+
+
+
+
+
+
+<b>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.05">Your T1 Z Offset is small enough that Duplication Mode printing should work without a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) <= 0.1 && Math.abs($root.tool1ZOffset()) > 0.05">Your T1 Z Offset is small enough that Duplication Mode printing should work with a raft.</div>
+<div data-bind="visible: Math.abs($root.tool1ZOffset()) > 0.1">Your T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted below:</div>
+</b>
+
+
+
+
+
+
+
+
+{# </div> #}
 </div>
-</div>
 
 
 
 
 
-<div data-bind= "visible: !$root.hideDebug()"><hr>
-	<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.<br>
-	<input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
-	<hr>
-	Ignore everything below this statement.  And this statement.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div data-bind= "visible: !$root.hideDebug()"><hr>
+		<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.<br>
+		<input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
+		<hr>
+		Ignore everything below this statement.  And this statement.<br>
 
 {#  88888888ba,    88888888888  88888888ba   88        88    ,ad8888ba,   
 88      `"8b   88           88      "8b  88        88   d8"'    `"8b  
@@ -2267,7 +2402,37 @@ Task:
 <hr>
 </div>
 #}
-
+	<div data-bind="visible: !$root.hideDebug()">
+		Go to any operation:
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'home'                          ) ; return true; }">  'home'                          </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Hot_T0-SE-R0_Load'           ) ; return true; }">  'T0Hot_T0-SE-R0_Load'           </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Hot_T0-SE-R1_Load'           ) ; return true; }">  'T0Hot_T0-SE-R1_Load'           </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Hot_T0-ID-R0_Load'           ) ; return true; }">  'T0Hot_T0-ID-R0_Load'           </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Hot_T0-ID-R1_Load'           ) ; return true; }">  'T0Hot_T0-ID-R1_Load'           </button><br>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Cold_T0-SE-R0_SetCold'       ) ; return true; }">  'T0Cold_T0-SE-R0_SetCold'       </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Cold_T0-ID-R0_SetCold'       ) ; return true; }">  'T0Cold_T0-ID-R0_SetCold'       </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T1Hot_T1-ID-R0_Load'           ) ; return true; }">  'T1Hot_T1-ID-R0_Load'           </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T1Hot_T1-ID-R1_Load'           ) ; return true; }">  'T1Hot_T1-ID-R1_Load'           </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T1Cold_T1-ID-R0_Unload'        ) ; return true; }">  'T1Cold_T1-ID-R0_Unload'        </button><br>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T1Cold_T1-ID-R1_Unload'        ) ; return true; }">  'T1Cold_T1-ID-R1_Unload'        </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'XOff_Both-ID-R0_Load'          ) ; return true; }">  'XOff_Both-ID-R0_Load'          </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'XOff_Both-ID-R1_Load'          ) ; return true; }">  'XOff_Both-ID-R1_Load'          </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'YOff_Both-ID-R0_Load'          ) ; return true; }">  'YOff_Both-ID-R0_Load'          </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'YOff_Both-ID-R1_Load'          ) ; return true; }">  'YOff_Both-ID-R1_Load'          </button><br>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'DCheck_Both-ID-R0_Check'       ) ; return true; }">  'DCheck_Both-ID-R0_Check'       </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'DCheck_Both-ID-R1_Check'       ) ; return true; }">  'DCheck_Both-ID-R1_Check'       </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Change_T0-SE-R0_Unload'      ) ; return true; }">  'T0Change_T0-SE-R0_Unload'      </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Change_T0-SE-R1_Unload'      ) ; return true; }">  'T0Change_T0-SE-R1_Unload'      </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Change_T0-ID-R0_Unload'      ) ; return true; }">  'T0Change_T0-ID-R0_Unload'      </button><br>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Change_T0-ID-R1_Unload'      ) ; return true; }">  'T0Change_T0-ID-R1_Unload'      </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0T1Change_Both-ID-R0_Unload'  ) ; return true; }">  'T0T1Change_Both-ID-R0_Unload'  </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0T1Change_Both-ID-R1_Unload'  ) ; return true; }">  'T0T1Change_Both-ID-R1_Unload'  </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'HotLevel_T0-SE-R0_Load'        ) ; return true; }">  'HotLevel_T0-SE-R0_Load'        </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'HotLevel_T0-ID-R0_Load'        ) ; return true; }">  'HotLevel_T0-ID-R0_Load'        </button><br>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'ColdLevel_T0-SE-R0_ColdLevel'  ) ; return true; }">  'ColdLevel_T0-SE-R0_ColdLevel'  </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'ColdLevel_T0-ID-R0_ColdLevel'  ) ; return true; }">  'ColdLevel_T0-ID-R0_ColdLevel'  </button>
+		<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'Assisted_T0-SE-R1_Assisted'    ) ; return true; }">  'Assisted_T0-SE-R1_Assisted'    </button>
+	</div>
 
 
 <div>
@@ -2352,7 +2517,7 @@ Task:
 	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'ColdLevel_T0-ID-R0_ColdLevel'              ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'ColdLevel_T0-ID-R0_ColdLevel'              ) ; return true; }" /> ColdLevel_T0-ID-R0_ColdLevel</div>
 	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'Assisted_T0-SE-R1_Assisted'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
 	<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'Assisted_T0-SE-R1_Assisted'                ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Assisted_T0-SE-R1_Assisted'                ) ; return true; }" /> Assisted_T0-SE-R1_Assisted    </div>
-	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                             , click: window.scroll(0,0)" />                                                     - Maintenance Page</div>
+{# 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
@@ -2413,11 +2578,52 @@ Task:
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
 	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
-	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div>
+	<div><input type="radio" name="maintenancePageSelect" data-bind="checked: $root.shownTask, checkedValue:                            , click: window.scroll(0,0)" />                                                    - Maintenance Page</div> #}
 
 </div>
 
 </div>
+
+
+
+
+<script src="{{ url_for("static", filename="js/lib/jquery/jquery.min.js") }}"></script>
+<script src="{{ url_for("static", filename="js/lib/lodash.min.js") }}"></script>
+<script src="/plugin/mgsetup/static/video-js/video.min.js"></script>
+{# <script src="/plugin/mgsetup/static/js/lightbox.js"></script> #}
+<link href="/plugin/mgsetup/static/video-js/video-js.min.css" rel="stylesheet">
+{# <link href="/plugin/mgsetup/static/css/lightbox.css" rel="stylesheet"> #}
+<!-- End of templates for custom controls -->
+
+<!-- Latest compiled and minified plotly.js JavaScript -->
+<script type="text/javascript" src="/plugin/mgsetup/static/js/plotly-v1-31-2.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

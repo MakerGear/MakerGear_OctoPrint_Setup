@@ -68,7 +68,7 @@ T0
 G28 X
 T0
 G28 XYZ
-G1 F2000 X0
+G1 F2000 X-20.77
 T{{tool}}
 {% endif %}
 T{{tool}}
