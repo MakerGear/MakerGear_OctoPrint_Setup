@@ -2001,8 +2001,8 @@ $(function() {
 
 			if(!self.hideDebug()){console.log(self.settings);}
 			if(!self.hideDebug()){console.log(self.userSettings);}
-			self.targetName = "MakerGear " + self.hostname();
-			self.settings.appearance_name(self.targetName);
+			//self.targetName = "MakerGear " + self.hostname();
+			//self.settings.appearance_name(self.targetName);
 			//OctoPrint.settings.save({appearance: {name:self.targetName}});
 			//self.hideDebug(self.settings.plugins.mgsetup.hideDebug);
 			self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
@@ -2184,7 +2184,7 @@ $(function() {
 				self.tooloffsetline(data.tooloffsetline);
 			}
 			//self.tooloffsetline(data.tooloffsetline);
-			self.hostname(data.hostname);
+			//self.hostname(data.hostname);
 			if(!self.hideDebug()){console.log("onDataUpdaterPluginMessage content:");}
 			if(!self.hideDebug()){console.log(data);}
 			if (data == "activation failed"){
