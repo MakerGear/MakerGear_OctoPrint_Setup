@@ -139,6 +139,8 @@ $(function() {
 		},this);
 
 		self.stepProgressArray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,1,2,2,3,3,5,4,2]; //TODO - update this for all new step pages
+		//This works by having an array index for each step in the flow; the step's index is the same as it's step "number".  The numbers in the array relate to how far through the setup process
+		//that step number is.  self.maxSteps() above returns the max steps for a given flow (dual, single, probe or no, etc.); the progress bar is set to the number in the array / max steps.
 
 
 
@@ -160,7 +162,11 @@ $(function() {
 		self.apiKey = ko.observable(undefined);
 		self.printerViewString = ko.pureComputed(function(){
 			if ((self.settings.api_enabled()) && (self.settings.api_allowCrossOrigin())){
-				return ("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+				if ((self.ipAddress()!==undefined) && (self.hostnameJS() !== undefined) && (self.ipPort()!== undefined) ){
+					return ("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+				} else {
+					return ("One or more values are undefined.");
+				}
 			} else {
 				return ("API and/or CORS are Disabled - Enable both in the API settings.");
 			}
@@ -1241,6 +1247,7 @@ $(function() {
 				//	type: 'success',
 				//});
 				self.ZWiggleHeight(self.stockZWiggleHeight);
+				self.nextMaintenanceTask();
 				//self.setupStep("3");
 			}
 
@@ -4241,8 +4248,8 @@ $(function() {
 
 			self.mgLog("settings: "+self.settings);
 			self.mgLog("userSettings: "+self.userSettings);
-			self.targetName = "MakerGear " + self.hostname();
-			self.settings.appearance_name(self.targetName);
+			//self.targetName = "MakerGear " + self.hostname();
+			//self.settings.appearance_name(self.targetName);
 			//OctoPrint.settings.save({appearance: {name:self.targetName}});
 			//self.hideDebug(self.settings.plugins.mgsetup.hideDebug);
 			self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
@@ -4469,7 +4476,7 @@ $(function() {
 				self.tooloffsetline(data.tooloffsetline);
 			}
 			//self.tooloffsetline(data.tooloffsetline);
-			self.hostname(data.hostname);
+			//self.hostname(data.hostname);
 			self.mgLog("onDataUpdaterPluginMessage content:");
 			self.mgLog(data);
 			if (data == "activation failed"){
