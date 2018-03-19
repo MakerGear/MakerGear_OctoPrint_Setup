@@ -111,7 +111,11 @@ $(function() {
 		self.apiKey = ko.observable(undefined);
 		self.printerViewString = ko.pureComputed(function(){
 			if ((self.settings.api_enabled()) && (self.settings.api_allowCrossOrigin())){
-				return ("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+				if ((self.ipAddress()!==undefined) && (self.hostnameJS() !== undefined) && (self.ipPort()!== undefined) ){
+					return ("IP:"+self.ipAddress().toString()+"|HOSTNAME:"+self.hostnameJS()+"|PORT:"+self.ipPort()+"|API:"+self.apiKey());
+				} else {
+					return ("One or more values are undefined.");
+				}
 			} else {
 				return ("API and/or CORS are Disabled - Enable both in the API settings.");
 			}
