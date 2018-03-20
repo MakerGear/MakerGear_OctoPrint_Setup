@@ -679,7 +679,7 @@ $(function() {
 				var context = {};
 				self.mgLog("parameters.wiggleHeight: "+parameters.wiggleHeight);
 				OctoPrint.control.sendGcodeScriptWithParameters("customProbeWiggle", context, parameters);
-				if (self.setupStep() === '20' || self.maintenancePage() === 200 || self.maintenanceOperation() === "T0Hot"){
+				if (self.setupStep() === '20' || self.maintenancePage() === 200 || self.maintenanceOperation() === "T0Hot" || self.maintenanceTask() === "SetHot" || self.maintenanceTask() === "SetT1Hot"){
 					self.stepTwentyFirstWiggleClicked(true);
 				}
 			}
@@ -1357,6 +1357,7 @@ $(function() {
 				//});
 				self.stepTwentyFirstWiggleClicked(false);
 				self.ZWiggleHeight(self.stockZWiggleHeight);
+				self.customWiggle(undefined);
 				//self.setupStep("17");
 				if (self.maintenanceOperation()!=="home"){
 					self.nextMaintenanceTask();
@@ -2103,6 +2104,20 @@ $(function() {
 
 			} else {
 
+				switch(self.maintenanceTask()){ //put any extra commands that should be run any time a given task is called here; for instance, reseting the customWiggle selection on SetHot and SetT1Hot.
+
+					case "SetHot":
+						self.customWiggle(undefined);
+						self.stepTwentyFirstWiggleClicked(false);
+						break;
+
+					case "SetT1Hot":
+						self.customWiggle(undefined);
+						self.stepTwentyFirstWiggleClicked(false);
+						self.stepElevenFirstWiggleClicked(false);
+						break;
+
+				}
 
 				switch(self.maintenanceOperation()){
 					case undefined:
@@ -3083,6 +3098,7 @@ $(function() {
 			self.probeLevelFirstCheckClicked(false);
 			self.probeLevelActiveCorner(0);
 			self.stepTwentyFirstWiggleClicked(false);
+			self.customWiggle(undefined);
 			self.setHomeOffsetFromProbe(false);
 			self.lastCorner(false);
 			self.autoCheckClicked(false);
@@ -3416,7 +3432,7 @@ $(function() {
 						self.probeLevelAssist("next");
 					}
 				} else {
-					if (self.maintenanceOperation() !== ""){
+					if (self.maintenanceOperation() !== "home"){
 						self.probeLevelActiveCorner(0);
 						self.lastCorner(false);
 						self.probeLevelAssist("next");

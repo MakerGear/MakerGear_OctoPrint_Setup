@@ -757,7 +757,7 @@
 
 				<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:right;">
 					Left Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
-					Right Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+					Right Extruder Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayTool1Temp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
 				</div>
 			</div>
 			<br>
@@ -1374,7 +1374,7 @@
 		</p>
 		<br>
 
-		<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('T1-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+		<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('T1-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
 		<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 			<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">

@@ -44,6 +44,8 @@ a {
 }
 
 
+.btn-group.open .btn-primary.dropdown-toggle{background-color:#e6e6e6}
+
 .navbar-inner {
   min-height: 50px;
   padding-right: 20px;
@@ -143,5 +145,4 @@ a {
 {
   height:auto !important;
 }
-
 
