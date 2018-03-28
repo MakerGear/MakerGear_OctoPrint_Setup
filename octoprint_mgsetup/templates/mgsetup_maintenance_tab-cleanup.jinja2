@@ -779,7 +779,7 @@
 
 		</div>
 		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T1')">
-			<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Retract Filament</button></center>
+			<center><button title="Retract 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.retractFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Retract Filament</button></center>
 			<br><br>
 {# 
 			<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayTool1Temp()) > 180) ">Extrude Filament</button></center> #}
