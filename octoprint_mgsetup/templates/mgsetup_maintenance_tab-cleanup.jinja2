@@ -1149,26 +1149,26 @@
 					</td>
 					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 						<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
 						</div>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
 
 					</td>
 					<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 						<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
 						</div>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+						<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
 						<!--Too Close-->
 					</td>
 				</tr>
 
 			</table>
-			<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
+			<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><br>
 
 			<input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
 

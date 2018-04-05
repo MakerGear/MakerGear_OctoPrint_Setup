@@ -1648,31 +1648,63 @@ $(function() {
 
 
 			if (dualRightNozzleAdjustStep === 'simple'){
-				OctoPrint.control.sendGcode(["M300 S1040 P250",
-					"M300 S1312 P250", 
-					"M300 S1392 P250",
-					"G4 P750",
-					"G28 Z",
-					"M218 T1 Z0",
-					"M500",
-					"M605 S0",
-					"T0",
-					"G28 X",
-					"T1",
-					"G28 X",
-					"M605 S1",
-					"G28",
-					"T1",
-					"G1 F2000 X100 Y155 Z50 E0.001",
-					"G1 F1000 Z0",
-					"M400",
-					"M605 S0",
-					"M300 S1392 P250",
-					"M300 S1312 P250", 
-					"M300 S1040 P250"
-					
-				]);
-				OctoPrint.printer.extrude(10);
+
+				if (!self.hasProbe()){
+					OctoPrint.control.sendGcode(["M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 P750",
+						"G28 Z",
+						"M218 T1 Z0",
+						"M500",
+						"M605 S0",
+						"T0",
+						"G28 X",
+						"T1",
+						"G28 X",
+						"M605 S1",
+						"G28",
+						"T1",
+						"G1 F2000 X100 Y155 Z50 E0.001",
+						"G1 F1000 Z0",
+						"M400",
+						"M605 S0",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+						
+					]);
+					OctoPrint.printer.extrude(10);
+
+				} else {
+					OctoPrint.control.sendGcode(["M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 P750",
+						"G28 XYZ",
+						"M218 T1 Z0",
+						"M500",
+						"M605 S0",
+						"T1",
+						"G28 X",
+						"M605 S1",
+						"G28 XYZ",
+						"T1",
+						"G1 F2000 X100 Y155 Z50 E0.001",
+						"G1 F1000 Z0",
+						"M400",
+						"M605 S0",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+						
+					]);
+					self.requestEeprom();
+					self.checkParameters();
+					// OctoPrint.printer.extrude(10);
+					self.cooldown();
+				}
+
 				self.cooldown();
 
 			}
