@@ -657,7 +657,7 @@
 			</p>
 		</video>
 
-		Once filament is consistently extruding, click to "Next Step" proceed:<br>
+		Once filament is consistently extruding, click "Next Step" proceed:<br>
 
 
 		<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0); $root.stepThreeStartHeatingClicked(false) }">Next Step</button></center>
@@ -705,8 +705,8 @@
 		</div>
 		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T1')">
 			Both "Prepare" buttons will position the printer and start heating the Right Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract filament as needed.
-			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare T0 at PLA Extruder Temperature') }}</button></center><br><br>
-			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare T0 at ABS Extruder Temperature') }}</button></center><br><br>
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare T1 at PLA Extruder Temperature') }}</button></center><br><br>
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare T1 at ABS Extruder Temperature') }}</button></center><br><br>
 		</div>
 		<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='Both')">
 			Both Material "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract filament as needed.  Click "Prepare" and then Retract filament on any hotend that currently has filament loaded.
@@ -2195,20 +2195,20 @@
 
 			<div data-bind="visible: $root.noTurns()">
 
-				Your bed is now level enough to print on with Level Compensation enabled.  However, if you wish to adjust it further, the image above and the measurements below can be used to further refine the level - keep in mind that a full turn of the bed leveing screw is 0.7mm, so a quarter-turn is 0.175mm, an eigth-turn is 0.0875mm, etc.
+				Your bed is now level enough to print on with Level Compensation enabled.  However, if you wish to adjust it further, the image above and the measurements below can be used to further refine the level - keep in mind that a full turn of the bed leveling screw is 0.7mm, so a quarter-turn is 0.175mm, an eigth-turn is 0.0875mm, etc.
 				<br><br>
-				<center><button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() , click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(12000) }">Check Again</button></center>
+				<center><button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() , click: function() { $root.probeLevelAssist(1); $root.enableLockedButton(12000) }">Check Again</button></center>
 				<br><br>
 
 			</div>
 
 			{# <center><h4><a href='#maintenanceTabs' data-bind="click: function() {$root.showMaintenanceStep(0); window.scroll(0,0); $root.noTurns(false); $root.probeCheckReset(); return true}">Return to Maintenance Index</a></h4></center> #}
-			<table class="choiceTable">
+			<table class="choiceTableFourths">
 				<tr>
-					<td style="width:25%">Front Left</td>
-					<td style="width:25%">Front Right</td>
-					<td style="width:25%">Rear Left</td>
-					<td style="width:25%">Rear Right</td>
+					<td>Front Left</td>
+					<td>Front Right</td>
+					<td>Rear Left</td>
+					<td>Rear Right</td>
 				</tr>
 
 				<tr>
@@ -2219,6 +2219,9 @@
 				</tr>
 			</table>
 		</div>
+		<hr>
+	<a href='#maintenanceTabsTasks' data-bind="click: function() {nextMaintenanceTask('home'); window.scroll(0,0); $root.probeCheckReset(); return true}"><h4>Return to Maintenance Index</h4></a>
+
 	</div>
 
 

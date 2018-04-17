@@ -129,6 +129,20 @@ table.choiceTable  tr td
 	border-right:2px solid #ddd;
 }
 
+.choiceTableFourths 
+{
+	border:solid #ddd 2px;
+}
+
+table.choiceTableFourths  tr td
+{
+	width:25%;
+	padding:10px;
+
+	border-left:2px solid #ddd; 
+	border-right:2px solid #ddd;
+}
+
 td.buttonCell
 {
 	border:solid #ddd 2px;

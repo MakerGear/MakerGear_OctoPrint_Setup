@@ -1282,7 +1282,7 @@ $(function() {
 				} else if(Math.abs(self.tool1ZOffset())<=0.10){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work with a raft.", "notice");
 				} else if(Math.abs(self.tool1ZOffset())>0.10){
-					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
+					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
 
 				if(!self.hasProbe()){
@@ -1377,7 +1377,7 @@ $(function() {
 				"G4 P750",
 				"M605 S0",
 				"T0",
-				"G28 X Y Z",
+				"G28 XYZ",
 				"G1 F1400 X100 Y125 Z20",
 				"G1 F1400 Z5",
 				"M114",
@@ -1411,7 +1411,8 @@ $(function() {
 				self.mgLog("ProbeOffString: "+self.ProbeOffString);
 				OctoPrint.control.sendGcode([self.ProbeOffString,
 					"M500",
-					"M211 S1"					
+					"M211 S1",
+					"G1 F2000 X-20"
 				]);
 				self.probeOffset(self.newProbeOffset);
 				self.requestEeprom();
@@ -1680,20 +1681,18 @@ $(function() {
 					OctoPrint.control.sendGcode(["M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
+						"M605 S0",
 						"G4 P750",
-						"G28 XYZ",
 						"M218 T1 Z0",
 						"M500",
-						"M605 S0",
-						"T1",
+						"T0",
 						"G28 X",
-						"M605 S1",
 						"G28 XYZ",
+						"G1 F2000 X-20",
 						"T1",
-						"G1 F2000 X100 Y155 Z50 E0.001",
+						"G1 F2000 X100 Y155 Z50",
 						"G1 F1000 Z0",
 						"M400",
-						"M605 S0",
 						"M300 S1392 P250",
 						"M300 S1312 P250", 
 						"M300 S1040 P250"
@@ -2148,6 +2147,60 @@ $(function() {
 						self.stepTwentyFirstWiggleClicked(false);
 						self.stepElevenFirstWiggleClicked(false);
 						break;
+
+					case "Assisted":
+						self.probeLevelFirstCheckClicked(false);
+						self.noTurns(false);
+						break;
+
+					case "Load":
+						self.stepThreeStartHeatingClicked(false);
+						break;
+
+					case "SetHot":
+						self.stepElevenFirstWiggleClicked(false);
+						self.stepTwentyFirstWiggleClicked(false);
+						self.stepFourShowFineAdjustments(false);
+						self.stepTwentyShowFineAdjustments(false);
+						break;
+
+					case "SetCold":
+						self.stepTwoPrepared(false);
+						break;
+
+					case "SetT1Hot":
+						self.stepElevenFirstWiggleClicked(false);
+						self.stepElevenShowFineAdjustments(false);
+						break;
+
+					case "SetT1Cold":
+						self.stepNineAtPosition(false);
+						break;
+
+					case "XSaw":
+						self.calibrationStep(0);
+						self.sawBinPrinted(false);
+						break;
+
+					case "YSaw":
+						self.calibrationStep(0);
+						self.sawBinPrinted(false);
+						break;
+
+					case "ChangeInstructions":
+						self.hotendSwapComplete(false);
+						break;
+
+					case "T0T1SetCold":
+						self.stepNineAtPosition(false);
+						break;
+
+					case "HotLevel":
+						self.stepSixWigglePrinted(false);
+						self.stepSixPrepared(false);
+						break;
+
+
 
 				}
 
@@ -3279,6 +3332,7 @@ $(function() {
 				self.yProbePoints = 0;
 				self.zProbePoints = 0;
 				var j = 0;
+				var i = 0;
 				for (i = 0; i < self.xProbeArray.length; i++){
 					if (parseFloat(self.xProbeArray[i]) == 777){continue;}
 					var newVal = parseFloat(self.xProbeArray[i]);
@@ -3464,7 +3518,7 @@ $(function() {
 						self.probeLevelAssist("next");
 					}
 				} else {
-					if (self.maintenanceOperation() !== "home"){
+					if (self.maintenanceOperation() === "Assisted"){
 						self.probeLevelActiveCorner(0);
 						self.lastCorner(false);
 						self.probeLevelAssist("next");
@@ -3472,7 +3526,7 @@ $(function() {
 				}
 			}
 			self.mgLog("processBedLevel calling bedPreview");
-			if (!self.hideDebug()){
+			if (!self.hideDebug() || self.maintenanceOperation() === "Assisted"){
 				self.bedPreview();
 			}
 		};
@@ -3510,9 +3564,14 @@ $(function() {
 				if ( nextCorner === -1){ //check if the turn array does NOT contain any more corners to adjust
 					if(self.probeLevelActiveCorner() === 0){ //if no corners left to adjust and at position 0, we're done
 						self.mgLog("next corner probs.  Pretty sure Kyle wrote this one.  Still not actually sure what it means.");
-						if (self.maintenanceOperation()!=="home"){
-							self.nextMaintenanceTask();
-							self.lastCorner(false);
+
+						// if (self.maintenanceOperation()!=="home"){
+						if (self.maintenanceOperation()==="Assisted"){
+							// self.nextMaintenanceTask();
+							// self.probeLevelFirstCheckClicked(false);
+							// self.lastCorner(false);
+							// self.probeLevelAssist(1);
+							self.noTurns(true);
 							return;
 						}
 						if (self.maintenancePage() === 21){
@@ -4353,6 +4412,12 @@ $(function() {
 				self.requestEeprom();
 				OctoPrint.control.sendGcode("M114");
 				//alert("hello client");
+				// self.displayToolTemp(self.temperatures.tools()[0].actual);
+				// self.displayToolTempTarget(self.temperatures.tools()[0].target);
+				// if (self.temperatures.tools()[1] !== undefined){
+				// 	self.displayTool1Temp(self.temperatures.tools()[1].actual);
+				// 	self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+				// }
 			}
 			if (self.googleGood()===-1 || self.googleGood()===0){
 				//window.setTimeout(function() {self.checkGoogle()},1000);
@@ -4455,6 +4520,20 @@ $(function() {
 			//        origin: the origin storage location of the file, either local or sdcard
 			//        time: the time needed for the print, in seconds (float)
 		};
+
+
+		self.onEventConnected = function (payload){
+			self.displayToolTemp(self.temperatures.tools()[0].actual);
+			self.displayToolTempTarget(self.temperatures.tools()[0].target);
+			if (self.temperatures.tools()[1] !== undefined){
+				self.displayTool1Temp(self.temperatures.tools()[1].actual);
+				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			}
+
+
+
+		};
+
 
 		self.onEventPositionUpdate = function (payload) {
 			self.mgLog("onEventPositionUpdate triggered.");
