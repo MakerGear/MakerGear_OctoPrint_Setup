@@ -23,6 +23,7 @@ import sys
 import urllib2
 from logging.handlers import TimedRotatingFileHandler
 from logging.handlers import RotatingFileHandler
+from zipfile import *
 
 
 
@@ -322,6 +323,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._settings.set(["nextReminder"],self.nextReminder)
 		self._settings.save()
 
+	# def sendCurrentValues(self):
+	# 		self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline,
+	# 																tooloffsetline = self.tooloffsetline,
+	# 																firmwareline = self.firmwareline,
+	# 																probeOffsetLine = self.probeOffsetLine)
+	# 		)
+
+
 	def on_event(self, event, payload):
 		self._logger.info("MGSetup on_event triggered.")
 		if event == Events.POSITION_UPDATE:
@@ -338,7 +347,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
-			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = self.probeline))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = self.probeOffsetLine))
 			self._logger.info(str(self.nextReminder))
 			#if (self.internetConnection == False ):
 			self.checkInternet(3,5, 'none')
@@ -480,6 +489,69 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				self._execute("sudo chown pi /home/pi/.octoprint/config.yaml.backup")
 				os.chmod("/home/pi/.octoprint/config.yaml.backup", 0600)
 				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Changed the owner, group and permissions of config.yaml.backup - please try to Update Firmware again to backup config.yaml.\n"))
+
+	def collectLogs(self):
+		# src_files = os.listdir(self._basefolder+"/static/maintenance/cura/")
+		# mainLogFolder = octoprint.settings.Settings.get(octoprint.settings.settings(),["settings", "folder", "logs"])
+		mainLogFolder = "/home/pi/.octoprint/logs"
+		mainLogs =  os.listdir(mainLogFolder)
+		pluginLogFolder = self._basefolder+"/logs"
+		pluginLogs = os.listdir(pluginLogFolder)
+
+		# for file_name in mainLogs:
+		# 	allLogs = os.path.join(mainLogFolder, file_name)
+		# for file_name in pluginLogs:
+		# 	allLogs = allLogs + os.path.join(pluginLogFolder, file_name)
+
+		# self._logger.info(allLogs)
+		# zipname = "/home/pi/" + str(datetime.datetime.now().strftime('%y-%m-%d.%H.%M'))+".zip"
+		try:
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Preparing Logs, Please Wait.\n\n"))
+			lastFive = ''.join(list(self.serial)[3:])
+			zipNameDate = "MGSetup-Logs-" + lastFive + "-" + str(datetime.datetime.now().strftime('%y-%m-%d_%H-%M'))
+			zipname = self._basefolder+"/static/maintenance/" + zipNameDate +".zip"
+			with ZipFile(zipname, 'w', ZIP_DEFLATED) as logzip:
+				# for file_name in allLogs:
+				# 	logzip.write(file_name)
+
+				for file_name in mainLogs:
+					tempfile = os.path.join(mainLogFolder, file_name)
+					logzip.write(tempfile, os.path.basename(tempfile))
+				for file_name in pluginLogs:
+					tempfile = os.path.join(pluginLogFolder, file_name)
+					logzip.write(tempfile, os.path.basename(tempfile))
+
+
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Downloading File: "+str(zipNameDate)+".zip"))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(logFile = zipNameDate + ".zip"))
+		except Exception as e:
+			self._logger.info("collectLogs failed, exception: " + str(e))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "There was an exception while trying to collect logs: "+str(e)))
+
+
+
+
+		# src_files = os.listdir(self._basefolder+"/static/maintenance/gcode")
+		# src = (self._basefolder+"/static/maintenance/gcode")
+		# dest = ("/home/pi/.octoprint/scripts/gcode")
+		# for file_name in src_files:
+		# 	full_src_name = os.path.join(src, file_name)
+		# 	full_dest_name = os.path.join(dest, file_name)
+		# 	if not (os.path.isfile(full_dest_name)):
+		# 		shutil.copy(full_src_name, dest)
+		# 		self._logger.info("Had to copy "+file_name+" to scripts folder.")
+		# 	else:
+		# 		if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
+		# 			shutil.copy(full_src_name, dest)
+		# 			self._logger.info("Had to overwrite "+file_name+" with new version.")
+
+
+
+
+
+
+
+
 
 
 
@@ -778,6 +850,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == 'flushPrintActive':
 			self.printActive = False
 			self.mgLog("flushPrintActive called",0)
+		elif action["action"] == 'collectLogs':
+			self.collectLogs()
+			self.mgLog("collectLogs called",0)
+			return "collectLogs called"
 
 
 

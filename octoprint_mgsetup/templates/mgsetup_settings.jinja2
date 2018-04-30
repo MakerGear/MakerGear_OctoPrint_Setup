@@ -9,6 +9,10 @@
     </div>
 </form>
 
+<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('collectLogs'), $root.showCommandResponse() }">Collect Logs</button><br>
+This will collect the logs into a single .zip file and then download them.<br><br>
+
+
 <form class="form-horizontal">
     <div class="control-group">
         <label class="control-label">{{ _('MGSetup As First Tab') }}</label>

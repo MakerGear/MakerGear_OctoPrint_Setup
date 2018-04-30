@@ -2,6 +2,9 @@ $(function() {
 	function MGSetupViewModel(parameters) {
 		var self = this;
 
+
+		self.mgLogUrl = "api/plugin/mgsetup";
+
 		self.mgLog = function(stringToLog, priority){
 
 			if (priority === undefined){
@@ -14,9 +17,11 @@ $(function() {
 				if (priority === 1){
 					console.log(stringToLog);
 					//also send to Python side to log
-					var url = OctoPrint.getSimpleApiUrl("mgsetup");
+					// var url = OctoPrint.getSimpleApiUrl("mgsetup");
 					// console.log(url);
-					OctoPrint.issueCommand(url, "mgLog", {"stringToLog":stringToLog,"priority":priority})
+					// console.log(typeof(url));
+					// console.log(url);
+					OctoPrint.issueCommand(self.mgLogUrl, "mgLog", {"stringToLog":stringToLog,"priority":priority})
 						.done(function(response) {
 							// console.log("mgLog send to server-side done; response: "+response);
 						})
@@ -88,14 +93,14 @@ $(function() {
 		self.newHostname = ko.observable("");
 		self.hostname = ko.observable();
 		self.testDisplayValue = ko.observable(parseFloat(self.displayBedTemp));
-		self.displayBedTemp = ko.observable(undefined);
-		self.displayBedTempTarget = ko.observable(undefined);
-		self.displayToolTemp = ko.observable(undefined);
-		self.displayToolTempTarget = ko.observable(undefined);
-		self.displayTool1Temp = ko.observable(undefined);
-		self.displayTool1TempTarget = ko.observable(undefined);
-		self.displayBedTemp(self.temperatures.bedTemp.actual);
-		self.displayBedTempTarget(self.temperatures.bedTemp.target);
+		// self.displayBedTemp = ko.observable(undefined);
+		// self.displayBedTempTarget = ko.observable(undefined);
+		// self.displayToolTemp = ko.observable(undefined);
+		// self.displayToolTempTarget = ko.observable(undefined);
+		// self.displayTool1Temp = ko.observable(undefined);
+		// self.displayTool1TempTarget = ko.observable(undefined);
+		// self.displayBedTemp(self.temperatures.bedTemp.actual);
+		// self.displayBedTempTarget(self.temperatures.bedTemp.target);
 		self.preventTabReset = ko.observable(false);
 
 		self.untouchable = ko.computed(function(){
@@ -110,6 +115,51 @@ $(function() {
 				}
 			}
 		},this);
+
+
+		self.displayBedTemp = ko.computed(function(){
+			if (self.temperatures.bedTemp !== undefined){
+				return self.temperatures.bedTemp.actual().toFixed(1);
+			} else {
+				return "No Data";
+			}
+		},this);
+		self.displayBedTempTarget = ko.computed(function(){
+			if (self.temperatures.bedTemp !== undefined){
+				return self.temperatures.bedTemp.target();
+			} else {
+				return "No Data";
+			}
+		},this);
+		self.displayToolTemp = ko.computed(function(){
+			if (self.temperatures.tools()[0] !== undefined){
+				return self.temperatures.tools()[0].actual().toFixed(1);
+			} else {
+				return "No Data";
+			}
+		},this);
+		self.displayToolTempTarget = ko.computed(function(){
+			if (self.temperatures.tools()[0] !== undefined){
+				return self.temperatures.tools()[0].target();
+			} else {
+				return "No Data";
+			}
+		},this);
+		self.displayTool1Temp = ko.computed(function(){
+			if (self.temperatures.tools()[1] !== undefined){
+				return self.temperatures.tools()[1].actual().toFixed(1);
+			} else {
+				return "No Data";
+			}
+		},this);
+		self.displayTool1TempTarget = ko.computed(function(){
+			if (self.temperatures.tools()[1] !== undefined){
+				return self.temperatures.tools()[1].target();
+			} else {
+				return "No Data";
+			}
+		},this);
+
 
 
 		self.tools = ko.observableArray([]);
@@ -4295,6 +4345,26 @@ $(function() {
 		};
 
 
+		self.formatTemperature = function(toolName, actual, target) {
+			var output = toolName + " Temperature: " + _.sprintf("%.1f&deg;C / ", actual);
+
+			if (target) {
+				// var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
+				output += _.sprintf("%.1f&deg;C", target);
+			} else {
+				output += _.sprintf("%.1f&deg;C", 0);
+			}
+
+			return output;
+		};
+
+
+
+
+
+
+
+
 		
 		
 
@@ -4312,18 +4382,34 @@ $(function() {
 			self.requestData();
 		};
 
+		self.onAllBound = function() {
+			console.log("onAllBound triggered.");
+
+			console.log(self.temperatures.tools()[0].actual());
+
+
+
+		};
+
+
 		self.onStartupComplete = function() {
 			self.mgLog("onStartupComplete triggered.");
+			self.mgLogUrl = OctoPrint.getSimpleApiUrl("mgsetup");
+
 			//console.log(self.temperatures.tools());
 
 			self.mgLog("oldZOffset: "+self.oldZOffset);
 			//self.updateCuraProfiles();
-			self.displayToolTemp(self.temperatures.tools()[0].actual);
-			self.displayToolTempTarget(self.temperatures.tools()[0].target);
-			if (self.temperatures.tools()[1] !== undefined){
-				self.displayTool1Temp(self.temperatures.tools()[1].actual);
-				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
-			}
+			// self.displayToolTemp(self.temperatures.tools()[0].actual);
+			// self.displayToolTempTarget(self.temperatures.tools()[0].target);
+			// if (self.temperatures.tools()[1] !== undefined){
+			// 	self.displayTool1Temp(self.temperatures.tools()[1].actual);
+			// 	self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			// }
+			// console.log(self.displayToolTemp());
+			// console.log(self.displayTool1Temp());
+			// console.log(typeof(self.temperatures.tools()[0]));
+
 			self.mgtab = $("#mgtab");
 			if (self.mgtab.css("visibility") == "hidden") {
 				self.mgtab.css("visibility", "visible");
@@ -4463,10 +4549,10 @@ $(function() {
 			if (self.googleGood()===-1 || self.googleGood()===0){
 				//window.setTimeout(function() {self.checkGoogle()},1000);
 			}
-			if (self.temperatures.tools()[1] !== undefined){
-				self.displayTool1Temp(self.temperatures.tools()[1].actual);
-				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
-			}
+			// if (self.temperatures.tools()[1] !== undefined){
+			// 	self.displayTool1Temp(self.temperatures.tools()[1].actual);
+			// 	self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			// }
 			OctoPrint.settings.get();
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 			if (Array.isArray(self.serialNumber())){
@@ -4496,10 +4582,10 @@ $(function() {
 			self.registered(self.settings.settings.plugins.mgsetup.registered());
 			self.activated(self.settings.settings.plugins.mgsetup.activated());
 			self.pluginVersion(self.settings.settings.plugins.mgsetup.pluginVersion());
-			if (self.temperatures.tools()[1] !== undefined){
-				self.displayTool1Temp(self.temperatures.tools()[1].actual);
-				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
-			}
+			// if (self.temperatures.tools()[1] !== undefined){
+			// 	self.displayTool1Temp(self.temperatures.tools()[1].actual);
+			// 	self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			// }
 			self.parseProfile();
 
 			window.setTimeout(function() {self.warnSshNotify()},5000);
@@ -4523,12 +4609,12 @@ $(function() {
 
 
 		self.onEventConnected = function (payload){
-			self.displayToolTemp(self.temperatures.tools()[0].actual);
-			self.displayToolTempTarget(self.temperatures.tools()[0].target);
-			if (self.temperatures.tools()[1] !== undefined){
-				self.displayTool1Temp(self.temperatures.tools()[1].actual);
-				self.displayTool1TempTarget(self.temperatures.tools()[1].target);
-			}
+			// self.displayToolTemp(self.temperatures.tools()[0].actual);
+			// self.displayToolTempTarget(self.temperatures.tools()[0].target);
+			// if (self.temperatures.tools()[1] !== undefined){
+			// 	self.displayTool1Temp(self.temperatures.tools()[1].actual);
+			// 	self.displayTool1TempTarget(self.temperatures.tools()[1].target);
+			// }
 
 
 
@@ -4697,6 +4783,14 @@ $(function() {
 			if (data.mgwarnline !== undefined){
 				self.mgLog("Received mgwarnline: "+data.mgwarnline);
 				self.mgWarningHandler(data.mgwarnline);
+			}
+			if (data.logFile !== undefined){
+				self.mgLog("Received logFile, trying to download.  Data: "+data.logFile);
+				// OctoPrint.download(OctoPrint.getBaseUrl()+"plugin/mgsetup/maintenance/"+data.logFile);
+				// OctoPrint.download("plugin/mgsetup/static/maintenance/"+data.logFile);
+				window.location = ("plugin/mgsetup/static/maintenance/"+data.logFile);
+
+
 			}
 
 		};
