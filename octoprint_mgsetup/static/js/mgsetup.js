@@ -231,6 +231,8 @@ $(function() {
 		self.hotendSwapComplete = ko.observable(false);
 
 		// Quick Check Process starting/default values:
+		self.printerValueVersion = ko.observable(undefined); //storage location for the printer value version - a 4 character random code generated on the server side to 
+		//allow easy determination of server vs. client side state of values
 		self.ZWiggleHeight = ko.observable(0.20);
 		self.T1ZWiggleHeight = ko.observable(0.20);
 		self.stockZWiggleHeight = 0.20;
@@ -4789,8 +4791,10 @@ $(function() {
 				// OctoPrint.download(OctoPrint.getBaseUrl()+"plugin/mgsetup/maintenance/"+data.logFile);
 				// OctoPrint.download("plugin/mgsetup/static/maintenance/"+data.logFile);
 				window.location = ("plugin/mgsetup/static/maintenance/"+data.logFile);
-
-
+			}
+			if (data.printerValueVersion !== undefined){
+				self.mgLog("Received new printerValueVersion: "+data.printerValueVersion);
+				self.printerValueVersion(data.printerValueVersion);
 			}
 
 		};
@@ -5013,7 +5017,16 @@ $(function() {
 		self.requestEeprom = function() {
 			//self.waitingForM(true);
 			self.eepromData([]);
-			OctoPrint.control.sendGcode("M503");
+			// OctoPrint.control.sendGcode("M503");
+			OctoPrint.issueCommand(self.mgLogUrl, "sendValues", {"clientVersion":self.printerValueVersion()})
+				.done(function(response) {
+					// console.log("mgLog send to server-side done; response: "+response);
+					console.log(response);
+				})
+				.fail(function(response){
+					// console.log("mgLog send to server-side failed!  Response: "+response+" Original message: "+stringToLog);
+					console.log(response);
+				});
 			// self.checkParameters();
 		//	self.fromCurrentData();
 		};
