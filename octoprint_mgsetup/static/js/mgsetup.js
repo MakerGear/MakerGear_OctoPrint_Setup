@@ -231,7 +231,7 @@ $(function() {
 		self.hotendSwapComplete = ko.observable(false);
 
 		// Quick Check Process starting/default values:
-		self.printerValueVersion = ko.observable(undefined); //storage location for the printer value version - a 4 character random code generated on the server side to 
+		self.printerValueVersion = ko.observable(0); //storage location for the printer value version - a 4 character random code generated on the server side to 
 		//allow easy determination of server vs. client side state of values
 		self.ZWiggleHeight = ko.observable(0.20);
 		self.T1ZWiggleHeight = ko.observable(0.20);
