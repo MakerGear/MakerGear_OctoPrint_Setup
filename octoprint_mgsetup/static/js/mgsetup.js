@@ -2156,6 +2156,10 @@ $(function() {
 
 		self.nextMaintenanceTask = function(nextTask){
 			self.mgLog("nextMaintenanceTask called with: "+nextTask);
+			if (self.isPrinting()){
+				self.notify("Printing","Maintenance Tasks can not be performed while a print is running.  Please either cancel the print or wait until it finishes before trying to perform any Maintenance Tasks.","error");
+				return;
+			}
 			if (nextTask === "home"){
 				self.maintenanceOperation("home");
 				self.maintenanceTaskPrinterType("");
@@ -3078,6 +3082,7 @@ $(function() {
 		self.rearLeftDegrees = ko.observable(undefined);
 		self.rearRightDegrees = ko.observable(undefined);
 		self.zLevelError = ko.observable(undefined);
+		self.zLevelErrorDisplay = ko.observable(0);
 		self.frontLeftTurns = ko.observable(undefined);
 		self.frontRightTurns = ko.observable(undefined);
 		self.rearLeftTurns = ko.observable(undefined);
@@ -3182,6 +3187,7 @@ $(function() {
 					"G1 F2000 Z10",
 					"M400",
 					"G29 P2",
+					"M420 S0",
 					"M400",
 					"G1 F1000 X100 Y125 Z20 F10000",
 					"M84 Y",
@@ -3538,11 +3544,15 @@ $(function() {
 				// self.mgLog("The rear left corner needs to move "+self.rearLeftMm()+ "mm or " + self.rearLeftDegrees() + "° " + ((self.rearLeftMm()>0)?"counter-clockwise.":"clockwise."));
 				// self.mgLog("The rear right corner needs to move "+self.rearRightMm()+ "mm or " + self.rearRightDegrees() + "° " + ((self.rearRightMm()>0)?"counter-clockwise.":"clockwise.")); //commented out this block when changed to zeroing cornerMm value for correct picture display - 1/10/2018
 				self.zLevelError(Math.abs(self.zProbeMax-self.zProbeMin));
+				self.zLevelErrorDisplay(self.zLevelError().toFixed(3));
+				if ((Math.abs(self.zProbeMax)>5 || Math.abs(self.zProbeMin)>5)){
+					self.notify("Bed Level Error","Your Bed Level measurement has returned a value that indicates an issue with bed installation or physical interference.  Please check that the printer is setup correctly and try again, or, contact Support about this issue.","error");
+				}
 				if (self.waitingForProbeResponse()){
 					self.waitingForProbeResponse(false);
 					clearTimeout(self.probeFail);
-					if (self.zLevelError() > 0.35){
-						self.mgLog("Bed is out of level more than ±0.35, going to assisted leveling.");
+					if (self.zLevelError() > 0.175){ //was 0.35mm, changed to 0.175mm 5/2/2018.  Josh
+						self.mgLog("Bed is out of level more than 0.175, going to assisted leveling.");
 						// self.setupStep("21");
 						self.goTo("21");
 						self.probeCheckReset();
@@ -3596,6 +3606,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["T0",
 					"G28 XYZ",
 					"G29 P2",
+					"M420 S0",
 					"G1 F6000 X100 Y125",
 					"M84 Y"]);
 				self.probeLevelFirstCheckClicked(true);
@@ -3604,6 +3615,7 @@ $(function() {
 				OctoPrint.control.sendGcode(["T0",
 					"G28 Y",
 					"G29 P2",
+					"M420 S0",
 					"G1 F6000 X100 Y125",
 					"M84 Y"]);
 				self.probeLevelActiveCorner(0);
@@ -4752,6 +4764,10 @@ $(function() {
 				self.mgLog("errorline: "+data.errorline);
 				//alert("Probing failed!  Check that the probe is installed and wired correctly, then try again.");
 				self.probeCheckFailed();
+				if (self.setupStep() === "21" || self.maintenanceOperation() !== "home"){
+					self.probeCheckReset();
+					self.notify("Probing Failed","The printer firmware has reported that a Z Probe attempt has failed.  Please try again or contact support for assistance.","error");
+				}
 			}
 			if (data.zminline !== undefined){
 				self.mgLog("zminline: "+data.zminline);

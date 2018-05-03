@@ -625,7 +625,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._printer.commands(["M503"])
 
 	def sendCurrentValues(self):
-		self.printerValueVersion = int(time.time())
+		self.printerValueVersion = time.time()
 		self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline,
 																tooloffsetline = self.tooloffsetline,
 																firmwareline = self.firmwareline,

@@ -2177,7 +2177,7 @@
 
 			<center>
 				{# <button class="btnstay" data-bind="enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() > 1, click: function() { $root.probeLevelActiveCorner($root.probeLevelActiveCorner() - 1) }">Previous Corner</button> #}
-				<button class="btnstay" data-bind="visible: !$root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5 && $root.probeLevelActiveCorner() > 0, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
+				<button class="btnstay" data-bind="visible: !$root.lastCorner() && bedLevelResults().length > 0, enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5 && $root.probeLevelActiveCorner() > 0, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
 			</center><br> 
 
 			<hr><br>
@@ -2209,6 +2209,7 @@
 					<td>Front Right</td>
 					<td>Rear Left</td>
 					<td>Rear Right</td>
+					<td>Range</td>
 				</tr>
 
 				<tr>
@@ -2216,6 +2217,8 @@
 					<td ><span data-bind="text: $root.frontRightDisplayMm()"></span></td>
 					<td ><span data-bind="text: $root.rearLeftDisplayMm()"></span></td>
 					<td ><span data-bind="text: $root.rearRightDisplayMm()"></span></td>
+					<td ><span data-bind="text: $root.zLevelErrorDisplay()"></span></td>
+
 				</tr>
 			</table>
 		</div>
@@ -2337,14 +2340,15 @@ If you have not changed physically adjusted T0 or T1 since setting the T1 Z Offs
 		<hr>
 		Ignore everything below this statement.  And this statement.<br>
 
-{#  88888888ba,    88888888888  88888888ba   88        88    ,ad8888ba,   
-88      `"8b   88           88      "8b  88        88   d8"'    `"8b  
-88        `8b  88           88      ,8P  88        88  d8'            
-88         88  88aaaaa      88aaaaaa8P'  88        88  88             
-88         88  88"""""      88""""""8b,  88        88  88      88888  
-88         8P  88           88      `8b  88        88  Y8,        88  
-88      .a8P   88           88      a8P  Y8a.    .a8P   Y8a.    .a88  
-88888888Y"'    88888888888  88888888P"    `"Y8888Y"'     `"Y88888P"   #}
+
+{#   88888888ba,    88888888888  88888888ba   88        88    ,ad8888ba,    #}
+{#   88      `"8b   88           88      "8b  88        88   d8"'    `"8b   #}
+{#   88        `8b  88           88      ,8P  88        88  d8'             #}
+{#   88         88  88aaaaa      88aaaaaa8P'  88        88  88              #}
+{#   88         88  88"""""      88""""""8b,  88        88  88      88888   #}
+{#   88         8P  88           88      `8b  88        88  Y8,        88   #}
+{#   88      .a8P   88           88      a8P  Y8a.    .a8P   Y8a.    .a88   #}
+{#   88888888Y"'    88888888888  88888888P"    `"Y8888Y"'     `"Y88888P"    #}
 
 {# <div>
 <hr>
