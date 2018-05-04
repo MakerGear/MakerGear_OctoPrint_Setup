@@ -359,6 +359,7 @@ $(function() {
 		self.customWiggle = ko.observable(undefined);
 		self.customWiggleSelect = ko.observable(undefined);
 
+
 		self.printWiggleConfirm = function(wigglePosition, inputWiggleHeight){
 			self.mgLog("printWiggleConfirm triggered");
 			if(wigglePosition === "custom" && self.customWiggle() === undefined){
@@ -2157,7 +2158,8 @@ $(function() {
 		self.nextMaintenanceTask = function(nextTask){
 			self.mgLog("nextMaintenanceTask called with: "+nextTask);
 			if (self.isPrinting()){
-				self.notify("Printing","Maintenance Tasks can not be performed while a print is running.  Please either cancel the print or wait until it finishes before trying to perform any Maintenance Tasks.","error");
+				// self.notify("Printing","Maintenance Tasks can not be performed while a print is running.  Please either cancel the print or wait until it finishes before trying to perform any Maintenance Tasks.","error");
+				self.mgLog("nextMaintenanceTask called while printing, returning.");
 				return;
 			}
 			if (nextTask === "home"){
