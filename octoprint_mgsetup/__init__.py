@@ -62,6 +62,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.firmwareline = ""
 		self.localfirmwareline = ""
 		self.probeline = ""
+		self.probeOffsetLine = ""
 		self.printActive = False
 		self.mgLogger = logging.getLogger("mgLumberJack")
 		self.mgLogger.setLevel(logging.DEBUG)
@@ -70,6 +71,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.mgLoggerPermanent = logging.getLogger("mgPermanent")
 		self.mgLoggerPermanent.setLevel(5)
 		self.mgLogger.info("right after init test!?")
+		self.printerValueVersion = 0
+		self.printerValueGood = False
 
 
 
@@ -126,9 +129,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), dict(controls=dict(children=dict(name="Medium Quality"), dict(commands=["M201 X900 Y900", "M205 X20 Y20", "M220 S50"]))))
 		#octoprint.settings.Settings.set(octoprint.settings.settings(), ["controls", "children", "name"],["Fan Orn"])
 		#octoprint.settings.Settings.add_overlay(octoprint.settings.settings(), ["controls"],["name"]
-#dict(api=dict(enabled=False),
- #                                  server=dict(host="127.0.0.1",
-  #                                             port=5001))
+		#dict(api=dict(enabled=False),
+		 #                                  server=dict(host="127.0.0.1",
+		  #                                             port=5001))
 
 		octoprint.settings.Settings.get(octoprint.settings.settings(),["appearance", "components", "order", "tab"])
 		self.firstTab = self._settings.get(["firstTab"])
@@ -158,8 +161,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.activated = self._settings.get(["activated"])
 		self.nextReminder = self._settings.get(["nextReminder"])
 		self.pluginVersion = self._settings.get(["pluginVersion"])
-#		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
-#		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
+		#		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
+		#		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
 		octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
 		# self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
@@ -323,12 +326,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._settings.set(["nextReminder"],self.nextReminder)
 		self._settings.save()
 
-	# def sendCurrentValues(self):
-	# 		self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline,
-	# 																tooloffsetline = self.tooloffsetline,
-	# 																firmwareline = self.firmwareline,
-	# 																probeOffsetLine = self.probeOffsetLine)
-	# 		)
 
 
 	def on_event(self, event, payload):
@@ -337,17 +334,18 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info(payload)
 			self.current_position = dict(payload)
 			self.position_state = "fresh"
-##			self._logger.info(current_position)
+		##			self._logger.info(current_position)
 			return
 
 		if event == Events.CLIENT_OPENED:
 			#self._logger.info(payload + " connected")
 			#self.serial = ""
-			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
-			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
+			self.sendCurrentValues()
+			# self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
+			# self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
-			self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
-			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = self.probeOffsetLine))
+			# self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
+			# self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = self.probeOffsetLine))
 			self._logger.info(str(self.nextReminder))
 			#if (self.internetConnection == False ):
 			self.checkInternet(3,5, 'none')
@@ -369,6 +367,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED) or (event == Events.PRINT_DONE) or (event == Events.CONNECTED) or (event == Events.DISCONNECTED):
 			self.printActive = False
+
+		if event == Events.DISCONNECTED:
+			self.printerValueGood = False
+
+		if event == Events.CONNECTED:
+			self.requestValues()
+
 
 	def _to_unicode(self, s_or_u, encoding="utf-8", errors="strict"):
 		"""Make sure ``s_or_u`` is a unicode string."""
@@ -529,32 +534,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "There was an exception while trying to collect logs: "+str(e)))
 
 
-
-
-		# src_files = os.listdir(self._basefolder+"/static/maintenance/gcode")
-		# src = (self._basefolder+"/static/maintenance/gcode")
-		# dest = ("/home/pi/.octoprint/scripts/gcode")
-		# for file_name in src_files:
-		# 	full_src_name = os.path.join(src, file_name)
-		# 	full_dest_name = os.path.join(dest, file_name)
-		# 	if not (os.path.isfile(full_dest_name)):
-		# 		shutil.copy(full_src_name, dest)
-		# 		self._logger.info("Had to copy "+file_name+" to scripts folder.")
-		# 	else:
-		# 		if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
-		# 			shutil.copy(full_src_name, dest)
-		# 			self._logger.info("Had to overwrite "+file_name+" with new version.")
-
-
-
-
-
-
-
-
-
-
-
 	def getLocalFirmwareVersion(self):
 		self._logger.info("local firmware reports itself as: ")
 		if os.path.isfile('/home/pi/m3firmware/src/Marlin/Version.h'):
@@ -632,7 +611,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		# settings.printerProfiles.currentProfileData().extruder.count()
 
-# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
+	# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
 
 	def writeNetconnectdPassword(self, newPassword):
 		subprocess.call("/home/pi/.octoprint/scripts/changeNetconnectdPassword.sh "+newPassword['password'], shell=True)
@@ -642,12 +621,45 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		subprocess.call("/home/pi/.octoprint/scripts/changeHostname.sh "+newHostname['hostname']+" "+self.newhost, shell=True)
 		self._logger.info("Hostname changed to "+newHostname['hostname']+" !")
 
+	def requestValues(self):
+		self._printer.commands(["M503"])
+
+	def sendCurrentValues(self):
+		self.printerValueVersion = time.time()
+		self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline,
+																tooloffsetline = self.tooloffsetline,
+																firmwareline = self.firmwareline,
+																probeOffsetLine = self.probeOffsetLine,
+																printerValueVersion = self.printerValueVersion)
+		)
+
+	def sendValues(self, clientVersion = -1):
+		if clientVersion == self.printerValueVersion:
+			return
+		elif self.printerValueGood:
+			self.sendCurrentValues()
+		else:
+			self.requestValues()
+
 	def get_api_commands(self):
 		self._logger.info("MGSetup get_api_commands triggered.")
 		#self._logger.info("M114 sent to printer.")
 		#self._printer.commands("M114");
 		#self.position_state = "stale"
-		return dict(turnSshOn=[],turnSshOff=[],adminAction=["action"],writeNetconnectdPassword=["password"],changeHostname=['hostname'], sendSerial=[], storeActivation=['activation'], checkActivation=['userActivation'], remindLater=[], checkGoogle=['url'], flushPrintActive=[], mgLog=['stringToLog','priority'])
+		return dict(turnSshOn=[],
+			turnSshOff=[],
+			adminAction=["action"],
+			writeNetconnectdPassword=["password"],
+			changeHostname=['hostname'],
+			sendSerial=[],
+			storeActivation=['activation'],
+			checkActivation=['userActivation'],
+			remindLater=[],
+			checkGoogle=['url'],
+			flushPrintActive=[],
+			mgLog=['stringToLog','priority'],
+			sendValues=['clientVersion']
+			)
 
 	def on_api_get(self, request):
 		self._logger.info("MGSetup on_api_get triggered.")
@@ -673,8 +685,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		# if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line and "Error" not in line and "z_min" not in line and "Bed X:" not in line and "M851" not in line:
 		# 	return line
-
-		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ "]
+		newValuesPresent = False
+		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored"]
 
 		if not any([x in line for x in watchCommands]):
 			return line
@@ -691,11 +703,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("process_z_offset triggered - Z offset")
 			self.zoffsetline = line
 			self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = line))
+			newValuesPresent = True
 
 		if "M218" in line:
 			self._logger.info("process_z_offset triggered - Tool offset")
 			self.tooloffsetline = line
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
+			newValuesPresent = True
+
 		#__plugin_implementation__._logger.info(line)
 
 		if "FIRMWARE_NAME" in line:
@@ -719,12 +734,22 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		if "M851" in line:
 			self._logger.info("Z Probe Offset received")
-			self.probeline = line
+			self.probeOffsetLine = line
 			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
+			newValuesPresent = True
+
 
 		if "= [[ " in line:
 			self._logger.info("Bed Leveling Information received")
 			self._plugin_manager.send_plugin_message("mgsetup", dict(bedLevelLine = line))
+
+		if "Settings Stored" in line:
+			self._logger.info("Looks like a M500 was sent from somewhere.  Sending a M503 to check current values.")
+			self.requestValues()
+
+		if newValuesPresent:
+			self.printerValueGood = True
+			self.sendValues()
 
 		return line
 
@@ -958,6 +983,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("flushPrintActive executed.")
 		elif command == 'mgLog':
 			self.mgLog(data['stringToLog'],data['priority'])
+		elif command == 'sendValues':
+			self.sendValues(data['clientVersion'])
+
 
 	def sendSerial(self):
 		self._logger.info("MGSetup sendSerial triggered.")

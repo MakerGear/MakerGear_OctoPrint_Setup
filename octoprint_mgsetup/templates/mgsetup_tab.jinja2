@@ -407,7 +407,7 @@ click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeight
             </div>
         </div>
         <div style="display:inline-block;width:74.5%;">
-            <span style="font-size:18px;">The Automated Calibration Test found a problem with you nozzle-probe offset. Follow the instructions below to proceed to fix the problem. </span>
+            <span style="font-size:18px;">The Automated Calibration Test found a problem with your nozzle-probe offset. Follow the instructions below to fix the problem. </span>
              <br />
              <br />
              <br />
@@ -2768,6 +2768,25 @@ d8"          Y8a     a8P
 #}
 
 <div id="three" data-bind="visible: loginState.isUser && setupStep()==='25' ">
+        <div style="width:100%;margin-top:15px;" data-bind="visible: setupStep()==='25'">
+        <div style="display:inline-block;width:24.25%;">
+            <div style="text-align:center;">
+                <i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+            </div>
+            <div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+                Automated  <br /> Calibration Test
+            </div>
+        </div>
+        <div style="display:inline-block;width:74.5%;">
+            <span style="font-size:18px;">The Automated Calibration Test has completed successfully. Follow the instructions below to proceed. </span>
+             <br />
+             <br />
+             <br />
+        </div>
+    <hr style="margin-top:0px;margin-bottom:0px;" />
+
+    </div>
+
 <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
         <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='25'" />
     </div><br><br>
