@@ -1708,12 +1708,18 @@ $(function() {
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
 						"G4 P750",
-						"M605 S0",
-						"G28 XYZ",
+						"G28 Z",
 						"M218 T1 Z0",
 						"M500",
+						"M605 S0",
+						"T0",
+						"G28 X",
 						"T1",
-						"G1 F2000 X100 Y155 Z50 ",
+						"G28 X",
+						"M605 S1",
+						"G28",
+						"T1",
+						"G1 F2000 X100 Y155 Z50 E0.001",
 						"G1 F1000 Z0",
 						"M400",
 						"M605 S0",
@@ -1722,6 +1728,7 @@ $(function() {
 						"M300 S1040 P250"
 						
 					]);
+					OctoPrint.printer.extrude(10);
 
 				} else {
 					OctoPrint.control.sendGcode(["M300 S1040 P250",
@@ -2182,10 +2189,6 @@ $(function() {
 				if (taskSplit[1].includes("R0")){self.maintenanceTaskHardwareRevision("R0");} else {self.maintenanceTaskHardwareRevision("R1");}
 				if (taskSplit[1].includes("SE")){self.maintenanceTaskPrinterType("SE");} else {self.maintenanceTaskPrinterType("ID");}
 
-
-
-			} else {
-
 				switch(self.maintenanceTask()){ //put any extra commands that should be run any time a given task is called here; for instance, reseting the customWiggle selection on SetHot and SetT1Hot.
 
 					case "SetHot":
@@ -2255,6 +2258,10 @@ $(function() {
 
 				}
 
+
+			} else {
+
+				
 				switch(self.maintenanceOperation()){
 					case undefined:
 						self.mgLog("nextMaintenanceTask called without nextTask, and maintenanceOperation() is not defined - error during debugging?");
