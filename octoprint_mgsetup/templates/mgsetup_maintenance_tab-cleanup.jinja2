@@ -454,9 +454,11 @@
 
 
 
+
+
+
+
 		<div data-bind="visible: maintenanceTaskHotend() === 'T0' || maintenanceTaskHotend() === 'T1'">
-
-
 
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
 
@@ -464,12 +466,6 @@
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T1'" />
 			</div><br>
 			<h1 style="text-align:left">Extrude Filament</h1>
-
-
-
-
-
-
 
 			<div data-bind="visible:maintenanceTaskPrinterType()==='SE'">
 				Now you need to load filament into your extruder. 
@@ -494,10 +490,6 @@
 
 
 			<center><button id="control-yinc" class="btnstay" data-bind="visible: maintenanceTaskHotend()==='T0', enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button><button id="control-yinc" class="btnstay" data-bind="visible: maintenanceTaskHotend()==='T1', enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat('T1'); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
-
-
-
-
 
 			Place the PLA filament spool on the spool holder so that the loose end points directly upwards into the filament guide. You may need to flip your spool in order to achieve the proper orientation. Cut the end of the filament so that the tip is flat.
 

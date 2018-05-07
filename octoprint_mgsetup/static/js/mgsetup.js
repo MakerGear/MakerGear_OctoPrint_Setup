@@ -909,6 +909,9 @@ $(function() {
 							"G1 F1500 Z50",
 							"T0",
 							"G1 F1500 X20 Y100 Z100",
+							"T1",
+							"G1 F1500 X180",
+							"T0",
 							"M109 S"+temperature.toString()+" T0",
 							"M109 S"+temperature.toString()+" T1",
 							"M400",
@@ -931,6 +934,9 @@ $(function() {
 						"G28 Y X",
 						"T0",
 						"G1 F1500 X20 Y100 Z100",
+						"T1",
+						"G1 F1500 X180",
+						"T0",
 						"M109 S"+temperature.toString()+" T0",
 						"M109 S"+temperature.toString()+" T1",
 						"T1",
@@ -2242,11 +2248,27 @@ $(function() {
 					case "XSaw":
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
+						self.chosenSawBin(0);
+						self.skipConfirm(false);
+						self.calibrationStep(0);
+						self.calibrationAxis("X");
+						self.sawBinPrinted(false);
+						self.sawPrintOffset(0);
+						self.stepFourteenToHome(true);
+						self.stepFifteeenToHome(true);
 						break;
 
 					case "YSaw":
 						self.calibrationStep(0);
 						self.sawBinPrinted(false);
+						self.chosenSawBin(0);
+						self.skipConfirm(false);
+						self.calibrationStep(0);
+						self.calibrationAxis("Y");
+						self.sawBinPrinted(false);
+						self.sawPrintOffset(0);
+						self.stepFourteenToHome(true);
+						self.stepFifteeenToHome(true);
 						break;
 
 					case "ChangeInstructions":
