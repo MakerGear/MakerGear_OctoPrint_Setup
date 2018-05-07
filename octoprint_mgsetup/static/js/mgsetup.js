@@ -221,6 +221,14 @@ $(function() {
 				return ("API and/or CORS are Disabled - Enable both in the API settings.");
 			}
 		},this);
+		self.showMaintenanceBuilder = ko.observable(false);
+		self.showMaintenanceButtons = ko.observable(false);
+		self.showMaintenanceChecklist = ko.observable(false);
+		self.showMgsetupDebugChecklist = ko.observable(false);
+
+
+
+
 
 		// Settings controls:
 		self.newNetconnectdPassword = ko.observable("");

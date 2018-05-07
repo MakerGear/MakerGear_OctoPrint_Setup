@@ -3274,6 +3274,7 @@ d8"         Y8a     a8P
 
 <div data-bind= "visible: !$root.hideDebug()">
 <input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.<br>
+<input type="checkbox" data-bind="checked: $root.showMgsetupDebugChecklist" /> Hide debug options.<br>
 <input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
 <hr />
 Ignore everything below this statement.  And this statement.<br>
@@ -3286,7 +3287,7 @@ Ignore everything below this statement.  And this statement.<br>
     88         8P  88           88      `8b  88        88  Y8,        88  
     88      .a8P   88           88      a8P  Y8a.    .a8P   Y8a.    .a88  
     88888888Y"'    88888888888  88888888P"    `"Y8888Y"'     `"Y88888P"   #}
-<div>
+<div data-bind="visible: $root.showMgsetupDebugChecklist()">
     Which step to show:
     <div><input type="radio" name="setupStepSelect" value="0" data-bind="checked: setupStep, click: window.scroll(0,0)" />0 Welcome Page</div>
     <div><input type="radio" name="setupStepSelect" value="1" data-bind="checked: setupStep, click: window.scroll(0,0)" />1 Starting Height Check (Z head crash/gap)</div>

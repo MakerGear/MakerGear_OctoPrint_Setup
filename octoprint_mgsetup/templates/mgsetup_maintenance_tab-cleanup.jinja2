@@ -9,104 +9,7 @@
 	</div>
 
 	<div id="mainViewNotPrinting" data-bind="visible: !$root.isPrinting()">
-		<div data-bind="visible: !$root.hideDebug()">
-			<hr>
-			Active Hotend:
-			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T0',  click: $root.updateTask()  " /> T0 
-			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T1',  click: $root.updateTask()  " /> T1 
-			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'Both',  click: $root.updateTask()  " /> Both
-			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: '',  click: $root.updateTask()  " /> Null
-			<br>
-			<br>
-			Printer Type:
-			<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: 'SE',  click: $root.updateTask()  " /> SE
-			<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: 'ID',  click: $root.updateTask()  " /> ID
-			<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: '',  click: $root.updateTask()  " /> Null
-			<br>
-			<br>
-			Hardware Revision:
-			<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R0',  click: $root.updateTask()  " /> R0
-			<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R1',  click: $root.updateTask()  " /> R1
-			<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: '',  click: $root.updateTask()  " /> Null
-			<br>
-			<br>
-			Task:
-			<br>
-			<table>
-				<tr>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Assisted',  click: $root.updateTask()  " /> Assisted</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions',  click: $root.updateTask()  " /> ChangeInstructions</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Check',  click: $root.updateTask()  " /> Check</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ColdLevel',  click: $root.updateTask()  " /> ColdLevel</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'home',  click: $root.updateTask()  " /> home</td>
-				</tr>
-				<tr>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'HotLevel',  click: $root.updateTask()  " /> HotLevel</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Load',  click: $root.updateTask()  " /> Load</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetCold',  click: $root.updateTask()  " /> SetCold</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetHot',  click: $root.updateTask()  " /> SetHot</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Cold',  click: $root.updateTask()  " /> SetT1Cold</td>
-				</tr>
-				<tr>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot',  click: $root.updateTask()  " /> SetT1Hot</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'T0T1SetCold',  click: $root.updateTask()  " /> T0T1SetCold</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Unload',  click: $root.updateTask()  " /> Unload</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'XSaw',  click: $root.updateTask()  " /> XSaw</td>
-					<td></td>
-					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'YSaw',  click: $root.updateTask()  " /> YSaw</td>
-				</tr>
-			</table>
-			<br>
-			<br>
-			Operation:
-			<br>
-
-			<table>
-				<tr>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Hot' ,   " /> T0Hot</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Cold' ,   " /> T0Cold</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T1Hot' ,   " /> T1Hot</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T1Cold' ,   " /> T1Cold</td>
-				</tr>
-				<tr>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'XOff' ,  " /> XOff</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'YOff' ,  " /> YOff</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'DCheck' ,  " /> DCheck</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Change' ,    " /> T0Change</td>
-				</tr>
-				<tr>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0T1Change' ,  " /> T0T1Change</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'HotLevel' ,  " /> HotLevel</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'ColdLevel' ,  " /> ColdLevel</td>
-					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'Assisted' ,  " /> Assisted</td>
-				</tr>
-			</table>
-
-			<br>
-			<br>
-			<span data-bind="visible: $root.validTask()"><strong>Valid</strong> Task Combination</span><span data-bind="visible: !$root.validTask()"><strong>Invalid Task Combination!</strong></span>
-
-
-
-			<hr>
-			<center>
-				<button data-bind="click: $root.nextMaintenanceTask()">Force Next Task</button>
-				<br>
-				Danger - this button will go to the next Task in the Operation Tasklist, which could leave things in an unknown and incorrect or indeterminate state.
-			</center>
-
-		</div>
+		
 
 		<div data-bind="visible: $root.shownTask()==='home'">
 			<style>
@@ -2345,7 +2248,11 @@
 
 		<div data-bind= "visible: !$root.hideDebug()"><hr>
 			<input type="checkbox" data-bind="checked: $root.hideDebug" /> Hide debug options.<br>
-			<input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
+			<input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.<br>
+			<input type="checkbox" data-bind="checked: $root.showMaintenanceBuilder" /> Show Maintenance Task Step builder / Validator / Force Next Task.<br>
+			<input type="checkbox" data-bind="checked: $root.showMaintenanceButtons" /> Show Maintenance step buttons - deprecated.<br>
+			<input type="checkbox" data-bind="checked: $root.showMaintenanceChecklist" /> Show Maintenance step checklist.<br>
+
 			<hr>
 			Ignore everything below this statement.  And this statement.<br>
 
@@ -2418,7 +2325,108 @@
 	<hr>
 	</div>
 	#}
-		<div data-bind="visible: !$root.hideDebug()">
+
+		<div data-bind="visible: !$root.hideDebug() && $root.showMaintenanceBuilder()">
+			<hr>
+			Active Hotend:
+			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T0',  click: $root.updateTask()  " /> T0 
+			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'T1',  click: $root.updateTask()  " /> T1 
+			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: 'Both',  click: $root.updateTask()  " /> Both
+			<input type="radio" name="maintenancePageSelectHotendType" data-bind="checked: $root.maintenanceTaskHotend, checkedValue: '',  click: $root.updateTask()  " /> Null
+			<br>
+			<br>
+			Printer Type:
+			<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: 'SE',  click: $root.updateTask()  " /> SE
+			<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: 'ID',  click: $root.updateTask()  " /> ID
+			<input type="radio" name="maintenancePageSelectPrinterType" data-bind="checked: $root.maintenanceTaskPrinterType, checkedValue: '',  click: $root.updateTask()  " /> Null
+			<br>
+			<br>
+			Hardware Revision:
+			<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R0',  click: $root.updateTask()  " /> R0
+			<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: 'R1',  click: $root.updateTask()  " /> R1
+			<input type="radio" name="maintenancePageSelectHardwareRevision" data-bind="checked: $root.maintenanceTaskHardwareRevision, checkedValue: '',  click: $root.updateTask()  " /> Null
+			<br>
+			<br>
+			Task:
+			<br>
+			<table>
+				<tr>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Assisted',  click: $root.updateTask()  " /> Assisted</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ChangeInstructions',  click: $root.updateTask()  " /> ChangeInstructions</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Check',  click: $root.updateTask()  " /> Check</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ColdLevel',  click: $root.updateTask()  " /> ColdLevel</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'home',  click: $root.updateTask()  " /> home</td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'HotLevel',  click: $root.updateTask()  " /> HotLevel</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Load',  click: $root.updateTask()  " /> Load</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetCold',  click: $root.updateTask()  " /> SetCold</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetHot',  click: $root.updateTask()  " /> SetHot</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Cold',  click: $root.updateTask()  " /> SetT1Cold</td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'SetT1Hot',  click: $root.updateTask()  " /> SetT1Hot</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'T0T1SetCold',  click: $root.updateTask()  " /> T0T1SetCold</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Unload',  click: $root.updateTask()  " /> Unload</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'XSaw',  click: $root.updateTask()  " /> XSaw</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'YSaw',  click: $root.updateTask()  " /> YSaw</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+			Operation:
+			<br>
+
+			<table>
+				<tr>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Hot' ,   " /> T0Hot</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Cold' ,   " /> T0Cold</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T1Hot' ,   " /> T1Hot</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T1Cold' ,   " /> T1Cold</td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'XOff' ,  " /> XOff</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'YOff' ,  " /> YOff</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'DCheck' ,  " /> DCheck</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0Change' ,    " /> T0Change</td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'T0T1Change' ,  " /> T0T1Change</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'HotLevel' ,  " /> HotLevel</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'ColdLevel' ,  " /> ColdLevel</td>
+					<td><input type="radio" name="maintenanceTaskOperationRadio" data-bind="checked: $root.maintenanceOperation, checkedValue: 'Assisted' ,  " /> Assisted</td>
+				</tr>
+			</table>
+
+			<br>
+			<br>
+			<span data-bind="visible: $root.validTask()"><strong>Valid</strong> Task Combination</span><span data-bind="visible: !$root.validTask()"><strong>Invalid Task Combination!</strong></span>
+
+
+
+			<hr>
+			<center>
+				<button data-bind="click: $root.nextMaintenanceTask()">Force Next Task</button>
+				<br>
+				Danger - this button will go to the next Task in the Operation Tasklist, which could leave things in an unknown and incorrect or indeterminate state.
+			</center>
+
+		</div>
+
+
+		<div data-bind="visible: !$root.hideDebug() && $root.showMaintenanceButtons()">
 			Go to any operation:
 			<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'home'                          ) ; return true; }">  'home'                          </button>
 			<button data-bind="visible: $root.shownTask()==='home', click: function(){ window.scroll(0,0); $root.nextMaintenanceTask(  'T0Hot_T0-SE-R0_Load'           ) ; return true; }">  'T0Hot_T0-SE-R0_Load'           </button>
@@ -2451,7 +2459,7 @@
 		</div>
 
 
-	<div>
+	<div data-bind="visible: !$root.hideDebug() && $root.showMaintenanceChecklist()">
 		Which step to show:
 		{# <div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'Load'                                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'Load'                                      ) ; return true; }" /> Load                                                        </div> #}
 		<div><input type="radio" name="maintenancePageSelectTask" data-bind="checked: $root.taskRadio, checkedValue: 'home'                                      ,click: function(){ window.scroll(0,0); $root.nextMaintenanceTask( 'home'                                      ) ; return true; }" /> Home                                                        </div>
