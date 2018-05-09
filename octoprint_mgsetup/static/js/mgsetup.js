@@ -4034,6 +4034,11 @@ $(function() {
 				});
 		};
 
+		self.mainStack = undefined;
+		self.errorStack = undefined;
+		self.warnStack = undefined;
+		self.mgStack = undefined;
+
 		self.notify = function (title,message,type,hide){
 
 			if(title === undefined){
@@ -4048,15 +4053,23 @@ $(function() {
 			if(hide === undefined){
 				hide = false;
 			}
+			// if(fakeStack === undefined){
+			// 	// fakeStack = self.mainStack;
+			// 	faceStack = "hello";
+			// }
 			message = message.replace(/'/g, '\x27');
 			message = message.replace(/"/g, '\x22');
 			//message = "<input onclick='responsiveVoice.speak(\x27"+message+"\x27);' type='button' value='🔊 Play' />";
+
 			new PNotify({
 				title: title,
 				text: message,
 				type: type,
 				hide: hide,
+				after_open: function(notice){console.log("anotherLocationTest");console.log(notice);}
 			});
+			// console.log(fakeStack);
+			// fakeStack.pnotify_remove();
 		};
 		
 		self.showSettings = function(target) {
@@ -4102,7 +4115,8 @@ $(function() {
 					text: message,
 					type: type,
 					hide: hide,
-					confirm: confirm
+					confirm: confirm,
+					after_open: function(notice){console.log("anotherLocationTest");console.log(notice);}
 				});
 			}
 		};
@@ -4441,6 +4455,11 @@ $(function() {
 		self.onStartupComplete = function() {
 			self.mgLog("onStartupComplete triggered.");
 			self.mgLogUrl = OctoPrint.getSimpleApiUrl("mgsetup");
+			// console.log(PNotify);
+			// console.log(PNotify.history);
+			console.log(PNotify.prototype);
+			PNotify.prototype.options.history.maxonscreen = 10;
+			// PNotify.history.maxonscreen = 3;
 
 			//console.log(self.temperatures.tools());
 

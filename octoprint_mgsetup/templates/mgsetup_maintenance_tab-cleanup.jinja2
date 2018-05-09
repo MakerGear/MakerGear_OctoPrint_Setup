@@ -904,6 +904,23 @@
 			</div>
 		</div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R1'">
 			<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
 				<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
@@ -1952,12 +1969,12 @@
 		<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
 				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
-			</div><br><br>
+			<br><br></div>
 
 			<h1 style="text-align:left;">Assisted Bed Leveling</h1>
 			<p style="text-align:left;">
 
-				The Automated Calibration Test detected that your bed is further out of level than we recommend printing with.  Using the example images below, follow the steps below to level the bed using the included 2 mm Allen key, then click "Recheck Bed Level".
+				The Assisted Bed Leveling process on this page will guide you through the process of adjusting your physical bed level.  This page specifically allows you to refine the level as far as you would like - you will not be sent away once level enough for general printing.  Once the bed is as level as you would like, click on "Return to Maintenance Index" at the top or bottom of the page to return.
 
 			</p>
 
