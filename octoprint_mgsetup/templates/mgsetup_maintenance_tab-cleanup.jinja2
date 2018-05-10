@@ -124,6 +124,21 @@
 									Tool 0 (left) Starting Height Cold
 								</a>
 
+								<a data-bind="visible: $root.hasProbe() && !$root.isDual(), click: function() {$root.nextMaintenanceTask('T0Cold_T0-SE-R1_SetCold'); window.scroll(0,0); return true}">
+									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+									<br>
+									Tool 0 (left) Starting Height Cold - Probe
+								</a>
+								<a data-bind="visible: $root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T0Cold_T0-ID-R1_SetCold'); window.scroll(0,0); return true}">
+									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT0Cold.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+									<br>
+									Tool 0 (left) Starting Height Cold - Probe
+								</a>
+
+
+
 							</div>
 
 						</div>
@@ -1170,6 +1185,143 @@
 	{#                                                                                 #}
 
 	<div data-bind="visible: $root.shownTask()==='SetCold'">
+
+		<div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser">
+			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+			</div><br>
+			<h1>Adjust Starting Height - Cold using Feeler Gauge</h1>
+
+			Here we will adjust the starting height of the printer with the feeler gauge.  Click <strong>Prepare</strong> to move the printer to its testing position.<br><br>
+			<div class = "fileupload-new thumbnail" style="width:75%; margin:auto; background-color:rgba(200,0,0,0.2);" data-bind="visible:$root.untouchable()">
+				<strong>Prepare</strong> has been disabled until the printer is safe to physically interact with.  Click <strong>Cooldown</strong> to turn off all heaters if necessary - this message will be removed when it is safe to proceed.<br><br>
+				<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
+					<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
+						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/thermometer.png', 'width': '80%',} , visible: loginState.isUser " />
+					</div>
+
+					<div style="width: 70%; display:inline-block; vertical-align:middle; text-align:left;">
+						Bed Temperature: <span data-bind="text: $root.displayBedTemp(), style: { color: (parseFloat($root.displayBedTemp()) < 40) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayBedTempTarget()"></span><br>
+						<div data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">
+							Extruder Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+						</div>
+						<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+							Extruder 0 Temperature: <span data-bind="text: $root.displayToolTemp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayToolTempTarget()"></span><br>
+							Extruder 1 Temperature: <span data-bind="text: $root.displayTool1Temp(),  style: { color: (parseFloat($root.displayToolTemp()) < 50) ? 'green' : 'red' }"></span> / <span data-bind="text: $root.displayTool1TempTarget()"></span><br>
+						</div>
+					</div>
+				</div>
+				<br>
+				<center><button class="btnstay" data-bind="enable: loginState.isUser(), click: function() {$root.cooldown()}">Cooldown</button></center>
+			</div>
+			<center><button id="control-yinc" class="btnstay" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R0', enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight('00') ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button><button id="control-yinc" class="btnstay" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R1', enable: isOperational() && !$root.untouchable() && !isPrinting() && loginState.isUser() && !$root.stepTwoPrepared(), click: function() { $root.setupSetStartingHeight('00-probe') ; $root.stepTwoPrepared(1) }">{{ _('Prepare') }}</button></center>
+
+			<br>
+			<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'SE'">
+				During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the nozzle and the glass build plate.
+			</div>
+			<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+				During this step, you'll use the <strong>Bed Height Buttons</strong> below to adjust the distance between the Left Extruder (T0) nozzle and the glass build plate.
+			</div>
+			When this step is completed you should be able to slide the blue feeler gauge between the nozzle and glass with very little resistance.
+			<p>
+				First, press the "1 mm Up" button as you are watching the bed. You will see the bed move 1 mm towards the nozzle. Slowly repeat this process until the build plate is within 1 mm of the nozzle. NOTE: In order to prevent the nozzle from colliding with the build plate, you should not use the "1 mm Up" button when the nozzle is within 1 mm of the build plate. The "1 mm Up" button may become disabled to prevent collision - in this case use the "0.1 mm Up" button to continue. 
+			</p>
+
+			<p>
+				<div data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">
+					Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button once to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+				</div>
+				<div data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
+					Now place the blue feeler gauge between the nozzle and the build plate, then click the "0.1 mm Up” button to bring the build plate even closer to the T0 nozzle. As soon as you can sense that the feeler gauge is stuck between the nozzle and build plate, click the "0.1 mm Down” button  to move the build plate down until the feeler gauge is able to move freely between the nozzle and build plate.
+				</div>
+			</p>
+
+			<p>
+				Next, click the "0.01 mm Up” button to move the bed up until you begin to feel resistance while sliding the feeler gauge between the build plate and nozzle. Once this is completed, click "Save New Starting Height"
+			</p>
+			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
+				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/13.jpg', 'width': '100%',} , visible: loginState.isUser" />
+			</div>
+			<br>
+			<div data-bind="visible: !$root.hideDebug()">
+				<br>
+				Original Z Offset : <span data-bind="text: $root.ZOffset"></span>
+				<br>
+			</div>
+			Current Z Position : <span data-bind="text: $root.ZPos"></span>
+			<div data-bind="visible: !$root.hideDebug()">
+				<br>
+				Fresh data : <span data-bind="text: $root.ZPosFresh"></span>
+			</div>
+			<br>
+
+			<!-- Z jogging control panel -->
+			<h4>Bed Height Buttons</h4>
+			<div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+				<h1>Z 1 mm</h1>
+				<div>
+					<button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,1) }"><i class="icon-arrow-up"></i></button> 1 mm Up
+				</div>
+				<div>
+					<button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,1) }"><i class="icon-arrow-down"></i></button> 1 mm Down
+				</div>
+			</div>
+			<div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+				<h1>Z 0.1 mm</h1>
+				<div>
+					<button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.1) }"><i class="icon-arrow-up"></i></button> .1 mm Up
+				</div>
+				<div>
+					<button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.1) }"><i class="icon-arrow-down"></i></button> .1 mm Down
+				</div>
+			</div>
+			<div id="control-jog-z" class="jog-panel" style="float:left; margin:0; width:33%;">
+				<h1>Z 0.01 mm</h1>
+				<div>
+					<button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',-1,0.01) }"><i class="icon-arrow-up"></i></button> .01 mm Up
+				</div>
+				<div>
+					<button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared(), click: function() { $root.sendJogCommand('z',1,0.01) }"><i class="icon-arrow-down"></i></button> .01 mm Down
+				</div>
+			</div>
+			<br><br><br><br><br><br><br><br><br>
+
+			<center>
+				<button id="control-yinc" class="btnstayBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R0', enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), click: function() { $root.setupSetStartingHeight(1); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Starting Height') }}</button>
+				<button id="control-yinc" class="btnstayBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R1', enable: isOperational() && !isPrinting() && loginState.isUser() && $root.stepTwoPrepared() && !$root.stepTwoStartingHeightSaved(), click: function() { $root.setupSetStartingHeight('1-probe'); $root.stepTwoStartingHeightSaved(true); $root.stepTwoPrepared(false) }">{{ _('Save New Probe Offset') }}</button>
+			</center>
+			<br><br>
+	{# 		<center>
+				<button style="width:100%;" class="btngoBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R0', enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(4); $root.stepTwoStartingHeightSaved(false) }">Hot Starting Height Adjustment<br></button>
+			</center>
+			<center>
+				<button style="width:100%;" class="btngoBig" data-bind="visible: $root.maintenanceTaskHardwareRevision() === 'R1', enable: loginState.isUser && $root.stepTwoStartingHeightSaved(), click: function() { window.scroll(0,0); $root.showMaintenanceStep(20); $root.stepTwoStartingHeightSaved(false) }">Hot Probe Offset Adjustment<br></button>
+			</center> #}
+			{# <center><button class="btngoBig" data-bind="enable: $root.stepTwoPrepared && $root.stepTwoStartingHeightSaved(), click: function() { $root.goTo('3'); window.scroll(0,0) }">Next Step</button></center> #}
+
+			<br><br>
+		</div>
+
+	</div>
+
+
+
+
+{#                                                                                                                 #}
+{#     ,ad8888ba,                88           88  88888888ba                            88                         #}
+{#    d8"'    `"8b               88           88  88      "8b                           88                         #}
+{#   d8'                         88           88  88      ,8P                           88                         #}
+{#   88              ,adPPYba,   88   ,adPPYb,88  88aaaaaa8P'  8b,dPPYba,   ,adPPYba,   88,dPPYba,    ,adPPYba,    #}
+{#   88             a8"     "8a  88  a8"    `Y88  88""""""'    88P'   "Y8  a8"     "8a  88P'    "8a  a8P_____88    #}
+{#   Y8,            8b       d8  88  8b       88  88           88          8b       d8  88       d8  8PP"""""""    #}
+{#    Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,d88  88           88          "8a,   ,a8"  88b,   ,a8"  "8b,   ,aa    #}
+{#     `"Y8888Y"'    `"YbbdP"'   88   `"8bbdP"Y8  88           88           `"YbbdP"'   8Y"Ybbd8"'    `"Ybbd8"'    #}
+{#                                                                                                                 #}
+{#                                                                                                                 #}
+
+
+	<div data-bind="visible: $root.shownTask()==='ColdProbe'">
 
 		<div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
