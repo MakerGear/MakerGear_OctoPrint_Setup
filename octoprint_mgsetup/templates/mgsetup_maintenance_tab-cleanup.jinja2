@@ -351,21 +351,58 @@
 			<h1 style="text-align:left">Extrude Filament</h1>
 
 			<p>
-				
 				Now you need to load filament into your Left Extruder (T0) and Right Extruder (T1). 
 
-				<br>
-
-				<p>
-					Click 'Prepare' and then continue reading the instructions while you wait for your printer to move into position and heat up.
-				</p>
-
-				<p>
-
-					<i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
-					Your extruders and build surface will start to heat up. Do not touch the extruders' nozzles or the build surface.
-				</p>
-				<center><button  id="control-yinc" class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat('both'); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
+			<div data-bind="visible:maintenanceTaskPrinterType()==='SE' && maintenanceOperation() === 'HotLevel'">
+				Now you need to load filament into your extruder.  Hot Bed Leveling only supports PLA currently.
+			</div>
+			<div data-bind="visible: maintenanceTaskPrinterType()==='ID' && maintenanceOperation() !== 'HotLevel'">
+				<div data-bind="visible: maintenanceTaskHotend() === 'T0'">Now you need to load filament into your Left Extruder (T0).</div>
+				<div data-bind="visible: maintenanceTaskHotend() === 'T1'">Now you need to load filament into your Right Extruder (T1).</div>
+			</div>
+			<div data-bind="visible: maintenanceOperation() !== 'HotLevel'">
+				<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='SE')">
+					Both "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Extrude filament as needed.
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
+				</div>
+				<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T0')">
+					Both "Prepare" buttons will position the printer and start heating the Left Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Extrude filament as needed.
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare T0 at PLA Extruder Temperature') }}</button></center><br><br>
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare T0 at ABS Extruder Temperature') }}</button></center><br><br>
+				</div>
+				<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T1')">
+					Both "Prepare" buttons will position the printer and start heating the Right Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Extrude filament as needed.
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare T1 at PLA Extruder Temperature') }}</button></center><br><br>
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare T1 at ABS Extruder Temperature') }}</button></center><br><br>
+				</div>
+				<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='Both')">
+					Both Material "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Retract filament as needed.  Click "Prepare" and then Retract filament on any hotend that currently has filament loaded.
+					<br><br>
+					<center>
+						<table>
+							<tr>
+								<td>
+									<center><h3>Left Extruder T0</h3></center>
+								</td>
+								<td>
+									<center><h3>Right Extruder T1</h3></center>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare T0 at PLA Extruder Temperature') }}</button></center><br><br>
+									<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare T0 at ABS Extruder Temperature') }}</button></center><br><br>
+								</td>
+								<td>
+									<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare T1 at PLA Extruder Temperature') }}</button></center><br><br>
+									<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare T1 at ABS Extruder Temperature') }}</button></center><br><br>
+								</td>
+							</tr>
+						</table>
+					</center>
+				</div>
+			</div>
 
 				Place the PLA filament spools on the spool holders so that the loose end points directly upward into the filament guides.  Place the spool of Black PLA on the Left spool holder, and the spool of Blue PLA on the Right spool holder.  You may need to flip your spools in order to achieve the proper orientation. Cut the ends of the filament so that the tip is flat.
 				<br>
@@ -467,12 +504,36 @@
 			</div><br>
 			<h1 style="text-align:left">Extrude Filament</h1>
 
-			<div data-bind="visible:maintenanceTaskPrinterType()==='SE'">
-				Now you need to load filament into your extruder. 
+{# 			<div data-bind="visible: maintenanceOperation() === 'HotLevel'">
+				Now you need to load filament into your extruder.  Hot Bed Leveling only supports PLA currently.
+			</div> #}
+			<div data-bind="visible: maintenanceTaskPrinterType()==='ID' && maintenanceOperation() === 'HotLevel'">
+				<div data-bind="visible: maintenanceTaskHotend() === 'T0'">Now you need to load filament into your Left Extruder (T0).  Hot Bed Leveling only supports PLA currently.</div>
+				{# <div data-bind="visible: maintenanceTaskHotend() === 'T1'">Now you need to load filament into your Right Extruder (T1).</div> #}
 			</div>
-			<div data-bind="visible: maintenanceTaskPrinterType()==='ID'">
-				<div data-bind="visible: maintenanceTaskHotend() === 'T0'">Now you need to load filament into your Left Extruder (T0).</div>
-				<div data-bind="visible: maintenanceTaskHotend() === 'T1'">Now you need to load filament into your Right Extruder (T1).</div>
+			<div data-bind="visible: maintenanceTaskPrinterType()==='SE' && maintenanceOperation() === 'HotLevel'">
+				<div data-bind="visible: maintenanceTaskHotend() === 'T0'">Now you need to load filament into your extruder.  Hot Bed Leveling only supports PLA currently.</div>
+				{# <div data-bind="visible: maintenanceTaskHotend() === 'T1'">Now you need to load filament into your Right Extruder (T1).</div> #}
+			</div>
+
+
+			<div data-bind="visible: maintenanceOperation() !== 'HotLevel'">
+				<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='SE')">
+					Both "Prepare" buttons will position the printer and start heating the Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Extrude filament as needed.
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare at PLA Extruder Temperature') }}</button></center><br><br>
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare at ABS Extruder Temperature') }}</button></center><br><br>
+				</div>
+				<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T0')">
+					Both "Prepare" buttons will position the printer and start heating the Left Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Extrude filament as needed.
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare T0 at PLA Extruder Temperature') }}</button></center><br><br>
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T0',260) }">{{ _('Prepare T0 at ABS Extruder Temperature') }}</button></center><br><br>
+				</div>
+				<div data-bind="visible: ($root.maintenanceTaskPrinterType()==='ID') && ($root.maintenanceTaskHotend()==='T1')">
+					Both "Prepare" buttons will position the printer and start heating the Right Extruder to the target temperature (220 °C for PLA, 260 °C for ABS).  Once the target temperature has been reached, you can Extrude filament as needed.
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',220) }">{{ _('Prepare T1 at PLA Extruder Temperature') }}</button></center><br><br>
+					<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , click: function() { $root.sendMaintenancePreheat('T1',260) }">{{ _('Prepare T1 at ABS Extruder Temperature') }}</button></center><br><br>
+				</div>
+				
 			</div>
 
 			<br>
@@ -485,12 +546,11 @@
 
 				<i class="icon-fire" style="float:left;font-size:30px;color:red;margin-right:5px;"></i>
 
-				Your extruder and build surface will start to heat up. Do not touch the extruder's nozzle or the build surface.
+				Your extruder and build surface will start to heat up. Do not touch the extruder's nozzle or the build surface.  Once the target temperature has been reached, you can Extrude filament as needed.
 			</p>
 
 
-			<center><button id="control-yinc" class="btnstay" data-bind="visible: maintenanceTaskHotend()==='T0', enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat(); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button><button id="control-yinc" class="btnstay" data-bind="visible: maintenanceTaskHotend()==='T1', enable: isOperational() && !isPrinting() && loginState.isUser() && !$root.stepThreeStartHeatingClicked(), click: function() { $root.sendWigglePreheat('T1'); $root.stepThreeStartHeatingClicked(true) }">{{ _('Prepare') }}</button></center><br><br>
-
+			<center><button  class="btnstay" data-bind="enable: isOperational() && !isPrinting() && loginState.isUser() , visible: maintenanceOperation() === 'HotLevel', click: function() { $root.sendMaintenancePreheat('T0',220) }">{{ _('Prepare') }}</button></center><br><br>
 			Place the PLA filament spool on the spool holder so that the loose end points directly upwards into the filament guide. You may need to flip your spool in order to achieve the proper orientation. Cut the end of the filament so that the tip is flat.
 
 			<br><br>
@@ -561,7 +621,7 @@
 				</p>
 			</video>
 
-			Once filament is consistently extruding, click "Next Step" proceed:<br>
+			Once filament is consistently extruding, click "Next Step" to proceed:<br>
 
 
 			<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0); $root.stepThreeStartHeatingClicked(false) }">Next Step</button></center>
