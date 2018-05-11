@@ -188,7 +188,8 @@ $(function() {
 			}
 		},this);
 
-		self.stepProgressArray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,1,2,2,3,3,5,4,2]; //TODO - update this for all new step pages
+		self.stepProgressArray = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,1,2,2,3,3,5,4,2,2,0,0,0,2,0]; //TODO - update this for all new step pages
+		//						  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 161718192021222324252627282930 
 		//This works by having an array index for each step in the flow; the step's index is the same as it's step "number".  The numbers in the array relate to how far through the setup process
 		//that step number is.  self.maxSteps() above returns the max steps for a given flow (dual, single, probe or no, etc.); the progress bar is set to the number in the array / max steps.
 
@@ -278,8 +279,10 @@ $(function() {
 		self.tool1XOffset = ko.observable(undefined);
 		self.tool1YOffset = ko.observable(undefined);
 		self.tool1ZOffset = ko.observable(undefined);
-		self.stepTwentyEightGuideFollowed = ko.observable(undefined); 
-		self.stepTwentyEightHotendReplaced = ko.observable(undefined); 
+		self.stepTwentyEightGuideFollowed = ko.observable(undefined);
+		self.stepTwentyEightHotendReplaced = ko.observable(undefined);
+		self.stepTwentyNineFilament = ko.observable(undefined);
+		self.stepTwentyNineNext = ko.observable(undefined);
 
 
 
@@ -3196,7 +3199,9 @@ $(function() {
 					return;
 				} else {
 					self.probeCheckReset();
-					self.goTo("24");
+					// self.goTo("24");
+					self.stepTwentyNineNext("24");
+					self.goTo("29");
 					self.failedStep(3);
 					self.mgLog("probeCheck step 3 failed; self.probeOffset() = "+self.probeOffset());
 				}
@@ -3345,9 +3350,13 @@ $(function() {
 							self.probeCheckReset();
 							self.mgLog("probeRecieved");
 							if(!self.isDual()){
-								self.goTo("23");
+								// self.goTo("23");
+								self.stepTwentyNineNext("23");
+								self.goTo("29");
 							} else {
-								self.goTo("25");
+								// self.goTo("25");
+								self.stepTwentyNineNext("25");
+								self.goTo("29");
 							}
 							self.failedStep(self.probeStep());
 							// if(self.probeStep() === 3){
@@ -3594,9 +3603,13 @@ $(function() {
 						// self.setupStep("7");
 						self.mgLog("process bed level");
 						if(!self.isDual()){
-							self.goTo("23");
+							// self.goTo("23");
+							self.stepTwentyNineNext("23");
+							self.goTo("29");
 						} else {
-							self.goTo("25");
+							// self.goTo("25");
+							self.stepTwentyNineNext("25");
+							self.goTo("29");
 						}
 						self.probeCheckReset();
 					}
@@ -4240,6 +4253,7 @@ $(function() {
 
 			if (targetStep === 0){
 				self.mgLog("resetStep targetStep = 0");
+				self.stepTwentyNineNext(undefined);
 			}
 			if (targetStep === 1){
 				self.mgLog("resetStep targetStep = 1");
@@ -4253,6 +4267,7 @@ $(function() {
 			if (targetStep === 3){
 				self.mgLog("resetStep targetStep = 3");
 				self.stepThreeStartHeatingClicked(false);
+				// self.stepTwentyNineNext(undefined);
 			}
 			if (targetStep === 4){
 				self.mgLog("resetStep targetStep = 4");
@@ -4351,6 +4366,8 @@ $(function() {
 				self.mgLog("resetStep targetStep:");
 				self.mgLog(targetStep);
 				self.stepThreeStartHeatingClicked(false);
+				// self.stepTwentyNineNext(undefined);
+
 			}
 			if (targetStep === 28){
 				self.mgLog("resetStep targetStep:");
@@ -4831,13 +4848,14 @@ $(function() {
 			if (data.probeOffsetLine !== undefined && data.probeOffsetLine !== ""){
 				self.mgLog("probeOffsetline: "+data.probeOffsetLine);
 				self.filter = /M851 Z(.?\d+\.\d+)/;
-				var match = self.filter.exec(data.probeOffsetLine);
-				if (match[1] !== undefined){
-					self.mgLog("probeOffsetLine match: "+match);
-					self.mgLog("probeOffsetLine match[1]: "+match[1]);
-					self.probeOffset(parseFloat(match[1]));
-				} else {
-					self.mgLog("Tried to parse received probeOffsetline, but match[1] is undefined; probeOffsetline: "+data.probeOffset);
+				if ((match = self.filter.exec(data.probeOffsetLine)) !== null){
+					if (match[1] !== undefined){
+						self.mgLog("probeOffsetLine match: "+match);
+						self.mgLog("probeOffsetLine match[1]: "+match[1]);
+						self.probeOffset(parseFloat(match[1]));
+					} else {
+						self.mgLog("Tried to parse received probeOffsetline, but match[1] is undefined; probeOffsetline: "+data.probeOffset);
+					}
 				}
 			}
 			if (data.bedLevelLine !== undefined){
