@@ -805,12 +805,18 @@ $(function() {
 		self.sendWigglePreheat = function (targetHotend, targetTemperature) {
 			var temperature;
 			var hotend;
+			var wiggleBedTemp;
 
 
 			if (targetTemperature === undefined){
 				temperature = 220;
 			} else {
 				temperature = targetTemperature;
+			}
+			if (temperature >= 230){
+				wiggleBedTemp = 110;
+			} else {
+				wiggleBedTemp = 70;
 			}
 			if (targetHotend === undefined){
 				hotend = "T0";
@@ -822,7 +828,7 @@ $(function() {
 				if (self.hasProbe()){
 					OctoPrint.control.sendGcode([
 						"M104 T0 S"+temperature.toString(),
-						"M140 S70",
+						"M140 S"+wiggleBedTemp.toString(),
 						"M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
@@ -840,7 +846,7 @@ $(function() {
 				} else {
 					OctoPrint.control.sendGcode([
 						"M104 T0 S"+temperature.toString(),
-						"M140 S70",
+						"M140 S"+wiggleBedTemp.toString(),
 						"M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
@@ -861,7 +867,7 @@ $(function() {
 					if (self.hasProbe()){
 						OctoPrint.control.sendGcode([
 							"M104 T1 S"+temperature.toString(),
-							"M140 S70",
+							"M140 S"+wiggleBedTemp.toString(),
 							"M300 S1040 P250",
 							"M300 S1312 P250", 
 							"M300 S1392 P250",
@@ -880,7 +886,7 @@ $(function() {
 				} else {
 					OctoPrint.control.sendGcode([
 						"M104 T1 S"+temperature.toString(),
-						"M140 S70",
+						"M140 S"+wiggleBedTemp.toString(),
 						"M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
@@ -903,7 +909,7 @@ $(function() {
 						OctoPrint.control.sendGcode([
 							"M104 T0 S"+temperature.toString(),
 							"M104 T1 S"+temperature.toString(),
-							"M140 S70",
+							"M140 S"+wiggleBedTemp.toString(),
 							"M300 S1040 P250",
 							"M300 S1312 P250", 
 							"M300 S1392 P250",
@@ -927,7 +933,7 @@ $(function() {
 					OctoPrint.control.sendGcode([
 						"M104 T0 S"+temperature.toString(),
 						"M104 T1 S"+temperature.toString(),
-						"M140 S70",
+						"M140 S"+wiggleBedTemp.toString(),
 						"M300 S1040 P250",
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
@@ -2560,32 +2566,6 @@ $(function() {
 
 								break;
 
-							case "Load":
-								switch(self.maintenanceTaskPrinterType()){
-									case "SE":
-										switch(self.maintenanceTaskHardwareRevision()){
-											case "R0":
-												self.nextMaintenanceTask("T0Change_T0-SE-R0_SetHot");
-												break;
-											case "R1":
-												self.nextMaintenanceTask("T0Change_T0-SE-R1_SetHot");
-												break;
-										}
-										break;
-
-									case "ID":
-										switch(self.maintenanceTaskHardwareRevision()){
-											case "R0":
-												self.nextMaintenanceTask("T0Change_T0-ID-R0_SetHot");
-												break;
-											case "R1":
-												self.nextMaintenanceTask("T0Change_T0-ID-R1_SetHot");
-												break;
-										}
-								}
-
-								break;
-
 							case "SetCold":
 								switch(self.maintenanceTaskPrinterType()){
 									case "SE":
@@ -2610,6 +2590,33 @@ $(function() {
 										}
 								}
 								break;
+
+
+							case "Load":
+								switch(self.maintenanceTaskPrinterType()){
+									case "SE":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-SE-R0_SetHot");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-SE-R1_SetHot");
+												break;
+										}
+										break;
+
+									case "ID":
+										switch(self.maintenanceTaskHardwareRevision()){
+											case "R0":
+												self.nextMaintenanceTask("T0Change_T0-ID-R0_SetHot");
+												break;
+											case "R1":
+												self.nextMaintenanceTask("T0Change_T0-ID-R1_SetHot");
+												break;
+										}
+								}
+								break;
+
 
 							case "SetHot":
 								switch(self.maintenanceTaskPrinterType()){
@@ -2715,8 +2722,8 @@ $(function() {
 
 							case "SetT1Cold":
 								switch(self.maintenanceTaskHardwareRevision()){
-									case "R0":
-										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_Load");
+									case "R0"
+:										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_Load");
 										break;
 									case "R1":
 										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_Load");
