@@ -3123,6 +3123,10 @@ $(function() {
 		self.frontRightDegrees = ko.observable(undefined);
 		self.rearLeftDegrees = ko.observable(undefined);
 		self.rearRightDegrees = ko.observable(undefined);
+		self.frontLeftDisplayDegrees = ko.observable(undefined);
+		self.frontRightDisplayDegrees = ko.observable(undefined);
+		self.rearLeftDisplayDegrees = ko.observable(undefined);
+		self.rearRightDisplayDegrees = ko.observable(undefined);
 		self.zLevelError = ko.observable(undefined);
 		self.zLevelErrorDisplay = ko.observable(0);
 		self.frontLeftTurns = ko.observable(undefined);
@@ -3518,6 +3522,10 @@ $(function() {
 				self.frontRightDegrees((Math.abs(self.bedLevelResults()[0][3][1][2]) * (360/0.7)).toFixed());
 				self.rearLeftDegrees((Math.abs(self.bedLevelResults()[0][3][2][2]) * (360/0.7)).toFixed());
 				self.rearRightDegrees((Math.abs(self.bedLevelResults()[0][3][3][2]) * (360/0.7)).toFixed());
+				self.frontLeftDisplayDegrees(self.frontLeftDegrees());
+				self.frontRightDisplayDegrees(self.frontRightDegrees());
+				self.rearLeftDisplayDegrees(self.rearLeftDegrees());
+				self.rearRightDisplayDegrees(self.rearRightDegrees());
 				self.direction = "";
 				self.turns = "";
 				self.numberWords = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","too many"];
