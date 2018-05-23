@@ -2355,21 +2355,21 @@
 
 					</tr>
 					<tr>
-						<td ><span data-bind="text: $root.frontLeftDisplayDegrees()"></span>°</td>
-						<td ><span data-bind="text: $root.frontRightDisplayDegrees()"></span>°</td>
-						<td ><span data-bind="text: $root.rearLeftDisplayDegrees()"></span>°</td>
-						<td ><span data-bind="text: $root.rearRightDisplayDegrees()"></span>°</td>
+						<td ><span data-bind="text: $root.frontLeftDisplayDegrees()"></span>°  <span class="icon-undo" style="font-size:20px;" data-bind="visible: $root.frontLeftDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:20px;" data-bind="visible: $root.frontLeftDisplayMm() > 0"></span></td>
+						<td ><span data-bind="text: $root.frontRightDisplayDegrees()"></span>°  <span class="icon-undo" style="font-size:20px;" data-bind="visible: $root.frontRightDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:20px;" data-bind="visible: $root.frontRightDisplayMm() > 0"></span></td>
+						<td ><span data-bind="text: $root.rearLeftDisplayDegrees()"></span>°  <span class="icon-undo" style="font-size:20px;" data-bind="visible: $root.rearLeftDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:20px;" data-bind="visible: $root.rearLeftDisplayMm() > 0"></span></td>
+						<td ><span data-bind="text: $root.rearRightDisplayDegrees()"></span>°  <span class="icon-undo" style="font-size:20px;" data-bind="visible: $root.rearRightDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:20px;" data-bind="visible: $root.rearRightDisplayMm() > 0"></span></td>
 						<td></td>
 
 					</tr>
-					<tr>
+{# 					<tr>
 						<td><span class="icon-undo" style="font-size:30px;" data-bind="visible: $root.frontLeftDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:30px;" data-bind="visible: $root.frontLeftDisplayMm() > 0"></span></td>
 						<td><span class="icon-undo" style="font-size:30px;" data-bind="visible: $root.frontRightDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:30px;" data-bind="visible: $root.frontRightDisplayMm() > 0"></span></td>
-						<td><span class="icon-undo" style="font-size:30px;" data-bind="visible: $root.rearLeftDisplayMm()"< 0"></span><span class="icon-repeat" style="font-size:30px;" data-bind="visible: $root.rearLeftDisplayMm() > 0"></span></td>
+						<td><span class="icon-undo" style="font-size:30px;" data-bind="visible: $root.rearLeftDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:30px;" data-bind="visible: $root.rearLeftDisplayMm() > 0"></span></td>
 						<td><span class="icon-undo" style="font-size:30px;" data-bind="visible: $root.rearRightDisplayMm() < 0"></span><span class="icon-repeat" style="font-size:30px;" data-bind="visible: $root.rearRightDisplayMm() > 0"></span></td>
 						<td></td>
 
-					</tr>
+					</tr> #}
 
 				</table>
 			</div>
