@@ -145,6 +145,33 @@ One-time pre-ship patch.<br><br>
 <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button><br>
 Patch to create system log symlinks allowing easy OctoPrint access.<br><br> 
 
+<hr>
+Printer Run Time recording:
+<br>
+<br>
+Total Printer Print Success Time: <span data-bind="text: settings.settings.plugins.mgsetup.totalPrintSuccessTime"></span><br>
+Total Printer Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalPrintFailTime()).toString()"></span><br>
+Total Printer Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalMachineFailTime()).toString()"></span>
+
+
+<br>
+<br>
+Current Project Print Success Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintSuccessTime()).toString()"></span><br>
+Current Project Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintFailTime()).toString()"></span><br>
+Current Project Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectMachineFailTime()).toString()"></span><br>
+Current Project Name: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectName()).toString()"></span>
+<br>
+<hr>
+<br>
+Current Project Configuration:
+<br>
+Set New Current Project Name: <input data-bind="textInput: $root.newCurrentProjectName" />
+<br>
+<button data-bind="click: function() { $root.adminAction('resetCurrentProject','newProjectName',$root.newCurrentProjectName()), $root.newCurrentProjectName('') }">Reset Current Project Time and set new Name</button><br>
+
+{# Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span><br> #}
+
+
 
 <div id="command_response_popup" class="modal hide fade">
 <center>Command Response:</center><br>

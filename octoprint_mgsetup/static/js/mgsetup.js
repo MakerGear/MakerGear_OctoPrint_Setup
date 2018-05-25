@@ -238,6 +238,7 @@ $(function() {
 		self.firmwareline = ko.observable("");
 		self.profileString = ko.observable("");
 		self.hotendSwapComplete = ko.observable(false);
+		self.newCurrentProjectName = ko.observable("");
 
 		// Quick Check Process starting/default values:
 		self.printerValueVersion = ko.observable(0); //storage location for the printer value version - a 4 character random code generated on the server side to 
@@ -3944,7 +3945,7 @@ $(function() {
 			});
 		};
 
-		self.adminAction = function(targetAction) {
+		self.adminAction = function(targetAction, payloadName, payload) {
 			if (targetAction === "uploadFirmware"){
 				OctoPrint.connection.disconnect();
 			}
@@ -3952,8 +3953,13 @@ $(function() {
 				self.registered(false);
 				self.activated(false);
 			}
+			if (payloadName === undefined || payload === undefined){
+				payloadName = "";
+				payload = {};
+			}
+
 			var url = OctoPrint.getSimpleApiUrl("mgsetup");
-			OctoPrint.issueCommand(url, "adminAction", {"action":targetAction})
+			OctoPrint.issueCommand(url, "adminAction", {"action":targetAction, "payload":{[payloadName]:payload}})
 				.done(function(response) {
 					self.mgLog("adminAction response: "+response);
 				});
@@ -4673,7 +4679,11 @@ $(function() {
 			//self._enableWebcam();
 			self.requestData();
 			self.mgLog("Settings: "+self.settings);
+			console.log(self.settings);
+			console.log(payload);
 			//self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
+			OctoPrint.settings.get();
+			// OctoPrintClient.settings.get();
 			self.hideDebug(self.settings.settings.plugins.mgsetup.hideDebug());
 			self.serialNumber(self.settings.settings.plugins.mgsetup.serialNumber());
 			self.registered(self.settings.settings.plugins.mgsetup.registered());

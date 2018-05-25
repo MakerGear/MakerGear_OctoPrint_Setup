@@ -73,6 +73,18 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.mgLogger.info("right after init test!?")
 		self.printerValueVersion = 0
 		self.printerValueGood = False
+		self.currentProjectName = ""
+		self.currentProjectPrintSuccessTime = 0
+		self.currentProjectPrintFailTime = 0
+		self.currentProjectMachineFailTime = 0
+		self.totalPrintSuccessTime = 0
+		self.totalPrintFailTime = 0
+		self.totalMachineFailTime = 0
+		self.printing = False
+		self.currentPrintStartTime = 0
+		self.currentPrintElapsedTime = 0
+		self.printElapsedTimer = octoprint.util.RepeatedTimer(120, self.updateElapsedTime)
+
 
 
 
@@ -161,6 +173,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.activated = self._settings.get(["activated"])
 		self.nextReminder = self._settings.get(["nextReminder"])
 		self.pluginVersion = self._settings.get(["pluginVersion"])
+		self.currentProjectPrintSuccessTime = self._settings.get(["currentProjectPrintSuccessTime"])
+		self.currentProjectName = self._settings.get(["currentProjectName"])
+		self.totalPrintSuccessTime = self._settings.get(["totalPrintSuccessTime"])
 		#		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 		#		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
@@ -290,6 +305,19 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			raise
 		self.getLocalFirmwareVersion()
 		self.adminAction(dict(action="sshState"))
+		if (self._settings.get(["printing"])):
+			self.mgLog("It looks like the machine crashed while printing - updating machineFail times and reseting.")
+			self.currentProjectMachineFailTime = self.currentProjectMachineFailTime + (self.currentPrintElapsedTime - self.currentPrintStartTime)
+			self.totalMachineFailTime = self.totalMachineFailTime + (self.currentPrintElapsedTime - self.currentPrintStartTime)
+			self.printing = False
+			self.currentPrintStartTime = 0
+			self.currentPrintElapsedTime = 0
+			self._settings.set(["currentProjectMachineFailTime"], self.currentProjectMachineFailTime)
+			self._settings.set(["totalMachineFailTime"], self.totalMachineFailTime)
+			self._settings.set(["printing"],self.printing)
+			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
+			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
+			self._settings.save()
 
 	def get_template_configs(self):
 		self._logger.info("MGSetup get_template_configs triggered.")
@@ -303,7 +331,31 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_settings_defaults(self):
 		self._logger.info("MGSetup get_settings_defaults triggered.")
-		return dict(hideDebug=True, firstRunComplete=False, registered=False, activated=False, firstTab=True, serialNumber = -1, nextReminder = -1, pluginVersion = "master", localFirmwareVersion = "", sshOn = False, warnSsh = True)
+		return dict(hideDebug=True,
+			firstRunComplete=False,
+			registered=False,
+			activated=False,
+			firstTab=True,
+			serialNumber = -1,
+			nextReminder = -1,
+			pluginVersion = "master",
+			localFirmwareVersion = "",
+			sshOn = False,
+			warnSsh = True,
+			currentProjectName = "",
+			currentProjectPrintSuccessTime = 0,
+			currentProjectPrintFailTime = 0,
+			currentProjectMachineFailTime = 0,
+			totalPrintSuccessTime = 0,
+			totalPrintFailTime = 0,
+			totalMachineFailTime = 0,
+			printing = False,
+			currentPrintStartTime = 0,
+			currentPrintElapsedTime = 0)
+
+
+
+
 
 	def get_settings_restricted_paths(self):
 		self._logger.info("MGSetup get_settings_restricted_paths triggered.")
@@ -364,15 +416,76 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		if event == Events.PRINT_STARTED:
 			self.printActive = True
+			self.printing = True
+			self.currentPrintStartTime = time.mktime(time.gmtime())
+			self.currentPrintElapsedTime = self.currentPrintStartTime
+			self._settings.set(["printing"],self.printing)
+			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
+			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
+			self._settings.save()
+			self.printElapsedTimer.start()
+
 
 		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED) or (event == Events.PRINT_DONE) or (event == Events.CONNECTED) or (event == Events.DISCONNECTED):
 			self.printActive = False
+
+		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED):
+			self.printing = False
+			currentTime = time.mktime(time.gmtime())
+			if (currentTime > self.currentPrintStartTime):
+				self.currentProjectPrintFailTime = self.currentProjectPrintFailTime + (currentTime - self.currentPrintStartTime)
+				self.totalPrintFailTime = self.totalPrintFailTime + (currentTime - self.currentPrintStartTime)
+			self.currentPrintStartTime = 0
+			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
+			self.currentPrintElapsedTime = 0
+			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
+			self._settings.save()
+			self.triggerSettingsUpdate()
+			self.printElapsedTimer.cancel()
+
+
+			# self.currentProjectPrintSuccessTime = self.currentProjectPrintSuccessTime + 
+
+		if (event == Events.PRINT_DONE):
+			self.currentProjectPrintSuccessTime = self.currentProjectPrintSuccessTime + payload["time"]
+			self.totalPrintSuccessTime = self.totalPrintSuccessTime + payload["time"]
+			self._settings.set(["totalPrintSuccessTime"],self.totalPrintSuccessTime)
+			self._settings.set(["currentProjectPrintSuccessTime"],self.currentProjectPrintSuccessTime)
+			self._settings.save()
+			# octoprint.settings.Settings.save()
+			self.printing = False
+			self.currentPrintStartTime = 0
+			self.currentPrintElapsedTime = 0
+			self._settings.set(["printing"],self.printing)
+			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
+			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
+			self._settings.save()
+			self.triggerSettingsUpdate()
+			self.printElapsedTimer.cancel()
+
+
+
+
 
 		if event == Events.DISCONNECTED:
 			self.printerValueGood = False
 
 		if event == Events.CONNECTED:
 			self.requestValues()
+
+	def triggerSettingsUpdate(self):
+		payload = dict(
+		config_hash=self._settings.config_hash,
+		effective_hash=self._settings.effective_hash
+		)
+		self._event_bus.fire(Events.SETTINGS_UPDATED, payload=payload)
+
+	def updateElapsedTime(self):
+		if (self.printing):
+			self.currentPrintElapsedTime = time.mktime(time.gmtime())
+			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
+			self._settings.save()
+
 
 
 	def _to_unicode(self, s_or_u, encoding="utf-8", errors="strict"):
@@ -813,7 +926,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 
-	def adminAction(self, action):
+	def adminAction(self, action, payload={}):
 		self._logger.info("adminAction called: "+ str(action))
 		if action["action"] == 'turnSshOn':
 			#self.turnSshOn()
@@ -942,6 +1055,32 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					except OSError:
 						if os.path.isfile("/var/log/netconnectd.log.1"):
 							raise
+
+		# elif action["action"] == "setCurrentTest":
+		# 	self.currentProjectPrintSuccessTime = 0
+		# 	if 
+		# 	self.currentProjectName = 
+		# 	self._settings.set(["currentProjectPrintSuccessTime"],self.currentProjectPrintSuccessTime)
+		# 	self._settings.save()
+
+		elif action["action"] == "resetCurrentProject":
+			self._logger.info("newProjectName:")
+			self._logger.info(action["payload"]["newProjectName"])
+			if 'newProjectName' in action["payload"]:
+				self.currentProjectName = action["payload"]["newProjectName"]
+			else:
+				self.currentProjectName = ""				
+			self.currentProjectPrintSuccessTime = 0
+			self.currentProjectPrintFailTime = 0
+			self.currentProjectMachineFailTime = 0
+			self._settings.set(["currentProjectPrintSuccessTime"],self.currentProjectPrintSuccessTime)
+			self._settings.set(["currentProjectPrintFailTime"],self.currentProjectPrintFailTime)
+			self._settings.set(["currentProjectMachineFailTime"],self.currentProjectMachineFailTime)			
+			self._settings.set(["currentProjectName"],self.currentProjectName)
+			
+			self._settings.save()
+			self.triggerSettingsUpdate()
+
 
 
 	def turnSshOn(self):
