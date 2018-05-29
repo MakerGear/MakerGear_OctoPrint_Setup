@@ -2314,10 +2314,19 @@
 					<button class="btnstay" data-bind="visible: !$root.lastCorner() && bedLevelResults().length > 0, enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5 && $root.probeLevelActiveCorner() > 0, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(3000) }">Next Corner</button><button class="btnstay" data-bind="visible: $root.lastCorner(), enable:$root.lockButton() && $root.probeLevelFirstCheckClicked() && $root.probeLevelActiveCorner() < 5, click: function() { $root.probeLevelAssist('next'); $root.enableLockedButton(60000) }">Recheck Bed Level</button>
 				</center><br> 
 
-				<hr><br>
-				<br>
+				
 
 			{# </div> #}
+			<div data-bind="visible: ( (bedLevelResults().length > 0) && $root.checkingBed()) || !$root.hideDebug()">
+			<hr><br>
+				<br>
+				<h3>Checking Bed</h3>
+			</div>
+			
+
+			<div data-bind="visible: ( (bedLevelResults().length > 0) && !$root.checkingBed()) || !$root.hideDebug()">
+			<hr><br>
+				<br>
 			<h3>3D Bed View</h3>
 			<div id="maintenanceBedPreviewDiv">
 
@@ -2374,6 +2383,8 @@
 				</table>
 			</div>
 			<hr>
+
+			</div>
 		<a href='#maintenanceTabsTasks' data-bind="click: function() {nextMaintenanceTask('home'); window.scroll(0,0); $root.probeCheckReset(); return true}"><h4>Return to Maintenance Index</h4></a>
 
 		</div>

@@ -3151,6 +3151,7 @@ $(function() {
 		self.setHomeOffsetFromProbe = ko.observable(false);
 		self.bedAdjustmentRounds = ko.observable(0);
 		self.noTurns = ko.observable(false); //used for Maintenance Assisted Bed Leveling to determine when we're done, but still let the user continue if they want
+		self.checkingBed = ko.observable(false);
 
 
 
@@ -3423,6 +3424,7 @@ $(function() {
 
 		self.processBedLevel = function(bedLevelLine){
 			self.mgLog("processBedLevel started");
+				self.checkingBed(false);
 			self.filter = /\[\[(.*?)\].*\[(.*?)\].*\[(.*)\]\]/;
 			self.xProbeArray = [];
 			self.yProbeArray = [];
@@ -3671,6 +3673,7 @@ $(function() {
 					"G1 F6000 X100 Y125",
 					"M84 Y"]);
 				self.probeLevelFirstCheckClicked(true);
+				self.checkingBed(true);
 			}
 			if(levelStep === 1){
 				OctoPrint.control.sendGcode(["T0",
@@ -3680,6 +3683,7 @@ $(function() {
 					"G1 F6000 X100 Y125",
 					"M84 Y"]);
 				self.probeLevelActiveCorner(0);
+				self.checkingBed(true);
 				return;
 			}
 			if(levelStep === "next"){

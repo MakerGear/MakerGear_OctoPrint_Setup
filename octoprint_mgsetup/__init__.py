@@ -83,7 +83,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.printing = False
 		self.currentPrintStartTime = 0
 		self.currentPrintElapsedTime = 0
-		self.printElapsedTimer = octoprint.util.RepeatedTimer(120, self.updateElapsedTime)
+		self.printElapsedTimer = octoprint.util.RepeatedTimer(12, self.updateElapsedTime)
+		self.updateElapsedTimer = False
 
 
 
@@ -115,7 +116,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 
-	def mgLog(self,message,level):
+	def mgLog(self,message,level=2):
 		self._logger.info(message)
 		self.mgLogger.info(message)
 		if (level == 2):
@@ -176,6 +177,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.currentProjectPrintSuccessTime = self._settings.get(["currentProjectPrintSuccessTime"])
 		self.currentProjectName = self._settings.get(["currentProjectName"])
 		self.totalPrintSuccessTime = self._settings.get(["totalPrintSuccessTime"])
+		self.currentProjectPrintFailTime = self._settings.get(["currentProjectPrintFailTime"])
+		self.currentProjectMachineFailTime = self._settings.get(["currentProjectMachineFailTime"])
+		self.totalPrintFailTime = self._settings.get(["totalPrintFailTime"])
+		self.totalMachineFailTime = self._settings.get(["totalMachineFailTime"])
+
+
 		#		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 		#		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
@@ -306,7 +313,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.getLocalFirmwareVersion()
 		self.adminAction(dict(action="sshState"))
 		if (self._settings.get(["printing"])):
-			self.mgLog("It looks like the machine crashed while printing - updating machineFail times and reseting.")
+			self.mgLog("It looks like the machine crashed while printing - updating machineFail times and reseting.",2)
 			self.currentProjectMachineFailTime = self.currentProjectMachineFailTime + (self.currentPrintElapsedTime - self.currentPrintStartTime)
 			self.totalMachineFailTime = self.totalMachineFailTime + (self.currentPrintElapsedTime - self.currentPrintStartTime)
 			self.printing = False
@@ -318,6 +325,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
 			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
 			self._settings.save()
+			self.printElapsedTimer.start()
 
 	def get_template_configs(self):
 		self._logger.info("MGSetup get_template_configs triggered.")
@@ -423,7 +431,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
 			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
 			self._settings.save()
-			self.printElapsedTimer.start()
+			self._logger.info("Current print start time:")
+			self._logger.info(self.currentPrintStartTime)
+			self.updateElapsedTimer = True
 
 
 		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED) or (event == Events.PRINT_DONE) or (event == Events.CONNECTED) or (event == Events.DISCONNECTED):
@@ -432,21 +442,26 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		if (event == Events.PRINT_FAILED) or (event == Events.PRINT_CANCELLED):
 			self.printing = False
 			currentTime = time.mktime(time.gmtime())
-			if (currentTime > self.currentPrintStartTime):
+			if (self.currentPrintStartTime != 0) and (currentTime > self.currentPrintStartTime):
 				self.currentProjectPrintFailTime = self.currentProjectPrintFailTime + (currentTime - self.currentPrintStartTime)
+				self._settings.set(["currentProjectPrintFailTime"], self.currentProjectPrintFailTime)
 				self.totalPrintFailTime = self.totalPrintFailTime + (currentTime - self.currentPrintStartTime)
+				self._settings.set(["totalPrintFailTime"], self.totalPrintFailTime)
+				self._logger.info("totalPrintFailTime:")
+				self._logger.info(self.totalPrintFailTime)
 			self.currentPrintStartTime = 0
 			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
+			self.updateElapsedTimer = False
 			self.currentPrintElapsedTime = 0
 			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
 			self._settings.save()
 			self.triggerSettingsUpdate()
-			self.printElapsedTimer.cancel()
 
 
 			# self.currentProjectPrintSuccessTime = self.currentProjectPrintSuccessTime + 
 
 		if (event == Events.PRINT_DONE):
+			self._logger.info("PRINT_DONE triggered.")
 			self.currentProjectPrintSuccessTime = self.currentProjectPrintSuccessTime + payload["time"]
 			self.totalPrintSuccessTime = self.totalPrintSuccessTime + payload["time"]
 			self._settings.set(["totalPrintSuccessTime"],self.totalPrintSuccessTime)
@@ -455,13 +470,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			# octoprint.settings.Settings.save()
 			self.printing = False
 			self.currentPrintStartTime = 0
+			self.updateElapsedTimer = False
 			self.currentPrintElapsedTime = 0
 			self._settings.set(["printing"],self.printing)
 			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
 			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
 			self._settings.save()
 			self.triggerSettingsUpdate()
-			self.printElapsedTimer.cancel()
 
 
 
@@ -481,10 +496,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._event_bus.fire(Events.SETTINGS_UPDATED, payload=payload)
 
 	def updateElapsedTime(self):
-		if (self.printing):
+		if (self.printing and self.updateElapsedTimer):
 			self.currentPrintElapsedTime = time.mktime(time.gmtime())
 			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
 			self._settings.save()
+			self._logger.info("New currentPrintElapsedTime:")
+			self._logger.info(self.currentPrintElapsedTime)
 
 
 
