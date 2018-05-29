@@ -10,6 +10,19 @@
 <div class="modal-header">
 <center><h3>Registration</h3></center>
 </div>
+<div data-bind="visible: !loginState.isUser">
+	<br>
+	<br>
+	<center>
+	<h3>You must be logged in to register.</h3>
+	<br>
+	<button class="btnstay" data-bind="click: function() { $root.showSupport('hide') }">{{ _('Close') }}</button><br>
+
+	</center>
+</div>
+
+
+<div data-bind="visible: loginState.isUser"
 <br>
 <center><h4>Please Register your M3 printer:</h4></center>
 <br>
@@ -64,7 +77,11 @@ Please enter the Activation Key that you received in your email:</h4></center><b
 <center><button class="btngoBig" data-bind="click: function() { $root.checkActivation($root.userActivation()) }, enable: $root.userActivation() != undefined">{{ _('Activate') }}</button></center>
 
 </div>
+
+
 <br><br><br>
 <button class="btnstay" data-bind="click: function() { $root.showSupport('remind') }">{{ _('Remind Me Later') }}</button><br>
+</div>
+
 </div>
 </div>
