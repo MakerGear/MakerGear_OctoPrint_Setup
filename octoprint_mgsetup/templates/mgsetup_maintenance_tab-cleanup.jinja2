@@ -81,12 +81,12 @@
 
 
 							<div class="buttonColumn">
-								<a data-bind="visible: !$root.hasProbe(), click: function() {$root.nextMaintenanceTask('T1Hot_T1-ID-R0_Load'); window.scroll(0,0); return true}">
+								<a data-bind="visible: !$root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T1Hot_T1-ID-R0_Load'); window.scroll(0,0); return true}">
 									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
 									<br>
 									Tool 1 (right) Starting Height Hot (recommended)
 								</a>
-								<a data-bind="visible: $root.hasProbe(), click: function() {$root.nextMaintenanceTask('T1Hot_T1-ID-R1_Load'); window.scroll(0,0); return true}">
+								<a data-bind="visible: $root.hasProbe() && $root.isDual(), click: function() {$root.nextMaintenanceTask('T1Hot_T1-ID-R1_Load'); window.scroll(0,0); return true}">
 									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/startHeightT1Hot.jpg', 'width': '100px',} , visible: loginState.isUser " />
 									<br>
 									Tool 1 (right) Starting Height Hot (recommended)
