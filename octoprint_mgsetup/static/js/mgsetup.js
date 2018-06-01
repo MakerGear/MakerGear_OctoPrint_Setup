@@ -1354,11 +1354,11 @@ $(function() {
 				//});
 				self.ZWiggleHeight(self.stockZWiggleHeight);
 				//self.setupStep("3");
-				if(Math.abs(self.tool1ZOffset())<=0.05){
+				if(Math.abs(self.tool1ZOffset())<=0.1){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work without a raft.", "success");
-				} else if(Math.abs(self.tool1ZOffset())<=0.10){
+				} else if(Math.abs(self.tool1ZOffset())<=0.20){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work with a raft.", "notice");
-				} else if(Math.abs(self.tool1ZOffset())>0.10){
+				} else if(Math.abs(self.tool1ZOffset())>0.20){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
 
@@ -1397,11 +1397,11 @@ $(function() {
 				//self.setupStep("3");
 				// self.goTo("12");
 				self.stepElevenFirstWiggleClicked(false);
-				if(Math.abs(self.tool1ZOffset())<=0.05){
+				if(Math.abs(self.tool1ZOffset())<=0.1){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work without a raft.", "success");
-				} else if(Math.abs(self.tool1ZOffset())<=0.10){
+				} else if(Math.abs(self.tool1ZOffset())<=0.20){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is close enough that Duplication Mode printing should work with a raft.", "notice");
-				} else if(Math.abs(self.tool1ZOffset())>0.10){
+				} else if(Math.abs(self.tool1ZOffset())>0.20){
 					self.notify("Duplication Mode Compatibility","Your new T1 Z Offset is large enough that Duplication Mode printing will not work without adjusting your physical hotend height.  This can be adjusted in the Maintenance tab.", "error");
 				}
 				if (self.maintenanceOperation()!=="home"){
@@ -2244,6 +2244,7 @@ $(function() {
 
 					case "SetCold":
 						self.stepTwoPrepared(false);
+						self.stepTwoStartingHeightSaved(false);					
 						break;
 
 					case "SetT1Hot":
