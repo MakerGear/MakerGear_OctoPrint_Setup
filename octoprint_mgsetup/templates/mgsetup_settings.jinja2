@@ -1,182 +1,283 @@
 <div id="mgsettings">
 
-<form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label">{{ _('Hide Debug') }}</label>
-        <div class="controls">
-           <input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.hideDebug" />
-        </div>
-    </div>
-</form>
-
-<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('collectLogs'), $root.showCommandResponse() }">Collect Logs</button><br>
-This will collect the logs into a single .zip file and then download them.<br><br>
 
 
-<form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label">{{ _('MGSetup As First Tab') }}</label>
-        <div class="controls">
-           <input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.firstTab " />  This will set either the MakerGear Setup or Temperature tab as the first, primary tab.  After changing this, please Restart OctoPrint and Refresh the page to show the change.
-        </div>
-    </div>
-</form><br><br>
-Webcam controls; Enable will set to default, Disable will disable and prevent black box on Control tab:
-<button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('/webcam/?action=stream') }">Enable Webcam</button><button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('') }">Disable Webcam</button>
-<br><br>
+	<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('collectLogs'), $root.showCommandResponse() }">Collect Logs</button>
+	
+	<br>
+	This will collect the logs into a single .zip file and then download them.
+	
+	<br>
+	
+	<br>
 
-New Netconnectd Access Point Password:
-<input data-bind="textInput: $root.newNetconnectdPassword" /><br>
-<button data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.commandResponse(''), $root.writeNetconnectdPassword($root.newNetconnectdPassword()), $root.showCommandResponse() }">
-Set Password</button><br>This will change the Netconnect Access Point Password.  The Netconnectd Service will Restart to use the new Password.<div data-bind="visible: loginState.isUser() && $root.newNetconnectdPassword().length < 8">The password must be at least 8 characters long.</div> <br><br>
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label">{{ _('MGSetup As First Tab') }}</label>
+			<div class="controls">
+				<input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.firstTab " />  This will set either the MakerGear Setup or Temperature tab as the first, primary tab.  After changing this, please Restart OctoPrint and Refresh the page to show the change.
+			</div>
+		</div>
+	</form>
+	
+	<br>
+	Webcam Controls; Enable will set to default, Disable will disable and prevent black box on Control tab:
+	<button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('/webcam/?action=stream') }">Enable Webcam</button><button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('') }">Disable Webcam</button>
+	
+	<br>
+	
+	<br>
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label">{{ _('Show SSH Enabled Warning') }}</label>
+			<div class="controls">
+				<input type="checkbox" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), checked: settings.settings.plugins.mgsetup.warnSsh" />
+			</div>
+		</div>
+	</form>
 
-New Hostname and Access Point Name:
-<input data-bind="textInput: $root.newHostname" /><br>
-<button data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.commandResponse(''), $root.changeHostname($root.newHostname()), $root.showCommandResponse() }">
-Change Hostname</button><br>This will change the Hostname and Access Point Name.  Your Raspberry Pi will automatically Restart after changing the Hostname - Please use the new Hostname to connect again.<br>
 
-<hr /><br>
-PrinterView String:<textarea data-bind="text: $root.printerViewString" style="width:90%;"></textarea><br>
+
+	<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetRegistration'), $root.showCommandResponse() }">Reset Registration</button>
+	<br>
+	This will Reset the Registration on this printer.
+	<br>
+
+
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label">{{ _('Hide Debug Options') }}</label>
+			<div class="controls">
+				<input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.hideDebug" />
+			</div>
+		</div>
+	</form>
+
+	<hr>
+
+	Printer Run Time recording:
+	
+	<br>
+	
+	<br>
+	Total Printer Print Success Time: <span data-bind="text: settings.settings.plugins.mgsetup.totalPrintSuccessTime"></span>
+	<br>
+	Total Printer Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalPrintFailTime()).toString()"></span>
+	<br>
+	Total Printer Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalMachineFailTime()).toString()"></span>
+
+
+	
+	<br>
+	
+	<br>
+	Current Project Print Success Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintSuccessTime()).toString()"></span>
+	<br>
+	Current Project Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintFailTime()).toString()"></span>
+	<br>
+	Current Project Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectMachineFailTime()).toString()"></span>
+	<br>
+	Current Project Name: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectName()).toString()"></span>
+	
+	<br>
+	<hr>
+	
+	<br>
+	Current Project Configuration:
+	
+	<br>
+	Set New Current Project Name: <input data-bind="textInput: $root.newCurrentProjectName" />
+	
+	<br>
+	<button data-bind="click: function() { $root.adminAction('resetCurrentProject','newProjectName',$root.newCurrentProjectName()), $root.newCurrentProjectName('') }">Reset Current Project Time and set new Project Name</button>
+	
+	<br>
+
+	<hr>
+	
+	<br>
+	<form class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label">{{ _('Unlock Advanced Operations') }}</label>
+			<div class="controls">
+				<input type="checkbox" data-bind="checked: $root.unlockAdvanced " />  These should only be performed when instructed by Support, as these operations can significantly change printer configuration.
+			</div>
+		</div>
+	</form>
+
+	<br>
+	<hr>
+
+	<br>
+	New Netconnectd Access Point Password:
+	<input data-bind="textInput: $root.newNetconnectdPassword" />
+	<br>
+	<button data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.commandResponse(''), $root.writeNetconnectdPassword($root.newNetconnectdPassword()), $root.showCommandResponse() }">
+	Set Password</button><br>This will change the Netconnect Access Point Password.  The Netconnectd Service will Restart to use the new Password.<div data-bind="visible: loginState.isUser() && $root.newNetconnectdPassword().length < 8">The password must be at least 8 characters long.</div> 
+	<br>
+
+	New Hostname and Access Point Name:
+	<input data-bind="textInput: $root.newHostname" />
+	<br>
+	<button data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.commandResponse(''), $root.changeHostname($root.newHostname()), $root.showCommandResponse() }">
+	Change Hostname</button><br>This will change the Hostname and Access Point Name.  Your Raspberry Pi will automatically Restart after changing the Hostname - Please use the new Hostname to connect again.
+	
+	<br>
+	
+	<br>
+
+
+	<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Reset Networking Configuration</button>
+	<br>
+	This will disconnect the printer from your current network and enable the default printer Access Point, returning the printer to the original Networking state.
+	
+	<br>
+
+	<hr />
+
+	<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadAndFlashFirmware'), $root.showCommandResponse() }">
+	Update and Install Firmware</button><br>This will Update the local copy of the firmware, and then Install the firmware to the printer.  Disconnect before Installing.
+	<br>
+
+	<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
+	Install Firmware</button><br>This will Install the bundled firmware to the printer.  Disconnect before Installing.
+	<br>
+
+	<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('updateFirmware'), $root.showCommandResponse() }">Update Firmware</button>
+	<br>
+	This will update the bundled firmware version to the most recent.  You will need to Upload Firmware after the update if desired.
+	<br>
+
+{# <select data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), options: ['master','refactor'],
+optionsCaption: 'Choose one...',
+value: settings.settings.plugins.mgsetup.pluginVersion"></select> #}
+
+<br>
+<br>
+Printer Firmware Version: <span data-bind="text: $root.firmwareline()"></span>
+
+<br>
+Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span>
+
+
 <br>
 <hr />
 
-<form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label">{{ _('Unlock Advanced Operations') }}</label>
-        <div class="controls">
-           <input type="checkbox" data-bind="checked: $root.unlockAdvanced " />  These should only be performed when instructed by Support, as these operations can significantly change printer configuration.
-        </div>
-    </div>
-</form>
+<br>
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button><br>
-This will enable the SSH service on the printer host computer.<br><br>
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('disableRadios'), $root.showCommandResponse() }">Disable Wifi</button>
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button><br>
-This will disable the SSH service on the printer host computer.<br><br>
+<br>
+This will backup the current config.txt file in the BOOT partition (only if not already backed up), then append a device table overlay to completely prevent the Wifi drivers from loading on next boot; it will then reboot the Raspberry Pi.
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button><br>
-This will Show the Current response from "sudo service ssh status".<br><br>
+<br>
 
-<form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label">{{ _('Show SSH Enabled Warning') }}</label>
-        <div class="controls">
-           <input type="checkbox" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), checked: settings.settings.plugins.mgsetup.warnSsh" />
-        </div>
-    </div>
-</form>
-    <br><br>
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('enableRadios'), $root.showCommandResponse() }">Enable Wifi</button>
+
+<br>
+This will copy the backed up config.txt to the main file and then reboot, enabling Wifi.
+
+<br>
 
 <hr />
 
-{# <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('lockFirmware'), $root.showCommandResponse() }">Lock Firmware</button><br>
-This will create a lock file in the firmware folder, which will prevent the firmware update from running.<br><br>
+<br>
+{# 
+<br>
+PrinterView String:<textarea data-bind="text: $root.printerViewString" style="width:90%;"></textarea>
+<br>
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('unlockFirmware'), $root.showCommandResponse() }">Unlock Firmware</button><br>
+<br>
+<hr /> #}
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button>
+
+<br>
+This will Show the Current response from "sudo service ssh status".
+<br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button>
+<br>
+This will enable the SSH service on the printer host computer.
+<br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button>
+<br>
+This will disable the SSH service on the printer host computer.
+<br>
+
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button>
+<br>
+This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.
+<br>
+
+
+
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('patch'), $root.showCommandResponse() }">Patch</button>
+<br>
+One-time pre-ship patch.
+<br>
+
+
+
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button>
+<br>
+Patch to create system log symlinks allowing easy OctoPrint access.<br> 
+
+
+
+<br>
+
+{# <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('lockFirmware'), $root.showCommandResponse() }">Lock Firmware</button>
+<br>
+This will create a lock file in the firmware folder, which will prevent the firmware update from running.<br>
+<br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('unlockFirmware'), $root.showCommandResponse() }">Unlock Firmware</button>
+<br>
 This will delete the firmware lock file, allowing updating of the local firmware copy.<br><br> 
 
 <hr />
 
 #}
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('disableRadios'), $root.showCommandResponse() }">Disable Wifi</button><br>
-This will backup the current config.txt file in the BOOT partition (only if not already backed up), then append a device table overlay to completely prevent the Wifi drivers from loading on next boot; it will then reboot the Raspberry Pi.<br><br>
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('enableRadios'), $root.showCommandResponse() }">Enable Wifi</button><br>
-This will copy the backed up config.txt to the main file and then reboot, enabling Wifi.<br><br>
 
 <hr />
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Reset Networking Configuration</button><br>
-This will disconnect the printer from your current network and enable the default printer Access Point, returning the printer to the original Networking state.<br><br>
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show Network Info</button>
+<br>
+This will Show the Current ifconfig and netconnect status.
+<br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('ps'), $root.showCommandResponse() }">Show ps</button>
+<br>
+This will Show the Current running processes as reported by "ps -eF".
+<br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('routen'), $root.showCommandResponse() }">Show route</button>
+<br>
+This will Show the Current route as reported by "route -n".
+<br>
+
+<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('whead'), $root.showCommandResponse() }">Show w</button>
+<br>
+This will Show the Current response from "w | head -n1".
+<br>
 
 <hr />
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadAndFlashFirmware'), $root.showCommandResponse() }">
-Update and Install Firmware</button><br>This will Update the local copy of the firmware, and then Install the firmware to the printer.  Disconnect before Installing.<br><br><br><br>
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
-Install Firmware</button><br>This will Install the bundled firmware to the printer.  Disconnect before Installing.<br><br>
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('updateFirmware'), $root.showCommandResponse() }">Update Firmware</button><br>
-This will update the bundled firmware version to the most recent.  You will need to Upload Firmware after the update if desired.<br><br>
-
-<select data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), options: ['master','refactor'],
-                       optionsCaption: 'Choose one...',
-                       value: settings.settings.plugins.mgsetup.pluginVersion"></select>
-
-                       <br><br>
-Printer Firmware Version: <span data-bind="text: $root.firmwareline()"></span><br>
-Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span><br>
-<hr />
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button><br>
-This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.<br><br>
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetRegistration'), $root.showCommandResponse() }">Reset Registration</button><br>
-This will Reset the Registration on this printer.<br><br>
-
-<hr />
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show Network Info</button><br>
-This will Show the Current ifconfig and netconnect status.<br><br>
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('ps'), $root.showCommandResponse() }">Show ps</button><br>
-This will Show the Current running processes as reported by "ps -eF".<br><br>
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('routen'), $root.showCommandResponse() }">Show route</button><br>
-This will Show the Current route as reported by "route -n".<br><br>
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('whead'), $root.showCommandResponse() }">Show w</button><br>
-This will Show the Current response from "w | head -n1".<br><br>
-
-
-
-<hr />
-
-
- <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('patch'), $root.showCommandResponse() }">Patch</button><br>
-One-time pre-ship patch.<br><br> 
-
-
-
-
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button><br>
-Patch to create system log symlinks allowing easy OctoPrint access.<br><br> 
-
-<hr>
-Printer Run Time recording:
-<br>
-<br>
-Total Printer Print Success Time: <span data-bind="text: settings.settings.plugins.mgsetup.totalPrintSuccessTime"></span><br>
-Total Printer Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalPrintFailTime()).toString()"></span><br>
-Total Printer Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalMachineFailTime()).toString()"></span>
-
-
-<br>
-<br>
-Current Project Print Success Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintSuccessTime()).toString()"></span><br>
-Current Project Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintFailTime()).toString()"></span><br>
-Current Project Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectMachineFailTime()).toString()"></span><br>
-Current Project Name: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectName()).toString()"></span>
-<br>
-<hr>
-<br>
-Current Project Configuration:
-<br>
-Set New Current Project Name: <input data-bind="textInput: $root.newCurrentProjectName" />
-<br>
-<button data-bind="click: function() { $root.adminAction('resetCurrentProject','newProjectName',$root.newCurrentProjectName()), $root.newCurrentProjectName('') }">Reset Current Project Time and set new Name</button><br>
 
 {# Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span><br> #}
 
 
-
 <div id="command_response_popup" class="modal hide fade">
-<center>Command Response:</center><br>
-<center><textarea data-bind="text: $root.commandResponse" style="width:90%;"></textarea></center><br>
-<div align="right"><button data-bind="click: function() { $root.showCommandResponse('hide') }">Close</button></div>
+	<center>Command Response:</center>
+	<br>
+	<center><textarea data-bind="text: $root.commandResponse" style="width:90%;"></textarea></center>
+	<br>
+	<div align="right"><button data-bind="click: function() { $root.showCommandResponse('hide') }">Close</button></div>
 
 </div>
 
