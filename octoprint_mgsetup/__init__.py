@@ -562,6 +562,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					#_log_stderr(*lines)
 					all_stderr += list(lines)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
+					all_stderr = []
 					# self.mgLog(lines,2)
 
 				lines = p.stdout.readlines(timeout=0.5)
@@ -572,6 +573,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._logger.info(lines)
 					self._logger.info(all_stdout)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
+					all_stdout = []
 					# self.mgLog(lines,2)
 
 		finally:
@@ -583,6 +585,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#_log_stderr(*lines)
 			all_stderr += lines
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
+			all_stderr = []
 			self._logger.info(lines)
 			# self.mgLog(lines,2)
 
@@ -595,6 +598,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info(all_stdout)
 			self._logger.info(all_stderr)
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
+			all_stdout = []
 		return p.returncode, all_stdout, all_stderr
 
 	def counterTest(self, actionMaybe):

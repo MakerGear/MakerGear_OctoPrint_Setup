@@ -4822,7 +4822,15 @@ $(function() {
 			}
 			if (data.commandError !== undefined){
 				self.mgLog("commandError: "+data.commandError);
-				self.commandResponse(self.commandResponse()+data.commandError);
+
+				var tempError = data.commandError
+
+				tempError = tempError.replace("strace: |/home/pi/.platformio/packages/tool-avrdude/autoreset: Broken pipe","") //this is a normal error, but sounds worse than it is, so don't show it in the response
+
+
+					self.commandResponse(self.commandResponse()+data.commandError);
+
+
 			}
 			if (data.pleaseRemind !== undefined){
 				self.remindPlease(true);
