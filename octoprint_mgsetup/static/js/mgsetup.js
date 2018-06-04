@@ -3168,7 +3168,11 @@ $(function() {
 				self.autoCheckClicked(true);
 				// self.probeCheckActive(0);
 				//first check - extend and retract probe, reset alarm, enable M119 test mode, check M119 state
-				OctoPrint.control.sendGcode(["M605 S0",
+				OctoPrint.control.sendGcode(["M300 S1040 P250",
+					"M300 S1312 P250", 
+					"M300 S1392 P250",
+					"G4 P750",
+					"M605 S0",
 					"M280 P1 S10",
 					"M280 P1 S90",
 					"M280 P1 S160",
@@ -3181,7 +3185,10 @@ $(function() {
 			if (self.probeStep() === 1){
 				self.mgLog("probeStep: "+self.probeStep().toString());
 				//second check - extend and retract probe, enable M119 test mode, check M119 state
-				OctoPrint.control.sendGcode(["M280 P1 S10",
+				OctoPrint.control.sendGcode(["G4 S1",
+					"M300 S800 P250",
+					"G4 P250",
+					"M280 P1 S10",
 					"M400",
 					"M280 P1 S90",
 					"M400",
@@ -3194,17 +3201,33 @@ $(function() {
 			if (self.probeStep() === 2){
 				self.mgLog("probeStep: "+self.probeStep().toString());
 				//third check - switch to T0, probe off left edge of bed
-				OctoPrint.control.sendGcode(["T0",
+				OctoPrint.control.sendGcode(["G4 S1",
+					"M300 S800 P250",
+					"G4 P250",
+					"M300 S800 P250",
+					"G4 P250",
+					"T0",
 					"G28 X Y",
 					"G1 F2000 X-10 Y125",
 					"M400",
 					"G92 Z210",
 					"G30",
+					"G92 Z0",
 					"M400"]);
 				self.waitingForProbeResponse(true);
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
 			}
 			if (self.probeStep() === 3){
+				OctoPrint.control.sendGcode(["G4 S1",
+					"M300 S800 P250",
+					"G4 P250",
+					"M300 S800 P250",
+					"G4 P250",
+					"M300 S800 P250",
+					"G4 P250",
+				]);
+
+
 				self.mgLog("probeStep: "+self.probeStep().toString());
 				//fourth check - make sure the M851 Z offset is sane
 				if (self.probeOffset()!==undefined && 0>self.probeOffset()>-3 ){
@@ -3233,8 +3256,18 @@ $(function() {
 			if (self.probeStep() === 4){
 				self.mgLog("probeStep: "+self.probeStep().toString());
 				//final check - run bed level check, either pass to filament loading if good, or fail to bed leveling if bad
-				OctoPrint.control.sendGcode(["T0",
-					"G28 XYZ",
+				OctoPrint.control.sendGcode(["G4 S1",
+					"M300 S800 P250",
+					"G4 P250",
+					"M300 S800 P250",
+					"G4 P250",
+					"M300 S800 P250",
+					"G4 P250",
+					"M300 S800 P250",
+					"G4 P250",
+					"T0",
+					"G28 Z",
+					"G28 XY",
 					"G1 F2000 Z10",
 					"M400",
 					"G29 P2",
@@ -3245,6 +3278,14 @@ $(function() {
 					"M400"]);
 				self.waitingForProbeResponse(true);
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
+			
+
+				OctoPrint.control.sendGcode(["M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250",
+						"G4 P750"
+				]);
+
 			}
 
 
