@@ -4860,6 +4860,15 @@ $(function() {
 			if (data.commandResponse !== undefined ){
 				//console.log(data.commandResponse);
 				self.commandResponse(self.commandResponse()+data.commandResponse);
+
+			
+				//get div and scroll to bottom
+				self.commandResponseText = $("#commandResponseText");
+    			self.commandResponseText.scrollTop(self.commandResponseText[0].scrollHeight);
+
+
+
+
 			}
 			if (data.commandError !== undefined){
 				self.mgLog("commandError: "+data.commandError);
@@ -4868,8 +4877,10 @@ $(function() {
 
 				tempError = tempError.replace("strace: |/home/pi/.platformio/packages/tool-avrdude/autoreset: Broken pipe","") //this is a normal error, but sounds worse than it is, so don't show it in the response
 
-
-					self.commandResponse(self.commandResponse()+data.commandError);
+				self.commandResponse(self.commandResponse()+data.commandError);
+				//get div and scroll to bottom
+				self.commandResponseText = $("#commandResponseText");
+    			self.commandResponseText.scrollTop(self.commandResponseText[0].scrollHeight);
 
 
 			}
