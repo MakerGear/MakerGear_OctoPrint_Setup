@@ -3200,6 +3200,7 @@ $(function() {
 					"M400",
 					"G92 Z210",
 					"G30",
+					"G92 Z0",
 					"M400"]);
 				self.waitingForProbeResponse(true);
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
@@ -3234,7 +3235,8 @@ $(function() {
 				self.mgLog("probeStep: "+self.probeStep().toString());
 				//final check - run bed level check, either pass to filament loading if good, or fail to bed leveling if bad
 				OctoPrint.control.sendGcode(["T0",
-					"G28 XYZ",
+					"G28 Z",
+					"G28 XY",
 					"G1 F2000 Z10",
 					"M400",
 					"G29 P2",
