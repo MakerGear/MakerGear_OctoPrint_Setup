@@ -45,6 +45,10 @@
 							<label class="control-label">{{ _('Plugin Verion:') }}</label>
 							<div class="controls">
 								x.x.x.
+								<span data-bind="text: settings.settings.plugins.softwareupdate.version"></span>
+								<hr>
+								<span data-bind="text: settings.settings.plugins.mgsetup.version"></span>
+								<hr>
 
 							</div>
 						</div>
@@ -139,40 +143,114 @@
 		<li class="panel">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsB">Printer Usage Information<i class="icon-chevron-down"></i> </a></h3>
 
+
 			<ul id="settingsB" class="collapse">
+				<p>
+					This section shows the total time in minutes that your printer has printed*.
+					<br />
+					 "Success Time" includes all prints that reached 100% completion - this does not account for prints that physcially failed.
+					 <br />
+					 "Unsuccessful Time" included any prints that have not reached 100% completion, whether through manual cancelation of the print, or because of printer error.
+				</p>
 				<li>
 					<div class="buttonRow">
 						{# <div class="buttonColumn" "> #}
 
-							Total Printer Print Success Time: <span data-bind="text: settings.settings.plugins.mgsetup.totalPrintSuccessTime"></span>
-							<br>
-							Total Printer Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalPrintFailTime()).toString()"></span>
-							<br>
-							Total Printer Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.totalMachineFailTime()).toString()"></span>
 
-							<br><br>
-							Current Project Print Success Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintSuccessTime()).toString()"></span>
-							<br>
-							Current Project Print Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintFailTime()).toString()"></span>
-							<br>
-							Current Project Machine Fail Time: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectMachineFailTime()).toString()"></span>
-							<br>
-							Current Project Name: <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectName()).toString()"></span>
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Total Printer Print Success Time:') }}</label>
+									<div class="controls">
+										 <span data-bind="text: settings.settings.plugins.mgsetup.totalPrintSuccessTime"></span>
 
+									</div>
+								</div>
+							</div>
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Total Printer Print Unsuccessful Time:') }}</label>
+									<div class="controls">
+										  <span data-bind="text: (settings.settings.plugins.mgsetup.totalPrintFailTime()).toString()"></span>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Total Printer Machine Unsuccessful Time: ') }}</label>
+									<div class="controls">
+										<span data-bind="text: (settings.settings.plugins.mgsetup.totalMachineFailTime()).toString()"></span>
+
+									</div>
+								</div>
+							</div>
+
+							<hr />
+
+
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Project Print Name ') }}</label>
+									<div class="controls">
+										 <span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectName()).toString()"></span>
+
+
+									</div>
+								</div>
+							</div>
+
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Project Print Unsuccessful Time: ') }}</label>
+									<div class="controls">
+										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintSuccessTime()).toString()"></span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Project Machine Unsuccessful Time: ') }}</label>
+									<div class="controls">
+										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintFailTime()).toString()"></span>
 							<br>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Total Printer Machine Unsuccessful Time: ') }}</label>
+									<div class="controls">
+										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectMachineFailTime()).toString()"></span>
+
+									</div>
+								</div>
+							</div>
+
+
 							<hr>
 
 							<br>
 
 							New Project: <input data-bind="textInput: $root.newCurrentProjectName" />
+							<button class="btn btn-primary" data-bind="click: function() { $root.adminAction('resetCurrentProject','newProjectName',$root.newCurrentProjectName()), $root.newCurrentProjectName('') }">Set New Project Name<br /> & Reset Current Project Time </button>
+						
 
-							<br>
-							<button class="btn btn-primary" data-bind="click: function() { $root.adminAction('resetCurrentProject','newProjectName',$root.newCurrentProjectName()), $root.newCurrentProjectName('') }">Reset Current Project Time and set new Project Name</button>
+							<hr>
+							*This time only reflects print time after MGsetup Plugin v 3.0.0.6. Print time before that version of the plugin was installed is not included. 
+
 						{# </div> #}
 					</div>
 				</li>
 			</ul>
 		</li>
+		<hr />
 		<form class="form-horizontal">
 			<div class="control-group">
 				<label class="control-label">{{ _('Unlock Advanced Operations') }}</label>
@@ -323,28 +401,80 @@
 					<div class="buttonRow">
 
 
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">{{ _('Firmware installed on  RAMBo:') }}</label>
+							<div class="controls">
+								<span data-bind="text: $root.firmwareline()"></span>
 
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadAndFlashFirmware'), $root.showCommandResponse() }">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">{{ _('Bundled Firmware ready for installation:') }}</label>
+							<div class="controls">
+								<span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span>
+
+							</div>
+						</div>
+					</div>
+
+					<hr />
+
+						<div class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">{{ _('Update and Install Firmware') }}</label>
+								<div class="controls">
+										This will Update the local copy of the firmware, and then Install the firmware to the printer.  Disconnect before Installing.
+										<br>
+											<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadAndFlashFirmware'), $root.showCommandResponse() }">
 						Update and Install Firmware</button>
-						<br>
-						This will Update the local copy of the firmware, and then Install the firmware to the printer.  Disconnect before Installing.
-						<br><br>
 
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
+								</div>
+							</div>
+						</div>
+
+						<h4>Advanced Firmware Options</h4>
+						<div class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">{{ _('Install Local Firmware') }}</label>
+								<div class="controls">
+										This will Install the bundled firmware to the printer.  Disconnect before Installing.
+										<br>
+											<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
 						Install Firmware</button>
-						<br>
-						This will Install the bundled firmware to the printer.  Disconnect before Installing.
-						<br><br>
 
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('updateFirmware'), $root.showCommandResponse() }">Update Firmware</button>
-						<br>
-						This will update the bundled firmware version to the most recent.  You will need to Upload Firmware after the update if desired.
-						<hr>
+								</div>
+							</div>
 
-						Printer Firmware Version: <span data-bind="text: $root.firmwareline()"></span>
 
-						<br>
-						Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span>
+						<div class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">{{ _('Install Firmware') }}</label>
+								<div class="controls">
+										This will Install the bundled firmware to the printer.  Disconnect before Installing.
+										<br>
+											<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
+						Install Firmware</button>
+
+								</div>
+							</div>
+						</div>
+
+
+						<div class="form-horizontal">
+							<div class="control-group">
+								<label class="control-label">{{ _('Update Bundled Firmware') }}</label>
+								<div class="controls">
+										This will update your bundled firmware to the latest version.  You will need to Upload Firmware after the update if desired.
+										<br>
+											<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('updateFirmware'), $root.showCommandResponse() }">Update Bundled Firmware</button>
+
+								</div>
+							</div>
+						</div>
 
 
 
@@ -370,28 +500,48 @@
 	</li>-->
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
-		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsF">Pi<i class="icon-chevron-down"></i> </a></h3>
+		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsF">SSH Access<i class="icon-chevron-down"></i> </a></h3>
 
 		<ul id="settingsF" class="collapse">
 			<li>
 				<div class="buttonRow">
 					{# <div class="buttonColumn" "> #}
 
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button>
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('SSH status') }}</label>
+									<div class="controls">
+											This will Show the Current response from "sudo service ssh status".
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button>
+									</div>
+								</div>
+							</div>
 
-						<br>
-						This will Show the Current response from "sudo service ssh status".
-						<br><br>
 
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button>
-						<br>
-						This will enable the SSH service on the printer host computer.
-						<br><br>
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Turn SSH On') }}</label>
+									<div class="controls">
+											This will enable the SSH service on the M3.
+											<br>
+									<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button>
+									</div>
+								</div>
+							</div>
 
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Turn SSH Off') }}</label>
+									<div class="controls">
+											This will disable the SSH service on the M3.
+											<br>
+										
 						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button>
-						<br>
-						This will disable the SSH service on the printer host computer.
-						<br><br>
+								</div>
+							</div>
+
 
 
 
@@ -404,12 +554,100 @@
 								</div>
 							</form>
 
-						<br><br>
+	
 
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button>
-						<br>
-						This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.
-						<br><br>
+
+					{# </div> #}
+				</div>
+			</li>
+		</ul>
+	</li>
+
+	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
+		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsG">Diagnostics<i class="icon-chevron-down"></i> </a></h3>
+
+		<ul id="settingsG" class="collapse">
+			<li>
+				<div class="buttonRow">
+					{# <div class="buttonColumn" "> #}
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Show Network Info') }}</label>
+									<div class="controls">
+											This will Show the Current ifconfig and netconnect status.
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show Network Info</button>
+								</div>
+							</div>
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Show ps') }}</label>
+									<div class="controls">
+											This will Show the Current running processes as reported by "ps -eF".
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('ps'), $root.showCommandResponse() }">Show ps</button>
+								</div>
+							</div>
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Show route') }}</label>
+									<div class="controls">
+											This will Show the Current route as reported by "route -n".
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('routen'), $root.showCommandResponse() }">Show route</button>
+								</div>
+							</div>
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Show w') }}</label>
+									<div class="controls">
+											This will Show the Current response from "w | head -n1".
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('whead'), $root.showCommandResponse() }">Show w</button>
+								</div>
+							</div>
+
+
+					{# </div> #}
+				</div>
+			</li>
+		</ul>
+	</li>
+
+
+	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
+		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsH">Misc. Operations<i class="icon-chevron-down"></i> </a></h3>
+
+		<ul id="settingsH" class="collapse">
+			<li>
+				<div class="buttonRow">
+					{# <div class="buttonColumn" "> #}
+
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Restore Log Symlinks') }}</label>
+									<div class="controls">
+											Patch to create system log symlinks allowing easy OctoPrint access.
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button>
+								</div>
+							</div>
+
+
+
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Expand Filesystem') }}</label>
+									<div class="controls">
+											This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button>
+								</div>
+							</div>
+
 
 
 
@@ -422,50 +660,15 @@
 
 
 
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button>
+						
 						<br>
-						Patch to create system log symlinks allowing easy OctoPrint access.
-
-
+						
 					{# </div> #}
 				</div>
 			</li>
 		</ul>
 	</li>
 
-	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
-		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsG">Pi Diagnostics<i class="icon-chevron-down"></i> </a></h3>
-
-		<ul id="settingsG" class="collapse">
-			<li>
-				<div class="buttonRow">
-					{# <div class="buttonColumn" "> #}
-
-
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show Network Info</button>
-						<br>
-						This will Show the Current ifconfig and netconnect status.
-						<br><br>
-
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('ps'), $root.showCommandResponse() }">Show ps</button>
-						<br>
-						This will Show the Current running processes as reported by "ps -eF".
-						<br><br>
-
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('routen'), $root.showCommandResponse() }">Show route</button>
-						<br>
-						This will Show the Current route as reported by "route -n".
-						<br><br>
-
-						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('whead'), $root.showCommandResponse() }">Show w</button>
-						<br>
-						This will Show the Current response from "w | head -n1".
-						<br><br>
-					{# </div> #}
-				</div>
-			</li>
-		</ul>
-	</li>
 </ul>
 
 
