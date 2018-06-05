@@ -2,15 +2,88 @@
 
 
 
-	<button data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('collectLogs'), $root.showCommandResponse() }">Collect Logs</button>
 	
-	<br>
-	This will collect the logs into a single .zip file and then download them.
-	
-	<br>
 	
 	<br>
 	<ul class="nav nav-stacked" id="settingsAccordion">
+
+
+		<li class="panel">
+			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsAA">Support<i class="icon-chevron-down"></i> </a></h3>
+
+			<ul id="settingsAA" class="collapse">
+
+
+
+
+
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">{{ _('Download Logs') }}</label>
+							<div class="controls">
+								This will collect the logs into a single .zip file and then download them.
+								<br />
+									<button class="btn btn-primary"  data-bind="enable: loginState.isUser(), click: function() { $root.commandResponse(''), $root.adminAction('collectLogs'), $root.showCommandResponse() }">Collect Logs</button>
+
+							</div>
+						</div>
+					</div>
+
+
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">{{ _('Octoprint Version:') }}</label>
+							<div class="controls">
+								x.x.x.
+
+							</div>
+						</div>
+					</div>
+
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">{{ _('Plugin Verion:') }}</label>
+							<div class="controls">
+								x.x.x.
+
+							</div>
+						</div>
+					</div>
+
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">{{ _('Firmware installed on  RAMBo:') }}</label>
+							<div class="controls">
+								<span data-bind="text: $root.firmwareline()"></span>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">{{ _('Latest Firmware available:') }}</label>
+							<div class="controls">
+								<span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span>
+
+							</div>
+						</div>
+					</div>
+
+
+
+	
+				<br>
+				
+				
+				<br>
+
+			</ul>
+		</li>
+
+
+
+
 		<li class="panel">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsA">OctoPrint interface options <i class="icon-chevron-down"></i> </a></h3>
 
@@ -27,27 +100,6 @@
 								</div>
 							</form>
 
-							<br><br>
-							Webcam Controls; Enable will set to default, Disable will disable and prevent black box on Control tab:
-							<button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('/webcam/?action=stream') }">Enable Webcam</button><button data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('') }">Disable Webcam</button>
-
-							<br><br>
-							<form class="form-horizontal">
-								<div class="control-group">
-									<label class="control-label">{{ _('Show SSH Enabled Warning') }}</label>
-									<div class="controls">
-										<input type="checkbox" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), checked: settings.settings.plugins.mgsetup.warnSsh" />
-									</div>
-								</div>
-							</form>
-
-							<br><br>
-
-							<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetRegistration'), $root.showCommandResponse() }">Reset Registration</button>
-							<br>
-							This will Reset the Registration on this printer.
-							<br><br>
-
 
 							<form class="form-horizontal">
 								<div class="control-group">
@@ -57,6 +109,27 @@
 									</div>
 								</div>
 							</form>
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Webcam Controls') }}</label>
+									<div class="controls">
+										Enable/Disable webcam will show/hide the webcam feed in the control tab  NOTE: You will need to restart octoprint and reload the page after clicking the button below.
+
+										<br />
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('/webcam/?action=stream') }">Enable Webcam</button> &nbsp;&nbsp;&nbsp;<button class="btn btn-primary" data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('') }">Disable Webcam</button>
+
+
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+
+
 						{# </div> #}
 					</div>
 				</li>
@@ -94,7 +167,7 @@
 							New Project: <input data-bind="textInput: $root.newCurrentProjectName" />
 
 							<br>
-							<button data-bind="click: function() { $root.adminAction('resetCurrentProject','newProjectName',$root.newCurrentProjectName()), $root.newCurrentProjectName('') }">Reset Current Project Time and set new Project Name</button>
+							<button class="btn btn-primary" data-bind="click: function() { $root.adminAction('resetCurrentProject','newProjectName',$root.newCurrentProjectName()), $root.newCurrentProjectName('') }">Reset Current Project Time and set new Project Name</button>
 						{# </div> #}
 					</div>
 				</li>
@@ -108,37 +181,134 @@
 				</div>
 			</div>
 		</form>
+
 		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
-			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsC">Netconnectd<i class="icon-chevron-down"></i> </a></h3>
+			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsCC">Registration<i class="icon-chevron-down"></i> </a></h3>
+
+			<ul id="settingsCC" class="collapse">
+				<li>
+					<div class="buttonRow">
+						{# <div class="buttonColumn" "> #}
+
+
+
+						
+
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Reset Registration') }}</label>
+									<div class="controls">
+											This will Reset the Registration on this printer.
+											<br>
+											<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetRegistration'), $root.showCommandResponse() }">Reset Registration</button>
+									</div>
+								</div>
+							</div>
+
+
+							
+						{# </div> #}
+					</div>
+				</li>
+			</ul>
+		</li>
+
+
+
+		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
+			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsC">Networking<i class="icon-chevron-down"></i> </a></h3>
 
 			<ul id="settingsC" class="collapse">
 				<li>
 					<div class="buttonRow">
 						{# <div class="buttonColumn" "> #}
 
-							New Netconnectd Access Point Password:
-							<input data-bind="textInput: $root.newNetconnectdPassword" />
-							<br><br>
-							<button data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.commandResponse(''), $root.writeNetconnectdPassword($root.newNetconnectdPassword()), $root.showCommandResponse() }">
-							Set Password</button><br>This will change the Netconnect Access Point Password.  The Netconnectd Service will Restart to use the new Password.<div data-bind="visible: loginState.isUser() && $root.newNetconnectdPassword().length < 8">The password must be at least 8 characters long.</div> 
-							<br><br>
 
-							New Hostname and Access Point Name:
-							<input data-bind="textInput: $root.newHostname" />
-							<br><br>
-							<button data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.commandResponse(''), $root.changeHostname($root.newHostname()), $root.showCommandResponse() }">
-							Change Hostname</button><br>This will change the Hostname and Access Point Name.  Your Raspberry Pi will automatically Restart after changing the Hostname - Please use the new Hostname to connect again.
+						
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Change Hostname') }}</label>
+									<div class="controls">
+											This will change the M3's Hostname - this is used for both your .local address and your Access Point SSID. Your M3 will automatically restart after changing the Hostname - Please use the new Hostname to connect again.
+											<br>
+												<input data-bind="textInput: $root.newHostname" />
+							
+												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.newHostname().length > 0, click: function() { $root.commandResponse(''), $root.changeHostname($root.newHostname()), $root.showCommandResponse() }">Change Hostname</button>
+									</div>
+								</div>
+							</div>
 
-							<br>
+						
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Change AP Password') }}</label>
+									<div class="controls">
+											This will change the  Access Point Password.  The Acess Point will Restart to use the new Password.
+											<br>
+												<input data-bind="textInput: $root.newNetconnectdPassword" />
+							<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.commandResponse(''), $root.writeNetconnectdPassword($root.newNetconnectdPassword()), $root.showCommandResponse() }">
+							Set Password</button><br><div data-bind="visible: loginState.isUser() && $root.newNetconnectdPassword().length < 8">The password must be at least 8 characters long.
+							</div> 
+									</div>
+								</div>
+							</div>
 
-							<br>
 
 
-							<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Reset Networking Configuration</button>
-							<br>
-							This will disconnect the printer from your current network and enable the default printer Access Point, returning the printer to the original Networking state.
+						
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Reset Networking Configuration / Restart AP Mode') }}</label>
+									<div class="controls">
+											This will disconnect the printer from your current network and enable the default printer Access Point, returning the printer to the original Networking state.
+											<br>
+												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('resetWifi'), $root.showCommandResponse() }">Reset Networking</button>
+
+									</div>
+								</div>
+							</div>
+
+
 
 							
+						
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Disable Wifi') }}</label>
+									<div class="controls">
+											This will reboot the M3 and disable all Wifi Communication - you will only be able to conect via Ethernet.
+											<br>
+												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('disableRadios'), $root.showCommandResponse() }">Disable Wifi</button>
+
+									</div>
+								</div>
+							</div>
+
+
+						
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Enable Wifi') }}</label>
+									<div class="controls">
+											This will reboot the M3 and enable all Wifi Communication
+											<br>
+												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('enableRadios'), $root.showCommandResponse() }">Enable Wifi</button>
+
+									</div>
+								</div>
+							</div>
+
+
+
+							
+
+						<br>
+						
+
+
+
+
 						{# </div> #}
 					</div>
 				</li>
@@ -151,21 +321,22 @@
 			<ul id="settingsD" class="collapse">
 				<li>
 					<div class="buttonRow">
-						
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadAndFlashFirmware'), $root.showCommandResponse() }">
+
+
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadAndFlashFirmware'), $root.showCommandResponse() }">
 						Update and Install Firmware</button>
 						<br>
 						This will Update the local copy of the firmware, and then Install the firmware to the printer.  Disconnect before Installing.
 						<br><br>
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
 						Install Firmware</button>
 						<br>
 						This will Install the bundled firmware to the printer.  Disconnect before Installing.
 						<br><br>
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('updateFirmware'), $root.showCommandResponse() }">Update Firmware</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('updateFirmware'), $root.showCommandResponse() }">Update Firmware</button>
 						<br>
 						This will update the bundled firmware version to the most recent.  You will need to Upload Firmware after the update if desired.
 						<hr>
@@ -184,30 +355,19 @@
 				</li>
 			</ul>
 		</li>
-		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
+		<!--<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsE">Networking<i class="icon-chevron-down"></i> </a></h3>
 
 			<ul id="settingsE" class="collapse">
 				<li>
 					<div class="buttonRow">
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('disableRadios'), $root.showCommandResponse() }">Disable Wifi</button>
-
-						<br>
-						This will backup the current config.txt file in the BOOT partition (only if not already backed up), then append a device table overlay to completely prevent the Wifi drivers from loading on next boot; it will then reboot the Raspberry Pi.
-
-						<br><br>
-
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('enableRadios'), $root.showCommandResponse() }">Enable Wifi</button>
-
-						<br>
-						This will copy the backed up config.txt to the main file and then reboot, enabling Wifi.
-
+						
 					{# </div> #}
 				</div>
 			</li>
 		</ul>
-	</li>
+	</li>-->
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsF">Pi<i class="icon-chevron-down"></i> </a></h3>
@@ -217,40 +377,52 @@
 				<div class="buttonRow">
 					{# <div class="buttonColumn" "> #}
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('sshState'), $root.showCommandResponse() }">Show SSH status</button>
 
 						<br>
 						This will Show the Current response from "sudo service ssh status".
 						<br><br>
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOn'), $root.showCommandResponse() }">Turn SSH On</button>
 						<br>
 						This will enable the SSH service on the printer host computer.
 						<br><br>
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('turnSshOff'), $root.showCommandResponse() }">Turn SSH Off</button>
 						<br>
 						This will disable the SSH service on the printer host computer.
 						<br><br>
 
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button>
+
+							<form class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Show SSH Enabled Warning') }}</label>
+									<div class="controls">
+										<input type="checkbox" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), checked: settings.settings.plugins.mgsetup.warnSsh" />
+									</div>
+								</div>
+							</form>
+
+						<br><br>
+
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('expandFilesystem'), $root.showCommandResponse() }">Expand Root Filesystem</button>
 						<br>
 						This will expand the root filesystem to allow access to the full storage capacity of the system disk.  This only needs to be run once, and almost never by the end user.  Your Raspberry Pi will automatically restart to finish the expansion.
 						<br><br>
 
 
 
-
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('patch'), $root.showCommandResponse() }">Patch</button>
+						<!--
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('patch'), $root.showCommandResponse() }">Patch</button>
 						<br>
 						One-time pre-ship patch.
-						<br><br>
+						<br><br>-->
 
 
 
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('logpatch'), $root.showCommandResponse() }">Log Patch</button>
 						<br>
 						Patch to create system log symlinks allowing easy OctoPrint access.
 
@@ -270,22 +442,22 @@
 					{# <div class="buttonColumn" "> #}
 
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show Network Info</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('showIfconfig'), $root.showCommandResponse() }">Show Network Info</button>
 						<br>
 						This will Show the Current ifconfig and netconnect status.
 						<br><br>
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('ps'), $root.showCommandResponse() }">Show ps</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('ps'), $root.showCommandResponse() }">Show ps</button>
 						<br>
 						This will Show the Current running processes as reported by "ps -eF".
 						<br><br>
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('routen'), $root.showCommandResponse() }">Show route</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('routen'), $root.showCommandResponse() }">Show route</button>
 						<br>
 						This will Show the Current route as reported by "route -n".
 						<br><br>
 
-						<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('whead'), $root.showCommandResponse() }">Show w</button>
+						<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('whead'), $root.showCommandResponse() }">Show w</button>
 						<br>
 						This will Show the Current response from "w | head -n1".
 						<br><br>
@@ -305,12 +477,12 @@ value: settings.settings.plugins.mgsetup.pluginVersion"></select> #}
 {# </div> #}
 {# <div class="buttonColumn" "> #}
 	{# Local Firmware Version: <span data-bind="text: settings.settings.plugins.mgsetup.localFirmwareVersion"></span><br> #}
-{# <button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('lockFirmware'), $root.showCommandResponse() }">Lock Firmware</button>
+{# <button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('lockFirmware'), $root.showCommandResponse() }">Lock Firmware</button>
 <br>
 This will create a lock file in the firmware folder, which will prevent the firmware update from running.<br>
 <br>
 
-<button data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('unlockFirmware'), $root.showCommandResponse() }">Unlock Firmware</button>
+<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('unlockFirmware'), $root.showCommandResponse() }">Unlock Firmware</button>
 <br>
 This will delete the firmware lock file, allowing updating of the local firmware copy.<br><br> 
 
@@ -329,9 +501,9 @@ PrinterView String:<textarea data-bind="text: $root.printerViewString" style="wi
 <div id="command_response_popup" class="modal hide fade">
 	<center>Command Response:</center>
 	<br>
-	<center><textarea data-bind="text: $root.commandResponse" style="width:90%;"></textarea></center>
+	<center><textarea id="commandResponseText" data-bind="text: $root.commandResponse" style="width:90%;height:250px;"></textarea></center>
 	<br>
-	<div align="right"><button data-bind="click: function() { $root.showCommandResponse('hide') }">Close</button></div>
+	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.showCommandResponse('hide') }">Close</button></div>
 
 </div>
 
