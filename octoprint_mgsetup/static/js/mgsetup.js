@@ -4549,9 +4549,6 @@ $(function() {
 			// PNotify.history.maxonscreen = 3;
 
 
-			// self.octoprintVersion(self.softwareUpdate.versions.allItems.map(function(o) {return o.displayName;}).indexOf("OctoPrint"));
-			// console.log(self.octoprintVersion); //TODO: implement OctoPrint and plugin version extraction for display and logging.
-
 			//console.log(self.temperatures.tools());
 
 			self.mgLog("oldZOffset: "+self.oldZOffset);
