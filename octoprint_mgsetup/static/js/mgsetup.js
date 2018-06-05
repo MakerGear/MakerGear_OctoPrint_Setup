@@ -40,6 +40,7 @@ $(function() {
 		self.settings = parameters[1];
 		self.temperatures = parameters[2];
 		self.userSettings = parameters[3];
+		self.softwareUpdate = parameters[4];
 		self.isErrorOrClosed = ko.observable(undefined);
 		self.isOperational = ko.observable(undefined);
 		self.isPrinting = ko.observable(undefined);
@@ -226,6 +227,8 @@ $(function() {
 		self.showMaintenanceButtons = ko.observable(false);
 		self.showMaintenanceChecklist = ko.observable(false);
 		self.showMgsetupDebugChecklist = ko.observable(false);
+		self.octoprintVersion = ko.observable("");
+		self.mgsetupVersion = ko.observable("");
 
 
 
@@ -4545,6 +4548,10 @@ $(function() {
 			PNotify.prototype.options.history.maxonscreen = 10;
 			// PNotify.history.maxonscreen = 3;
 
+
+			// self.octoprintVersion(self.softwareUpdate.versions.allItems.map(function(o) {return o.displayName;}).indexOf("OctoPrint"));
+			// console.log(self.octoprintVersion); //TODO: implement OctoPrint and plugin version extraction for display and logging.
+
 			//console.log(self.temperatures.tools());
 
 			self.mgLog("oldZOffset: "+self.oldZOffset);
@@ -4971,6 +4978,13 @@ $(function() {
 				self.mgLog("Received new printerValueVersion: "+data.printerValueVersion);
 				self.printerValueVersion(data.printerValueVersion);
 			}
+			if (data.octoprintVersion !== undefined){
+				self.octoprintVersion(data.octoprintVersion);
+			}
+			if (data.mgsetupVersion !== undefined){
+				self.mgsetupVersion(data.mgsetupVersion);
+			}
+
 
 		};
 
@@ -5428,7 +5442,7 @@ $(function() {
 		// This is a list of dependencies to inject into the plugin, the order which you request
 		// here is the order in which the dependencies will be injected into your view model upon
 		// instantiation via the parameters argument
-		["loginStateViewModel","settingsViewModel","temperatureViewModel","userSettingsViewModel"],
+		["loginStateViewModel","settingsViewModel","temperatureViewModel","userSettingsViewModel","softwareUpdateViewModel"],
 
 		// Finally, this is the list of selectors for all elements we want this view model to be bound to.
 		// ["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance","#tab_plugin_mgsetup_maintenance-cleanup"]
