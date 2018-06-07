@@ -34,7 +34,7 @@
 						<div class="control-group">
 							<label class="control-label">{{ _('Octoprint Version:') }}</label>
 							<div class="controls">
-								x.x.x.
+								<span data-bind="text: $root.octoprintVersion()"></span>
 
 							</div>
 						</div>
@@ -44,7 +44,7 @@
 						<div class="control-group">
 							<label class="control-label">{{ _('Plugin Verion:') }}</label>
 							<div class="controls">
-								x.x.x.
+								<span data-bind="text: $root.mgsetupVersion()"></span>
 								<span data-bind="text: settings.settings.plugins.softwareupdate.version"></span>
 								<hr>
 								<span data-bind="text: settings.settings.plugins.mgsetup.version"></span>
