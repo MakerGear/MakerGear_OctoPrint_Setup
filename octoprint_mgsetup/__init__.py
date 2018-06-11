@@ -24,7 +24,7 @@ import urllib2
 from logging.handlers import TimedRotatingFileHandler
 from logging.handlers import RotatingFileHandler
 from zipfile import *
-from octoprint import __version__
+
 
 
 
@@ -231,7 +231,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# self._logger.info(self._printer_profile_manager.get_all())
 		# self._logger.info(self._printer_profile_manager.get_current())
 		self._logger.info(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"])
-		# self._logger.info(__version__)
 
 
 		subprocess.call("/home/pi/.octoprint/scripts/hosts.sh") #recreate hostsname.js for external devices/ print finder
@@ -405,10 +404,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
-			self._plugin_manager.send_plugin_message("mgsetup", dict(octoprintVersion = __version__))
-			self._plugin_manager.send_plugin_message("mgsetup", dict(mgsetupVersion = self._plugin_version))
-
-
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = self.probeOffsetLine))
 			self._logger.info(str(self.nextReminder))
@@ -559,16 +554,23 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		all_stdout = []
 		all_stderr = []
+		last_print = None;
 		try:
 			while p.commands[0].poll() is None:
+				errorFlag = None
 				lines = p.stderr.readlines(timeout=0.5)
 				if lines:
+					if errorFlag == False:
+						self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "\n\r"))
+
 					lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
 					#_log_stderr(*lines)
 					all_stderr += list(lines)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
 					all_stderr = []
 					# self.mgLog(lines,2)
+					errorFlag = True
+					last_print = True;
 
 				lines = p.stdout.readlines(timeout=0.5)
 				if lines:
@@ -579,7 +581,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					self._logger.info(all_stdout)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
 					all_stdout = []
+					last_print = True;
 					# self.mgLog(lines,2)
+				else :
+					#if (errorFlag == None) and (last_print == False):
+						#self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "."))
+					last_print = False;
+
 
 		finally:
 			p.close()
@@ -698,7 +706,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 
-			if os.path.isFile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID'):
+			if os.path.isfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID'):
 				self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
 				self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
 
