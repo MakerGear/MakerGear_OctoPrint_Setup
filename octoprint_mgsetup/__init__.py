@@ -24,6 +24,8 @@ import urllib2
 from logging.handlers import TimedRotatingFileHandler
 from logging.handlers import RotatingFileHandler
 from zipfile import *
+from octoprint import __version__
+
 
 
 
@@ -231,6 +233,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# self._logger.info(self._printer_profile_manager.get_all())
 		# self._logger.info(self._printer_profile_manager.get_current())
 		self._logger.info(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"])
+		# self._logger.info(__version__)
 
 
 		subprocess.call("/home/pi/.octoprint/scripts/hosts.sh") #recreate hostsname.js for external devices/ print finder
@@ -404,6 +407,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(octoprintVersion = __version__))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(mgsetupVersion = self._plugin_version))
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = self.probeOffsetLine))
 			self._logger.info(str(self.nextReminder))
