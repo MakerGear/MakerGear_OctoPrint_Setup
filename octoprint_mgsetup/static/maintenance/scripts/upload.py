@@ -127,8 +127,10 @@ while lineCount < 20 : #max out to 100 lines
 		responseLine = data_raw
 
 #match to figure out version, machine type, and extruder count
-matcher = re.match (r'FIRMWARE_NAME:Marlin ([0-9]\.[0-9]\.[0-9]\.?[0-9]?\.?[0-9]?) \(Github\) SOURCE_CODE_URL:https://github.com/MakerGear/m3firmware PROTOCOL_VERSION:1.0 MACHINE_TYPE:(.*) EXTRUDER_COUNT:([1-2])', responseLine)
-zprobeMatcher = re.match (r'Cap:Z_PROBE:([0-1])', responseLineProbe)
+if matcher != None:
+	matcher = re.match (r'FIRMWARE_NAME:Marlin ([0-9]\.[0-9]\.[0-9]\.?[0-9]?\.?[0-9]?) \(Github\) SOURCE_CODE_URL:https://github.com/MakerGear/m3firmware PROTOCOL_VERSION:1.0 MACHINE_TYPE:(.*) EXTRUDER_COUNT:([1-2])', responseLine)
+if zprobeMatcher != None:
+	zprobeMatcher = re.match (r'Cap:Z_PROBE:([0-1])', responseLineProbe)
 
 if (matcher == None) or (zprobeMatcher == None):
 	print ("Warning: Could not detect previous marlin firmware and settings.")
