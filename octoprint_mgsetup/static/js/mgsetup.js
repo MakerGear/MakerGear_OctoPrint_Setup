@@ -4394,6 +4394,11 @@ $(function() {
 				self.stepElevenFirstWiggleClicked(false);
 				self.stepElevenShowFineAdjustments(false);
 			}
+            if (targetStep === 111){
+				if(!self.hideDebug()){console.log("resetStep targetStep = 11");}
+				self.stepElevenFirstWiggleClicked(false);
+				self.stepElevenShowFineAdjustments(false);
+			}
 			if (targetStep === 12){
 				self.mgLog("resetStep targetStep = 12");
 				self.stepTwelveSimpleClicked(false);
@@ -4592,8 +4597,10 @@ $(function() {
 
 
 
+
 			self.mgLog("settings: "+self.settings);
 			self.mgLog("userSettings: "+self.userSettings);
+
 			//self.targetName = "MakerGear " + self.hostname();
 			//self.settings.appearance_name(self.targetName);
 			//OctoPrint.settings.save({appearance: {name:self.targetName}});
@@ -4847,8 +4854,10 @@ $(function() {
 			}
 			//self.tooloffsetline(data.tooloffsetline);
 			//self.hostname(data.hostname);
+
 			self.mgLog("onDataUpdaterPluginMessage content:");
 			self.mgLog(data);
+
 			if (data == "activation failed"){
 
 				alert("Activation Failed - Please check your entered key and try again.");
