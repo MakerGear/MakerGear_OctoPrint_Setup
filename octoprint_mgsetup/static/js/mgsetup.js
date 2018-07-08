@@ -229,6 +229,7 @@ $(function() {
 		self.showMgsetupDebugChecklist = ko.observable(false);
 		self.octoprintVersion = ko.observable("");
 		self.mgsetupVersion = ko.observable("");
+		self.smbpatchstring = ko.observable("");
 
 
 
@@ -4989,6 +4990,9 @@ $(function() {
 			}
 			if (data.mgsetupVersion !== undefined){
 				self.mgsetupVersion(data.mgsetupVersion);
+			}
+			if (data.smbpatchstring !== undefined){
+				self.smbpatchstring(data.smbpatchstring);
 			}
 
 

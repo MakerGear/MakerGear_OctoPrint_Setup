@@ -85,7 +85,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.currentPrintElapsedTime = 0
 		self.printElapsedTimer = octoprint.util.RepeatedTimer(12, self.updateElapsedTime)
 		self.updateElapsedTimer = False
-
+		self.smbpatchstring = ""
 
 
 
@@ -222,7 +222,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 	def on_after_startup(self):
 		self.create_loggers()
 		self._logger.info("MGSetup on_after_startup triggered.")
-		self._logger.info("Hello Pablo!")
 		# self._logger.info("extruders: "+str(self._printer_profile_manager.get_current()))
 		# self._logger.info("extruders: "+str(self._settings.get(["printerProfiles","currentProfileData","extruder.count"])))
 		self.current_position = current_position
@@ -328,6 +327,22 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._settings.save()
 			self.printElapsedTimer.start()
 
+		#if
+		smbHashVal = (hashlib.md5(open("/etc/samba/smb.conf").read()).hexdigest()) # != "03dc1620b398cbe3d2d82e83c20c1905":
+		if smbHashVal == "44c057b0ffc7ab0f88c1923bdd32b559":
+			self.smbpatchstring = "Patch Already In Place"
+			self.mgLog("smb.conf hash matches patched file, no need to patch",2)
+		elif smbHashVal == "95b44915e267400669b2724e0cce5967":
+			self.smbpatchstring = "Patch was required: smb.conf has been patched"
+			self.mgLog("smb.conf hash matches unpatched file, now patching file",2)
+			self.patchSmb()
+
+		else :
+			self.smbpatchstring = "Custom smb.conf file present: patch status unknown"
+			self.mgLog("Custom smb.conf file present: patch status unknown. No Action",2)
+
+
+
 	def get_template_configs(self):
 		self._logger.info("MGSetup get_template_configs triggered.")
 		return [
@@ -407,6 +422,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(octoprintVersion = __version__))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(mgsetupVersion = self._plugin_version))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(smbpatchstring = self.smbpatchstring))
 
 
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(firmwareline = self.firmwareline))
@@ -925,6 +941,26 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Copied config.txt.backup to config.txt .  Will now reboot."))
 		self._execute("sudo reboot")
 
+
+	def disableSmb(self):
+		# if "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
+		self._execute('sudo systemctl disable smbd')
+
+	def enableSmb(self):
+		# if "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
+		self._execute('sudo systemctl emable smbd')
+
+	def patchSmb(self):
+		# if "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
+
+		self._execute('echo "Patching SMB"')
+		self._execute('sudo cp /home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/maintenance/system/smbPatched.conf /etc/samba/smb.conf')
+		self._execute('sudo chmod 644 /etc/samba/smb.conf')
+		self._execute('sudo chown root /etc/samba/smb.conf')
+		self._execute('sudo service smbd restart')
+		self._execute('echo "Patch Finished"')
+
+
 	def lockFirmware(self):
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
 			open('/home/pi/m3firmware/src/Marlin/lockFirmware','a').close()
@@ -1011,6 +1047,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.disableRadios()
 		elif action["action"] == 'enableRadios':
 			self.enableRadios()
+		elif action["action"] == 'disableSmb':
+			self.disableSmb()
+		elif action["action"] == 'enableSmb':
+			self.enableSmb()
+		elif action["action"] == 'patchSmb':
+			self.patchSmb()
 		elif action["action"] == 'flushPrintActive':
 			self.printActive = False
 			self.mgLog("flushPrintActive called",0)
