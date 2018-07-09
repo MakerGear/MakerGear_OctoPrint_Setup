@@ -730,8 +730,28 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 
 			if os.path.isfile('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h.m3ID'):
-				self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
-				self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
+
+
+				self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
+				self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
+
+
+				self._logger.info(type(self.activeProfile))
+
+				self._logger.info(self.activeProfile)
+
+
+				if self.activeProfile == None:
+					self.extruderCount = self._printer_profile_manager.get_current_or_default()["extruder"]["count"]
+				else:
+					self._logger.info("Profile: "+self.activeProfile)
+					self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
+					self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
+ 
+
+
+				# self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
+				# self.extruderCount = ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] )
 
 				# self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]
 				# self._logger.info("extruders: "+str(self._printer_profile_manager.get_all().get_current()["extruder"]["counter"]))
