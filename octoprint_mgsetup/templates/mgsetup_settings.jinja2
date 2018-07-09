@@ -10,7 +10,7 @@
 
 		<li class="panel">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsAA">Support<i class="icon-chevron-down"></i> </a></h3>
-
+			<hr />
 			<ul id="settingsAA" class="collapse">
 
 
@@ -35,7 +35,6 @@
 							<label class="control-label">{{ _('Octoprint Version:') }}</label>
 							<div class="controls">
 								<span data-bind="text: $root.octoprintVersion()"></span>
-
 							</div>
 						</div>
 					</div>
@@ -90,6 +89,7 @@
 
 		<li class="panel">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsA">OctoPrint interface options <i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 			<ul id="settingsA" class="collapse">
 				<li>
@@ -142,6 +142,7 @@
 
 		<li class="panel">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsB">Printer Usage Information<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 
 			<ul id="settingsB" class="collapse">
@@ -155,6 +156,9 @@
 				<li>
 					<div class="buttonRow">
 						{# <div class="buttonColumn" "> #}
+
+
+
 
 
 							<div class="form-horizontal">
@@ -245,12 +249,12 @@
 							<hr>
 							*This time only reflects print time after MGsetup Plugin v 3.0.0.6. Print time before that version of the plugin was installed is not included. 
 
+							<hr />
 						{# </div> #}
 					</div>
 				</li>
 			</ul>
 		</li>
-		<hr />
 		<form class="form-horizontal">
 			<div class="control-group">
 				<label class="control-label">{{ _('Unlock Advanced Operations') }}</label>
@@ -262,6 +266,7 @@
 
 		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsCC">Registration<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 			<ul id="settingsCC" class="collapse">
 				<li>
@@ -296,6 +301,7 @@
 
 		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsC">Networking<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 			<ul id="settingsC" class="collapse">
 				<li>
@@ -395,6 +401,7 @@
 
 		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsD">Firmware<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 			<ul id="settingsD" class="collapse">
 				<li>
@@ -439,7 +446,7 @@
 						<h4>Advanced Firmware Options</h4>
 						<div class="form-horizontal">
 							<div class="control-group">
-								<label class="control-label">{{ _('Install Local Firmware') }}</label>
+								<label class="control-label">{{ _('Install Bundled Firmware') }}</label>
 								<div class="controls">
 										This will Install the bundled firmware to the printer.  Disconnect before Installing.
 										<br>
@@ -448,20 +455,6 @@
 
 								</div>
 							</div>
-
-
-						<div class="form-horizontal">
-							<div class="control-group">
-								<label class="control-label">{{ _('Install Firmware') }}</label>
-								<div class="controls">
-										This will Install the bundled firmware to the printer.  Disconnect before Installing.
-										<br>
-											<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('uploadFirmware'), $root.showCommandResponse() }">
-						Install Firmware</button>
-
-								</div>
-							</div>
-						</div>
 
 
 						<div class="form-horizontal">
@@ -487,6 +480,7 @@
 		</li>
 		<!--<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsE">Networking<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 			<ul id="settingsE" class="collapse">
 				<li>
@@ -501,6 +495,7 @@
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsF">SSH Access<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 		<ul id="settingsF" class="collapse">
 			<li>
@@ -565,6 +560,7 @@
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsG">Diagnostics<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 		<ul id="settingsG" class="collapse">
 			<li>
@@ -618,6 +614,7 @@
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsH">Misc. Operations<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
 
 		<ul id="settingsH" class="collapse">
 			<li>
