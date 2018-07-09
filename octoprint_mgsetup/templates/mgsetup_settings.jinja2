@@ -387,7 +387,61 @@
 
 							
 
-						<br>
+						<hr>
+						<h3>Samba</h3>
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Disable Samba') }}</label>
+									<div class="controls">
+											This will disable Samba file sharing.
+											<br>
+												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('disableSmb'), $root.showCommandResponse() }">Disable Samba</button>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Enable Samba') }}</label>
+									<div class="controls">
+											This will enable Samba file sharing.
+											<br>
+												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('enableSmb'), $root.showCommandResponse() }">Enable Samba</button>
+
+									</div>
+								</div>
+							</div>
+
+
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Samba Patch Status:') }}</label>
+									<div class="controls">
+										<span data-bind="text: $root.smbpatchstring()"></span>
+
+									</div>
+								</div>
+							</div>
+						
+
+						
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Patch Samba') }}</label>
+									<div class="controls">
+											This will manually patch the SMB server to disable anonymous login.
+											<br>
+												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('patchSmb'), $root.showCommandResponse() }">Patch Samba</button>
+
+									</div>
+								</div>
+							</div>
+
+
+
 						
 
 
