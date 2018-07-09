@@ -734,13 +734,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 				self._logger.info(self._printer_profile_manager.get_current_or_default()["extruder"]["count"])
 				self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
-
-
-				self._logger.info(type(self.activeProfile))
-
-				self._logger.info(self.activeProfile)
-
-
 				if self.activeProfile == None:
 					self.extruderCount = self._printer_profile_manager.get_current_or_default()["extruder"]["count"]
 				else:
