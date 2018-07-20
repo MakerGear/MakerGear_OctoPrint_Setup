@@ -1136,7 +1136,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Logpatch started.")
 
 
-			subprocess.call("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/logpatch.sh")
+			#subprocess.call("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/logpatch.sh")
+			self.mgLog(self._execute("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/logpatch.sh"),2)
 
 			# if not os.path.isfile("/home/pi/.octoprint/logs/dmesg"):
 			# 	if os.path.isfile("/var/log/dmesg"):
