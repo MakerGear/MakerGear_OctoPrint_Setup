@@ -118,7 +118,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Webcam Controls') }}</label>
 									<div class="controls">
-										Enable/Disable webcam will show/hide the webcam feed in the control tab  NOTE: You will need to restart octoprint and reload the page after clicking the button below.
+										Enable/Disable webcam will show/hide the webcam feed in the control tab  NOTE: You will need to restart OctoPrint and reload the page after clicking the button below.
 
 										<br />
 										<button class="btn btn-primary" data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('/webcam/?action=stream') }">Enable Webcam</button> &nbsp;&nbsp;&nbsp;<button class="btn btn-primary" data-bind="enable: loginState.isUser(), click: function() { $root.settings.webcam_streamUrl('') }">Disable Webcam</button>
@@ -147,11 +147,11 @@
 
 			<ul id="settingsB" class="collapse">
 				<p>
-					This section shows the total time in minutes that your printer has printed*.
+					This section shows the total time that your printer has printed*.  Format is Days, hh:mm:ss .
 					<br />
-					 "Success Time" includes all prints that reached 100% completion - this does not account for prints that physcially failed.
+					 "Success Time" includes all prints that reached 100% completion - this does not account for prints that physically failed.
 					 <br />
-					 "Unsuccessful Time" included any prints that have not reached 100% completion, whether through manual cancelation of the print, or because of printer error.
+					 "Unsuccessful Time" includes any prints that have not reached 100% completion, whether through manual cancellation of the print, or because of printer error.
 				</p>
 				<li>
 					<div class="buttonRow">
@@ -165,7 +165,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Total Printer Print Success Time:') }}</label>
 									<div class="controls">
-										 <span data-bind="text: settings.settings.plugins.mgsetup.totalPrintSuccessTime"></span>
+										 <span data-bind="text: settings.settings.plugins.mgsetup.totalPrintSuccessTimeFriendly"></span>
 
 									</div>
 								</div>
@@ -175,7 +175,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Total Printer Print Unsuccessful Time:') }}</label>
 									<div class="controls">
-										  <span data-bind="text: (settings.settings.plugins.mgsetup.totalPrintFailTime()).toString()"></span>
+										  <span data-bind="text: (settings.settings.plugins.mgsetup.totalPrintFailTimeFriendly()).toString()"></span>
 
 									</div>
 								</div>
@@ -185,7 +185,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Total Printer Machine Unsuccessful Time: ') }}</label>
 									<div class="controls">
-										<span data-bind="text: (settings.settings.plugins.mgsetup.totalMachineFailTime()).toString()"></span>
+										<span data-bind="text: (settings.settings.plugins.mgsetup.totalMachineFailTimeFriendly()).toString()"></span>
 
 									</div>
 								</div>
@@ -211,7 +211,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Project Print Unsuccessful Time: ') }}</label>
 									<div class="controls">
-										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintSuccessTime()).toString()"></span>
+										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintSuccessTimeFriendly()).toString()"></span>
 									</div>
 								</div>
 							</div>
@@ -220,7 +220,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Project Machine Unsuccessful Time: ') }}</label>
 									<div class="controls">
-										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintFailTime()).toString()"></span>
+										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectPrintFailTimeFriendly()).toString()"></span>
 							<br>
 
 									</div>
@@ -231,7 +231,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Total Printer Machine Unsuccessful Time: ') }}</label>
 									<div class="controls">
-										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectMachineFailTime()).toString()"></span>
+										<span data-bind="text: (settings.settings.plugins.mgsetup.currentProjectMachineFailTimeFriendly()).toString()"></span>
 
 									</div>
 								</div>
@@ -328,7 +328,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Change AP Password') }}</label>
 									<div class="controls">
-											This will change the  Access Point Password.  The Acess Point will Restart to use the new Password.
+											This will change the  Access Point Password.  The Access Point will Restart to use the new Password.
 											<br>
 												<input data-bind="textInput: $root.newNetconnectdPassword" />
 							<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.newNetconnectdPassword().length > 7, click: function() { $root.commandResponse(''), $root.writeNetconnectdPassword($root.newNetconnectdPassword()), $root.showCommandResponse() }">
@@ -361,7 +361,7 @@
 								<div class="control-group">
 									<label class="control-label">{{ _('Disable Wifi') }}</label>
 									<div class="controls">
-											This will reboot the M3 and disable all Wifi Communication - you will only be able to conect via Ethernet.
+											This will reboot the M3 and disable all Wifi Communication - you will only be able to connect via Ethernet.
 											<br>
 												<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('disableRadios'), $root.showCommandResponse() }">Disable Wifi</button>
 

@@ -82,6 +82,13 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.totalPrintSuccessTime = 0
 		self.totalPrintFailTime = 0
 		self.totalMachineFailTime = 0
+		self.currentProjectPrintSuccessTimeFriendly = ""
+		self.currentProjectPrintFailTimeFriendly = ""
+		self.currentProjectMachineFailTimeFriendly = ""
+		self.totalPrintSuccessTimeFriendly = ""
+		self.totalPrintFailTimeFriendly = ""
+		self.totalMachineFailTimeFriendly = ""
+		# TODO - this is ugly, should probably combine all of these into a dict, but...works for now.
 		self.printing = False
 		self.currentPrintStartTime = 0
 		self.currentPrintElapsedTime = 0
@@ -287,19 +294,19 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					shutil.copy(full_src_name, dest)
 					self._logger.info("Had to overwrite "+file_name+" with new version.")
 		try:
-			os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/js/hostname.js", 0666)
+			os.chmod(self._basefolder+"/static/js/hostname.js", 0666)
 		except OSError:
 			self._logger.info("Hostname.js doesn't exist?")
 		except:
 			raise
 		try:
-			os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/patch.sh", 0755)
+			os.chmod(self._basefolder+"/static/patch/patch.sh", 0755)
 		except OSError:
 			self._logger.info("Patch.sh doesn't exist?")
 		except:
 			raise
 		try:
-			os.chmod("/home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/patch/logpatch.sh", 0755)
+			os.chmod(self._basefolder+"/static/patch/logpatch.sh", 0755)
 		except OSError:
 			self._logger.info("logpatch.sh doesn't exist?")
 		except:
@@ -322,7 +329,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.currentPrintStartTime = 0
 			self.currentPrintElapsedTime = 0
 			self._settings.set(["currentProjectMachineFailTime"], self.currentProjectMachineFailTime)
+			self._settings.set(["currentProjectMachineFailTimeFriendly"], str(datetime.timedelta(seconds = int(self.currentProjectMachineFailTime))))
+
 			self._settings.set(["totalMachineFailTime"], self.totalMachineFailTime)
+			self._settings.set(["totalMachineFailTimeFriendly"], str(datetime.timedelta(seconds = int(self.totalMachineFailTime))))
+
+
 			self._settings.set(["printing"],self.printing)
 			self._settings.set(["currentPrintStartTime"],self.currentPrintStartTime)
 			self._settings.set(["currentPrintElapsedTime"],self.currentPrintElapsedTime)
@@ -330,18 +342,23 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.printElapsedTimer.start()
 
 		#if
-		smbHashVal = (hashlib.md5(open("/etc/samba/smb.conf").read()).hexdigest()) # != "03dc1620b398cbe3d2d82e83c20c1905":
-		if smbHashVal == "44c057b0ffc7ab0f88c1923bdd32b559":
-			self.smbpatchstring = "Patch Already In Place"
-			self.mgLog("smb.conf hash matches patched file, no need to patch",2)
-		elif smbHashVal == "95b44915e267400669b2724e0cce5967":
-			self.smbpatchstring = "Patch was required: smb.conf has been patched"
-			self.mgLog("smb.conf hash matches unpatched file, now patching file",2)
-			self.patchSmb()
+		try:
+			smbHashVal = (hashlib.md5(open("/etc/samba/smb.conf").read()).hexdigest()) # != "03dc1620b398cbe3d2d82e83c20c1905":
+			if smbHashVal == "44c057b0ffc7ab0f88c1923bdd32b559":
+				self.smbpatchstring = "Patch Already In Place"
+				self.mgLog("smb.conf hash matches patched file, no need to patch",2)
+			elif smbHashVal == "95b44915e267400669b2724e0cce5967":
+				self.smbpatchstring = "Patch was required: smb.conf has been patched"
+				self.mgLog("smb.conf hash matches unpatched file, now patching file",2)
+				# self.mgLog("smb.conf actual hash: "+str(smbHashVal))
+				self.patchSmb()
 
-		else :
-			self.smbpatchstring = "Custom smb.conf file present: patch status unknown"
-			self.mgLog("Custom smb.conf file present: patch status unknown. No Action",2)
+			else :
+				self.smbpatchstring = "Custom smb.conf file present: patch status unknown"
+				self.mgLog("Custom smb.conf file present: patch status unknown. No Action",2)
+		except Exception as e:
+			self._logger.info(str(e))
+
 
 
 
@@ -375,6 +392,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			totalPrintSuccessTime = 0,
 			totalPrintFailTime = 0,
 			totalMachineFailTime = 0,
+			currentProjectPrintSuccessTimeFriendly = "",
+			currentProjectPrintFailTimeFriendly = "",
+			currentProjectMachineFailTimeFriendly = "",
+			totalPrintSuccessTimeFriendly = "",
+			totalPrintFailTimeFriendly = "",
+			totalMachineFailTimeFriendly = "",
 			printing = False,
 			currentPrintStartTime = 0,
 			currentPrintElapsedTime = 0)
@@ -403,6 +426,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("Next Reminder: "+str(self.nextReminder) + ", currently: "+str(time.mktime(time.gmtime())))
 		self._settings.set(["nextReminder"],self.nextReminder)
 		self._settings.save()
+
 
 
 
@@ -468,8 +492,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			if (self.currentPrintStartTime != 0) and (currentTime > self.currentPrintStartTime):
 				self.currentProjectPrintFailTime = self.currentProjectPrintFailTime + (currentTime - self.currentPrintStartTime)
 				self._settings.set(["currentProjectPrintFailTime"], self.currentProjectPrintFailTime)
+				self._settings.set(["currentProjectPrintFailTimeFriendly"], str(datetime.timedelta(seconds = int(self.currentProjectPrintFailTime))))
+
 				self.totalPrintFailTime = self.totalPrintFailTime + (currentTime - self.currentPrintStartTime)
 				self._settings.set(["totalPrintFailTime"], self.totalPrintFailTime)
+				self._settings.set(["totalPrintFailTimeFriendly"], str(datetime.timedelta(seconds = int(self.totalPrintFailTime))))
+
 				self._logger.info("totalPrintFailTime:")
 				self._logger.info(self.totalPrintFailTime)
 			self.currentPrintStartTime = 0
@@ -488,7 +516,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.currentProjectPrintSuccessTime = self.currentProjectPrintSuccessTime + payload["time"]
 			self.totalPrintSuccessTime = self.totalPrintSuccessTime + payload["time"]
 			self._settings.set(["totalPrintSuccessTime"],self.totalPrintSuccessTime)
+			self._settings.set(["totalPrintSuccessTimeFriendly"], str(datetime.timedelta(seconds = int(self.totalPrintSuccessTime))))
 			self._settings.set(["currentProjectPrintSuccessTime"],self.currentProjectPrintSuccessTime)
+			self._settings.set(["currentProjectPrintSuccessTimeFriendly"], str(datetime.timedelta(seconds = int(self.currentProjectPrintSuccessTime))))
+
 			self._settings.save()
 			# octoprint.settings.Settings.save()
 			self.printing = False
@@ -997,12 +1028,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# if "dtoverlay=pi3-disable-wifi" in open('/boot/config.txt'):
 
 		self._execute('echo "Patching SMB"')
-		self._execute('sudo cp /home/pi/oprint/local/lib/python2.7/site-packages/octoprint_mgsetup/static/maintenance/system/smbPatched.conf /etc/samba/smb.conf')
+		self._execute('sudo cp '+self._basefolder+'/static/maintenance/system/smbPatched.conf /etc/samba/smb.conf')
 		self._execute('sudo chmod 644 /etc/samba/smb.conf')
 		self._execute('sudo chown root /etc/samba/smb.conf')
 		self._execute('sudo service smbd restart')
 		self._execute('echo "Patch Finished"')
-
 
 	def lockFirmware(self):
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
