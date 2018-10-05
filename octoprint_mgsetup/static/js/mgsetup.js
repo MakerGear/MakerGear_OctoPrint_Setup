@@ -22,9 +22,9 @@ $(function() {
 					// console.log(typeof(url));
 					// console.log(url);
 					OctoPrint.issueCommand(self.mgLogUrl, "mgLog", {"stringToLog":stringToLog,"priority":priority})
-						.done(function(response) {
-							// console.log("mgLog send to server-side done; response: "+response);
-						})
+						// .done(function(response) {
+						// 	// console.log("mgLog send to server-side done; response: "+response);
+						// })
 						.fail(function(response){
 							console.log("mgLog send to server-side failed!  Response: "+response+" Original message: "+stringToLog);
 						});
@@ -230,6 +230,7 @@ $(function() {
 		self.octoprintVersion = ko.observable("");
 		self.mgsetupVersion = ko.observable("");
 		self.smbpatchstring = ko.observable("");
+		self.softwareUpgraded = ko.observable(false);
 
 
 
@@ -2158,7 +2159,7 @@ $(function() {
 		self.shownTask = ko.observable("home");
 		self.taskRadio = ko.observable("home");
 		self.validTask = ko.observable(true);
-		self.validTaskList = ["T0-SE-R1_Assisted","Both-ID-R0_ChangeInstructions","Both-ID-R0_Load","Both-ID-R0_SetHot","Both-ID-R0_SetT1Hot","Both-ID-R0_T0T1SetCold","Both-ID-R1_ChangeInstructions","Both-ID-R1_Load","Both-ID-R1_SetHot","Both-ID-R1_SetT1Hot","Both-ID-R1_T0T1SetCold","T0-ID-R0_ChangeInstructions","T0-ID-R0_HotLevel","T0-ID-R0_Load","T0-ID-R0_SetCold","T0-ID-R0_SetHot","T0-ID-R0_SetT1Hot","T0-ID-R1_ChangeInstructions","T0-ID-R1_Load","T0-ID-R1_SetCold","T0-ID-R1_SetHot","T0-ID-R1_SetT1Hot","T0-SE-R0_ChangeInstructions","T0-SE-R0_HotLevel","T0-SE-R0_Load","T0-SE-R0_SetCold","T0-SE-R0_SetHot","T0-SE-R1_ChangeInstructions","T0-SE-R1_Load","T0-SE-R1_SetCold","T0-SE-R1_SetHot","T1-ID-R0_Load","T1-ID-R0_SetT1Cold","T1-ID-R0_SetT1Hot","Both-ID-R0_XSaw","Both-ID-R0_YSaw","T1-ID-R1_Load","T1-ID-R1_SetT1Cold","T1-ID-R1_SetT1Hot","Both-ID-R1_XSaw","Both-ID-R1_YSaw","T1-ID-R0_Unload","TT1-ID-R0_ChangeInstructions","T1-ID-R0_SetT1Cold","T1-ID-R0_Load","T1-ID-R0_SetT1Hot","T1-ID-R1_Unload","T1-ID-R1_ChangeInstructions","T1-ID-R1_Load","T1-ID-R1_SetT1Hot","Both-ID-R0_SetCold","Both-ID-R1_SetCold","Both-ID-R0_SetT1Cold","Both-ID-R1_SetT1Cold"];
+		self.validTaskList = ["T0-SE-R1_Assisted","Both-ID-R0_ChangeInstructions","Both-ID-R0_Load","Both-ID-R0_SetHot","Both-ID-R0_SetT1Hot","Both-ID-R0_T0T1SetCold","Both-ID-R1_ChangeInstructions","Both-ID-R1_Load","Both-ID-R1_SetHot","Both-ID-R1_SetT1Hot","Both-ID-R1_T0T1SetCold","T0-ID-R0_ChangeInstructions","T0-ID-R0_HotLevel","T0-ID-R0_Load","T0-ID-R0_SetCold","T0-ID-R0_SetHot","T0-ID-R0_SetT1Hot","T0-ID-R1_ChangeInstructions","T0-ID-R1_Load","T0-ID-R1_SetCold","T0-ID-R1_SetHot","T0-ID-R1_SetT1Hot","T0-SE-R0_ChangeInstructions","T0-SE-R0_HotLevel","T0-SE-R0_Load","T0-SE-R0_SetCold","T0-SE-R0_SetHot","T0-SE-R1_ChangeInstructions","T0-SE-R1_Load","T0-SE-R1_SetCold","T0-SE-R1_SetHot","T1-ID-R0_Load","T1-ID-R0_SetT1Cold","T1-ID-R0_SetT1Hot","Both-ID-R0_XSaw","Both-ID-R0_YSaw","T1-ID-R1_Load","T1-ID-R1_SetT1Cold","T1-ID-R1_SetT1Hot","Both-ID-R1_XSaw","Both-ID-R1_YSaw","T1-ID-R0_Unload","TT1-ID-R0_ChangeInstructions","T1-ID-R0_SetT1Cold","T1-ID-R0_Load","T1-ID-R0_SetT1Hot","T1-ID-R1_Unload","T1-ID-R1_ChangeInstructions","T1-ID-R1_Load","T1-ID-R1_SetT1Hot","Both-ID-R0_SetCold","Both-ID-R1_SetCold","Both-ID-R0_SetT1Cold","Both-ID-R1_SetT1Cold","Both-ID-R1_UpgradeSoftware","Both-ID-R1_ProbeCheck","Both-ID-R1_ProbeWiring","Both-ID-R1_ProbePhysical"];
 
 		self.updateTask = function(){
 			if (self.shownTask() === 'home'){
@@ -2299,6 +2300,9 @@ $(function() {
 						self.stepSixPrepared(false);
 						break;
 
+					case "UpgradeSoftware":
+						self.softwareUpgraded(false);
+						self.commandResponse("");
 
 
 				}
@@ -2344,6 +2348,60 @@ $(function() {
 								break;
 						}
 						break;
+
+
+					case "PrinterUpgrade":
+						switch(self.maintenanceTask()){
+
+							case "UpgradeSoftware":
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_ProbeCheck");
+								break;
+							case "ProbeWiring":
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_ProbeCheck");
+								break;
+							case "ProbePhysical":
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_ProbeCheck");
+								break;
+							case "ProbeCheck":
+								self.nextMaintenanceTask("Assisted");
+								break;
+							case "Assisted":
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_SetCold");
+								break;
+							case "SetCold":
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_SetT1Cold");
+								break;
+							case "SetT1Cold":
+								self.nextMaintenanceTask("PrinterUpgrade_T0-ID-R1_Load");
+								break;
+							case "Load":
+								switch(self.maintenanceTaskHotend()){
+									case "T0":
+										self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_SetHot");
+										break;
+									case "T1":
+										self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_SetT1Hot");
+										break;
+								}
+								break;
+							case "SetHot":
+								self.nextMaintenanceTask("PrinterUpgrade_T1-ID-R1_Load");
+								break;
+							case "SetT1Hot":
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_XSaw");
+								break;
+							case "XSaw":
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_YSaw");
+								break;
+							case "YSaw":
+								self.nextMaintenanceTask("home");
+								self.cooldown();
+								break;
+						}
+						break;
+
+
+
 
 					case "T0Cold":
 						switch(self.maintenanceTask()){
@@ -3241,9 +3299,16 @@ $(function() {
 				} else {
 					self.probeCheckReset();
 					// self.goTo("24");
-					self.stepTwentyNineNext("24");
-					self.goTo("29");
-					self.failedStep(3);
+					if (self.maintenanceOperation() === "home"){
+						self.stepTwentyNineNext("24");
+						self.goTo("29");
+						self.failedStep(3);
+					} else {
+						// self.nextMaintenanceTask();
+						// self.failedStep(3);
+						//TODO - figure out what to do here, exactly...
+						self.mgLog("Probe offset wrong in upgrade process.");
+					}
 					self.mgLog("probeCheck step 3 failed; self.probeOffset() = "+self.probeOffset());
 				}
 
@@ -3299,20 +3364,31 @@ $(function() {
 		self.probeCheckFailed = function() {
 			self.mgLog("probeCheckFailed triggered.");
 			if (self.waitingForEndstopResponse() || self.waitingForProbeResponse()){
-				self.mgLog("probeCheckFailed triggered with waiting true.");
+				self.mgLog("probeCheckFailed triggered with waiting true.  Probestep: "+self.probeStep().toString());
 				if (self.probeStep() <= 2){
 					self.failedStep(self.probeStep());
 					// self.setupStep('18');
-					self.goTo("18");
+					if (self.maintenanceOperation()==="home"){
+						self.goTo("18");
+					} else{
+						self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_ProbeWiring");
+					}
 				}
 				if (self.probeStep() == 3){
 					self.failedStep(self.probeStep());
 					// self.setupStep('19');
-					self.goTo("19");
+					if (self.maintenanceOperation()==="home"){
+						self.goTo("19");
+					} else {
+						self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_ProbePhysical");
+					}
 				}
 				if (self.probeStep() === 0 || self.probeStep() === 1 || self.probeStep() === 2 || self.probeStep() === 3){
 					self.probeCheckReset();
 					self.failedStep(self.probeStep());
+				}
+				if (self.probeStep() === 4){
+					self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_ProbePhysical");
 				}
 				// if (self.probeStep() === 2){
 				// 	self.probeStep(3);
@@ -3408,14 +3484,18 @@ $(function() {
 
 							self.probeCheckReset();
 							self.mgLog("probeRecieved");
-							if(!self.isDual()){
-								// self.goTo("23");
-								self.stepTwentyNineNext("23");
-								self.goTo("29");
+							if (self.maintenanceOperation()==="home"){
+								if(!self.isDual()){
+									// self.goTo("23");
+									self.stepTwentyNineNext("23");
+									self.goTo("29");
+								} else {
+									// self.goTo("25");
+									self.stepTwentyNineNext("25");
+									self.goTo("29");
+								}
 							} else {
-								// self.goTo("25");
-								self.stepTwentyNineNext("25");
-								self.goTo("29");
+								self.nextMaintenanceTask();
 							}
 							self.failedStep(self.probeStep());
 							// if(self.probeStep() === 3){
@@ -3659,7 +3739,11 @@ $(function() {
 					if (self.zLevelError() > 0.175){ //was 0.35mm, changed to 0.175mm 5/2/2018.  Josh
 						self.mgLog("Bed is out of level more than 0.175, going to assisted leveling.");
 						// self.setupStep("21");
-						self.goTo("21");
+						if (self.maintenanceOperation()==="home"){
+							self.goTo("21");
+						} else {
+							self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_Assisted");
+						}
 						self.probeCheckReset();
 						self.probeLevelFirstCheckClicked(true);
 						self.failedStep(self.probeStep());
@@ -3672,8 +3756,12 @@ $(function() {
 							self.goTo("29");
 						} else {
 							// self.goTo("25");
-							self.stepTwentyNineNext("25");
-							self.goTo("29");
+							if (self.maintenanceOperation()==="home"){							
+								self.stepTwentyNineNext("25");
+								self.goTo("29");
+							} else {
+								self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_SetCold");
+							}
 						}
 						self.probeCheckReset();
 					}
@@ -3753,10 +3841,14 @@ $(function() {
 							self.noTurns(true);
 							return;
 						}
-						if(!self.isDual()){
-							self.goTo('23');
+						if (self.maintenanceOperation()==="home"){
+							if(!self.isDual()){
+								self.goTo('23');
+							} else {
+								self.goTo('25');
+							}
 						} else {
-							self.goTo('25');
+							self.nextMaintenanceTask();
 						}
 						window.scroll(0,0);
 						self.lastCorner(false);
@@ -4007,13 +4099,34 @@ $(function() {
 				payloadName = "";
 				payload = {};
 			}
+			// if (targetAction === "printerUpgrade"){
+			// 	OctoPrint.connection.disconnect();
+			// }
+
 
 			var url = OctoPrint.getSimpleApiUrl("mgsetup");
-			OctoPrint.issueCommand(url, "adminAction", {"action":targetAction, "payload":{[payloadName]:payload}})
-				.done(function(response) {
-					self.mgLog("adminAction response: "+response);
-				});
+			console.log("Pre-adminAction blocking test.");
+			OctoPrint.issueCommand(url, "adminAction", {"action":targetAction, "payload":{[payloadName]:payload}});
+				// .done(function(response) {
+				// 	self.mgLog("adminAction response: "+response);
+				// });
+			console.log("Post-adminAction blocking test.");
+
 		};
+
+		self.upgradeTest = function(){
+			self.commandResponse("Starting the upgrade process.\n");
+			OctoPrint.connection.disconnect();
+			self.commandResponse(self.commandResponse()+"Printer disconnected.\n");
+
+			window.setTimeout(function() {self.adminAction("printerUpgrade", "upgradeType", "idRev0toRev1")},5000);
+
+
+
+
+		};
+
+
 
 																															   
 	// 88        88  88      88888888888                                                 88                                       
@@ -4809,7 +4922,7 @@ $(function() {
 		};
 
 		self.onDataUpdaterPluginMessage = function(plugin, data) {
-			self.mgLog("onDataUpdaterPluginMessage triggered.");
+			// self.mgLog("onDataUpdaterPluginMessage triggered.");
 			if (plugin != "mgsetup") {
 				// console.log('Ignoring '+plugin);
 				return;
@@ -4856,8 +4969,8 @@ $(function() {
 			//self.tooloffsetline(data.tooloffsetline);
 			//self.hostname(data.hostname);
 
-			self.mgLog("onDataUpdaterPluginMessage content:");
-			self.mgLog(data);
+			// self.mgLog("onDataUpdaterPluginMessage content:");
+			// self.mgLog(data);
 
 			if (data == "activation failed"){
 
@@ -4873,13 +4986,14 @@ $(function() {
 			}
 			if (data.commandResponse !== undefined ){
 				//console.log(data.commandResponse);
-				self.commandResponse(self.commandResponse()+data.commandResponse);
+				self.commandResponse(self.commandResponse()+data.commandResponse.toString());
 
 			
 				//get div and scroll to bottom
 				self.commandResponseText = $("#commandResponseText");
     			self.commandResponseText.scrollTop(self.commandResponseText[0].scrollHeight);
-
+    			self.commandResponseText2 = $("#commandResponseText2");
+    			self.commandResponseText2.scrollTop(self.commandResponseText2[0].scrollHeight);
 
 
 
@@ -4887,14 +5001,17 @@ $(function() {
 			if (data.commandError !== undefined){
 				self.mgLog("commandError: "+data.commandError);
 
-				var tempError = data.commandError
+				var tempError = data.commandError.toString();
+				tempErrorFalseNegativeLine = /^.*strace.*Broken pipe$/gm;
 
-				tempError = tempError.replace("strace: |/home/pi/.platformio/packages/tool-avrdude/autoreset: Broken pipe","") //this is a normal error, but sounds worse than it is, so don't show it in the response
+				tempError = tempError.replace(tempErrorFalseNegativeLine,""); //this is a normal error, but sounds worse than it is, so don't show it in the response
 
-				self.commandResponse(self.commandResponse()+data.commandError);
+				self.commandResponse(self.commandResponse()+tempError);
 				//get div and scroll to bottom
 				self.commandResponseText = $("#commandResponseText");
     			self.commandResponseText.scrollTop(self.commandResponseText[0].scrollHeight);
+    			self.commandResponseText2 = $("#commandResponseText2");
+    			self.commandResponseText2.scrollTop(self.commandResponseText2[0].scrollHeight);
 
 
 			}
@@ -4993,6 +5110,11 @@ $(function() {
 			}
 			if (data.smbpatchstring !== undefined){
 				self.smbpatchstring(data.smbpatchstring);
+			}
+			if (data.softwareUpgraded !== undefined){
+				self.softwareUpgraded(data.softwareUpgraded);
+				window.setTimeout(function() {OctoPrint.control.sendGcode(["M502","M500"])},10000);
+
 			}
 
 

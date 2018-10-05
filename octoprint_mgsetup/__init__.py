@@ -443,6 +443,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			#self._logger.info(payload + " connected")
 			#self.serial = ""
 			self.sendCurrentValues()
+			self._logger.info(self._printer_profile_manager.get_current_or_default())
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(zoffsetline = self.zoffsetline))
 			# self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = self.tooloffsetline))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(ip = self.ip))
@@ -756,7 +757,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.backUpConfigYaml()
 		if not os.path.isfile('/home/pi/m3firmware/src/Marlin/lockFirmware'):
 			# self._logger.info(self._execute("git -C /home/pi/m3firmware/src pull"))
-			self._logger.info(self._execute("git -C /home/pi/m3firmware/src fetch --all; git -C /home/pi/m3firmware/src reset --hard; git -C /home/pi/m3firmware/src pull"))
+			self._execute("git -C /home/pi/m3firmware/src fetch --all; git -C /home/pi/m3firmware/src reset --hard; git -C /home/pi/m3firmware/src pull")
 
 
 
@@ -1231,11 +1232,96 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.currentProjectMachineFailTime = 0
 			self._settings.set(["currentProjectPrintSuccessTime"],self.currentProjectPrintSuccessTime)
 			self._settings.set(["currentProjectPrintFailTime"],self.currentProjectPrintFailTime)
-			self._settings.set(["currentProjectMachineFailTime"],self.currentProjectMachineFailTime)			
+			self._settings.set(["currentProjectMachineFailTime"],self.currentProjectMachineFailTime)
 			self._settings.set(["currentProjectName"],self.currentProjectName)
 			
 			self._settings.save()
 			self.triggerSettingsUpdate()
+
+		elif action["action"] == "printerUpgrade":
+			self.printerUpgrade(action["payload"])
+
+
+	def printerUpgrade(self, upgradeInfo):
+		self._logger.info("printerUpgrade debug position 1.")
+		if upgradeInfo["upgradeType"] == None:
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Unknown upgrade / no upgrade chosen, canceling.\n"))
+			return
+		# self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Starting the Upgrade process.\n"))
+
+		if upgradeInfo["upgradeType"] == "idRev0toRev1":
+			self._logger.info("printerUpgrade debug position 2.")
+
+			# self._printer.disconnect()
+			# self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Printer disconnected.\n"))
+			try:
+				newProfile = dict(name= 'M3-ID-Rev1-000', color= 'default', axes= dict(y= dict(speed= 12000, inverted= True), x= dict(speed= 12000, inverted= False), z= dict(speed= 1200, inverted= False), e= dict(speed= 400, inverted= False)), heatedBed= True, volume= dict(origin= 'lowerleft', formFactor= 'rectangular', depth= 250.0, width= 200.0, custom_box= dict(z_min= 0.0, y_min= 0.0, x_max= 240.0, x_min= 0.0, y_max= 250.0, z_max= 205.0), height= 200.0), model= 'M3-ID-Rev1-000', id= 'makergear_m3_independent_dual', extruder= dict(count= 2, nozzleDiameter= 0.35, offsets= [(0.0, 0.0), (0.0, 0.0)], sharedNozzle= False))
+				self._printer_profile_manager.save(newProfile, True, True)
+				self._printer_profile_manager.select(newProfile['name'])
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "New profile created and selected.\n"))
+				self._logger.info("printerUpgrade debug position 3.")
+
+			except Exception as e:
+				self._logger.info("Failed upgrade while creating profile, error: "+str(e))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Error while creating profile.  Please try again or contact Support.\n"))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(softwareUpgraded = False))
+
+				return
+
+			try:
+				self._logger.info("printerUpgrade debug position 4.")
+
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Switching to new firmware and uploading.\n"))
+				self._logger.info(self._execute("git -C /home/pi/m3firmware/src fetch --all; git -C /home/pi/m3firmware/src reset --hard; git -C /home/pi/m3firmware/src pull; git -C /home/pi/m3firmware/src checkout 1.1.6"))
+				self._logger.info("printerUpgrade debug position 5.")
+
+				newProfileString = (re.sub('[^\w]','_',newProfile["model"])).upper()
+
+				with open('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h','r+') as f:
+					timeString = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
+					oldConfig = f.read()
+					f.seek(0,0)
+					if f.readline() == "\n":
+						f.seek(0,0)
+						f.write("#define MAKERGEAR_MODEL_" + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + oldConfig)
+					else:
+						f.seek(0,0)
+						oldLine = f.readline()
+						f.seek(0,0)
+						i = oldConfig.index("\n")
+						oldConfigStripped = oldConfig[i+1:]
+						f.write("#define MAKERGEAR_MODEL_" + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n" + oldConfigStripped)
+
+				self.mgLog(self._execute("python /home/pi/.octoprint/scripts/upload.py"),2)
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Reconnecting to printer.\n"))
+				self._printer.connect()
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Resetting firmware values.\n"))
+				self._printer.commands(["M502", "M500"])
+				self._logger.info("printerUpgrade debug position 6.")
+
+
+
+
+
+			except Exception as e:
+				self._logger.info("Failed upgrade while trying to change firmware, error: "+str(e))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Error while switching / uploading firmware.  Please try again or contact Support.\n"))
+				self._plugin_manager.send_plugin_message("mgsetup", dict(softwareUpgraded = False))
+
+				return
+
+			self._logger.info("printerUpgrade debug position 7.")
+
+			# self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Software upgrade for M3 ID Rev0 to Rev1 complete.  Perform the full Quick Check to calibrate your printer.\n"))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Please contact Support if you have any issues.\n"))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(softwareUpgraded = True))
+			self._logger.info("printerUpgrade debug position 8.")
+
+
+
+
+
+
 
 
 

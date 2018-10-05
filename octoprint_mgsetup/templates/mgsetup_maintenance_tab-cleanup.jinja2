@@ -148,7 +148,7 @@
 
 
 			<li class="panel" data-bind="visible: $root.isDual()">
-			<hr>
+			{# <hr> #}
 
 				<h3> <a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" data-bind="visible: $root.isDual()" href="#dualOffsetsTasks">Independent Dual Adjustments <i class="icon-chevron-down"></i> </a></h3>
 
@@ -201,7 +201,7 @@
 				</ul>
 			</li>
 
-			<hr>
+			{# <hr> #}
 			<li class="panel" >
 				<h3><a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#physicalAdjustmentsTasks">Physical Adjustments <i class="icon-chevron-down"></i></a></h3>
 
@@ -266,7 +266,7 @@
 				</ul>
 			</li>
 			<div >
-				<hr>
+				{# <hr> #}
 			</div>
 			<li class="panel">
 
@@ -319,6 +319,58 @@
 					</li>
 				</ul>
 			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+			<li class="panel">
+
+				<h3><a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#printerUpgrades"> Printer Upgrades <i class="icon-chevron-down"></i></a></h3>
+
+				<p>
+					Perform printer hardware upgrades.
+				</p>
+
+				<ul id="printerUpgrades" class="collapse">
+					<li>
+						<div class="buttonRow" style="text-align:center;">
+							<div class="buttonColumn">
+								<a data-bind="click: function() {$root.nextMaintenanceTask('PrinterUpgrade_Both-ID-R1_UpgradeSoftware'); window.scroll(0,0); return true}">
+									<img class="maintenanceImage" data-bind="attr: {'src': '/plugin/mgsetup/static/img/maintenance/nav/bedLevelHot2.jpg', 'width': '100px',} , visible: loginState.isUser " />
+
+									<br>
+									Upgrade M3 ID Rev 0 to Rev 1
+								</a>
+
+							</div>
+
+
+						</div>
+					</li>
+				</ul>
+			</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -495,7 +547,7 @@
 					</p>
 				</video>
 
-				Once filament is consistently extruding through both the Left Extruder (T0) and Right Extruder (T1), click to "Next Step" proceed:<br>
+				Once filament is consistently extruding through both the Left Extruder (T0) and Right Extruder (T1), click "Next Step" to proceed:<br>
 
 				<center><button class="btngoBig" data-bind="visible: loginState.isUser, click: function() { $root.nextMaintenanceTask(); window.scroll(0,0); $root.stepThreeStartHeatingClicked(false) }">Next Step</button></center>
 			</p>
@@ -2449,6 +2501,52 @@
 
 
 
+{#                                                                                                        #}
+{#  88        88  88888888ba     ,ad8888ba,   88888888ba          db         88888888ba,    88888888888   #}
+{#  88        88  88      "8b   d8"'    `"8b  88      "8b        d88b        88      `"8b   88            #}
+{#  88        88  88      ,8P  d8'            88      ,8P       d8'`8b       88        `8b  88            #}
+{#  88        88  88aaaaaa8P'  88             88aaaaaa8P'      d8'  `8b      88         88  88aaaaa       #}
+{#  88        88  88""""""'    88      88888  88""""88'       d8YaaaaY8b     88         88  88"""""       #}
+{#  88        88  88           Y8,        88  88    `8b      d8""""""""8b    88         8P  88            #}
+{#  Y8a.    .a8P  88            Y8a.    .a88  88     `8b    d8'        `8b   88      .a8P   88            #}
+{#   `"Y8888Y"'   88             `"Y88888P"   88      `8b  d8'          `8b  88888888Y"'    88888888888   #}
+
+	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='UpgradeSoftware'">
+		<H1 style="text-align:left;">Printer Upgrade</H1>
+		{# Add some checking in here to change what text is shown, and what links/etc. are shown below, for different upgrades.  Only one upgrade process at the moment though, sooo: #}
+		<center><b>The printer must be connected to the internet for this process.</b></center>
+		<br><br>
+		This Operation will take you through the process of performing the Rev 0 to Rev 1 upgrade on your M3 Independent Dual printer.
+		<br>
+		<br>
+		Complete the hardware portion of this upgrade first.  You will need to power down the printer during this process.
+		<br>
+		Hardware upgrade instructions are here: TODO : hardware instructions link... {# TODO #}
+		<br>
+		<hr>
+		Once the hardware upgrade is complete we need to update the printer firmware and OctoPrint configuration, as well as calibrate the printer.  Reminder: the printer must be connected to the internet for this process.
+		<br>
+		<br>
+		<b>Warning - The following steps will change the printer firmware and OctoPrint configuration for the new hardware state; if the hardware upgrade has not been performed yet, this may leave the printer in an inoperable state.
+			<br>
+			<br>
+			Only perform this software upgrade once the hardware upgrade is complete.
+		</b>
+		<br>
+		<br>
+
+		{# <center><button class="btngoBig" data-bind="enable: loginState.isUser() && $root.googleGood()===1 , click: function() { $root.commandResponse(''), $root.adminAction('printerUpgrade', 'upgradeType', 'idRev0toRev1')}">Upgrade ID Rev 0 to Rev 1</button></center> #}
+		<center><button class="btngoBig" data-bind="enable: loginState.isUser() && $root.googleGood()===1 && !$root.softwareUpgraded(), click: function() { $root.commandResponse(''), $root.upgradeTest()}">Upgrade ID Rev 0 to Rev 1</button></center>
+		<br>
+		Progress:
+		<br>
+		<center><textarea id="commandResponseText2" data-bind="text: $root.commandResponse" style="width:90%;height:250px;"></textarea></center>
+		<br>
+		<br>
+		<center><button class="btngoBig" data-bind="visible: loginState.isUser, enable: $root.softwareUpgraded(), click: function() { $root.nextMaintenanceTask(); window.scroll(0,0)}">Next Step</button></center>
+
+
+	</div>
 
 
 
@@ -2457,37 +2555,243 @@
 
 
 
+{#                                                                                                                                #}
+{#  88888888ba                            88                         ,ad8888ba,   88                                   88         #}
+{#  88      "8b                           88                        d8"'    `"8b  88                                   88         #}
+{#  88      ,8P                           88                       d8'            88                                   88         #}
+{#  88aaaaaa8P'  8b,dPPYba,   ,adPPYba,   88,dPPYba,    ,adPPYba,  88             88,dPPYba,    ,adPPYba,   ,adPPYba,  88   ,d8   #}
+{#  88""""""'    88P'   "Y8  a8"     "8a  88P'    "8a  a8P_____88  88             88P'    "8a  a8P_____88  a8"     ""  88 ,a8"    #}
+{#  88           88          8b       d8  88       d8  8PP"""""""  Y8,            88       88  8PP"""""""  8b          8888[      #}
+{#  88           88          "8a,   ,a8"  88b,   ,a8"  "8b,   ,aa   Y8a.    .a8P  88       88  "8b,   ,aa  "8a,   ,aa  88`"Yba,   #}
+{#  88           88           `"YbbdP"'   8Y"Ybbd8"'    `"Ybbd8"'    `"Y8888Y"'   88       88   `"Ybbd8"'   `"Ybbd8"'  88   `Y8a  #}
+{#                                                                                                                                #}
+{#                                                                                                                                #}
+
+
+	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='ProbeCheck'">
+{# 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='17'" />
+		</div><br><br> #}
+
+
+
+
+		<h1 style="text-align:left;">Automated Calibration Test</h1>
+		<p style="text-align:left;">
+
+			Click below to start the Automated Calibration Test. Over the next minute your printer will move and probe the bed to check for any calibration problems. You will automatically be sent to the next step after the test is complete. 
+
+		</p>
+
+		<center> <button style="" class="btngoBig" data-bind="enable:$root.lockButton() && loginState.isUser && !$root.autoCheckClicked() , click: function() { $root.checkProbe(); $root.adminAction('flushPrintActive') }">Start Automated Calibration Test</button></center>
+		<br><br>
+
+
+
+	<div style="width:80%;margin-left:auto;margin-right:auto;text-align:center;" >
+		<div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+			<div data-bind="visible: $root.probeStep()<2 " style="text-align:center;">
+				<i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="visible: $root.probeStep()>1 " style="text-align:center;">
+				<i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="style: {fontWeight: $root.probeStep() == 1 ? 'bold':''}"  style="text-align:center;">
+				Detect <br /> Probe
+			</div>
+		</div>
+		<div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+			<div data-bind="visible: $root.probeStep()<3 " style="text-align:center;">
+				<i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="visible: $root.probeStep()>2 " style="text-align:center;"  style="text-align:center;">
+				<i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="style: {fontWeight: $root.probeStep() == 2 ? 'bold':''}"  style="text-align:center;">
+				Verify <br /> Probe Location
+			</div>
+		</div>
+		<div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+			<div data-bind="visible: $root.probeStep()<4 " style="text-align:center;">
+				<i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="visible: $root.probeStep()>3 " style="text-align:center;">
+				<i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="style: {fontWeight: $root.probeStep() == 3 ? 'bold':''}"  style="text-align:center;">
+				Check   <br /> Probe Offset
+			</div>
+		</div>
+		<div style="display:inline-block;width:24.25%;margin-left:auto;margin-right:auto;">
+			<div data-bind="visible: $root.probeStep()<5 " style="text-align:center;">
+				<i class="icon-check-empty" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="visible: $root.probeStep()>4 " style="text-align:center;">
+				<i class="icon-check" style="font-size:50px; color:#FF6E35;"></i>
+			</div>
+			<div data-bind="style: {fontWeight: $root.probeStep() == 4 ? 'bold':''}"  style="text-align:center;">
+				Check  <br /> Bed Level
+			</div>
+		</div>
+
+
+	</div>
+
+
+
+
+</div>
+
+{#                                                                                                                                        #}
+{#  88888888ba                            88                       I8,        8        ,8I  88              88                            #}
+{#  88      "8b                           88                       `8b       d8b       d8'  ""              ""                            #}
+{#  88      ,8P                           88                        "8,     ,8"8,     ,8"                                                 #}
+{#  88aaaaaa8P'  8b,dPPYba,   ,adPPYba,   88,dPPYba,    ,adPPYba,    Y8     8P Y8     8P    88  8b,dPPYba,  88  8b,dPPYba,    ,adPPYb,d8  #}
+{#  88""""""'    88P'   "Y8  a8"     "8a  88P'    "8a  a8P_____88    `8b   d8' `8b   d8'    88  88P'   "Y8  88  88P'   `"8a  a8"    `Y88  #}
+{#  88           88          8b       d8  88       d8  8PP"""""""     `8a a8'   `8a a8'     88  88          88  88       88  8b       88  #}
+{#  88           88          "8a,   ,a8"  88b,   ,a8"  "8b,   ,aa      `8a8'     `8a8'      88  88          88  88       88  "8a,   ,d88  #}
+{#  88           88           `"YbbdP"'   8Y"Ybbd8"'    `"Ybbd8"'       `8'       `8'       88  88          88  88       88   `"YbbdP"Y8  #}
+{#                                                                                                                            aa,    ,88  #}
+{#                                                                                                                             "Y8bbdP"   #}
+
+
+
+	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='ProbeWiring'">
+{# 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='18'" />
+		</div><br><br> #}
+
+
+
+		<h1 style="text-align:left;">Probe Electronic Failure</h1>
+
+
+		<div data-bind="visible: $root.failedStep() <2">
+			<p>
+				Your printer's probe is either not responding to commands or failing the initial bed probe.  The probe body should glow red when the probe is retracted, and should cycle (extend and retract) several times when the printer first powers up.
+			</p>
+
+
+
+			<p>Check that the probe is connected to the printer via the 6-pin connector. 
+
+				<br> <img src="/plugin/mgsetup/static/img/probeConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto">
+
+
+{#    
+If it is connected and still not reacting, you may need to open the electronic case and make sure it is connected correctly. 
+connected correctly inside the electronics case:<br> <img src="/plugin/mgsetup/static/img/probeRamboConnector.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br> and at the probe body itself:.<br><br> 
+
+#}
+
+<p>Once you have verified the connection, and that the probe body indicator LED is lit, use the "Retest Probe" button to start the test. You should see the probe extend and retract. 
+</p>
+
+</div>
+
+<div data-bind="visible: $root.failedStep() == 2">
+
+	It looks like your probe failed to activate while testing at the edge of the bed.  Please confirm that the probe responds to the buttons below, and that it is actually positioned over the bed.
+
+	If the X motor did not move correctly, or did not position the probe at the correct location, check that the X motor connectors are secure.
+
+	If the probe is above the bed, but the bed did not activate the probe, please go to the Control tab and use the manual jog controls to verify that the bed can move all the way up to the probe and/or nozzle.
+
+</div>
+
+{# <div data-bind="visible: $root.failedStep() == 3">
+
+It looks like your probe failed to activate while testing in 
+
+</div> #}
+
+<center> <button style="" class="btnstay" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retest') }">Retest Probe</button></center>
+
+
+<p>
+	If the probe is extending and retracting on its own, you can click on "Return to Automated Calibration Test" to go back to the main testing page. If the probe does not extend/retract, please contact MakerGear Support.
+</p>
+
+
+
+
+{#       
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button>
+ <button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('selftest') }">Initiate Self-Test</button><br>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('resetalarm') }">Reset Alarm State</button> If the probe body is blinking red, click this to Reset the alarm.<br><br>
+ #}
+
+
+ <center> <button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.nextMaintenanceTask(); window.scroll(0,0) }">Return to Probe Autocheck</button></center>
 
 
 
 
 
+</div>
+
+{#                                                                                                                                                   #}
+{#  88888888ba                            88                       88888888ba   88                                   88                          88  #}
+{#  88      "8b                           88                       88      "8b  88                                   ""                          88  #}
+{#  88      ,8P                           88                       88      ,8P  88                                                               88  #}
+{#  88aaaaaa8P'  8b,dPPYba,   ,adPPYba,   88,dPPYba,    ,adPPYba,  88aaaaaa8P'  88,dPPYba,   8b       d8  ,adPPYba,  88   ,adPPYba,  ,adPPYYba,  88  #}
+{#  88""""""'    88P'   "Y8  a8"     "8a  88P'    "8a  a8P_____88  88""""""'    88P'    "8a  `8b     d8'  I8[    ""  88  a8"     ""  ""     `Y8  88  #}
+{#  88           88          8b       d8  88       d8  8PP"""""""  88           88       88   `8b   d8'    `"Y8ba,   88  8b          ,adPPPPP88  88  #}
+{#  88           88          "8a,   ,a8"  88b,   ,a8"  "8b,   ,aa  88           88       88    `8b,d8'    aa    ]8I  88  "8a,   ,aa  88,    ,88  88  #}
+{#  88           88           `"YbbdP"'   8Y"Ybbd8"'    `"Ybbd8"'  88           88       88      Y88'     `"YbbdP"'  88   `"Ybbd8"'  `"8bbdP"Y8  88  #}
+{#                                                                                               d8'                                                 #}
+{#                                                                                              d8'                                                  #}
+
+	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='ProbePhysical'">
+{# 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
+			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='19'" />
+		</div><br><br> #}
 
 
 
 
+		<h1 style="text-align:left;">Probe / Nozzle Failure</h1>
+		<p style="text-align:left;">
+
+			It looks like your probe failed to activate while testing in the middle of the bed.  This is likely caused by the nozzle being too low relative to the probe, preventing the probe tip from touching the bed.
+
+		</p>
+
+
+
+		Probe Fail 3: Probing Failed in Middle of Bed
+
+		<br><br>
+		Probe extended, below the tip of the nozzle:<br>
+		<img src="/plugin/mgsetup/static/img/probeExtended.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
+		Probe retracted, above the tip of the nozzle:<br>
+		<img src="/plugin/mgsetup/static/img/probeRetracted.jpg" style="display:block;width::50%;margin-left:auto;margin-right:auto"><br><br>
+
+		Please check that the nozzle is above the tip of the probe when extended as show above.  The buttons below will let you extend and retract the probe tip:<br><br>
+
+
+		<button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button>
+		<button style="width:49.5%;display:inline-block" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button>
+
+
+{#
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('extend') }">Extend</button><br>
+ <button style="width:100%;" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.probeAction('retract') }">Retract</button><br>
+ #}
+
+ <p>
+ 	Once you have confirmed or adjusted the nozzle position, click here to go to the Probe Offset Adjustment:
+ </p>
+ <center>
+ 	<button style="" class="btngoBig" data-bind="enable: loginState.isUser , click: function() { $root.nextMaintenanceTask(); window.scroll(0,0) }">Return to Probe Autocheck</button> </center>
+
+ 	<br>If the nozzle is already above the tip of the probe when extended, please contact MakerGear Support.
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ </div>
 
 
 
@@ -2636,6 +2940,17 @@
 					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'XSaw',  click: $root.updateTask()  " /> XSaw</td>
 					<td></td>
 					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'YSaw',  click: $root.updateTask()  " /> YSaw</td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'Upgrade',  click: $root.updateTask()  " /> Upgrade</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ProbeCheck',  click: $root.updateTask()  " /> ProbeCheck</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ProbeWiring',  click: $root.updateTask()  " /> ProbeWiring</td>
+					<td></td>
+					<td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'ProbePhysical',  click: $root.updateTask()  " /> ProbePhysical</td>
+					<td></td>
+					{# <td><input type="radio" name="maintenancePageSelectTaskOnly" data-bind="checked: $root.shownTask, checkedValue: 'YSaw',  click: $root.updateTask()  " /> YSaw</td> #}
 				</tr>
 			</table>
 			<br>

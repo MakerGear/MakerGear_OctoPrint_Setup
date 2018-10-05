@@ -259,7 +259,7 @@
 			<div class="control-group">
 				<label class="control-label">{{ _('Unlock Advanced Operations') }}</label>
 				<div class="controls">
-					<input type="checkbox" data-bind="checked: $root.unlockAdvanced " />  These should only be performed when instructed by Support, as these operations can significantly change printer configuration.  If a button is grayed out / disabled, it is likely an Advanced Operation.
+					<input type="checkbox" data-bind="checked: $root.unlockAdvanced " />  These should only be performed when instructed by Support, as these operations can significantly change printer configuration.
 				</div>
 			</div>
 		</form>
@@ -719,6 +719,39 @@
 			</li>
 		</ul>
 	</li>
+
+{# 
+	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
+		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsI">Printer Upgrades<i class="icon-chevron-down"></i> </a></h3>
+			<hr />
+
+		<ul id="settingsI" class="collapse">
+			<li>
+				<div class="buttonRow"> #}
+					{# <div class="buttonColumn" ">
+
+
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('ID Rev 0 to Rev 1') }}</label>
+									<div class="controls">
+											Update software and firmware configurations after upgrading a M3 Independent Dual Revision 0 to Revision 1 (add probe).  Once the upgrade is complete, please go through the Quick Check process to become familiar with changed printer operations, and to calibrate your M3 for printing.
+											<br>
+										<button class="btn btn-primary" data-bind="enable: loginState.isUser() && $root.unlockAdvanced(), click: function() { $root.commandResponse(''), $root.adminAction('printerUpgrade', 'upgradeType', 'idRev0toRev1'), $root.showCommandResponse() }">Upgrade ID Rev 0 to Rev 1</button>
+								</div>
+							</div>
+
+						<br>
+						
+
+				</div>
+			</li>
+		</ul>
+	</li>
+
+ #}
+
+
 
 </ul>
 
