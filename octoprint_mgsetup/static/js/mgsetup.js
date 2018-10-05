@@ -2234,6 +2234,7 @@ $(function() {
 					case "Assisted":
 						self.probeLevelFirstCheckClicked(false);
 						self.noTurns(false);
+						self.probeCheckReset();
 						break;
 
 					case "Load":
@@ -3275,6 +3276,7 @@ $(function() {
 					"G92 Z210",
 					"G30",
 					"G92 Z0",
+					"G1 F1000 Z10",
 					"M400"]);
 				self.waitingForProbeResponse(true);
 				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
@@ -3346,7 +3348,7 @@ $(function() {
 					"M84 Y",
 					"M400"]);
 				self.waitingForProbeResponse(true);
-				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},60000);
+				self.probeFail = window.setTimeout(function() {self.probeCheckFailed()},75000);
 			
 
 				OctoPrint.control.sendGcode(["M300 S1392 P250",
@@ -3741,12 +3743,13 @@ $(function() {
 						// self.setupStep("21");
 						if (self.maintenanceOperation()==="home"){
 							self.goTo("21");
+							self.probeCheckReset();
+							self.probeLevelFirstCheckClicked(true);
+							self.failedStep(self.probeStep());
 						} else {
 							self.nextMaintenanceTask("PrinterUpgrade_Both-ID-R1_Assisted");
 						}
-						self.probeCheckReset();
-						self.probeLevelFirstCheckClicked(true);
-						self.failedStep(self.probeStep());
+
 					} else {
 						// self.setupStep("7");
 						self.mgLog("process bed level");
@@ -3777,7 +3780,7 @@ $(function() {
 						self.probeLevelAssist("next");
 					}
 				} else {
-					if (self.maintenanceOperation() === "Assisted"){
+					if (self.maintenanceOperation() === "Assisted" || self.maintenanceTask() === "Assisted"){
 						self.probeLevelActiveCorner(0);
 						self.lastCorner(false);
 						self.probeLevelAssist("next");
@@ -3800,6 +3803,7 @@ $(function() {
 				return;
 			}
 			if(levelStep === 0){
+				self.probeCheckReset();
 				OctoPrint.control.sendGcode(["T0",
 					"G28 XYZ",
 					"G29 P2",
