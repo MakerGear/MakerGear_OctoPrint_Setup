@@ -753,6 +753,25 @@ $(function() {
 					self.stepTwentyFirstWiggleClicked(true);
 				}
 			}
+			if (wigglePosition === "probeRrf"){
+				
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+				heatup: true,
+				wiggleX: 203,
+				wiggleY: 177.5,
+				tohome: true,
+				wigglenumber: parseFloat(1),
+				tool: 0};
+				if (self.stepTwentyFirstWiggleClicked()){
+					parameters.tohome = false;
+				}
+				var context = {};
+				self.mgLog("parameters.wiggleHeight: "+parameters.wiggleHeight);
+				OctoPrint.control.sendGcodeScriptWithParameters("probeWiggle", context, parameters);
+				if (self.setupStep() === '20' || self.maintenancePage() === 200 || self.maintenanceOperation() === "T0Hot" || self.maintenanceTask() === "SetHot" || self.maintenanceTask() === "SetT1Hot"){
+					self.stepTwentyFirstWiggleClicked(true);
+				}
+			}
 
 		};
 
@@ -1507,6 +1526,34 @@ $(function() {
 					//	type: 'success',
 					//});
 
+			}
+			if (startingHeightStep == "2-maintenance-rrf") {
+				self.newZOffset = (parseFloat(self.ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
+				if (self.newZOffset.toString() == "NaN") {
+					self.notify("Offset Setting Error","There was an error when setting the Z Offset.  Please refresh the page and try again.  Support values: self.newZOffset="+self.newZOffset.toString()+" ; self.ZOffset="+self.ZOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
+					self.mgLog("Offset setting error:");
+					self.mgLog("self.newZOffset = "+self.newZOffset.toString());
+					self.mgLog("self.ZOffset = "+self.ZOffset().toString());
+					self.mgLog("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());
+					return;
+				}
+				//self.newZOffset = self.newZOffset + 0.1 ;
+				self.ZOffString = "M206 Z"+self.newZOffset.toString();
+				self.mgLog("newZOffset: "+self.newZOffset.toString());
+				self.mgLog("ZOffString: "+self.ZOffString);
+				OctoPrint.control.sendGcode([self.ZOffString,
+					"M500"					
+				]);
+				self.ZOffset(self.newZOffset);
+				self.requestEeprom();
+				//new PNotify({
+				//	title: 'Starting Height Adjustment',
+				//	text: "Starting Height Set to : "+self.newZOffset.toString(),
+				//	type: 'success',
+				//});
+				self.ZWiggleHeight(self.stockZWiggleHeight);
+				self.nextMaintenanceTask();
+				//self.setupStep("3");
 			}
 
 			OctoPrint.control.sendGcode("M114");
