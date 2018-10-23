@@ -242,8 +242,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# self._logger.info(__version__)
 
 
-		subprocess.call("/home/pi/.octoprint/scripts/hosts.sh") #recreate hostsname.js for external devices/ print finder
-		
+		try:
+			subprocess.call("/home/pi/.octoprint/scripts/hosts.sh") #recreate hostsname.js for external devices/ print finder
+		except Exception as e:
+			self._logger.info("Error while trying to recreate hostname.js file: "+str(e))
+
+
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 			os.makedirs('/home/pi/.octoprint/scripts/gcode')
 		except OSError:
@@ -916,7 +920,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line and "Error" not in line and "z_min" not in line and "Bed X:" not in line and "M851" not in line:
 		# 	return line
 		newValuesPresent = False
-		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored"]
+		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored", "G31"]
 
 		if not any([x in line for x in watchCommands]):
 			return line
@@ -940,6 +944,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.tooloffsetline = line
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
 			newValuesPresent = True
+
+
 
 		#__plugin_implementation__._logger.info(line)
 
@@ -968,6 +974,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
 			newValuesPresent = True
 
+		if "G31" in line:
+			self._logger.info("Z Probe Offset received - RRF Tool offset")
+			self.probeOffsetLine = line
+			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
+			newValuesPresent = True
+
+# Recv: 
+# Recv: G31 P25 X21 Y0 Z0.501  U0 ; Set Z probe trigger value, offset and trigger height
 
 		if "= [[ " in line:
 			self._logger.info("Bed Leveling Information received")

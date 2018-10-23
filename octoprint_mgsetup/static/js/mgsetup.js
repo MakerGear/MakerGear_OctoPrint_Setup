@@ -35,6 +35,9 @@ $(function() {
 		self.mgLog("Parameters: ",1);
 		self.mgLog(parameters,1);
 
+		self.rrf = ko.observable(true);
+		self.rrfMaintenanceReport = ko.observable("");
+
 		// Originally from Controls tab:
 		self.loginState = parameters[0];
 		self.settings = parameters[1];
@@ -754,20 +757,20 @@ $(function() {
 				}
 			}
 			if (wigglePosition === "probeRrf"){
-				
+				//wiggleX should be 203, but set to 178 for the moment to deal with torn tape TODO - fix, obvs
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
 				heatup: true,
-				wiggleX: 203,
+				wiggleX: 150,
 				wiggleY: 177.5,
 				tohome: true,
-				wigglenumber: parseFloat(1),
+				wigglenumber: "050absflat",
 				tool: 0};
 				if (self.stepTwentyFirstWiggleClicked()){
 					parameters.tohome = false;
 				}
 				var context = {};
 				self.mgLog("parameters.wiggleHeight: "+parameters.wiggleHeight);
-				OctoPrint.control.sendGcodeScriptWithParameters("probeWiggle", context, parameters);
+				OctoPrint.control.sendGcodeScriptWithParameters("customProbeWiggleRrf", context, parameters);
 				if (self.setupStep() === '20' || self.maintenancePage() === 200 || self.maintenanceOperation() === "T0Hot" || self.maintenanceTask() === "SetHot" || self.maintenanceTask() === "SetT1Hot"){
 					self.stepTwentyFirstWiggleClicked(true);
 				}
@@ -1528,31 +1531,31 @@ $(function() {
 
 			}
 			if (startingHeightStep == "2-maintenance-rrf") {
-				self.newZOffset = (parseFloat(self.ZOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
-				if (self.newZOffset.toString() == "NaN") {
-					self.notify("Offset Setting Error","There was an error when setting the Z Offset.  Please refresh the page and try again.  Support values: self.newZOffset="+self.newZOffset.toString()+" ; self.ZOffset="+self.ZOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
+				// self.newProbeOffset = (parseFloat(self.probeOffset())+parseFloat(self.ZPos()));
+				self.newProbeOffset = (parseFloat(self.probeOffset())+parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
+
+				if (self.newProbeOffset.toString() == "NaN") {
+					self.notify("Offset Setting Error","There was an error when setting the Probe Offset.  Please refresh the page and try again.  Support values: self.newProbeOffset="+self.newProbeOffset.toString()+" ; self.probeOffset="+self.probeOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
 					self.mgLog("Offset setting error:");
-					self.mgLog("self.newZOffset = "+self.newZOffset.toString());
-					self.mgLog("self.ZOffset = "+self.ZOffset().toString());
+					self.mgLog("self.newProbeOffset = "+self.newProbeOffset.toString());
+					self.mgLog("self.probeOffset = "+self.probeOffset().toString());
 					self.mgLog("self.ZWiggleHeight = "+self.ZWiggleHeight().toString());
 					return;
 				}
 				//self.newZOffset = self.newZOffset + 0.1 ;
-				self.ZOffString = "M206 Z"+self.newZOffset.toString();
-				self.mgLog("newZOffset: "+self.newZOffset.toString());
-				self.mgLog("ZOffString: "+self.ZOffString);
-				OctoPrint.control.sendGcode([self.ZOffString,
-					"M500"					
+
+				// G31 P25 X21 Y0 Z0.502  U0
+				self.ProbeOffString = "G31 P25 X21 Y0 Z"+self.newProbeOffset.toString()+" U0";
+				self.mgLog("newProbeOffset: "+self.newProbeOffset.toString());
+				self.mgLog("ProbeOffString: "+self.ProbeOffString);
+				OctoPrint.control.sendGcode([self.ProbeOffString,
+					"M500 P31"
 				]);
-				self.ZOffset(self.newZOffset);
+				self.probeOffset(self.newProbeOffset);
 				self.requestEeprom();
-				//new PNotify({
-				//	title: 'Starting Height Adjustment',
-				//	text: "Starting Height Set to : "+self.newZOffset.toString(),
-				//	type: 'success',
-				//});
-				self.ZWiggleHeight(self.stockZWiggleHeight);
-				self.nextMaintenanceTask();
+				if (self.maintenanceOperation()!=="home"){
+					self.nextMaintenanceTask();
+				}
 				//self.setupStep("3");
 			}
 
@@ -2936,7 +2939,7 @@ $(function() {
 
 
 		// For future sanity, some notes on how the X and Y offset adjustment works.  It's a bit convoluted, but is a delicate balance between simplicity and flexibility.
-		// The entire process revoles around printing a pattern with the two hotends, and having the user select the pattern feature where the pattern is closest to aligned; this is repeated until the central feature is selected,
+		// The entire process revovles around printing a pattern with the two hotends, and having the user select the pattern feature where the pattern is closest to aligned; this is repeated until the central feature is selected,
 		// and then repeated with a pattern with smaller spacings twice.
 		// There are 5 potential choices - originaly, selecting 1,2,4 or 5 would adjust the axis offset and ask the user to reprint the same pattern, while selecting 3 would move to either the next pattern granularity or axis.
 		// On 9/26/2017 we changed this behavior so that 2 and 4 also move to the next granularity, but _only_ if not the final granularity.
@@ -2970,7 +2973,7 @@ $(function() {
 		};
 
 		self.printSawBin = function(){
-
+			self.rrfMaintenanceReport("Starting the dual offset adjustment.\n"+self.rrfMaintenanceReport());
 			var parameters;
 			var context;
 			self.mgLog("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
@@ -2983,18 +2986,30 @@ $(function() {
 					}
 					context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
-					OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025", context, parameters);
+					if (self.rrf()){
+						OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025Rrf", context, parameters);
+					} else {
+						OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025", context, parameters);
+					}
 					self.stepFourteenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
 					parameters = {offset: self.sawPrintOffset()};
 					context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
+					if (self.rrf()){
+						OctoPrint.control.sendGcodeScriptWithParameters("saw01Rrf", context, parameters);
+					} else {
+						OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
+					}
 				}
 				if (self.calibrationStep() === 2){
 					parameters = {offset: self.sawPrintOffset()};
 					context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
+					if (self.rrf()){
+						OctoPrint.control.sendGcodeScriptWithParameters("saw005Rrf", context, parameters);
+					} else {
+						OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
+					}
 				}
 			}
 			if (self.calibrationAxis()=="Y"){
@@ -3008,20 +3023,32 @@ $(function() {
 					}
 					context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
-					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025", context, parameters);
+					if (self.rrf()){
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025Rrf", context, parameters);
+					} else {
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025", context, parameters);
+					}
 					self.stepFifteeenToHome(false);
 				}
 				if (self.calibrationStep() === 1){
 					// parameters = {offset: self.sawPrintOffset()};
 					parameters = {offset: 0};
 					context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
+					if (self.rrf()){
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01Rrf", context, parameters);
+					} else {
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
+					}
 				}
 				if (self.calibrationStep() === 2){
 					// parameters = {offset: self.sawPrintOffset()};
 					parameters = {offset: 0};
 					context = {};
-					OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
+					if (self.rrf()){
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005Rrf", context, parameters);
+					} else {
+						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
+					}
 				}
 			}
 			self.sawBinPrinted(true);
@@ -3032,6 +3059,13 @@ $(function() {
 			if (chosenMatch === undefined){
 				chosenMatch = self.chosenSawBin();
 			}
+			if (self.rrf()){
+				self.toolOffsetCommand = "G10 P1 ";
+				self.xIdentifier = "U";
+			} else {
+				self.toolOffsetCommand = "M218 T1 ";
+				self.xIdentifier = "X";
+			}
 			if (self.calibrationAxis()=="X"){
 				if (chosenMatch === 0){
 					self.printSawBin();
@@ -3040,18 +3074,28 @@ $(function() {
 					self.mgLog("PickSawBin 1, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(2*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"M500",
+							"M503"]);
+					}
 					self.printSawBin();
 				}
 				if (chosenMatch === 2){
 					self.mgLog("PickSawBin 2, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(1*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"M500",
+							"M503"]);
+					}
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -3089,9 +3133,14 @@ $(function() {
 					self.mgLog("PickSawBin 4, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-1*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"M500",
+							"M503"]);
+					}
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -3099,9 +3148,14 @@ $(function() {
 					self.mgLog("PickSawBin 5, X.");
 					self.newT1XOffset = ((self.tool1XOffset()+(-2*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 X"+self.newT1XOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"M500",
+							"M503"]);
+					}
 					self.printSawBin();
 				}
 			} else if (self.calibrationAxis()=="Y"){
@@ -3112,18 +3166,28 @@ $(function() {
 					self.mgLog("PickSawBin 1, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (-2*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"M500",
+							"M503"]);
+					}
 					self.printSawBin();
 				}
 				if (chosenMatch === 2){
 					self.mgLog("PickSawBin 2, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(1*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (-1*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"M500",
+							"M503"]);
+					}
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -3162,9 +3226,14 @@ $(function() {
 					self.mgLog("PickSawBin 4, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-1*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (1*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"M500",
+							"M503"]);
+					}
 					if(self.calibrationStep()<2){self.calibrationStep(self.calibrationStep()+1);}
 					self.printSawBin();
 				}
@@ -3172,9 +3241,14 @@ $(function() {
 					self.mgLog("PickSawBin 5, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-2*self.calibrationOffset())).toString());
 					self.sawPrintOffset(self.sawPrintOffset() + (2*self.calibrationOffset()));
-					OctoPrint.control.sendGcode(["M218 T1 Y"+self.newT1YOffset,
-						"M500",
-						"M503"]);
+					if (self.rrf()){
+						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+					} else {
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"M500",
+							"M503"]);
+					}
 					self.printSawBin();
 				}
 			}
@@ -4759,7 +4833,7 @@ $(function() {
 
 			}
 
-
+			self.rrfMaintenanceReportBox = $("#rrfMaintenanceReport");
 
 
 
@@ -4803,8 +4877,8 @@ $(function() {
 			// if(self.settings.settings.plugins.mgsetup.sshOn() && self.settings.settings.plugins.mgsetup.warnSsh()){
 			// 	self.notify("SSH Is Enabled","The SSH Service is currently Enabled"+"<button data-bind=\"click: function() { $root.showSettings() }\">Mark as last read</button>","error",false);
 			// }
-			self.parseProfile();
-			self.checkParameters();
+			// self.parseProfile();
+			// self.checkParameters();
 			window.setTimeout(function() {self.urlLogin()},500);
 		
 		};
@@ -4820,7 +4894,7 @@ $(function() {
 		self.onEventClientOpened = function() {
 			self.mgLog("onEventClientOpened triggered.");
 			if (self.isOperational()) {
-				self.requestEeprom();
+				// self.requestEeprom();
 				OctoPrint.control.sendGcode("M114");
 				//alert("hello client");
 				// self.displayToolTemp(self.temperatures.tools()[0].actual);
@@ -4884,7 +4958,7 @@ $(function() {
 				self.mgLog("Serial number is an array, grabbing the first entry for serialNumber() .");
 				self.serialNumber(self.serialNumber()[0]);
 			}
-			self.checkParameters();
+			// self.checkParameters();
 			self.warnSshNotify();
 		};
 
@@ -5130,6 +5204,21 @@ $(function() {
 						self.mgLog("Tried to parse received probeOffsetline, but match[1] is undefined; probeOffsetline: "+data.probeOffset);
 					}
 				}
+				self.filter = /G31 .* Z(.?\d+\.\d+)/;
+				if ((match = self.filter.exec(data.probeOffsetLine)) !== null){
+					if (match[1] !== undefined){
+						self.mgLog("probeOffsetLine match: "+match);
+						self.mgLog("probeOffsetLine match[1]: "+match[1]);
+						self.probeOffset(parseFloat(match[1]));
+					} else {
+						self.mgLog("Tried to parse received probeOffsetline, but match[1] is undefined; probeOffsetline: "+data.probeOffset);
+					}
+				}
+
+
+// # Recv: 
+// # Recv: G31 P25 X21 Y0 Z0.501  U0 ; Set Z probe trigger value, offset and trigger height
+
 			}
 			if (data.bedLevelLine !== undefined){
 				self.mgLog("bedLevelLine: "+data.bedLevelLine);
