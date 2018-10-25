@@ -920,7 +920,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line and "Error" not in line and "z_min" not in line and "Bed X:" not in line and "M851" not in line:
 		# 	return line
 		newValuesPresent = False
-		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored", "G31"]
+		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored", "G31", "G10"]
 
 		if not any([x in line for x in watchCommands]):
 			return line
@@ -945,6 +945,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
 			newValuesPresent = True
 
+		if "G10" in line:
+			self._logger.info("RRF T1 offset information triggered.")
+			self.tooloffsetline = line
+			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
+			newValuesPresent = True
+			
 
 
 		#__plugin_implementation__._logger.info(line)
