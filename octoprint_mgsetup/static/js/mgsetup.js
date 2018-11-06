@@ -4898,6 +4898,7 @@ $(function() {
 			// 	self.displayTool1TempTarget(self.temperatures.tools()[1].target);
 			// }
 
+			self.parseProfile();
 
 
 		};
@@ -5358,33 +5359,7 @@ $(function() {
 
 
 		self.parseProfile = function() {
-			// profile parser
-			// look at profile model string
-			// decide if we should show the single or dual version of the plugin
-			// 	based on number of extruders
-			// decide if we should show the probe or probeless version of the plugin
-			// 	based on model string contents
-			// handle firmware:
-			// 	convert model string to configuration string:
-			// 		convert to UPPER
-			// 		convert all "-" to "_"
-			// 		prefix it with "MAKERGEAR_MODEL_"
-			// 	configuration.makergear.h:
-			// 		check first line:
-			// 			blank:
-			// 				replace first line with ("#define " + [modified configuration string]) and a comment with date and "AUTOMATICALLY SELECTED PROFILE"
-			// 			contains a configuration string:
-			// 				add newline to beginning
-			// 				comment out old configuration string - add comment at end with date and "automatically commented out by firmware configuration"
-			// 				replace first line with ("#define " + [modified configuration string]) and a comment with date and "AUTOMATICALLY SELECTED PROFILE"
 
-			// (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
-			//if (self.settings.printerProfiles.currentProfileData().model().indexOf("probe") !== -1 ){
-			// MakerGear M3 Single Extruder Rev 0		M3-SE Rev0-004
-			// MakerGear M3 Single Extruder Rev 0		M3-SE Rev0-005
-			// MakerGear M3 Independent Dual Rev 0		M3-ID Rev0-005
-			// MakerGear M3 Single Extruder Rev 1		M3-SE Rev1-000
-			// MakerGear M3 Independent Dual Rev 1		M3-ID Rev1-000
 			self.profileString(self.settings.printerProfiles.currentProfileData().model().toString());
 			self.mgLog("profileString:");
 			self.mgLog(self.profileString());
