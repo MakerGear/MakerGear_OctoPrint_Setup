@@ -719,6 +719,7 @@ $(function() {
 				if (self.rrf()){
 					parameters.wiggleX = 150;
 					parameters.wiggleY = 177.5;
+					parameters.wigglenumber = "050absflat";
 					wiggleName = "customProbeWiggleRrf";
 					OctoPrint.control.sendGcode(["M503"]);
 				} else {
