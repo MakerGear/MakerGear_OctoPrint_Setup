@@ -37,6 +37,7 @@ $(function() {
 
 		self.rrf = ko.observable(true);
 		self.rrfMaintenanceReport = ko.observable("");
+		self.rrfConfig = ko.observable("");
 		self.lastT1Offset = ko.observable(0.0);
 
 		// Originally from Controls tab:
@@ -1568,13 +1569,14 @@ $(function() {
 				//self.newZOffset = self.newZOffset + 0.1 ;
 
 				// G31 P25 X21 Y0 Z0.502  U0
-				self.ProbeOffString = "G31 P25 X21 Y0 Z"+self.newProbeOffset.toString()+" U0";
+				// self.ProbeOffString = "G31 P25 X21 Y0 Z"+self.newProbeOffset.toString()+" U0";
+				self.adminAction('changeRrfConfig','command', {'targetParameter':'probeOffset','newValue':self.newProbeOffset.toString()});
 				self.mgLog("newProbeOffset: "+self.newProbeOffset.toString());
 				self.mgLog("ProbeOffString: "+self.ProbeOffString);
 				self.rrfMaintenanceReport(self.ProbeOffString + "\n"+self.rrfMaintenanceReport());
-				OctoPrint.control.sendGcode([self.ProbeOffString,
-					"M500 P31"
-				]);
+				// OctoPrint.control.sendGcode([self.ProbeOffString,
+				// 	"M500 P31"
+				// ]);
 				self.probeOffset(self.newProbeOffset);
 				self.requestEeprom();
 				if (self.maintenanceOperation()!=="home"){
@@ -5095,6 +5097,10 @@ $(function() {
 				// console.log('Ignoring '+plugin);
 				return;
 			}
+			if (data.duetFtpConfig !== undefined){
+				self.mgLog(data.duetFtpConfig);
+				self.rrfConfig(data.duetFtpConfig);
+			}
 			if (data.zoffsetline !== undefined){
 				var re = /Z(-?\d+\.\d\d)/;
 				if (re.exec(data.zoffsetline)){
@@ -5774,7 +5780,7 @@ $(function() {
 
 		// Finally, this is the list of selectors for all elements we want this view model to be bound to.
 		// ["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance","#tab_plugin_mgsetup_maintenance-cleanup"]
-		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance-cleanup"]
+		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance-cleanup","#tab_plugin_mgsetup_rrf"]
 		//["#tab_plugin_mgsetup"]
 	]);
 });

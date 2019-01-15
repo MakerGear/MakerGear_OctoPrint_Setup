@@ -1,0 +1,53 @@
+<div id="tab_plugin_mgsetup_rrf">
+
+<div id="rrfConfigBox" >
+	<center>Config:</center>
+	<br>
+	<center><textarea id="rrfConfig" data-bind="text: $root.rrfConfig" style="width:90%;height:250px;"></textarea></center>
+	<br>
+	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('duetFtp','command','openConfig') }">Update Config(Python side)</button></div>
+
+	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('duetFtp','command','sendConfig') }">Update Config(here)</button></div>
+
+	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('duetFtp','command','saveConfig') }">Save Config(Python side)</button></div>
+
+{# 	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('changeRrfConfig','command', {'targetParameter':'probeOffset','newValue':'1.23'}) }">Change Config on Duet</button></div> #}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<script src="{{ url_for("static", filename="js/lib/jquery/jquery.min.js") }}"></script>
+	<script src="{{ url_for("static", filename="js/lib/lodash.min.js") }}"></script>
+</div>
+

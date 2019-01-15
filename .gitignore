@@ -19,6 +19,9 @@ dist
 
 *.log
 *.log.*
+*config.g.backup*
+
+
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
