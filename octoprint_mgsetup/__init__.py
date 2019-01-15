@@ -21,6 +21,8 @@ import datetime
 import errno
 import sys
 import urllib2
+import ftplib
+from StringIO import StringIO
 from logging.handlers import TimedRotatingFileHandler
 from logging.handlers import RotatingFileHandler
 from zipfile import *
@@ -32,6 +34,9 @@ from octoprint import __version__
 
 current_position = "empty for now"
 position_state = "stale"
+
+
+
 # zoffsetline = ""
 
 
@@ -95,6 +100,14 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.printElapsedTimer = octoprint.util.RepeatedTimer(12, self.updateElapsedTime)
 		self.updateElapsedTimer = False
 		self.smbpatchstring = ""
+		self.duetFtpIp = "172.16.31.5"
+		self.duetFtpUser = "duet"
+		self.duetFtpPassword = "ftppass"
+		self.duetFtpConnected = False
+		self.duetFtpConfig = StringIO()
+		self.duetFtpConfigLines = []
+		self.rrf = True
+		# self.duetFtpDownloadDirectory = TODO figure out where to download files from the Duet
 
 
 
@@ -373,7 +386,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			dict(type="settings", custom_bindings=True),
 			dict(type="tab", template="mgsetup_tab.jinja2", div="tab_plugin_mgsetup"),
 			# dict(type="tab", template="mgsetup_maintenance_tab.jinja2", div="tab_plugin_mgsetup_maintenance", name="MakerGear Maintenance"),
-			dict(type="tab", template="mgsetup_maintenance_tab-cleanup.jinja2", div="tab_plugin_mgsetup_maintenance-cleanup", name="MakerGear Maintenance")
+			dict(type="tab", template="mgsetup_maintenance_tab-cleanup.jinja2", div="tab_plugin_mgsetup_maintenance-cleanup", name="MakerGear Maintenance"),
+			dict(type="tab", template="mgsetup_rrf_tab.jinja2", div="tab_plugin_mgsetup_rrf", name="MakerGear RRF Communication Testing")
 		]
 
 	def get_settings_defaults(self):
@@ -845,7 +859,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		# settings.printerProfiles.currentProfileData().extruder.count()
 
-	# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
+		# octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
 
 	def writeNetconnectdPassword(self, newPassword):
 		subprocess.call("/home/pi/.octoprint/scripts/changeNetconnectdPassword.sh "+newPassword['password'], shell=True)
@@ -856,7 +870,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info("Hostname changed to "+newHostname['hostname']+" !")
 
 	def requestValues(self):
-		self._printer.commands(["M503"])
+		if self.rrf:
+			self.rrfFtp(dict(command = 'openConfig'))
+		else:
+			self._printer.commands(["M503"])
 
 	def sendCurrentValues(self):
 		self.printerValueVersion = time.time()
@@ -905,12 +922,16 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def process_z_offset(self, comm, line, *args, **kwargs):
 
+
 		if "Error: " in line:
 			self._logger.info("process_z_offset triggered - Error !")
 			self._plugin_manager.send_plugin_message("mgsetup", dict(mgerrorline = line))
 		if "Warning: " in line:
 			self._logger.info("process_z_offset triggered - Warning !")
 			self._plugin_manager.send_plugin_message("mgsetup", dict(mgwarnline = line))
+
+		if self.rrf:
+			return line
 
 		if self.printActive:
 			# self._logger.debug("printActive true, skipping filters.")
@@ -986,8 +1007,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
 			newValuesPresent = True
 
-# Recv: 
-# Recv: G31 P25 X21 Y0 Z0.501  U0 ; Set Z probe trigger value, offset and trigger height
+		# Recv: 
+		# Recv: G31 P25 X21 Y0 Z0.501  U0 ; Set Z probe trigger value, offset and trigger height
 
 		if "= [[ " in line:
 			self._logger.info("Bed Leveling Information received")
@@ -1002,6 +1023,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self.sendValues()
 
 		return line
+
 
 	def resetRegistration(self):
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
@@ -1261,6 +1283,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		elif action["action"] == "printerUpgrade":
 			self.printerUpgrade(action["payload"])
 
+		elif action["action"] == "duetFtp":
+			self.rrfFtp(action["payload"])
+
+		elif action["action"] == "changeRrfConfig":
+			self.changeRrfConfig(action["payload"]["command"]["targetParameter"],action["payload"]["command"]["newValue"])
+
 
 	def printerUpgrade(self, upgradeInfo):
 		self._logger.info("printerUpgrade debug position 1.")
@@ -1457,6 +1485,182 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					pip="https://github.com/MakerGear/MakerGear_OctoPrint_Setup/archive/{target_version}.zip"
 				)
 			)
+
+
+	def rrfFtpConnect(self):
+		if not self.checkRrfConnection():
+			try:
+				self.duetFtp = ftplib.FTP(self.duetFtpIp)
+				self.duetFtp.login(self.duetFtpUser,self.duetFtpPassword)
+				self.duetFtpConnected = True
+			except Exception as e:
+				self._logger.info("There was an error while trying to connect to the Duet via FTP.  Exception: "+str(e))
+				self.duetFtpConnected = False
+				try:
+					self.duetFtp.sendcmd('ABOR')
+				except Exception as subE:
+					self._logger.info("There was further trouble trying to abort the previous connection.  Error: "+str(subE))
+				try:
+					self.duetFtp.quit()
+				except ftplib.all_errors as e:
+					self._logger.info("FTP error while trying to quit, after not being able to connect: "+str(e))
+				except Exception as e:
+					self._logger.info("General error while trying to quit, after not being able to connect: "+str(e))
+				try:
+					self.duetFtp.close()
+				except Exception as e:
+					self._logger.info("Final error while trying to .close() the FTP connection: "+str(e))
+
+		else:
+			self._logger.info("rrfFtpConnect called while already connected.")
+
+	def checkRrfConnection(self):
+		try:
+			if self.duetFtp is not None:
+				try:
+					self.duetFtp.sendcmd('NOOP')
+					return True
+				except ftplib.all_errors as e:
+					self._logger.info("Error when checking FTP connection with NOOP: "+str(e))
+					try:
+						self.duetFtp.quit()
+						return False
+					except Exception as e:
+						self._logger.info("Further error while trying to quit: "+str(e))
+						return False
+		except NameError as e:
+			self._logger.info("NameError while trying to check FTP connection; duetFtp not instantiated?  Error: "+str(e))
+			return False
+
+		except Exception as e:
+			self._logger.info("Other error while checking connection: "+str(e))
+			return False
+
+
+
+
+	def rrfFtp(self, ftpAction=dict(command="none",target="none",newFile="none",newContents="none")):
+
+
+		# General command for communicating with RRF firmware over FTP.  Planned actions - list files, download file (.gcode), open file (download to StringIO for editing), upload file (.gcode), save file (config/etc. file generated/modified in Python)
+		# Target should be target file - make sure to check for target being included before trying to run any command that actually uses it...
+
+		# Receives a payload from the client via adminAction; ftpAction["command"] controls what command to be used, ftpAction["target"] is an occasionally blank target for the command
+		self._logger.info("rrfFtp called with action:"+str(ftpAction))
+		if not self.checkRrfConnection():
+			self.rrfFtpConnect()
+
+		if ftpAction["command"] == 'sendConfig':
+			# send the current list of files to the client, making sure to catch errors like "file list doesn't exist yet..."
+			if self.duetFtpConfig.getvalue() != None:
+				self._plugin_manager.send_plugin_message("mgsetup", dict(duetFtpConfig = self.duetFtpConfig.getvalue()))
+			else:
+				self._plugin_manager.send_plugin_message("mgsetup", dict(duetFtpConfig = "No config values yet."))
+
+
+		elif ftpAction["command"] == 'download' and ftpAction["target"] != "none":
+			self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),open(str(ftpAction["target"]), 'wb').write) #TODO - figure out and reconfigure this to download to a specific base directory, so we're not writing to wherever it defaults to (oprint bin because that's the Python executable source?)
+
+		elif ftpAction["command"] == 'openConfig':
+			if self.duetFtpConfig.getvalue() != '':
+				self.duetFtpConfig.close()
+				self.duetFtpConfig = StringIO()
+			self.duetFtp.sendcmd('CWD /')
+			ftpAction["target"] = 'sys/config.g'
+			# self.duetFtp.sendcmd('CWD sys') #shouldn't be needed if we always specify exact location
+			self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),self.duetFtpConfig.write)
+			self._logger.info("Retrieved file "+str(ftpAction["target"])+", contents: "+self.duetFtpConfig.getvalue())
+			self.duetFtpConfigLines = self.duetFtpConfig.getvalue().splitlines(True)
+			self._logger.info(self.duetFtpConfigLines)
+
+
+			self.processRrfConfig()
+
+		elif ftpAction["command"] == 'open' and ftpAction["target"] != "none":
+			self.duetFtp.sendcmd('CWD /')
+			# self.duetFtp.sendcmd('CWD sys') #shouldn't be needed if we always specify exact location
+			self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),self.duetFtpConfig.write)
+			self._logger.info("Retrieved file "+str(ftpAction["target"])+", contents: "+self.duetFtpConfig.getvalue())
+
+
+		elif ftpAction["command"] == 'saveConfig':
+			self._logger.info("FTP save starting?")
+			self.duetFtp.sendcmd('CWD /')
+			self._logger.info("FTP changed, to /")
+
+			with open(self._basefolder+"/logs/config.g.backup-{0}".format(str(datetime.datetime.now().strftime('%y-%m-%d_%H-%M'))), "w") as configBackup:
+				configBackup.write(self.duetFtpConfig.getvalue())
+				# TODO - decide how to handle these backups: keep them all, keep last N, keep last, write and keep only when updating?
+				# Moved from openConfig to saveConfig so the backup will only be saved when the config is about to change on Duet.
+
+
+			# self.duetFtp.sendcmd('CWD sys')
+
+			# ftpAction["newFile"] = 'sys/testConfigExport.g'
+			# self._logger.info(ftpAction)
+
+			# if ftpAction["newContents"] == 'none':
+			# 	ftpAction["newContents"] = self.duetFtpConfig.getvalue()
+			# self.duetFtp.storbinary('STOR sys/testConfigExport.g', StringIO(self.duetFtpConfig.getvalue()))
+			self.duetFtpConfigLines.append('; Custom config exported from plugin at {0}\n'.format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+			self.duetFtp.storbinary('STOR sys/config.g', StringIO(''.join(self.duetFtpConfigLines)))
+			self._printer.commands(["M502"])
+
+			self._logger.info("FTP save complete?")
+
+	def changeRrfConfig(self, targetParameter=None, newValue=None, saveNewConfig=True, sendNewParameter=True):
+		if targetParameter is None or newValue is None:
+			self._logger.info('No target parameter or newValue set when calling changeRrfConfig - sent in error?  targetParameter: '+str(targetParameter)+" ; newValue: "+str(newValue))
+			return
+		else:
+			if targetParameter == "probeOffset":
+				# probeOffsetPattern = r'"^([^;\n]*?)G31 P25 ((?:(?:X|Y|Z|U)\d+\.*\d* +)+).*?$"'
+				probeOffsetZPattern = re.compile(r"(Z)\d+\.*\d*")
+				duetFtpConfigLinesOld = self.duetFtpConfigLines[:]
+				self.duetFtpConfigLines = []
+				for configLine in duetFtpConfigLinesOld:
+					if "G31" in configLine and configLine[0] != ";":
+						self.duetFtpConfigLines.append(probeOffsetZPattern.sub(r"\g<1>"+newValue,configLine.rstrip())+" ; created automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+						self.duetFtpConfigLines.append(";"+configLine.rstrip()+" ; commented out automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+					else:
+						self.duetFtpConfigLines.append(configLine)
+				if saveNewConfig:
+					self.rrfFtp(dict(command = 'saveConfig'))
+
+
+
+
+
+	def processRrfConfig(self):
+		# probeOffsetPattern = r'"^([^;\n]*?)G31 P25 ((?:(?:X|Y|Z|U)\d+\.*\d* +)+).*?$"'
+		newValuesPresent = False
+		for configLine in self.duetFtpConfigLines:
+			if "G31" in configLine and configLine[0] != ";":
+				self._logger.info("Z Probe Offset received - RRF Tool offset")
+				self.probeOffsetLine = configLine
+				self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = configLine))
+				newValuesPresent = True
+
+
+			if "G10" in configLine:
+				self._logger.info("RRF T1 offset information triggered.")
+				self.tooloffsetline = configLine
+				self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = configLine))
+				newValuesPresent = True
+
+		if newValuesPresent:
+			self.printerValueGood = True
+			self.sendValues()
+
+
+					# pattern = r'".+"'
+					# matchedline = re.search(pattern,self.filelines[37]).group()
+
+
+		pass
+
+
+
 
 
 

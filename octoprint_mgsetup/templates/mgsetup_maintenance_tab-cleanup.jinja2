@@ -866,7 +866,7 @@
 	{#                                                                        #}
 	<div data-bind="visible: loginState.isUser && $root.shownTask() === 'SetHot'">
 
-		<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R0'">
+		<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R0' && !$root.rrf()">
 			<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser ">
 				<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
@@ -1049,7 +1049,7 @@
 
 
 
-		<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R1'">
+		<div data-bind="visible: loginState.isUser && (maintenanceTaskHardwareRevision() === 'R1' || $root.rrf() )">
 			<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
 				<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
 					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
@@ -1107,10 +1107,10 @@
 				</p>
 				<br>
 
-				<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+				<center><button class="btnstay" data-bind="visible: !$root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
 
-				<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probeRrf'); $root.enableLockedButton(8000) }">RRF Probe</button></center><br>
+				<center><button class="btnstay" data-bind="visible: $root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probeRrf'); $root.enableLockedButton(8000) }">RRF Probe</button></center><br>
 
 				<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 					<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
@@ -1191,62 +1191,64 @@
 						</td>
 					</tr>
 
-					<tr>
 
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+						<tr>
+							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 
-							<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0) }">Save Offset<br></button></center>
+								<center><button style="width:100%;" class="btngoBig" data-bind="visible: !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0) }">Save Offset<br></button></center>
 
-							<!--Too far-->
-						</td>
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-							<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
-							</div>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
+								<!--Too far-->
+							</td>
+							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+								<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+									<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+								</div>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',-0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
 
-						</td>
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-							<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
-							</div>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
-							<!--Too Close-->
-						</td>
-					</tr>
-					<tr>
+							</td>
+							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+								<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false && !$root.rrf()"><br>
+									<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button></center>
+								</div>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.04); $root.enableLockedButton(10000) }">Large Adjustment (0.04 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.02); $root.enableLockedButton(10000) }">Medium Adjustment (0.02 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probe-custom',0.01); $root.enableLockedButton(10000) }">Fine Adjustment (0.01 mm)</button></center>
+								<!--Too Close-->
+							</td>
+						</tr>
 
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+						<tr>
 
-							<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance-rrf'); window.scroll(0,0) }">RRF Save Offset<br></button></center>
+							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 
-							<!--Too far-->
-						</td>
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-							<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.04); $root.enableLockedButton(10000) }">RRF Adjust and Print</button></center>
-							</div>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.04); $root.enableLockedButton(10000) }">RRF Large Adjustment (0.04 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.02); $root.enableLockedButton(10000) }">RRF Medium Adjustment (0.02 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.01); $root.enableLockedButton(10000) }">RRF Fine Adjustment (0.01 mm)</button></center>
+								<center><button style="width:100%;" class="btngoBig" data-bind="visible: $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance-rrf'); window.scroll(0,0) }">RRF Save Offset<br></button></center>
 
-						</td>
-						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
-							<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
-								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.04); $root.enableLockedButton(10000) }">RRF Adjust and Print</button></center>
-							</div>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.04); $root.enableLockedButton(10000) }">RRF Large Adjustment (0.04 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.02); $root.enableLockedButton(10000) }">RRF Medium Adjustment (0.02 mm)</button></center><br>
-							<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.01); $root.enableLockedButton(10000) }">RRF Fine Adjustment (0.01 mm)</button></center>
-							<!--Too Close-->
-						</td>
-					</tr>
+								<!--Too far-->
+							</td>
+							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+								<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+									<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.04); $root.enableLockedButton(10000) }">RRF Adjust and Print</button></center>
+								</div>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.04); $root.enableLockedButton(10000) }">RRF Large Adjustment (0.04 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.02); $root.enableLockedButton(10000) }">RRF Medium Adjustment (0.02 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',-0.01); $root.enableLockedButton(10000) }">RRF Fine Adjustment (0.01 mm)</button></center>
+
+							</td>
+							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
+								<div data-bind="visible: $root.stepTwentyShowFineAdjustments()==false"><br>
+									<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==false && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.04); $root.enableLockedButton(10000) }">RRF Adjust and Print</button></center>
+								</div>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.04); $root.enableLockedButton(10000) }">RRF Large Adjustment (0.04 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.02); $root.enableLockedButton(10000) }">RRF Medium Adjustment (0.02 mm)</button></center><br>
+								<center><button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf',0.01); $root.enableLockedButton(10000) }">RRF Fine Adjustment (0.01 mm)</button></center>
+								<!--Too Close-->
+							</td>
+						</tr>
+
 				</table>
-				<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true, enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf'); $root.enableLockedButton(10000) }">RRF Print This Zigzag Again</button><br>
+				<button class="btnstay" data-bind="visible: $root.stepTwentyShowFineAdjustments()==true && $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('probeRrf'); $root.enableLockedButton(10000) }">RRF Print This Zigzag Again</button><br>
 
 				<input type="checkbox" data-bind="checked: $root.stepTwentyShowFineAdjustments" /> Show Advanced Options.
 
