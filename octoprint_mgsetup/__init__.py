@@ -32,12 +32,14 @@ from octoprint import __version__
 
 
 
+
 current_position = "empty for now"
 position_state = "stale"
 
 
 
 # zoffsetline = ""
+
 
 
 
@@ -966,11 +968,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
 			newValuesPresent = True
 
-		if "G10" in line:
-			self._logger.info("RRF T1 offset information triggered.")
-			self.tooloffsetline = line
-			self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
-			newValuesPresent = True
+		# if "G10" in line:
+		# 	self._logger.info("RRF T1 offset information triggered.")
+		# 	self.tooloffsetline = line
+		# 	self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = line))
+		# 	newValuesPresent = True
 			
 
 
@@ -1001,11 +1003,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
 			newValuesPresent = True
 
-		if "G31" in line:
-			self._logger.info("Z Probe Offset received - RRF Tool offset")
-			self.probeOffsetLine = line
-			self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
-			newValuesPresent = True
+		# if "G31" in line:
+		# 	self._logger.info("Z Probe Offset received - RRF Tool offset")
+		# 	self.probeOffsetLine = line
+		# 	self._plugin_manager.send_plugin_message("mgsetup", dict(probeOffsetLine = line))
+		# 	newValuesPresent = True
 
 		# Recv: 
 		# Recv: G31 P25 X21 Y0 Z0.501  U0 ; Set Z probe trigger value, offset and trigger height
@@ -1603,7 +1605,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			# if ftpAction["newContents"] == 'none':
 			# 	ftpAction["newContents"] = self.duetFtpConfig.getvalue()
 			# self.duetFtp.storbinary('STOR sys/testConfigExport.g', StringIO(self.duetFtpConfig.getvalue()))
-			self.duetFtpConfigLines.append('; Custom config exported from plugin at {0}\n'.format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+			self.duetFtpConfigLines.append('\n; Custom config exported from plugin at {0}\n'.format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
 			self.duetFtp.storbinary('STOR sys/config.g', StringIO(''.join(self.duetFtpConfigLines)))
 			self._printer.commands(["M502"])
 
@@ -1614,19 +1616,93 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info('No target parameter or newValue set when calling changeRrfConfig - sent in error?  targetParameter: '+str(targetParameter)+" ; newValue: "+str(newValue))
 			return
 		else:
+			targetParameterFound = False
+			# targetParameterChanged = False # not sure if we're going to need this one yet. TODO - confirm one way or the other.
 			if targetParameter == "probeOffset":
-				# probeOffsetPattern = r'"^([^;\n]*?)G31 P25 ((?:(?:X|Y|Z|U)\d+\.*\d* +)+).*?$"'
 				probeOffsetZPattern = re.compile(r"(Z)\d+\.*\d*")
 				duetFtpConfigLinesOld = self.duetFtpConfigLines[:]
 				self.duetFtpConfigLines = []
 				for configLine in duetFtpConfigLinesOld:
 					if "G31" in configLine and configLine[0] != ";":
+						targetParameterFound = True
 						self.duetFtpConfigLines.append(probeOffsetZPattern.sub(r"\g<1>"+newValue,configLine.rstrip())+" ; created automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
 						self.duetFtpConfigLines.append(";"+configLine.rstrip()+" ; commented out automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
 					else:
 						self.duetFtpConfigLines.append(configLine)
-				if saveNewConfig:
+				if saveNewConfig and targetParameterFound:
 					self.rrfFtp(dict(command = 'saveConfig'))
+				else:
+					if not saveNewConfig:
+						self._logger.info("changeRrfConfig triggered but with saveNewConfig false; new config: "+str(''.join(self.duetFtpConfigLines)))
+					if not targetParameterFound:
+						self._logger.info("changeRrfConfig triggered, but cannot find the correct line to edit.  Config: "+str(''.join(self.duetFtpConfigLines)))
+					
+			# if targetParameter == "t1ZOffset":
+			# 	t1ZOffsetZPattern = re.compile(r"(Z)-{0,1}\d*\.*\d*")
+			# 	duetFtpConfigLinesOld = self.duetFtpConfigLines[:]
+			# 	self.duetFtpConfigLines = []
+			# 	for configLine in duetFtpConfigLinesOld:
+			# 		if all(x in configLine for x in ["G10", "P1", "Z"]) and configLine[0] != ";":
+			# 		# if "G10" in configLine and "P1" in configLine and configLine[0] != ";":
+			# 			targetParameterFound = True
+			# 			self.duetFtpConfigLines.append(t1ZOffsetZPattern.sub(r"\g<1>"+newValue,configLine.rstrip())+" ; created automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+			# 			self.duetFtpConfigLines.append(";"+configLine.rstrip()+" ; commented out automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+			# 		else:
+			# 			self.duetFtpConfigLines.append(configLine)
+			# 	if saveNewConfig and targetParameterFound:
+			# 		self.rrfFtp(dict(command = 'saveConfig'))
+			# 	else:
+			# 		if not saveNewConfig:
+			# 			self._logger.info("changeRrfConfig triggered but with saveNewConfig false; new config: "+str(''.join(self.duetFtpConfigLines)))
+			# 		if not targetParameterFound:
+			# 			self._logger.info("changeRrfConfig triggered, but cannot find the correct line to edit.  Config: "+str(''.join(self.duetFtpConfigLines)))
+					
+					
+			# if targetParameter == "t1XOffset" or targetParameter == "t1YOffset":
+			# 	t1XOffsetZPattern = re.compile(r"(X)-{0,1}\d*\.*\d*")
+			# 	t1YOffsetZPattern = re.compile(r"(Y)-{0,1}\d*\.*\d*")
+			# 	self.duetFtpConfigLines = []
+			# 	for configLine in duetFtpConfigLinesOld:
+			# 		if all(x in configLine for x in ["G10", "P1", "Z"]) and configLine[0] != ";":
+			# 		# if "G10" in configLine and "P1" in configLine and configLine[0] != ";":
+			# 			targetParameterFound = True
+			# 			self.duetFtpConfigLines.append(t1ZOffsetZPattern.sub(r"\g<1>"+newValue,configLine.rstrip())+" ; created automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+			# 			self.duetFtpConfigLines.append(";"+configLine.rstrip()+" ; commented out automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+			# 		else:
+			# 			self.duetFtpConfigLines.append(configLine)
+			# 	if saveNewConfig and targetParameterFound:
+			# 		self.rrfFtp(dict(command = 'saveConfig'))
+			# 	else:
+			# 		if not saveNewConfig:
+			# 			self._logger.info("changeRrfConfig triggered but with saveNewConfig false; new config: "+str(''.join(self.duetFtpConfigLines)))
+			# 		if not targetParameterFound:
+			# 			self._logger.info("changeRrfConfig triggered, but cannot find the correct line to edit.  Config: "+str(''.join(self.duetFtpConfigLines)))
+					
+
+			if "t1Offset" in targetParameter:
+				targetAxis = targetParameter[-1].upper()
+				t1AxisOffsetPattern = re.compile(r"("+re.escape(targetAxis)+r")-{0,1}\d*\.*\d*")
+				# t1YOffsetPattern = re.compile(r"(Y)-{0,1}\d*\.*\d*")
+				# t1ZOffsetPattern = re.compile(r"(Z)-{0,1}\d*\.*\d*")
+				duetFtpConfigLinesOld = self.duetFtpConfigLines[:]
+				self.duetFtpConfigLines = []
+				for configLine in duetFtpConfigLinesOld:
+					if all(x in configLine for x in ["G10", "P1", targetAxis]) and configLine[0] != ";":
+					# if "G10" in configLine and "P1" in configLine and configLine[0] != ";":
+						targetParameterFound = True
+						self.duetFtpConfigLines.append(t1AxisOffsetPattern.sub(r"\g<1>"+newValue,configLine.rstrip())+" ; created automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+						self.duetFtpConfigLines.append(";"+configLine.rstrip()+" ; commented out automatically at {0}\n".format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+					else:
+						self.duetFtpConfigLines.append(configLine)
+				if saveNewConfig and targetParameterFound:
+					self.rrfFtp(dict(command = 'saveConfig'))
+				else:
+					if not saveNewConfig:
+						self._logger.info("changeRrfConfig triggered but with saveNewConfig false; new config: "+str(''.join(self.duetFtpConfigLines)))
+					if not targetParameterFound:
+						self._logger.info("changeRrfConfig triggered, but cannot find the correct line to edit.  Config: "+str(''.join(self.duetFtpConfigLines)))
+					
+
 
 
 
@@ -1643,7 +1719,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				newValuesPresent = True
 
 
-			if "G10" in configLine:
+			if "G10" in configLine and configLine[0] != ";":
 				self._logger.info("RRF T1 offset information triggered.")
 				self.tooloffsetline = configLine
 				self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = configLine))

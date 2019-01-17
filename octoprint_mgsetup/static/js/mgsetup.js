@@ -1421,13 +1421,14 @@ $(function() {
 				//self.newZOffset = self.newZOffset + 0.1 ;
 
 				if (self.rrf()){
-					self.ZOffString = "G10 P1 Z"+self.newZOffset.toFixed(2);
+					// self.ZOffString = "G10 P1 Z"+self.newZOffset.toFixed(2);
+					self.adminAction('changeRrfConfig','command', {'targetParameter':'t1OffsetZ','newValue':self.newZOffset.toFixed(2)});
 					self.mgLog("newZOffset rounded to two places: "+self.newZOffset.toFixed(2));
 					self.mgLog("ZOffString: "+self.ZOffString);
 					self.rrfMaintenanceReport(self.ZOffString+"\n"+self.rrfMaintenanceReport());
-					OctoPrint.control.sendGcode([self.ZOffString,
-					"M500 P31"					
-					]);
+					// OctoPrint.control.sendGcode([self.ZOffString,
+					// "M500 P31"					
+					// ]);
 				} else {
 					self.ZOffString = "M218 T1 Z"+self.newZOffset.toFixed(2);
 					self.mgLog("newZOffset rounded to two places: "+self.newZOffset.toFixed(2));
