@@ -2300,12 +2300,14 @@ $(function() {
 					case "SetHot":
 						self.customWiggle(undefined);
 						self.stepTwentyFirstWiggleClicked(false);
+						self.requestEeprom();
 						break;
 
 					case "SetT1Hot":
 						self.customWiggle(undefined);
 						self.stepTwentyFirstWiggleClicked(false);
 						self.stepElevenFirstWiggleClicked(false);
+						self.requestEeprom();
 						break;
 
 					case "Assisted":
@@ -2316,6 +2318,7 @@ $(function() {
 
 					case "Load":
 						self.stepThreeStartHeatingClicked(false);
+						self.requestEeprom();
 						break;
 
 					case "SetHot":
@@ -2328,15 +2331,18 @@ $(function() {
 					case "SetCold":
 						self.stepTwoPrepared(false);
 						self.stepTwoStartingHeightSaved(false);					
+						self.requestEeprom();
 						break;
 
 					case "SetT1Hot":
 						self.stepElevenFirstWiggleClicked(false);
 						self.stepElevenShowFineAdjustments(false);
+						self.requestEeprom();
 						break;
 
 					case "SetT1Cold":
 						self.stepNineAtPosition(false);
+						self.requestEeprom();
 						break;
 
 					case "XSaw":
@@ -2350,6 +2356,7 @@ $(function() {
 						self.sawPrintOffset(0);
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
+						self.requestEeprom();
 						break;
 
 					case "YSaw":
@@ -2363,6 +2370,7 @@ $(function() {
 						self.sawPrintOffset(0);
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
+						self.requestEeprom();
 						break;
 
 					case "ChangeInstructions":
@@ -2371,11 +2379,13 @@ $(function() {
 
 					case "T0T1SetCold":
 						self.stepNineAtPosition(false);
+						self.requestEeprom();
 						break;
 
 					case "HotLevel":
 						self.stepSixWigglePrinted(false);
 						self.stepSixPrepared(false);
+						self.requestEeprom();
 						break;
 
 					case "UpgradeSoftware":
@@ -3138,7 +3148,9 @@ $(function() {
 					self.calibrationStep(self.calibrationStep()+1);
 					if (self.calibrationStep() === 3){
 						if (self.rrf()){
-							self.rrfMaintenanceReport("Final T1 X Offset: "+self.lastT1Offset().toString()+"\n"+self.rrfMaintenanceReport());	
+							self.rrfMaintenanceReport("Final T1 X Offset: "+self.lastT1Offset().toString()+"\n"+self.rrfMaintenanceReport());
+							self.adminAction('changeRrfConfig','command', {'targetParameter':'t1OffsetX','newValue':self.lastT1Offset().toString()});
+							
 						}
 						self.lastT1Offset(0.0);
 						self.calibrationAxis("Y");
@@ -3238,7 +3250,9 @@ $(function() {
 					self.calibrationStep(self.calibrationStep()+1);
 					if (self.calibrationStep() === 3){
 						if (self.rrf()){
-							self.rrfMaintenanceReport("Final T1 Y Offset: "+self.lastT1Offset().toString()+"\n"+self.rrfMaintenanceReport());	
+							self.rrfMaintenanceReport("Final T1 Y Offset: "+self.lastT1Offset().toString()+"\n"+self.rrfMaintenanceReport());
+							self.adminAction('changeRrfConfig','command', {'targetParameter':'t1OffsetY','newValue':self.lastT1Offset().toString()});
+								
 						}
 						self.lastT1Offset(0.0);
 						self.calibrationStep(0);
@@ -5598,7 +5612,7 @@ $(function() {
 			// 	self.isDual(false);
 			// }
 
-			if (self.profileString().indexOf("M3-SE Rev0-005") !== -1 || self.profileString().indexOf("Rev1-000") !== -1){
+			if (self.profileString().indexOf("M3-SE Rev0-005") !== -1 || self.profileString().indexOf("Rev1-000") !== -1 || self.rrf() ){
 				self.hasProbe(true);
 				self.mgLog("hasProbe true!");
 			} else {

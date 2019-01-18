@@ -1719,7 +1719,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				newValuesPresent = True
 
 
-			if "G10" in configLine and configLine[0] != ";":
+			if "G10" in configLine and configLine[0] != ";" and "Y" in configLine:
 				self._logger.info("RRF T1 offset information triggered.")
 				self.tooloffsetline = configLine
 				self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = configLine))
