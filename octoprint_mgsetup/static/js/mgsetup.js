@@ -866,6 +866,9 @@ $(function() {
 			if (hotend == "T0"){
 
 				if (self.hasProbe()){
+					if (self.rrf()){
+						self.setRrfBedTemperature(wiggleBedTemp);
+					}
 					OctoPrint.control.sendGcode([
 						"M104 T0 S"+temperature.toString(),
 						"M140 S"+wiggleBedTemp.toString(),
@@ -905,6 +908,9 @@ $(function() {
 				}
 			} else if (hotend == "T1"){
 					if (self.hasProbe()){
+						if (self.rrf()){
+							self.setRrfBedTemperature(wiggleBedTemp);
+						}
 						OctoPrint.control.sendGcode([
 							"M104 T1 S"+temperature.toString(),
 							"M140 S"+wiggleBedTemp.toString(),
@@ -946,6 +952,9 @@ $(function() {
 				}
 			} else if (hotend == "both"){
 					if (self.hasProbe()){
+						if (self.rrf()){
+							self.setRrfBedTemperature(wiggleBedTemp);
+						}
 						OctoPrint.control.sendGcode([
 							"M104 T0 S"+temperature.toString(),
 							"M104 T1 S"+temperature.toString(),
@@ -1056,6 +1065,9 @@ $(function() {
 		};
 
 		self.cooldown = function () {
+			if (self.rrf()){
+				self.setRrfBedTemperature("0");
+			}
 			OctoPrint.control.sendGcode(["M104 T0 S0",
 				"M104 T1 S0",
 				"M140 S0"
@@ -5359,6 +5371,34 @@ $(function() {
 
 			}
 
+
+		};
+
+
+
+
+
+
+
+		self.setRrfBedTemperature = function(targetTemperature, middleOffset, outerOffset){
+			self.mgLog("setRrfBedTemperature called.");
+			if (targetTemperature == undefined){
+				targetTemperature = 110; 
+			} else {
+				targetTemperature = parseInt(targetTemperature);
+			}
+			if (targetTemperature != 0){
+				if (middleOffset == undefined){middleOffset = 2;}
+				if (outerOffset == undefined){outerOffset = 4;}
+			} else {
+				middleOffset = 0;
+				outerOffset = 0;
+			}
+			OctoPrint.control.sendGcode(["M140 P0 S"+targetTemperature.toString(),
+				"M140 P1 S"+(targetTemperature+middleOffset).toString(),
+				"M140 P2 S"+(targetTemperature+outerOffset).toString(),
+				"M140 P3 S"+(targetTemperature+outerOffset).toString()
+				]);
 
 		};
 
