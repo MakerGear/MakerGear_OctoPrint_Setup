@@ -16,8 +16,32 @@
 
 
 </div>
+<hr>
+<br>
+<br>
+<br>
+<div id="rrfLineStepper" >
+	<center>LineStepper:</center>
+	<br>
+	Enter lines of gcode to run, then click on "Step" to run next line.
+	<br>
+	<br><b>WARNING:</b> There is no syntax or safety checking done on these lines - they will be split and sent exactly as typed, which may confuse or interact poorly with the printer firmware.  Use only for testing/diagnostics, and with full printer observation.
+	<br><br>
+	<center><textarea id="rrfLines" data-bind="textInput: $root.rrfLinesDisplay, disable: $root.rrfLinesLock" style="width:90%;height:250px;"></textarea></center>
+	<br>
+	Current line to send: <span data-bind="text: $root.rrfLineArrayPosition()"></span>
 
 
+
+
+	<div align="left"><button class="btn btn-primary" data-bind="click: function() { $root.rrfLineStep('lock') }">Lock Contents for Sending</button></div><br>
+	<div align="left"><button class="btn btn-primary" data-bind="click: function() { $root.rrfLineStep('unlock') }">Unlock Contents for Editing</button> - Note, this will reset send position to the first line when starting again.</div><br>
+	<div align="left"><button class="btn btn-primary" data-bind="click: function() { $root.rrfLineStep('next') }">Lock Contents and Send First Line / NEXT LINE</button></div><br>
+{# 	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('changeRrfConfig','command', {'targetParameter':'probeOffset','newValue':'1.23'}) }">Change Config on Duet</button></div> #}
+
+
+
+</div>
 
 
 
