@@ -75,6 +75,14 @@ $(function() {
 		self.additionalControls = [];
 
 
+		//line stepping variables
+		self.rrfLinesClean = ko.observable("");
+		self.rrfLinesDisplay = ko.observable("");
+		self.rrfLinesLock = ko.observable(false);
+		self.rrfLineArray = [];
+		self.rrfLineArrayPosition = ko.observable(0);
+
+
 		// UI history:
 		self.setupStepHistory = ko.observableArray([]);
 		self.setupStepFuture = ko.observableArray([]);
@@ -4817,6 +4825,55 @@ $(function() {
 		};
 
 
+
+		self.rrfLineStep = function(command){
+			self.mgLog("self.rrfLineStep called, command: "+(command.toString()));
+			switch(command){
+				case undefined:
+					self.mgLog("rrfLineStep called without a command!");
+					return;
+				case "lock":
+					self.rrfLinesClean(self.rrfLinesDisplay());
+					self.rrfLineArray = self.rrfLinesDisplay().split("\n");
+					rrfLineArrayNumbered = [];
+					for (var i=0; i<(self.rrfLineArray.length) ; i++){
+						self.tempArray = [];
+						rrfLineArrayNumbered[i] = "Line "+i.toString()+" : "+self.rrfLineArray[i];
+					}
+					self.rrfLinesDisplay(rrfLineArrayNumbered.join('\n'));
+					self.mgLog(self.rrfLinesDisplay());
+					self.rrfLineArrayPosition(0);
+					self.rrfLinesLock(true);
+					self.mgLog(self.rrfLineArray);
+					break;
+
+				case "unlock":
+					self.rrfLinesDisplay(self.rrfLinesClean());
+					self.rrfLinesClean("");
+					self.rrfLinesLock(false);
+					self.rrfLineArray = [];
+					self.rrfLineArrayPosition(0);
+					break;
+
+				case "next":
+					if (!self.rrfLinesLock()){
+						self.rrfLineStep("lock");
+					}
+					console.log(self.rrfLineArray[self.rrfLineArrayPosition()]);
+					OctoPrint.control.sendGcode(self.rrfLineArray[self.rrfLineArrayPosition()]);
+					self.rrfLineArrayPosition(self.rrfLineArrayPosition()+1);
+					if (self.rrfLineArrayPosition() >= self.rrfLineArray.length){
+						self.rrfLineStep("unlock");
+					}
+					break;
+
+
+			}
+			
+
+
+
+		};
 
 
 
