@@ -21,7 +21,7 @@ M109 T{{tool}} S220
 {% endif %}
 {% if tohome == true %}
 T0
-G28 X Y Z
+G28
 G1 X0
 T{{tool}}
 {% endif %}
