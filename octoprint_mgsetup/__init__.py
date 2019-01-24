@@ -888,6 +888,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 	def sendValues(self, clientVersion = -1):
 		if clientVersion == self.printerValueVersion:
+			self._logger.info("sendValues called with client and printerValueVersion the same - not sending.")
 			return
 		elif self.printerValueGood:
 			self.sendCurrentValues()
@@ -1553,64 +1554,76 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		if not self.checkRrfConnection():
 			self.rrfFtpConnect()
 
-		if ftpAction["command"] == 'sendConfig':
-			# send the current list of files to the client, making sure to catch errors like "file list doesn't exist yet..."
-			if self.duetFtpConfig.getvalue() != None:
-				self._plugin_manager.send_plugin_message("mgsetup", dict(duetFtpConfig = self.duetFtpConfig.getvalue()))
-			else:
-				self._plugin_manager.send_plugin_message("mgsetup", dict(duetFtpConfig = "No config values yet."))
+		try:
+			if ftpAction["command"] == 'sendConfig':
+				# send the current list of files to the client, making sure to catch errors like "file list doesn't exist yet..."
+				if self.duetFtpConfig.getvalue() != None:
+					self._plugin_manager.send_plugin_message("mgsetup", dict(duetFtpConfig = self.duetFtpConfig.getvalue()))
+				else:
+					self._plugin_manager.send_plugin_message("mgsetup", dict(duetFtpConfig = "No config values yet."))
 
 
-		elif ftpAction["command"] == 'download' and ftpAction["target"] != "none":
-			self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),open(str(ftpAction["target"]), 'wb').write) #TODO - figure out and reconfigure this to download to a specific base directory, so we're not writing to wherever it defaults to (oprint bin because that's the Python executable source?)
+			elif ftpAction["command"] == 'download' and ftpAction["target"] != "none":
+				self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),open(str(ftpAction["target"]), 'wb').write) #TODO - figure out and reconfigure this to download to a specific base directory, so we're not writing to wherever it defaults to (oprint bin because that's the Python executable source?)
 
-		elif ftpAction["command"] == 'openConfig':
-			if self.duetFtpConfig.getvalue() != '':
-				self.duetFtpConfig.close()
-				self.duetFtpConfig = StringIO()
-			self.duetFtp.sendcmd('CWD /')
-			ftpAction["target"] = 'sys/config.g'
-			# self.duetFtp.sendcmd('CWD sys') #shouldn't be needed if we always specify exact location
-			self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),self.duetFtpConfig.write)
-			self._logger.info("Retrieved file "+str(ftpAction["target"])+", contents: "+self.duetFtpConfig.getvalue())
-			self.duetFtpConfigLines = self.duetFtpConfig.getvalue().splitlines(True)
-			self._logger.info(self.duetFtpConfigLines)
-
-
-			self.processRrfConfig()
-
-		elif ftpAction["command"] == 'open' and ftpAction["target"] != "none":
-			self.duetFtp.sendcmd('CWD /')
-			# self.duetFtp.sendcmd('CWD sys') #shouldn't be needed if we always specify exact location
-			self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),self.duetFtpConfig.write)
-			self._logger.info("Retrieved file "+str(ftpAction["target"])+", contents: "+self.duetFtpConfig.getvalue())
+			elif ftpAction["command"] == 'openConfig':
+				if self.duetFtpConfig.getvalue() != '':
+					self.duetFtpConfig.close()
+					self.duetFtpConfig = StringIO()
+				self.duetFtp.sendcmd('CWD /')
+				ftpAction["target"] = 'sys/config.g'
+				# self.duetFtp.sendcmd('CWD sys') #shouldn't be needed if we always specify exact location
+				self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),self.duetFtpConfig.write)
+				self._logger.info("Retrieved file "+str(ftpAction["target"])+", contents: "+self.duetFtpConfig.getvalue())
+				self.duetFtpConfigLines = self.duetFtpConfig.getvalue().splitlines(True)
+				self._logger.info(self.duetFtpConfigLines)
 
 
-		elif ftpAction["command"] == 'saveConfig':
-			self._logger.info("FTP save starting?")
-			self.duetFtp.sendcmd('CWD /')
-			self._logger.info("FTP changed, to /")
+				self.processRrfConfig()
 
-			with open(self._basefolder+"/logs/config.g.backup-{0}".format(str(datetime.datetime.now().strftime('%y-%m-%d_%H-%M'))), "w") as configBackup:
-				configBackup.write(self.duetFtpConfig.getvalue())
-				# TODO - decide how to handle these backups: keep them all, keep last N, keep last, write and keep only when updating?
-				# Moved from openConfig to saveConfig so the backup will only be saved when the config is about to change on Duet.
+			elif ftpAction["command"] == 'open' and ftpAction["target"] != "none":
+				self.duetFtp.sendcmd('CWD /')
+				# self.duetFtp.sendcmd('CWD sys') #shouldn't be needed if we always specify exact location
+				self.duetFtp.retrbinary('RETR '+str(ftpAction["target"]),self.duetFtpConfig.write)
+				self._logger.info("Retrieved file "+str(ftpAction["target"])+", contents: "+self.duetFtpConfig.getvalue())
 
 
-			# self.duetFtp.sendcmd('CWD sys')
+			elif ftpAction["command"] == 'saveConfig':
+				self._logger.info("FTP save starting?")
+				self.duetFtp.sendcmd('CWD /')
+				self._logger.info("FTP changed, to /")
 
-			# ftpAction["newFile"] = 'sys/testConfigExport.g'
-			# self._logger.info(ftpAction)
+				with open(self._basefolder+"/logs/config.g.backup-{0}".format(str(datetime.datetime.now().strftime('%y-%m-%d_%H-%M'))), "w") as configBackup:
+					configBackup.write(self.duetFtpConfig.getvalue())
+					# TODO - decide how to handle these backups: keep them all, keep last N, keep last, write and keep only when updating?
+					# Moved from openConfig to saveConfig so the backup will only be saved when the config is about to change on Duet.
 
-			# if ftpAction["newContents"] == 'none':
-			# 	ftpAction["newContents"] = self.duetFtpConfig.getvalue()
-			# self.duetFtp.storbinary('STOR sys/testConfigExport.g', StringIO(self.duetFtpConfig.getvalue()))
-			self.duetFtpConfigLines.append('\n; Custom config exported from plugin at {0}\n'.format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
-			self.duetFtp.storbinary('STOR sys/config.g', StringIO(''.join(self.duetFtpConfigLines)))
-			self._printer.commands(["M502"])
 
-			self._logger.info("FTP save complete?")
+				# self.duetFtp.sendcmd('CWD sys')
 
+				# ftpAction["newFile"] = 'sys/testConfigExport.g'
+				# self._logger.info(ftpAction)
+
+				# if ftpAction["newContents"] == 'none':
+				# 	ftpAction["newContents"] = self.duetFtpConfig.getvalue()
+				# self.duetFtp.storbinary('STOR sys/testConfigExport.g', StringIO(self.duetFtpConfig.getvalue()))
+				self.duetFtpConfigLines.append('\n; Custom config exported from plugin at {0}\n'.format(str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))))
+				self.duetFtp.storbinary('STOR sys/config.g', StringIO(''.join(self.duetFtpConfigLines)))
+				self._printer.commands(["M502"])
+
+				self._logger.info("FTP save complete?")
+		except ftplib.all_errors as e:
+			self._logger.info("ftplib error when trying to open config file: "+str(e))
+
+		except NameError as e:
+			self._logger.info("NameError while trying to open config file; duetFtp not instantiated?  Error: "+str(e))
+
+
+		except Exception as e:
+			self._logger.info("Other error while trying to open config file: "+str(e))
+
+				
+				
 	def changeRrfConfig(self, targetParameter=None, newValue=None, saveNewConfig=True, sendNewParameter=True):
 		if targetParameter is None or newValue is None:
 			self._logger.info('No target parameter or newValue set when calling changeRrfConfig - sent in error?  targetParameter: '+str(targetParameter)+" ; newValue: "+str(newValue))

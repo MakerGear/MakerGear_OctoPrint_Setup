@@ -65,7 +65,6 @@ M109 T{{tool}} S220
 {% if tohome == true %}
 T0
 G28
-G29
 T0
 {% endif %}
 T{{tool}}

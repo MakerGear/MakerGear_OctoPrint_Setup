@@ -75,6 +75,14 @@ $(function() {
 		self.additionalControls = [];
 
 
+		//line stepping variables
+		self.rrfLinesClean = ko.observable("");
+		self.rrfLinesDisplay = ko.observable("");
+		self.rrfLinesLock = ko.observable(false);
+		self.rrfLineArray = [];
+		self.rrfLineArrayPosition = ko.observable(0);
+
+
 		// UI history:
 		self.setupStepHistory = ko.observableArray([]);
 		self.setupStepFuture = ko.observableArray([]);
@@ -868,7 +876,27 @@ $(function() {
 			}
 			if (hotend == "T0"){
 
-				if (self.hasProbe() || self.rrf()){
+				if (self.rrf()){
+
+					OctoPrint.control.sendGcode([
+						"M104 T0 S"+temperature.toString(),
+						"M140 S"+wiggleBedTemp.toString(),
+						"M300 S1040 P250",
+						"M300 S1312 P250", 
+						"M300 S1392 P250",
+						"G4 P750",
+						"G28 XY",
+						"G28 Z",
+						"T0",
+						"G1 F1500 X20 Y100 Z100",
+						"M109 S"+temperature.toString()+" T0",
+						"M400",
+						"M300 S1392 P250",
+						"M300 S1312 P250", 
+						"M300 S1040 P250"
+						
+					]);
+				} else if (self.hasProbe()) {
 
 					OctoPrint.control.sendGcode([
 						"M104 T0 S"+temperature.toString(),
@@ -918,7 +946,8 @@ $(function() {
 						"M300 S1312 P250", 
 						"M300 S1392 P250",
 						"G4 P750",
-						"G28",
+						"G28 XY",
+						"G28 Z",
 						"T0",
 						"G1 F1500 X20 Y100 Z100",
 						"M109 S"+temperature.toString()+" T1",
@@ -3179,7 +3208,7 @@ $(function() {
 					if (self.calibrationStep() === 3){
 						if (self.rrf()){
 							self.rrfMaintenanceReport("Final T1 X Offset: "+self.lastT1Offset().toString()+"\n"+self.rrfMaintenanceReport());
-							self.adminAction('changeRrfConfig','command', {'targetParameter':'t1OffsetX','newValue':self.lastT1Offset().toString()});
+							self.adminAction('changeRrfConfig','command', {'targetParameter':'t1OffsetU','newValue':self.lastT1Offset().toString()});
 							
 						}
 						self.lastT1Offset(0.0);
@@ -4839,6 +4868,55 @@ $(function() {
 
 
 
+		self.rrfLineStep = function(command){
+			self.mgLog("self.rrfLineStep called, command: "+(command.toString()));
+			switch(command){
+				case undefined:
+					self.mgLog("rrfLineStep called without a command!");
+					return;
+				case "lock":
+					self.rrfLinesClean(self.rrfLinesDisplay());
+					self.rrfLineArray = self.rrfLinesDisplay().split("\n");
+					rrfLineArrayNumbered = [];
+					for (var i=0; i<(self.rrfLineArray.length) ; i++){
+						self.tempArray = [];
+						rrfLineArrayNumbered[i] = "Line "+i.toString()+" : "+self.rrfLineArray[i];
+					}
+					self.rrfLinesDisplay(rrfLineArrayNumbered.join('\n'));
+					self.mgLog(self.rrfLinesDisplay());
+					self.rrfLineArrayPosition(0);
+					self.rrfLinesLock(true);
+					self.mgLog(self.rrfLineArray);
+					break;
+
+				case "unlock":
+					self.rrfLinesDisplay(self.rrfLinesClean());
+					self.rrfLinesClean("");
+					self.rrfLinesLock(false);
+					self.rrfLineArray = [];
+					self.rrfLineArrayPosition(0);
+					break;
+
+				case "next":
+					if (!self.rrfLinesLock()){
+						self.rrfLineStep("lock");
+					}
+					console.log(self.rrfLineArray[self.rrfLineArrayPosition()]);
+					OctoPrint.control.sendGcode(self.rrfLineArray[self.rrfLineArrayPosition()]);
+					self.rrfLineArrayPosition(self.rrfLineArrayPosition()+1);
+					if (self.rrfLineArrayPosition() >= self.rrfLineArray.length){
+						self.rrfLineStep("unlock");
+					}
+					break;
+
+
+			}
+			
+
+
+
+		};
+
 
 
 
@@ -5595,7 +5673,7 @@ $(function() {
 					self.failedParameterCheckLines(self.failedParameterCheckLines()+"\n"+"checkParameters failed!  Bad profileString:"+profileString);
 				}
 
-				if (!self.hasProbe()){
+				if (!self.hasProbe() && !self.rrf() ){
 					if (zOffsetLine === "" || zOffsetLine === undefined){
 						self.requestEeprom();
 						failedThisRound = true;
@@ -5640,7 +5718,17 @@ $(function() {
 			//self.waitingForM(true);
 			self.eepromData([]);
 			// OctoPrint.control.sendGcode("M503");
-			OctoPrint.issueCommand(self.mgLogUrl, "sendValues", {"clientVersion":self.printerValueVersion()})
+			var versionValueToSend
+			if (self.rrf()){
+				if (self.probeOffset() == undefined || self.tool1XOffset() == undefined || self.tool1YOffset() == undefined || self.tool1ZOffset() == undefined){
+					versionValueToSend = -1;
+					self.mgLog("requestEeprom sent while one of the required firmware parameters was not received - sending '-1' as the value to force update.")
+				} else {
+					versionValueToSend = self.printerValueVersion();
+				}
+			}
+			
+			OctoPrint.issueCommand(self.mgLogUrl, "sendValues", {"clientVersion":versionValueToSend})
 				.done(function(response) {
 					// console.log("mgLog send to server-side done; response: "+response);
 					console.log(response);
