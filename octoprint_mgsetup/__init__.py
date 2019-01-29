@@ -109,6 +109,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.duetFtpConfig = StringIO()
 		self.duetFtpConfigLines = []
 		self.rrf = True
+		self.watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored", "G31", "G10"]
 		# self.duetFtpDownloadDirectory = TODO figure out where to download files from the Duet
 
 
@@ -360,23 +361,28 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._settings.save()
 			self.printElapsedTimer.start()
 
-		#if
-		try:
-			smbHashVal = (hashlib.md5(open("/etc/samba/smb.conf").read()).hexdigest()) # != "03dc1620b398cbe3d2d82e83c20c1905":
-			if smbHashVal == "44c057b0ffc7ab0f88c1923bdd32b559":
-				self.smbpatchstring = "Patch Already In Place"
-				self.mgLog("smb.conf hash matches patched file, no need to patch",2)
-			elif smbHashVal == "95b44915e267400669b2724e0cce5967":
-				self.smbpatchstring = "Patch was required: smb.conf has been patched"
-				self.mgLog("smb.conf hash matches unpatched file, now patching file",2)
-				# self.mgLog("smb.conf actual hash: "+str(smbHashVal))
-				self.patchSmb()
+		if not self.rrf:
+			try:
+				smbHashVal = (hashlib.md5(open("/etc/samba/smb.conf").read()).hexdigest()) # != "03dc1620b398cbe3d2d82e83c20c1905":
+				if smbHashVal == "44c057b0ffc7ab0f88c1923bdd32b559":
+					self.smbpatchstring = "Patch Already In Place"
+					self.mgLog("smb.conf hash matches patched file, no need to patch",2)
+				elif smbHashVal == "95b44915e267400669b2724e0cce5967":
+					self.smbpatchstring = "Patch was required: smb.conf has been patched"
+					self.mgLog("smb.conf hash matches unpatched file, now patching file",2)
+					# self.mgLog("smb.conf actual hash: "+str(smbHashVal))
+					self.patchSmb()
 
-			else :
-				self.smbpatchstring = "Custom smb.conf file present: patch status unknown"
-				self.mgLog("Custom smb.conf file present: patch status unknown. No Action",2)
-		except Exception as e:
-			self._logger.info(str(e))
+				else :
+					self.smbpatchstring = "Custom smb.conf file present: patch status unknown"
+					self.mgLog("Custom smb.conf file present: patch status unknown. No Action",2)
+			except Exception as e:
+				self._logger.info(str(e))
+				
+			
+		if self.rrf:
+			self.watchCommands = ["Endstops", "Stopped at height", "Some computed corrections", "Leadscrew adjustments"]
+			self._logger.info("RRF true - changing watchCommands array.")
 
 
 
@@ -933,8 +939,6 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("process_z_offset triggered - Warning !")
 			self._plugin_manager.send_plugin_message("mgsetup", dict(mgwarnline = line))
 
-		if self.rrf:
-			return line
 
 		if self.printActive:
 			# self._logger.debug("printActive true, skipping filters.")
@@ -944,10 +948,28 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# if "M206" not in line and "M218" not in line and "FIRMWARE_NAME" not in line and "Error" not in line and "z_min" not in line and "Bed X:" not in line and "M851" not in line:
 		# 	return line
 		newValuesPresent = False
-		watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored", "G31", "G10"]
+		# watchCommands = ["M206", "M218", "FIRMWARE_NAME", "Error", "z_min", "Bed X:", "M851", "= [[ ", "Settings Stored", "G31", "G10"]
 
-		if not any([x in line for x in watchCommands]):
+		if not any([x in line for x in self.watchCommands]):
 			return line
+
+		if "Endstops" in line:
+			self._logger.info("process_z_offset triggered - RRF endstop message.")
+			self._plugin_manager.send_plugin_message("mgsetup", dict(rrfZminline = line))
+
+
+		if "Some computed corrections" in line:
+			self._logger.info("process_z_offset triggered - RRF G32 success response received: "+str(line))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(rrfProbeLevelLine = line))
+
+		if "Leadscrew adjustments" in line:
+			self._logger.info("process_z_offset triggered - RRF G32 FAIL response, could not adjust:"+str(line))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(rrfProbeLevelLine = line))
+
+
+			# if self.rrf:
+			# 	self.watchCommands = ["Endstops", "Stopped at height", "Some computed corrections", "Leadscrew adjustments"]
+
 
 		# if ("M206" or "M218" or "FIRMWARE_NAME" or "Error" or "z_min" or "Bed X:" or "M851" or "= [[ ") not in line:
 		# 	return line
@@ -988,7 +1010,12 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("'Error:Probing failed' message received")
 			self._plugin_manager.send_plugin_message("mgsetup", dict(errorline = line))
 			return ""
-
+			
+		if "Stopped at height" in line:
+			self._logger.info("'Stopped at height' message received: "+str(line))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(probeline = line))
+			
+			# Stopped at height 0.516 mm
 
 		if "z_min" in line:
 			self._logger.info("z_min message received")
