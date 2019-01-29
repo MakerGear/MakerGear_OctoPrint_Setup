@@ -2351,7 +2351,7 @@ d8"           `8ba,  ,ad8'
 							</p>
 							<br>
 
-							<center><button class="btnstay" data-bind="enable: !$root.stepTwentyFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+							<center><button class="btnstay" data-bind="visible: !$root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('probe'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button><button class="btnstay" data-bind="visible: $root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('probeRrf'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
 
 
 
@@ -3051,7 +3051,7 @@ d8"          Y8a     a8P
 				</video>
 				<br /><br />
 
-				<p>Below you can see your extruder temperatures. Once both extruder temperatures match the target temperature within 2 degrees,  click "Feed Filament" on either the Left Extruder (T0) or Right Extruder (T1) to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder.<br>
+				<p>Below you can see your extruder temperatures. Once both extruder temperatures match the target temperature within 2 degrees, click "Feed Filament" on either the Left Extruder (T0) or Right Extruder (T1) to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder.<br>
 					Extrude filament on both extruders before continuing.
 				</p>
 
