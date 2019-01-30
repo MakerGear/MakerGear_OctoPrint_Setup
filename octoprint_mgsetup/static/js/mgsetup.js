@@ -781,11 +781,12 @@ $(function() {
 					self.stepTwentyFirstWiggleClicked(true);
 				}
 			}
-			if (wigglePosition === "probeRrf"){
-				//wiggleX should be 203, but set to 178 for the moment to deal with torn tape TODO - fix, obvs
+			if (wigglePosition === "probeRrf" || wigglePosition === "probeRrfABS"){
+
+				self.setRrfBedTemperature(110);
 				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
 				heatup: true,
-				wiggleX: 150,
+				wiggleX: 203,
 				wiggleY: 177.5,
 				tohome: true,
 				wigglenumber: "050absflat",
@@ -800,8 +801,30 @@ $(function() {
 				if (self.setupStep() === '20' || self.maintenancePage() === 200 || self.maintenanceOperation() === "T0Hot" || self.maintenanceTask() === "SetHot" || self.maintenanceTask() === "SetT1Hot"){
 					self.stepTwentyFirstWiggleClicked(true);
 				}
+				
 			}
+			if (wigglePosition === "probeRrfPLA"){
 
+				self.setRrfBedTemperature(70);
+				
+				var parameters = {wiggleHeight: parseFloat(parseFloat(self.ZWiggleHeight()) + self.wiggleHeightAdjust).toFixed(2),
+				heatup: true,
+				wiggleX: 203,
+				wiggleY: 177.5,
+				tohome: true,
+				wigglenumber: "050plaflat",
+				tool: 0};
+				if (self.stepTwentyFirstWiggleClicked()){
+					parameters.tohome = false;
+				}
+				var context = {};
+				OctoPrint.control.sendGcode(["M503"]);
+				self.mgLog("parameters.wiggleHeight: "+parameters.wiggleHeight);
+				OctoPrint.control.sendGcodeScriptWithParameters("customProbeWiggleRrf", context, parameters);
+				if (self.setupStep() === '20' || self.maintenancePage() === 200 || self.maintenanceOperation() === "T0Hot" || self.maintenanceTask() === "SetHot" || self.maintenanceTask() === "SetT1Hot"){
+					self.stepTwentyFirstWiggleClicked(true);
+				}
+			}
 		};
 
 		self.feedFilament = function(targetTool) {
@@ -1646,8 +1669,17 @@ $(function() {
 				// ]);
 				self.probeOffset(self.newProbeOffset);
 				self.requestEeprom();
+				self.stepTwentyFirstWiggleClicked(false);
+				self.ZWiggleHeight(self.stockZWiggleHeight);
+				self.customWiggle(undefined);
 				if (self.maintenanceOperation()!=="home"){
 					self.nextMaintenanceTask();
+				} else {
+					if (!self.isDual()){
+						self.goTo("22");
+					} else {
+						self.goTo("26");
+					}
 				}
 				//self.setupStep("3");
 			}
