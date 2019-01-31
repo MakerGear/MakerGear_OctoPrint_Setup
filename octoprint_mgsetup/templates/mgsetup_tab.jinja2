@@ -61,7 +61,7 @@
 		</div>
 		<div data-bind="visible: $root.googleGood()===0"> 
 			<p>
-				You are <span style="color:red"> NOT </span> connected to the Internet. Please connect an Ethernet cable or use the "Wireless Configuration" button below to connect your M3 3D Printer to an Internet enabled network.
+				You are <span style="color:red"> NOT </span> connected to the Internet. Please connect an Ethernet cable or use the "Wireless Configuration" button below to connect your U1 3D Printer to an Internet enabled network.
 				<center>
 					<button style="width:150px;height:100px;" class="btngo" data-bind="visible: loginState.isUser, click: function() {$root.showSettings()}">
 						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/wifiWhite.png', 'width': '50px',} , visible: loginState.isUser && (setupStep()==='0')" />
@@ -111,7 +111,7 @@
 			<br /> {{ _('Quick Check') }}
 		</button>
 		<br />
-		Verify your M3's calibration.
+		Verify your U1's calibration.
 	</div>
 
 	<div class="buttonColumn">
@@ -120,7 +120,7 @@
 			<br /> {{ _('Knowledge Base') }}
 		</button>
 		<br />
-		Learn more about your M3.
+		Learn more about your U1.
 	</div>
 
 	<div class="buttonColumn">
@@ -144,7 +144,7 @@
 
 <h2>FAQs</h2>
 <div style="width:50%;float:left;">
-	<h4>Octoprint with the M3</h4>
+	<h4>Octoprint with the U1</h4>
 
 	<ul>
 		<li>
@@ -162,20 +162,20 @@
 </div>
 
 <div style="width:50%;float:left;">
-	<h4>Simplify3D With the M3</h4>
+	<h4>Simplify3D With the U1</h4>
 	<ul>
 		<li>
 			<a href="https://makergear.zendesk.com/hc/en-us/articles/360000268063" target="_blank">What is Simplify3D?</a>
 		</li>
 
 		<li>
-			<a href="https://makergear.zendesk.com/hc/en-us/articles/115004464806-Simplify3D-Profiles-and-Factory-Files-for-M3-and-M3ID" target="_blank">How do I install profiles for the M3 in Simplify3D? </a>
+			<a href="https://makergear.zendesk.com/hc/en-us/articles/115004464806-Simplify3D-Profiles-and-Factory-Files-for-M3-and-M3ID" target="_blank">How do I install profiles for the U1 in Simplify3D? </a>
 		</li>
 		<li data-bind="visible: !$root.isDual()">
-			<a href="https://makergear.zendesk.com/hc/en-us/articles/115003052343-Simplify3D-Workflow" target="_blank">How do I use Simplify3D with my M3-SE?</a>
+			<a href="https://makergear.zendesk.com/hc/en-us/articles/115003052343-Simplify3D-Workflow" target="_blank">How do I use Simplify3D with my U1?</a>
 		</li>
 		<li data-bind="visible: $root.isDual()">
-			<a href="https://makergear.zendesk.com/hc/en-us/articles/115004621743-Single-Extrusion-Prints-with-the-M3ID" target="_blank">How do I use Simplify3D with my M3-ID? </a>
+			<a href="https://makergear.zendesk.com/hc/en-us/articles/115004621743-Single-Extrusion-Prints-with-the-M3ID" target="_blank">How do I use Simplify3D with my U1? </a>
 		</li>
 
 
@@ -902,7 +902,7 @@
 		<center>
 			<h1 style="text-align:left;">Heated Corner Check</h1>
 			<p>
-				In this step you will check if your build surface is level by verifying the vertical alignment of all four corners of your build surface. Make sure that all four of your bed clips are engaged, as shown in the M3 User Manual. 
+				In this step you will check if your build surface is level by verifying the vertical alignment of all four corners of your build surface. Make sure that all four of your bed clips are engaged, as shown in the U1 User Manual. 
 			</p>
 			<p>
 				Click “Begin Corner Check” to print four Zigzag patterns, one on each corner of your build surface. 
@@ -1144,14 +1144,14 @@
 
 
 			<p style="margin-top:21px;" data-bind="visible: !$root.isDual()">
-				Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">M3 Knowledge Base</a>.
+				Learn how to get the most out of your U1 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">U1 Knowledge Base</a>.
 
 			</p>
 
 
 			<div data-bind="visible: $root.isDual">
-				<h1 style="text-align:left;">M3 Independent Dual (M3-ID) Setup</h1>
-				To continue on to the (M3-ID) configuration, click "Next":<br>
+				<h1 style="text-align:left;">U1 Setup</h1>
+				To continue on to the U1 configuration, click "Next":<br>
 				<center>
 					<button class="btngoBig" data-bind="enable: loginState.isUser(), click: function() { $root.goTo('8'); window.scroll(0,0) }">Next</button>
 				</center>
@@ -1406,7 +1406,7 @@
 		</center>
 		<br><br>
 
-		Now we’ll prepare to load filament, if you have not already, while waiting for your M3 to heat up.
+		Now we’ll prepare to load filament, if you have not already, while waiting for your U1 to heat up.
 		<br><br>
 
 
@@ -2941,7 +2941,7 @@ d8"          d8"
 
 			</p>
 			<p style="margin-top:21px;" data-bind="visible: $root.isDual()">
-				Learn how to get the most out of your M3 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">M3 Knowledge Base</a>.
+				Learn how to get the most out of your U1 by visiting the  <a href="https://makergear.zendesk.com/hc/en-us" target="_blank">U1 Knowledge Base</a>.
 
 			</p>
 
@@ -3353,7 +3353,7 @@ d8"         Y8a     a8P
 
 
 	<p id="28guideQuestion" style="font-size:16px;">
-		Have you completed the 'Setup' section of your M3 User Guide (included with your printer)?
+		Have you completed the 'Setup' section of your U1 User Guide (included with your printer)?
 	</p>
 
 	<div style="text-align:center;">
@@ -3369,7 +3369,7 @@ d8"         Y8a     a8P
 
 
 		<p>
-			Before you can proceed you must follow the instructions in the 'Hardware Setup' section of the M3 User Guide . This will include installing the HBP, Glass, bed hold-down clips and spool holder.
+			Before you can proceed you must follow the instructions in the 'Hardware Setup' section of the U1 User Guide . This will include installing the HBP, Glass, bed hold-down clips and spool holder.
 		</p>
 
 		<p>
@@ -3379,6 +3379,7 @@ d8"         Y8a     a8P
 		<ul>
 			<li><a href="http://setup.makergear.com/m3UserGuideV1-0.pdf" target="_blank">M3 SE Rev0</a>
 				<li><a href="http://setup.makergear.com/Setup_M3-ID_User%20Guide.pdf" target="_blank">M3 ID Rev0</a>
+					<li><b>U1 User Guide Pending</b>
 		   <!-- <li><a href="">M3 SE Rev1</a>
 		   	<li><a href="">M3 ID Rev1</a>-->
 		   	</ul>
