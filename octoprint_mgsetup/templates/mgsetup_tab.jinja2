@@ -1530,7 +1530,7 @@
 			<br>
 
 			<center>
-				<button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('T1'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button>
+				<button class="btnstay" data-bind="visible: !$root.rrf(), enable: !$root.stepElevenFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('T1'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button><button class="btnstay" data-bind="visible: $root.rrf(), enable: !$root.stepElevenFirstWiggleClicked(), click: function() { $root.printWiggleConfirm('T1-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button>
 			</center>
 			<br>
 
@@ -1639,8 +1639,8 @@
 		<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 			
 			<center>
-				<button style="width:100%;" class="btngoBig" data-bind="visible: !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('T1'); window.scroll(0,0) }">Next Step<br /></button>
-				<button style="width:100%;" class="btngoBig" data-bind="visible: $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('T1'); window.scroll(0,0) }">Next Step<br /></button>
+				<button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('T1'); window.scroll(0,0) }">Next Step<br /></button>
+
 			</center>
 
 			<!--Too far-->
@@ -1650,19 +1650,19 @@
 		<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 			<div data-bind="visible: $root.stepElevenShowFineAdjustments()==false"><br>
 				<center>
-					<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button>
+					<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',-0.04); $root.enableLockedButton(10000) }">Adjust and Print</button>
 				</center>
 			</div>
 			<center>
-				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',-0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button>
+				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',-0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',-0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button>
 			</center>
 			<br>
 			<center>
-				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',-0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button>
+				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',-0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',-0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button>
 			</center>
 			<br>
 			<center>
-				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',-0.01); $root.enableLockedButton(10000) }">Adjust by 0.01 mm and Print</button>
+				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',-0.01); $root.enableLockedButton(10000) }">Adjust by 0.01 mm and Print</button>
 			</center>            
 
 		</td>
@@ -1671,26 +1671,26 @@
 		<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 			<div data-bind="visible: $root.stepElevenShowFineAdjustments()==false"><br>
 				<center>
-					<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button>
+					<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==false && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',0.04); $root.enableLockedButton(10000) }">Adjust and Print</button>
 				</center>
 			</div>
 			<center>
-				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button>
+				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',0.04); $root.enableLockedButton(10000) }">Adjust by 0.04 mm and Print</button>
 			</center>
 			<br>
 			<center>
-				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button>
+				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',0.02); $root.enableLockedButton(10000) }">Adjust by 0.02 mm and Print</button>
 			</center>
 			<br>
 			<center>
-				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.01); $root.enableLockedButton(10000) }">Adjust by 0.01 mm and Print</button>
+				<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2',0.01); $root.enableLockedButton(10000) }">Adjust by 0.01 mm and Print</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom',0.01); $root.enableLockedButton(10000) }">Adjust by 0.01 mm and Print</button>
 			</center>  
 			<!--Too Close-->
 		</td>
 		<tr>
 
 		</table>
-		<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button>
+		<button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && !$root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-2'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button><button class="btnstay" data-bind="visible: $root.stepElevenShowFineAdjustments()==true && $root.rrf(), enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.printWiggleConfirm('T1-custom'); $root.enableLockedButton(10000) }">Print This Zigzag Again</button>
 		<br>
 
 		<input type="checkbox" data-bind="checked: $root.stepElevenShowFineAdjustments" /> Show Advanced Options.
