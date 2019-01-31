@@ -48,6 +48,12 @@ M190 S70
 M109 T{{tool}} S220
 {% endif %}
 
+{% if wigglenumber == "050plaflat" %}
+M190 S70
+M109 T{{tool}} S220
+{% endif %}
+
+
 {% if wigglenumber == "075plaflat" %}
 M190 S70
 M109 T{{tool}} S225

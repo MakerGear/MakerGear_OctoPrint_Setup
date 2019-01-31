@@ -1741,6 +1741,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					if not targetParameterFound:
 						self._logger.info("changeRrfConfig triggered, but cannot find the correct line to edit.  Config: "+str(''.join(self.duetFtpConfigLines)))
 					
+		self.printerValueGood = False
+		self.sendValues()
 
 
 

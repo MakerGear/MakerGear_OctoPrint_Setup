@@ -2,12 +2,7 @@
 {% set printOffset = 59.9 + parameters.offset %}
 
 
- 
 
-
-M190 S110
-M109 T0 S265
-M109 T1 S265
 
 {% if tohome == true %}
 G28

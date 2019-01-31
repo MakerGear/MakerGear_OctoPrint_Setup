@@ -397,7 +397,7 @@ $(function() {
 				self.notify("Error - Please Select Configuration","Please select machine configuration before printing the first Zigzag","error");
 				return;
 			}
-			if(wigglePosition === "T1-custom" && self.customWiggle() === undefined){
+			if(wigglePosition === "T1-custom" && self.customWiggle() === undefined && !self.rrf() ){
 				self.notify("Error - Please Select Configuration","Please select machine configuration before printing the first Zigzag","error");
 				return;
 			}
@@ -734,7 +734,11 @@ $(function() {
 				if (self.rrf()){
 					parameters.wiggleX = 150;
 					parameters.wiggleY = 177.5;
-					parameters.wigglenumber = "050absflat";
+					if (self.setupStep()==='11'){
+						parameters.wigglenumber = "050plaflat";
+					} else {
+						parameters.wigglenumber = "050absflat";						
+					}
 					wiggleName = "customProbeWiggleRrf";
 					OctoPrint.control.sendGcode(["M503"]);
 				} else {
@@ -1467,12 +1471,28 @@ $(function() {
 					return;
 				}
 				//self.newZOffset = self.newZOffset + 0.1 ;
-				self.ZOffString = "M218 T1 Z"+self.newZOffset.toFixed(2);
-				self.mgLog("newZOffset rounded to two places: "+self.newZOffset.toFixed(2));
-				self.mgLog("ZOffString: "+self.ZOffString);
-				OctoPrint.control.sendGcode([self.ZOffString,
+				
+				if (self.rrf()){
+					// self.ZOffString = "G10 P1 Z"+self.newZOffset.toFixed(2);
+					self.adminAction('changeRrfConfig','command', {'targetParameter':'t1OffsetZ','newValue':self.newZOffset.toFixed(2)});
+					self.mgLog("newZOffset rounded to two places: "+self.newZOffset.toFixed(2));
+					self.mgLog("ZOffString: "+self.ZOffString);
+					self.rrfMaintenanceReport(self.ZOffString+"\n"+self.rrfMaintenanceReport());
+					// OctoPrint.control.sendGcode([self.ZOffString,
+					// "M500 P31"					
+					// ]);
+				} else {
+					self.ZOffString = "M218 T1 Z"+self.newZOffset.toFixed(2);
+					self.mgLog("newZOffset rounded to two places: "+self.newZOffset.toFixed(2));
+					self.mgLog("ZOffString: "+self.ZOffString);
+					OctoPrint.control.sendGcode([self.ZOffString,
 					"M500"					
-				]);
+					]);					
+				}
+				
+				
+				
+				
 				self.tool1ZOffset(self.newZOffset);
 				self.requestEeprom();
 				//new PNotify({
@@ -3122,6 +3142,9 @@ $(function() {
 					context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
 					if (self.rrf()){
+						self.setRrfBedTemperature(70);
+						OctoPrint.control.sendGcode(["M104 T0 S220",
+							"M104 T1 S220"]);
 						OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025", context, parameters);
@@ -3132,6 +3155,9 @@ $(function() {
 					parameters = {offset: self.sawPrintOffset()};
 					context = {};
 					if (self.rrf()){
+						self.setRrfBedTemperature(70);
+						OctoPrint.control.sendGcode(["M104 T0 S220",
+							"M104 T1 S220"]);
 						OctoPrint.control.sendGcodeScriptWithParameters("saw01Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
@@ -3141,6 +3167,9 @@ $(function() {
 					parameters = {offset: self.sawPrintOffset()};
 					context = {};
 					if (self.rrf()){
+						self.setRrfBedTemperature(70);
+						OctoPrint.control.sendGcode(["M104 T0 S220",
+							"M104 T1 S220"]);
 						OctoPrint.control.sendGcodeScriptWithParameters("saw005Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
@@ -3159,6 +3188,9 @@ $(function() {
 					context = {};
 					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
 					if (self.rrf()){
+						self.setRrfBedTemperature(70);
+						OctoPrint.control.sendGcode(["M104 T0 S220",
+							"M104 T1 S220"]);
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025", context, parameters);
@@ -3170,6 +3202,9 @@ $(function() {
 					parameters = {offset: 0};
 					context = {};
 					if (self.rrf()){
+						self.setRrfBedTemperature(70);
+						OctoPrint.control.sendGcode(["M104 T0 S220",
+							"M104 T1 S220"]);
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
@@ -3180,6 +3215,9 @@ $(function() {
 					parameters = {offset: 0};
 					context = {};
 					if (self.rrf()){
+						self.setRrfBedTemperature(70);
+						OctoPrint.control.sendGcode(["M104 T0 S220",
+							"M104 T1 S220"]);
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
@@ -3973,14 +4011,30 @@ $(function() {
 				OctoPrint.control.sendGcode(["M280 "+probeIndex+" S160"]);
 			}
 			if (action === 'retest'){
-				OctoPrint.control.sendGcode(["M280 "+probeIndex+" S160"]);
-				OctoPrint.control.sendGcode(["G1 Z50"]);
-				OctoPrint.control.sendGcode(["M400"]);
+				OctoPrint.control.sendGcode(["M280 "+probeIndex+" S160",
+					"G91",
+					"G1 F1000 Z10",
+					"G90",
+					"M400",
+					"M280 "+probeIndex+" S10",
+					"G4 P750",
+					"M280 "+probeIndex+" S90",
+					"G4 P750",
+					"M280 "+probeIndex+" S10",
+					"G4 P750",
+					"M280 "+probeIndex+" S90"
+					]);
+				
+				
+				
+				
+				// OctoPrint.control.sendGcode(["G1 Z50"]);
+				// OctoPrint.control.sendGcode(["M400"]);
 
-				OctoPrint.control.sendGcode(["M280 "+probeIndex+" S10"]);
-				OctoPrint.control.sendGcode(["M280 "+probeIndex+" S90"]);
-				OctoPrint.control.sendGcode(["M280 "+probeIndex+" S10"]);
-				OctoPrint.control.sendGcode(["M280 "+probeIndex+" S90"]);
+				// OctoPrint.control.sendGcode(["M280 "+probeIndex+" S10"]);
+				// OctoPrint.control.sendGcode(["M280 "+probeIndex+" S90"]);
+				// OctoPrint.control.sendGcode(["M280 "+probeIndex+" S10"]);
+				// OctoPrint.control.sendGcode(["M280 "+probeIndex+" S90"]);
 			}
 		};
 
