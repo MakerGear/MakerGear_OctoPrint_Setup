@@ -1666,7 +1666,7 @@ $(function() {
 			}
 			if (startingHeightStep == "2-maintenance-rrf") {
 				// self.newProbeOffset = (parseFloat(self.probeOffset())+parseFloat(self.ZPos()));
-				self.newProbeOffset = (parseFloat(self.probeOffset())+parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
+				self.newProbeOffset = (parseFloat(self.probeOffset())-parseFloat(parseFloat(self.ZWiggleHeight())-self.stockZWiggleHeight));
 
 				if (self.newProbeOffset.toString() == "NaN") {
 					self.notify("Offset Setting Error","There was an error when setting the Probe Offset.  Please refresh the page and try again.  Support values: self.newProbeOffset="+self.newProbeOffset.toString()+" ; self.probeOffset="+self.probeOffset().toString()+" ; self.ZWiggleHeight="+self.ZWiggleHeight().toString()+" ; self.stockZWiggleHeight="+self.stockZWiggleHeight.toString(), "error");
@@ -2123,216 +2123,216 @@ $(function() {
 			//$(".nav-tabs a[href='#coldZ']").click();
 		};
 
-		// T0Hot
-		// 	Load
-		// 		SE
-		// 			R0
-		// 				T0Hot_T0-SE-R0_SetHot
-		// 			R1
-		// 				T0Hot_T0-SE-R1_SetHot
-		// 		ID
-		// 			R0
-		// 				T0Hot_T0-ID-R0_SetHot
-		// 			R1
-		// 				T0Hot_T0-ID-R1_SetHot
-		// 	SetHot
-		// 		home
-		// T0Cold
-		// 	SetCold
-		// 		SE
-		// 			R0
-		// 				T0Cold_T0-SE-R0_Load
-		// 			R1
-		// 				T0Cold_T0-SE-R1_Load
-		// 		ID
-		// 			R0
-		// 				T0Cold_T0-ID-R0_Load
-		// 			R1
-		// 				T0Cold_T0-ID-R1_Load
-		// 	Load
-		// 		SE
-		// 			R0
-		// 				T0Cold_T0-SE-R0_SetHot
-		// 			R1
-		// 				T0Cold_T0-SE-R1_SetHot
-		// 		ID
-		// 			R0
-		// 				T0Cold_T0-ID-R0_SetHot
-		// 			R1
-		// 				T0Cold_T0-ID-R1_SetHot
-		// 	SetHot
-		// 		home
-		// T1Hot
-		// 	Load
-		// 		R0
-		// 			T1Hot_T1-ID-R0_SetT1Hot
-		// 		R1
-		// 			T1Hot_T1-ID-R1_SetT1Hot
-		// 	SetT1Hot
-		// 		home
-		// T1Cold
-		// 	Unload
-		// 		R0
-		// 			T1Cold_T1-ID-R0_SetT1Cold
-		// 		R1
-		// 			T1Cold_T1-ID-R1_SetT1Cold
-		// 	SetT1Cold
-		// 		R0
-		// 			T1Cold_T1-ID-R0_Load
-		// 		R1
-		// 			T1Cold_T1-ID-R1_Load
-		// 	Load
-		// 		R0
-		// 			T1Cold_T1-ID-R0_SetT1Hot
-		// 		R1
-		// 			T1Cold_T1-ID-R1_SetT1Hot
-		// 	SetT1Hot
-		// 		home
-		// XOff
-		// 	Load
-		// 		R0
-		// 			XOff_T1-ID-R0_XSaw
-		// 		R1
-		// 			XOff_T1-ID-R1_XSaw
-		// 	XSaw
-		// 		home
-		// YOff
-		// 	Load
-		// 		R0
-		// 			YOff_T1-ID-R0_YSaw
-		// 		R1
-		// 			YOff_T1-ID-R1_YSaw
-		// 	YSaw
-		// 		home
-		// DCheck
-		// 	Check
-		// 		home
-		// T0Change
-		// 	Unload
-		// 		SE
-		// 			R0
-		// 				T0Change_T0-SE-R0_ChangeInstructions
-		// 			R1
-		// 				T0Change_T0-SE-R1_ChangeInstructions
-		// 		ID
-		// 			R0
-		// 				T0Change_T0-ID-R0_ChangeInstructions
-		// 			R1
-		// 				T0Change_T0-ID-R1_ChangeInstructions
-		// 	ChangeInstructions
-		// 		SE
-		// 			R0
-		// 				T0Change_T0-SE-R0_Load
-		// 			R1
-		// 				T0Change_T0-SE-R1_Load
-		// 		ID
-		// 			R0
-		// 				T0Change_T0-ID-R0_SetCold
-		// 			R1
-		// 				T0Change_T0-ID-R1_SetCold
-		// 	Load
-		// 		SE
-		// 			R0
-		// 				T0Change_T0-SE-R0_SetCold
-		// 			R1
-		// 				T0Change_T0-SE-R1_SetCold
-		// 		ID
-		// 			R0
-		// 				T0Change_T0-ID-R0_SetHot
-		// 			R1
-		// 				T0Change_T0-ID-R1_SetHot
-		// 	SetCold
-		// 		SE
-		// 			R0
-		// 				T0Change_T0-SE-R0_SetHot
-		// 			R1
-		// 				T0Change_T0-SE-R1_SetHot
-		// 		ID
-		// 			R0
-		// 				T0Change_T0-ID-R0_Load
-		// 			R1
-		// 				T0Change_T0-ID-R1_Load
-		// 	SetHot
-		// 		SE
-		// 			home
-		// 		ID
-		// 			R0
-		// 				T0Change_T0-ID-R0_SetT1Hot
-		// 			R1
-		// 				T0Change_T0-ID-R1_SetT1Hot
-		// 	SetT1Hot
-		// 		home
-		// T0T1Change
-		// 	Unload
-		// 		R0
-		// 			T0T1Change_Both-ID-R0_ChangeInstructions
-		// 		R1
-		// 			T0T1Change_Both-ID-R1_ChangeInstructions
-		// 	ChangeInstructions
-		// 		R0
-		// 			T0T1Change_Both-ID-R0_T0T1SetCold
-		// 		R1
-		// 			T0T1Change_Both-ID-R1_T0T1SetCold
-		// 	T0T1SetCold
-		// 		R0
-		// 			T0T1Change_Both-ID-R0_Load
-		// 		R1
-		// 			T0T1Change_Both-ID-R1_Load
-		// 	Load
-		// 		R0
-		// 			T0T1Change_Both-ID-R0_SetHot
-		// 		R1
-		// 			T0T1Change_Both-ID-R1_SetHot
-		// 	SetHot
-		// 		R0
-		// 			T0T1Change_Both-ID-R0_SetT1Hot
-		// 		R1
-		// 			T0T1Change_Both-ID-R1_SetT1Hot
-		// 	SetT1Hot
-		// 		home
-		// HotLevel
-		// 	Load
-		// 		SE
-		// 			HotLevel_T0-SE-R0_HotLevel
-		// 		ID
-		// 			HotLevel_T0-ID-R0_HotLevel
-		// 	HotLevel
-		// 		home
-		// ColdLevel
-		// 	ColdLevel
-		// 		home
-		// Assisted
-		// 	Assisted
-		// 		home
+			// T0Hot
+			// 	Load
+			// 		SE
+			// 			R0
+			// 				T0Hot_T0-SE-R0_SetHot
+			// 			R1
+			// 				T0Hot_T0-SE-R1_SetHot
+			// 		ID
+			// 			R0
+			// 				T0Hot_T0-ID-R0_SetHot
+			// 			R1
+			// 				T0Hot_T0-ID-R1_SetHot
+			// 	SetHot
+			// 		home
+			// T0Cold
+			// 	SetCold
+			// 		SE
+			// 			R0
+			// 				T0Cold_T0-SE-R0_Load
+			// 			R1
+			// 				T0Cold_T0-SE-R1_Load
+			// 		ID
+			// 			R0
+			// 				T0Cold_T0-ID-R0_Load
+			// 			R1
+			// 				T0Cold_T0-ID-R1_Load
+			// 	Load
+			// 		SE
+			// 			R0
+			// 				T0Cold_T0-SE-R0_SetHot
+			// 			R1
+			// 				T0Cold_T0-SE-R1_SetHot
+			// 		ID
+			// 			R0
+			// 				T0Cold_T0-ID-R0_SetHot
+			// 			R1
+			// 				T0Cold_T0-ID-R1_SetHot
+			// 	SetHot
+			// 		home
+			// T1Hot
+			// 	Load
+			// 		R0
+			// 			T1Hot_T1-ID-R0_SetT1Hot
+			// 		R1
+			// 			T1Hot_T1-ID-R1_SetT1Hot
+			// 	SetT1Hot
+			// 		home
+			// T1Cold
+			// 	Unload
+			// 		R0
+			// 			T1Cold_T1-ID-R0_SetT1Cold
+			// 		R1
+			// 			T1Cold_T1-ID-R1_SetT1Cold
+			// 	SetT1Cold
+			// 		R0
+			// 			T1Cold_T1-ID-R0_Load
+			// 		R1
+			// 			T1Cold_T1-ID-R1_Load
+			// 	Load
+			// 		R0
+			// 			T1Cold_T1-ID-R0_SetT1Hot
+			// 		R1
+			// 			T1Cold_T1-ID-R1_SetT1Hot
+			// 	SetT1Hot
+			// 		home
+			// XOff
+			// 	Load
+			// 		R0
+			// 			XOff_T1-ID-R0_XSaw
+			// 		R1
+			// 			XOff_T1-ID-R1_XSaw
+			// 	XSaw
+			// 		home
+			// YOff
+			// 	Load
+			// 		R0
+			// 			YOff_T1-ID-R0_YSaw
+			// 		R1
+			// 			YOff_T1-ID-R1_YSaw
+			// 	YSaw
+			// 		home
+			// DCheck
+			// 	Check
+			// 		home
+			// T0Change
+			// 	Unload
+			// 		SE
+			// 			R0
+			// 				T0Change_T0-SE-R0_ChangeInstructions
+			// 			R1
+			// 				T0Change_T0-SE-R1_ChangeInstructions
+			// 		ID
+			// 			R0
+			// 				T0Change_T0-ID-R0_ChangeInstructions
+			// 			R1
+			// 				T0Change_T0-ID-R1_ChangeInstructions
+			// 	ChangeInstructions
+			// 		SE
+			// 			R0
+			// 				T0Change_T0-SE-R0_Load
+			// 			R1
+			// 				T0Change_T0-SE-R1_Load
+			// 		ID
+			// 			R0
+			// 				T0Change_T0-ID-R0_SetCold
+			// 			R1
+			// 				T0Change_T0-ID-R1_SetCold
+			// 	Load
+			// 		SE
+			// 			R0
+			// 				T0Change_T0-SE-R0_SetCold
+			// 			R1
+			// 				T0Change_T0-SE-R1_SetCold
+			// 		ID
+			// 			R0
+			// 				T0Change_T0-ID-R0_SetHot
+			// 			R1
+			// 				T0Change_T0-ID-R1_SetHot
+			// 	SetCold
+			// 		SE
+			// 			R0
+			// 				T0Change_T0-SE-R0_SetHot
+			// 			R1
+			// 				T0Change_T0-SE-R1_SetHot
+			// 		ID
+			// 			R0
+			// 				T0Change_T0-ID-R0_Load
+			// 			R1
+			// 				T0Change_T0-ID-R1_Load
+			// 	SetHot
+			// 		SE
+			// 			home
+			// 		ID
+			// 			R0
+			// 				T0Change_T0-ID-R0_SetT1Hot
+			// 			R1
+			// 				T0Change_T0-ID-R1_SetT1Hot
+			// 	SetT1Hot
+			// 		home
+			// T0T1Change
+			// 	Unload
+			// 		R0
+			// 			T0T1Change_Both-ID-R0_ChangeInstructions
+			// 		R1
+			// 			T0T1Change_Both-ID-R1_ChangeInstructions
+			// 	ChangeInstructions
+			// 		R0
+			// 			T0T1Change_Both-ID-R0_T0T1SetCold
+			// 		R1
+			// 			T0T1Change_Both-ID-R1_T0T1SetCold
+			// 	T0T1SetCold
+			// 		R0
+			// 			T0T1Change_Both-ID-R0_Load
+			// 		R1
+			// 			T0T1Change_Both-ID-R1_Load
+			// 	Load
+			// 		R0
+			// 			T0T1Change_Both-ID-R0_SetHot
+			// 		R1
+			// 			T0T1Change_Both-ID-R1_SetHot
+			// 	SetHot
+			// 		R0
+			// 			T0T1Change_Both-ID-R0_SetT1Hot
+			// 		R1
+			// 			T0T1Change_Both-ID-R1_SetT1Hot
+			// 	SetT1Hot
+			// 		home
+			// HotLevel
+			// 	Load
+			// 		SE
+			// 			HotLevel_T0-SE-R0_HotLevel
+			// 		ID
+			// 			HotLevel_T0-ID-R0_HotLevel
+			// 	HotLevel
+			// 		home
+			// ColdLevel
+			// 	ColdLevel
+			// 		home
+			// Assisted
+			// 	Assisted
+			// 		home
 
-		// T1 Hotend / Nozzle Change ID
-		// 	Unload Filament
-		// 	Change Hotend Instructions
-		// 	Set T1 Starting Height Cold
-		// 	Load Filament
-		// 	Set T1 Z Offset Hot
-		// R0
-		// 	Unload Filament
-		// 		T1Change_T1-ID-R0_Unload
-		// 	Change Hotend Instructions
-		// 		T1Change_T1-ID-R0_ChangeInstructions
-		// 	Set T0 Starting Height Cold
-		// 		T1Change_T1-ID-R0_SetT1Cold
-		// 	Load Filament
-		// 		T1Change_T1-ID-R0_Load
-		// 	Set T1 Z Offset Hot
-		// 		T1Change_T1-ID-R0_SetT1Hot
-		// R1
-		// 	Unload Filament
-		// 		T1Change_T1-ID-R1_Unload
-		// 	Change Hotend Instructions
-		// 		T1Change_T1-ID-R1_ChangeInstructions
-		// 	Set T1 Starting Height Cold
-		// 	T1Change_T1-ID-R1_SetCold
-		// 	Load Filament
-		// 		T1Change_T1-ID-R1_Load
-		// 	Set T1 Z Offset Hot
-		// 		T1Change_T1-ID-R1_SetT1Hot
+			// T1 Hotend / Nozzle Change ID
+			// 	Unload Filament
+			// 	Change Hotend Instructions
+			// 	Set T1 Starting Height Cold
+			// 	Load Filament
+			// 	Set T1 Z Offset Hot
+			// R0
+			// 	Unload Filament
+			// 		T1Change_T1-ID-R0_Unload
+			// 	Change Hotend Instructions
+			// 		T1Change_T1-ID-R0_ChangeInstructions
+			// 	Set T0 Starting Height Cold
+			// 		T1Change_T1-ID-R0_SetT1Cold
+			// 	Load Filament
+			// 		T1Change_T1-ID-R0_Load
+			// 	Set T1 Z Offset Hot
+			// 		T1Change_T1-ID-R0_SetT1Hot
+			// R1
+			// 	Unload Filament
+			// 		T1Change_T1-ID-R1_Unload
+			// 	Change Hotend Instructions
+			// 		T1Change_T1-ID-R1_ChangeInstructions
+			// 	Set T1 Starting Height Cold
+			// 	T1Change_T1-ID-R1_SetCold
+			// 	Load Filament
+			// 		T1Change_T1-ID-R1_Load
+			// 	Set T1 Z Offset Hot
+			// 		T1Change_T1-ID-R1_SetT1Hot
 
 
 
@@ -2992,8 +2992,8 @@ $(function() {
 
 							case "SetT1Cold":
 								switch(self.maintenanceTaskHardwareRevision()){
-									case "R0"
-:										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_Load");
+									case "R0":
+										self.nextMaintenanceTask("T0T1Change_Both-ID-R0_Load");
 										break;
 									case "R1":
 										self.nextMaintenanceTask("T0T1Change_Both-ID-R1_Load");
