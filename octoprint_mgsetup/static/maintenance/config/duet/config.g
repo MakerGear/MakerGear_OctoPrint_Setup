@@ -122,14 +122,14 @@ M106 P8 S1.0 I0 F500 H-1   C"ELECTRONICS1"            ;Electronics 1    Set fan 
 
 
 ; Tools
-M563 P0 D0 H1                        ; Define tool 0
+M563 P0 D0 H1 F0                        ; Define tool 0
 G10 P0 X0 Y0 Z0                      ; Set tool 0 axis offsets
 G10 P0 R0 S0                         ; Set initial tool 0 active and standby temperatures to 0C
-M563 P1 D1 H2 X3                        ; Define tool 1
+M563 P1 D1 H2 X3 F3                        ; Define tool 1
 G10 P1 U1.9 Y0 Z0                      ; Set tool 1 axis offsets
 G10 P1 R0 S0                         ; Set initial tool 1 active and standby temperatures to 0C
 
-M563 P2 D0:1 H1:2 X0:3 F1:1 ; tool 2 uses both extruders and hot end heaters, maps X to both X and U, and uses both print cooling fans
+M563 P2 D0:1 H1:2 X0:3 F0:3 ; tool 2 uses both extruders and hot end heaters, maps X to both X and U, and uses both print cooling fans
 
 G10 P2 X0 Y0 U-200    ; set tool offsets and temperatures for tool 2
 G10 P2 R0 S0                         ; Set initial tool 1 active and standby temperatures to 0C
