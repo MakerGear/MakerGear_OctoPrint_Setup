@@ -3131,7 +3131,7 @@ $(function() {
 			self.rrfMaintenanceReport("Starting the dual offset adjustment.\n"+self.rrfMaintenanceReport());
 			var parameters;
 			var context;
-			self.mgLog("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .");
+			self.mgLog("Print Saw Bin triggered. Calibration Step: "+self.calibrationStep().toString()+" . Calibration Axis: "+self.calibrationAxis().toString()+" .  self.sawPrintOffset(): "+self.sawPrintOffset().toString()+" .");
 			if (self.calibrationAxis()=="X"){
 				if (self.calibrationStep() === 0){
 					if (self.stepFourteenToHome()){
@@ -3250,7 +3250,9 @@ $(function() {
 					self.lastT1Offset(self.newT1XOffset);
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"G10 P1"]);
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
 							"M500",
@@ -3266,7 +3268,9 @@ $(function() {
 					
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"G10 P1"]);	
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
 							"M500",
@@ -3295,6 +3299,7 @@ $(function() {
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
+						OctoPrint.control.sendGcode(["G10 P1"]);
 						if (self.maintenanceOperation()!=="home"){
 							self.nextMaintenanceTask();
 							self.chosenSawBin(0);
@@ -3318,7 +3323,9 @@ $(function() {
 					self.lastT1Offset(self.newT1XOffset);
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"G10 P1"]);	
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
 							"M500",
@@ -3334,7 +3341,9 @@ $(function() {
 					self.lastT1Offset(self.newT1XOffset);
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 X Offset: "+self.newT1XOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
+							"G10 P1"]);	
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+self.xIdentifier+self.newT1XOffset,
 							"M500",
@@ -3350,10 +3359,12 @@ $(function() {
 					self.mgLog("PickSawBin 1, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(2*self.calibrationOffset())).toFixed(2).toString());
 					self.sawPrintOffset((self.sawPrintOffset() + (-2*self.calibrationOffset())));
-					self.lastT1Offset(self.newT1XOffset);
+					self.lastT1Offset(self.newT1YOffset);
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"G10 P1"]);	
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
 							"M500",
@@ -3365,10 +3376,12 @@ $(function() {
 					self.mgLog("PickSawBin 2, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(1*self.calibrationOffset())).toFixed(2).toString());
 					self.sawPrintOffset((self.sawPrintOffset() + (-1*self.calibrationOffset())));
-					self.lastT1Offset(self.newT1XOffset);
+					self.lastT1Offset(self.newT1YOffset);
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"G10 P1"]);	
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
 							"M500",
@@ -3396,6 +3409,7 @@ $(function() {
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
+						OctoPrint.sendGcode(["G10 P1"]);
 						if (self.maintenanceOperation()!=="home"){
 							self.nextMaintenanceTask();
 							self.chosenSawBin(0);
@@ -3418,10 +3432,12 @@ $(function() {
 					self.mgLog("PickSawBin 4, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-1*self.calibrationOffset())).toFixed(2).toString());
 					self.sawPrintOffset((self.sawPrintOffset() + (1*self.calibrationOffset())));
-					self.lastT1Offset(self.newT1XOffset);
+					self.lastT1Offset(self.newT1YOffset);
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"G10 P1"]);	
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
 							"M500",
@@ -3434,10 +3450,12 @@ $(function() {
 					self.mgLog("PickSawBin 5, Y.");
 					self.newT1YOffset = ((self.tool1YOffset()+(-2*self.calibrationOffset())).toFixed(2).toString());
 					self.sawPrintOffset((self.sawPrintOffset() + (2*self.calibrationOffset())));
-					self.lastT1Offset(self.newT1XOffset);
+					self.lastT1Offset(self.newT1YOffset);
 					if (self.rrf()){
 						self.rrfMaintenanceReport("New T1 Y Offset: "+self.newT1YOffset.toString()+"\n"+self.rrfMaintenanceReport());
-						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset]);	
+						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
+							"G10 P1"]);	
+						self.sawPrintOffset(0);
 					} else {
 						OctoPrint.control.sendGcode([self.toolOffsetCommand+"Y"+self.newT1YOffset,
 							"M500",
@@ -5506,10 +5524,23 @@ $(function() {
 				}
 				self.zoffsetline(data.zoffsetline);
 			}
-			if (data.tooloffsetline !== undefined){
+			// # Tool 1 offsets: X0.00 Y0.25 Z0.00 U-1.15, active/standby temperature(s): 0.0/0.0
+			
+			if (data.rrfOffsetLine !== undefined || data.tooloffsetline !== undefined){
 
 				if (self.rrf()){
-					if (data.tooloffsetline.toString().indexOf("P1") !== -1){
+					// if ( (data.tooloffsetline.toString().indexOf("P1") !== -1) || (data.rrfOffsetLine.toString().indexOf("Tool 1") !== -1) ) {
+						
+						toolExtractLine = "";
+						if (data.tooloffsetline !== undefined){
+							toolExtractLine = data.tooloffsetline;
+						} else if (data.rrfOffsetLine !== undefined){
+							toolExtractLine = data.rrfOffsetLine;
+						}
+						
+						
+					if ( toolExtractLine.indexOf("P1") !== -1 || toolExtractLine.indexOf("Tool 1") !== -1) {
+						
 					// Recv: M563 P1 D1 H2 X3; Define tool 1
 					// Recv: G10 P1 U0 Y0 Z-.59 ; Set tool 1 axis offsets
 					// Recv: G10 P1 R0 S0 ; Set initial tool 1 active and standby temperatures to 0C
@@ -5517,7 +5548,7 @@ $(function() {
 					// Recv: 
 						var re = /([UYZ])-?\d?\.?\d+/g;
 						// if (re.exec(data.tooloffsetline)){
-						while (result = re.exec(data.tooloffsetline)){
+						while (result = re.exec(toolExtractLine)){
 
 							//var result = re.exec(data.tooloffsetline);
 							self.mgLog("Parsed data from data.tooloffsetline: "+result);
