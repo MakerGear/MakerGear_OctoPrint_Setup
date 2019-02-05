@@ -380,8 +380,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				self._logger.info(str(e))
 				
 			
+			
 		if self.rrf:
-			self.watchCommands = ["Endstops", "Stopped at height", "Some computed corrections", "Leadscrew adjustments"]
+			self.watchCommands = ["Endstops", "Stopped at height", "Some computed corrections", "Leadscrew adjustments", "Tool 0 offsets", "Tool 1 offsets", "Tool 2 offsets"]
 			self._logger.info("RRF true - changing watchCommands array.")
 
 
@@ -965,6 +966,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		if "Leadscrew adjustments" in line:
 			self._logger.info("process_z_offset triggered - RRF G32 FAIL response, could not adjust:"+str(line))
 			self._plugin_manager.send_plugin_message("mgsetup", dict(rrfProbeLevelLine = line))
+
+
+		if "Tool" in line and "offsets" in line:
+			self._logger.info("process_z_offset triggered - G10 Pn line response:"+str(line))
+			self._plugin_manager.send_plugin_message("mgsetup", dict(rrfOffsetLine = line))
 
 
 			# if self.rrf:
@@ -1761,7 +1767,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				newValuesPresent = True
 
 
-			if "G10" in configLine and configLine[0] != ";" and "Y" in configLine:
+			if "G10" in configLine and configLine[0] != ";" and "Y" in configLine and "P1" in configLine:
 				self._logger.info("RRF T1 offset information triggered.")
 				self.tooloffsetline = configLine
 				self._plugin_manager.send_plugin_message("mgsetup", dict(tooloffsetline = configLine))
