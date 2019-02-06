@@ -1,7 +1,8 @@
 ; Configuration file for Duet Ethernet 
-; Rev 10 1/26/19 KG
+; Rev 11 02/06/19 JW/KG
 ; executed by the firmware on start-up
 ;
+; Rev 11 - changed the M208 Z maximum distance back to 350mm, from testing 50mm.  Changed by JW on KG direction.
 
 
 ; General preferences
@@ -48,7 +49,7 @@ M84 S0 										; Disable motor idle current reduction
 	
 ; Axis Limits
 M208 X-71.3 Y11 Z0 U25 S1 			 ; Set axis minima
-M208 X520 Y340 Z50 U457 S0          ; Set axis maxima;
+M208 X520 Y340 Z350 U457 S0          ; Set axis maxima;
 ;M208 X520 Y340 Z350 U457 S0          ; Set axis maxima
 
 ; Endstops

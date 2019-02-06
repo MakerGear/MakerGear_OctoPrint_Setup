@@ -3638,20 +3638,27 @@ $(function() {
 				} else {
 					OctoPrint.control.sendGcode(["G4 S1",
 						"T0",
+						"M208 Z370 S0",
 						"G28 X Y",
+						"G91",
+						"M574 Z2 S3",
+						"G1 S1 Z15 F6000",
+						"M400",
+						"M574 Z1 S2",
+						"G90",
 						"G1 F2000 X-10 Y125",
 						"M400",
-						"M574 Z2 S3",
-						"M208 Z370 S0",
-						"G1 F1000 S1 Z380",
+						"M280 "+probeIndex+" S10",
+						"G4 S1",
+						"G30",
 						"M400",
-						"G1 F1500 Z100",
-						"G1 F1000 Z50",
 						"G30 S-1",
-						"G1 F1000 Z50",
-						"M400"]);
+						"M400",
+						"G91",
+						"G1 F6000 Z15",
+						"G90",
+						"M208 Z350 S0"]);
 				}
-				
 
 				
 				self.waitingForProbeResponse(true);
@@ -3948,9 +3955,9 @@ $(function() {
 				if (self.waitingForProbeResponse()){
 					self.waitingForProbeResponse(false);
 					if (self.probeStep() === 2){
-						self.probeStep(3);
-						self.processProbeValue(line);
-						self.checkProbe();
+							self.probeStep(3);
+							self.processProbeValue(line);
+							self.checkProbe();
 					} else if (self.probeStep() === 3){
 						var tempProbeValue = self.processProbeValue(line);
 						if (tempProbeValue !== undefined){
