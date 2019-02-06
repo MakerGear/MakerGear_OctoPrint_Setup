@@ -3739,7 +3739,7 @@ $(function() {
 						"M400",
 						"G32",
 						"M400",
-						"G1 F1000 X100 Y125 Z40 F10000",
+						"G1 F2000 X100 Y125 Z40",
 						"M400"]);
 				}
 				self.waitingForProbeResponse(true);
