@@ -3143,8 +3143,11 @@ $(function() {
 					// OctoPrint.control.sendGcodeScriptWithParameters("bin025", context, parameters);
 					if (self.rrf()){
 						self.setRrfBedTemperature(70);
-						OctoPrint.control.sendGcode(["M104 T0 S220",
-							"M104 T1 S220"]);
+						parameters.toHeat = true;
+						parameters.targetBed = 70;
+						parameters.targetT0 = 220;
+						parameters.targetT1 = 220;
+
 						OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Xsaw025", context, parameters);
@@ -3156,8 +3159,10 @@ $(function() {
 					context = {};
 					if (self.rrf()){
 						self.setRrfBedTemperature(70);
-						OctoPrint.control.sendGcode(["M104 T0 S220",
-							"M104 T1 S220"]);
+						parameters.toHeat = true;
+						parameters.targetBed = 70;
+						parameters.targetT0 = 220;
+						parameters.targetT1 = 220;
 						OctoPrint.control.sendGcodeScriptWithParameters("saw01Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("saw01", context, parameters);
@@ -3168,8 +3173,10 @@ $(function() {
 					context = {};
 					if (self.rrf()){
 						self.setRrfBedTemperature(70);
-						OctoPrint.control.sendGcode(["M104 T0 S220",
-							"M104 T1 S220"]);
+						parameters.toHeat = true;
+						parameters.targetBed = 70;
+						parameters.targetT0 = 220;
+						parameters.targetT1 = 220;
 						OctoPrint.control.sendGcodeScriptWithParameters("saw005Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("saw005", context, parameters);
@@ -3189,8 +3196,10 @@ $(function() {
 					// OctoPrint.control.sendGcodeScriptWithParameters("Ybin025", context, parameters);
 					if (self.rrf()){
 						self.setRrfBedTemperature(70);
-						OctoPrint.control.sendGcode(["M104 T0 S220",
-							"M104 T1 S220"]);
+						parameters.toHeat = true;
+						parameters.targetBed = 70;
+						parameters.targetT0 = 220;
+						parameters.targetT1 = 220;
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw025", context, parameters);
@@ -3203,8 +3212,10 @@ $(function() {
 					context = {};
 					if (self.rrf()){
 						self.setRrfBedTemperature(70);
-						OctoPrint.control.sendGcode(["M104 T0 S220",
-							"M104 T1 S220"]);
+						parameters.toHeat = true;
+						parameters.targetBed = 70;
+						parameters.targetT0 = 220;
+						parameters.targetT1 = 220;
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw01", context, parameters);
@@ -3216,8 +3227,10 @@ $(function() {
 					context = {};
 					if (self.rrf()){
 						self.setRrfBedTemperature(70);
-						OctoPrint.control.sendGcode(["M104 T0 S220",
-							"M104 T1 S220"]);
+						parameters.toHeat = true;
+						parameters.targetBed = 70;
+						parameters.targetT0 = 220;
+						parameters.targetT1 = 220;
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005Rrf", context, parameters);
 					} else {
 						OctoPrint.control.sendGcodeScriptWithParameters("Ysaw005", context, parameters);
