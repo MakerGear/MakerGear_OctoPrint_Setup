@@ -1,13 +1,31 @@
+; Sawtooth XY offset calibration exported: 11:22 02/07/2019
+; Axis under test: X
+; Pattern spacing: 0.05
 {% set tohome = parameters.tohome %}
 {% set printOffset = 162.9 + parameters.offset %}
+{% set targetBed = parameters.targetBed %}
+{% set targetT0 = parameters.targetT0 %}
+{% set targetT1 = parameters.targetT1 %}
+{% set toHeat = parameters.toHeat %}
+{% if toHeat == true %}
+M104 T0 S{{targetT0}}
+M104 T1 S{{targetT1}}
+M140 S{{targetBed}}
+M140 P0 S{{targetBed}}
+M140 P1 S{{targetBed+2}}
+M140 P2 S{{targetBed+4}}
+M140 P3 S{{targetBed+4}}
+M109 T0 S{{targetT0}}
+M109 T1 S{{targetT1}}
+M190 S{{targetBed}}
+M190 P0 S{{targetBed}}
+M190 P1 S{{targetBed+2}}
+M190 P2 S{{targetBed+4}}
+M190 P3 S{{targetBed+4}}
+{% endif %}
 
 
- 
 
-
-;M190 S110
-;M109 T0 S265
-;M109 T1 S265
 
 {% if tohome == true %}
 G28
@@ -69,33 +87,29 @@ G1 F500 X10 Y15 E0.9915
 G90
 M82
 G92 E0
-
 G1 F1000 X162.9 Y165.5 E45
 G1 F1000 X250 Y240 Z90
 
 
 
 ; Dual XY Calibration Generator, RRF Sawtooth-Bins sheet, parameters:
-; Center line (Y) 150
-; Center Gap 0.5
-; Pattern Height 15
-; Pattern Spacing on Centers (X) 20
-; Pattern Center (X) 203
-; Bin Width (X) 1
-; Bin Wall Base Width (X) 5
-; Sawtooth Base Width (X) 10
-; B Pattern Offset from Center (X) 0.05
-; A Feedrate 500
-; B Feedrate 500
-; EXT coefficient (mm to extrude per linear mm) 0.055
-; B relative TRUE
-; A relative extrusion TRUE
-;  
-; A baseline 134.5
-; A Pattern Top 150
-; B Baseline 165.5
-; B Pattern Bottom 150.5
-;  
-;  
-; First axis: X
-; Second axis: Y
+; Center line (Y),150
+; Center Gap,0.5
+; Pattern Height,15
+; Pattern Spacing on Centers (X),20
+; Pattern Center (X),203
+; Bin Width (X),1
+; Bin Wall Base Width (X),5
+; Sawtooth Base Width (X),10
+; B Pattern Offset from Center (X),0.05
+; A Feedrate,500
+; B Feedrate,500
+; EXT coefficient (mm to extrude per linear mm),0.055
+; B relative,TRUE
+; A relative extrusion,TRUE
+; A baseline,134.5
+; A Pattern Top,150
+; B Baseline,165.5
+; B Pattern Bottom,150.5
+; First axis,X
+; Second axis,Y
