@@ -3422,7 +3422,7 @@ $(function() {
 						self.stepFourteenToHome(true);
 						self.stepFifteeenToHome(true);
 						self.sawPrintOffset(0);
-						OctoPrint.sendGcode(["G10 P1"]);
+						OctoPrint.control.sendGcode(["G10 P1"]);
 						if (self.maintenanceOperation()!=="home"){
 							self.nextMaintenanceTask();
 							self.chosenSawBin(0);
