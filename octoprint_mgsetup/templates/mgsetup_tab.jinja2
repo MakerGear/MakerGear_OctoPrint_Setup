@@ -3485,6 +3485,11 @@ d8"         Y8a     a8P
 
 			<h1 style="text-align:left;">Filament</h1>
 
+			<br>
+			<p id="28guideQuestionInfo" style="font-size:16px;" data-bind="visible: $root.stepTwentyNineNext()=== '25'">
+				The Probe Autocheck process has completed successfully.  Next you will load filament and begin printing.
+			</p>
+			<br><br>
 
 			<p id="28guideQuestion" style="font-size:16px;">
 				Are you using PLA?
@@ -3573,7 +3578,7 @@ d8"         Y8a     a8P
 	<input type="checkbox" data-bind="checked: $root.showMgsetupDebugChecklist" /> Expand debug options.<br>
 	<input type="checkbox" data-bind="checked: $root.preventTabReset" /> Prevent automatic resets when switching tabs.
 	<hr />
-	Ignore everything below this statement.  And this statement.<br>
+	<br>
 
 {#  88888888ba,    88888888888  88888888ba   88        88    ,ad8888ba,   
 	88      `"8b   88           88      "8b  88        88   d8"'    `"8b  
