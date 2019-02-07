@@ -3158,9 +3158,13 @@ d8"          88a     a8P
 		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='26'" />
 	</div><br>
 	<br>
-	Now we’ll print a square pattern in order to determine the level of calibration between both extruders along the X and Y axes.
+	Now we’ll print a square pattern in order to determine the level of calibration between both extruders along the X and Y axes.  You can skip this test and move directly on to Dual printing, however we strongly recommend running this print at least once to verify everything on the printer.
+	<br><br>
+	If there is an adjustment you know is needed, all adjustments can be performed either in the Maintenance tab, or by expanding the "There was an issue with the print" section below and clicking the appropriate button.
+	<br><br><br>
 
-	After printing the pattern, you’ll examine it on the build plate: the perimeters of the pattern should be perfectly aligned, and should not overlap except at the purge lines, which are located at the lower left-hand corner of the pattern.
+
+	After printing the pattern, examine it on the build plate: the perimeters of the pattern should be perfectly aligned, and should not overlap except at the purge lines, which are located at the lower left-hand corner of the pattern.
 
 	<br><br>
 	<center><button class="btnstay" data-bind="click: function() { $root.printWiggleConfirm('simple') }, enable: !$root.stepTwelveSimpleClicked()">Print Simple Test</button>
@@ -3199,82 +3203,90 @@ d8"          88a     a8P
 		</tr>
 		<tr>
 			<td>
-				<center>                       The two patterns do not intersect and have even spacing.</center>
+				<center>The two patterns do not intersect and have even spacing.</center>
 
 			</td>
 		</tr>
 		<tr>
 			<td class="buttonCell">
-				<center><button class="btngoBig" data-bind="visible: $root.hasProbe(), click: function() { $root.goTo('22'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button><button class="btngoBig" data-bind="visible: !$root.hasProbe(), click: function() { $root.goTo('16'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Begin Dual Printing</button></center>
+				<center><button class="btngoBig" data-bind="visible: $root.hasProbe(), click: function() { $root.goTo('22'); window.scroll(0,0) }">Begin Dual Printing</button><button class="btngoBig" data-bind="visible: !$root.hasProbe(), click: function() { $root.goTo('16'); window.scroll(0,0) }">Begin Dual Printing</button></center>
 			</td>
 		</tr>
 	</table><br>
+<hr>
+	<div class="accordion" id="choiceTable26Results">
+		<div>
+			<h3> <center><a data-toggle="collapse" data-parent="#choiceTable26Results" href="#choiceTable26ResultsInner">There was an issue with the print <i class="icon-chevron-down"></i> </a></center></h3>
+		</div>
+		<br>
+		<div id="choiceTable26ResultsInner" class="accordion-body collapse">
+			<table class="choiceTable">
 
-	<table class="choiceTable">
+			{# 	<tr>
+					<td colspan="2">
+						<b><center>One of the patterns did not print correctly:</center></b>
 
-		<tr>
-			<td colspan="2">
-				<b><center>One of the patterns did not print correctly:</center></b>
-			</td>
-		</tr>
+					</td>
+				</tr>
+	 #}
+				<tr>
+					<td>
+						<center><a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross-t1-only.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a></center>
+					</td>
+					<td>
+						<center><a href="/plugin/mgsetup/static/img/simpleTestFail1.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross-t0-only.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a></center>
+					</td>
 
-		<tr>
-			<td>
-				<center><a href="/plugin/mgsetup/static/img/cross.jpg" data-lightbox="step8"> <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross-t1-only.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a>        </center>
-			</td>
-			<td>
-				<center><a href="/plugin/mgsetup/static/img/simpleTestFail1.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/cross-t0-only.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a></center>
-			</td>
+				</tr>
+				<tr>
+					<td>
+						The Left Extruder (T0, Black filament) did not print correctly - only the Blue pattern is present, or the Black pattern did not stick to the bed.
 
-		</tr>
-		<tr>
-			<td>
-				The Left Extruder (T0, Black filament) did not print correctly - only the Blue pattern is present, or the Black pattern did not stick to the bed.
+					</td>
+					<td>
+						The Right Extruder (T1, Blue filament) did not print correctly - only the Black pattern is present, or the Blue pattern did not stick to the bed.
 
-			</td>
-			<td>
-				The Right Extruder (T1, Blue filament) did not print correctly - only the Black pattern is present, or the Blue pattern did not stick to the bed.
+					</td>
+				</tr>
+				<tr>
+					<td class="buttonCell">
+						<center><button class="btngoBig" data-bind="visible: $root.hasProbe(), click: function() { $root.goTo('20'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T0 Height</button><button class="btngoBig" data-bind="visible: !$root.hasProbe(), click: function() { $root.goTo('4'); window.scroll(0,0) }">Adjust T0 Height</button></center>
+					</td>
+					<td class="buttonCell">
+						<center><button class="btngoBig" data-bind="click: function() { $root.goTo('11'); window.scroll(0,0) }">Adjust T1 Height</button></center>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<b><center>Both patterns printed:</center></b>
+					</td>
+				</tr>
 
-			</td>
-		</tr>
-		<tr>
-			<td class="buttonCell">
-				<center><button class="btngoBig" data-bind="visible: $root.hasProbe(), click: function() { $root.goTo('20'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T0 Height</button><button class="btngoBig" data-bind="visible: !$root.hasProbe(), click: function() { $root.goTo('4'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T0 Height</button></center>
-			</td>
-			<td class="buttonCell">
-				<center><button class="btngoBig" data-bind="click: function() { $root.goTo('11'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust T1 Height</button></center>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<b><center>Both patterns printed:</center></b>
-			</td>
-		</tr>
+				<tr>
+					<td>
+						<center><a href="/plugin/mgsetup/static/img/simpleTestFail1.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail1.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a></center>
+					</td>
+					<td>
+						<center><a href="/plugin/mgsetup/static/img/simpleTestFail2.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail2.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a></center>
+					</td>
+				</tr>
+				<tr>
 
-		<tr>
-			<td>
-				<center><a href="/plugin/mgsetup/static/img/simpleTestFail1.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail1.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a></center>
-			</td>
-			<td>
-				<center><a href="/plugin/mgsetup/static/img/simpleTestFail2.jpg" data-lightbox="step8"><img data-bind="attr: {'src': '/plugin/mgsetup/static/img/simpleTestFail2.jpg', 'width': '50%',} , visible: loginState.isUser && setupStep()==='26'" /></a></center>
-			</td>
-		</tr>
-		<tr>
+					<td colspan="2">
+						The two patterns intersect or have uneven spacing. If you are not sure, pick this option.
 
-			<td colspan="2">
-				The two patterns intersect or have uneven spacing. If you are not sure, pick this option.
+					</td>
+				</tr>
+				<tr>
 
-			</td>
-		</tr>
-		<tr>
+					<td colspan="2" class="buttonCell">
+						<center><button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }">Adjust X and Y Offsets</button></center>
+					</td>
+				</tr>
 
-			<td colspan="2" class="buttonCell">
-				<center><button class="btngoBig" data-bind="click: function() { $root.goTo('14'); window.scroll(0,0) }, enable: $root.stepTwelveSimpleClicked()">Adjust X and Y Offsets</button></center>
-			</td>
-		</tr>
-
-	</table>
-
+			</table>
+		</div>
+	</div>
 
 
 
