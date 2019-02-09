@@ -131,7 +131,7 @@ G10 P1 R0 S0                         ; Set initial tool 1 active and standby tem
 
 M563 P2 D0:1 H1:2 X0:3 F0:3 ; tool 2 uses both extruders and hot end heaters, maps X to both X and U, and uses both print cooling fans
 
-G10 P2 X0 Y0 U-200    ; set tool offsets and temperatures for tool 2
+G10 P2 X0 Y0 U-203.2    ; set tool offsets and temperatures for tool 2
 G10 P2 R0 S0                         ; Set initial tool 1 active and standby temperatures to 0C
 
 M567 P2 E1:1 ; set mix ratio 100% on both extruders
