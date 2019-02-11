@@ -48,8 +48,8 @@ M906 X1450 Y1450 Z1450 U1450 E950:950 		; Set motor currents (mA) and motor idle
 M84 S0 										; Disable motor idle current reduction
 	
 ; Axis Limits
-M208 X-71.3 Y11 Z0 U25 S1 			 ; Set axis minima
-M208 X520 Y340 Z350 U457 S0          ; Set axis maxima;
+M208 X-71.3 Y11 Z0 U0 S1 			 ; Set axis minima
+M208 X410 Y340 Z350 U457 S0          ; Set axis maxima;
 ;M208 X520 Y340 Z350 U457 S0          ; Set axis maxima
 
 ; Endstops
