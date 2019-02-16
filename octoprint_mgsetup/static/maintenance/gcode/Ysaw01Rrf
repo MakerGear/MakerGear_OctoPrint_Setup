@@ -1,4 +1,4 @@
-; Sawtooth XY offset calibration exported: 15:49 02/07/2019
+; Sawtooth XY offset calibration exported: 19:28 02/15/2019
 ; Axis under test: Y
 ; Pattern spacing: 0.1
 {% set tohome = parameters.tohome %}
@@ -28,7 +28,10 @@ M190 P3 S{{targetBed+4}}
 
 
 {% if tohome == true %}
-G28
+G28 XY
+G28 Z
+G32
+G28 Z
 ;G29
 T0
 {% endif %}
