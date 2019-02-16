@@ -268,7 +268,7 @@
 			<div >
 				{# <hr> #}
 			</div>
-			<li class="panel">
+			<li class="panel" data-bind="visible: !$root.rrf()">
 
 				<h3><a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#bedLevelingTasks"> Bed Leveling <i class="icon-chevron-down"></i></a></h3>
 
@@ -331,7 +331,7 @@
 
 
 
-			<li class="panel">
+			<li class="panel" data-bind="visible: !$root.rrf()">
 
 				<h3><a data-toggle="collapse" data-parent="#maintenanceAccordionTasks" href="#printerUpgrades"> Printer Upgrades <i class="icon-chevron-down"></i></a></h3>
 
