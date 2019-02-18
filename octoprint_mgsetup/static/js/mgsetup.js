@@ -959,22 +959,37 @@ $(function() {
 			if (targetTool === undefined){
 				targetTool = "tool0";
 			}
-			if (targetTool == "tool0"){
-				OctoPrint.control.sendGcode(["M300 S1040 P700",
-					"G4 P750",
-					"T0",
-					"G91",
-					"G1 E75 F400",
-					"G90"]);
-			} else if (targetTool == "tool1"){
-				OctoPrint.control.sendGcode(["M300 S1040 P700",
-					"G4 P750",
-					"T1",
-					"G91",
-					"G1 E75 F400",
-					"G90"]);
+			if (self.rrf()){
+				if (targetTool == "tool0"){
+								OctoPrint.control.sendGcode(["M120",
+									"M83",
+									"T0",
+									"G1 E75 F400",
+									"M121"]);
+				} else if (targetTool == "tool1"){
+					OctoPrint.control.sendGcode(["M120",
+						"M83",
+						"T1",
+						"G1 E75 F400",
+						"M121"]);
+				}
+			} else {
+				if (targetTool == "tool0"){
+					OctoPrint.control.sendGcode(["M300 S1040 P700",
+						"G4 P750",
+						"T0",
+						"G91",
+						"G1 E75 F400",
+						"G90"]);
+				} else if (targetTool == "tool1"){
+					OctoPrint.control.sendGcode(["M300 S1040 P700",
+						"G4 P750",
+						"T1",
+						"G91",
+						"G1 E75 F400",
+						"G90"]);
+				}
 			}
-
 			// OctoPrint.control.sendGcode(["M300 S1040 P700"]);
 
 			// OctoPrint.printer.extrude(75, {"tool":targetTool});
