@@ -40,6 +40,7 @@ $(function() {
 		self.rrfConfig = ko.observable("");
 		self.lastT1Offset = ko.observable(0.0);
 
+
 		// Originally from Controls tab:
 		self.loginState = parameters[0];
 		self.settings = parameters[1];
@@ -246,8 +247,53 @@ $(function() {
 		self.smbpatchstring = ko.observable("");
 		self.softwareUpgraded = ko.observable(false);
 
+		self.t0Picture = ko.pureComputed(function(){
+			if (self.rrf()){
+				return "/plugin/mgsetup/static/img/u1/u1-t0Only.png";
+			} else {
+				return "/plugin/mgsetup/static/img/extruder0-small.jpg";
+			}
+		}, this);
 
+		self.t1Picture = ko.pureComputed(function(){
+			if (self.rrf()){
+				return "/plugin/mgsetup/static/img/u1/u1-t1Only.png";
+			} else {
+				return "/plugin/mgsetup/static/img/extruder1-small.jpg";
+			}
+		}, this);
 
+		self.bothToolsPicture = ko.pureComputed(function(){
+			if (self.rrf()){
+				return "/plugin/mgsetup/static/img/u1/u1-bothExtruders.png";
+			} else {
+				return "/plugin/mgsetup/static/img/both-small.jpg";
+			}
+		}, this);
+
+		// self.filamentLoad1Video = ko.pureComputed(function(){
+		// 	if (self.rrf()){
+		// 		return "/plugin/mgsetup/video/u1-filamentLoad1.mp4";
+		// 	} else {
+		// 		return "/plugin/mgsetup/video/filamentLoad1.mp4";
+		// 	}
+		// }, this);
+
+		// self.filamentLoad2Video = ko.pureComputed(function(){
+		// 	if (self.rrf()){
+		// 		return "/plugin/mgsetup/video/u1-filamentLoad2.mp4";
+		// 	} else {
+		// 		return "/plugin/mgsetup/video/filamentLoad2.mp4";
+		// 	}
+		// }, this);
+
+		// self.filamentLoad3Video = ko.pureComputed(function(){
+		// 	if (self.rrf()){
+		// 		return "/plugin/mgsetup/video/u1-filamentLoad3.mp4";
+		// 	} else {
+		// 		return "/plugin/mgsetup/video/filamentLoad3.mp4";
+		// 	}
+		// }, this);
 
 
 		// Settings controls:
@@ -369,8 +415,85 @@ $(function() {
 			}
 		}, this);
 
+		// Maintenance specific variables
+
+		// self.selectedNozzle = ko.observable("");
+		// self.selectedMaterial = ko.observable("");
+
+		// self.nozzleTypes = ko.observableArray(["Brass 0.35mm",
+		// 	"Brass 0.50mm",
+		// 	"Brass 0.75mm",
+		// 	"Stainless Steel 0.35mm",
+		// 	"Stainless Steel 0.50mm",
+		// 	"Stainless Steel 0.75mm"]);
+
+		// self.materialTypes = ko.observableArray(["PLA",
+		// 	"ABS",
+		// 	"PolySupport",
+		// 	"PETG",
+		// 	"HIPS",
+		// 	"BVOH"]);
+
+		// self.validWiggleNozzleMaterialCombinations = ko.observableArray([[0, 1, 2, 3, 4, 5],
+		// 	[0, 1, 2, 3, 4],
+		// 	[0, 1],
+		// 	[],
+		// 	[],
+		// 	[] ]);
+
+		// self.validSawteethNozzleMaterialCombinations = ko.observableArray([[0, 1],
+		// 	[0, 1],
+		// 	[],
+		// 	[],
+		// 	[],
+		// 	[] ]);
+
+		// self.displayWiggleNozzles = ko.pureComputed(function() {
+
+		// 	validNozzles = [];
+		// 	for (var i = 0; i < self.validWiggleNozzleMaterialCombinations().length; i++){
+		// 		if (self.validWiggleNozzleMaterialCombinations()[i].length > 0){
+		// 			validNozzles.push(self.nozzleTypes()[i]);
+		// 		}
+		// 	}
+		// 	return validNozzles;
+		// }, this);
+
+		// self.displayWiggleMaterials = ko.pureComputed(function(){
+		// 	validMaterials = [];
+		// 	for (var i = 0; i < self.validWiggleNozzleMaterialCombinations().length; i++){
+				
+		// 		validMaterials.push(self.materialTypes()[self.displayWiggleNozzles()[i]]);
+				
+		// 	}
+		// 	return validMaterials;
 
 
+		// }, this);
+
+
+		// self.displaySawteethNozzles = ko.pureComputed(function() {
+
+		// 	validNozzles = [];
+		// 	for (var i = 0; i < self.validSawteethNozzleMaterialCombinations().length; i++){
+		// 		if (self.validSawteethNozzleMaterialCombinations()[i].length > 0){
+		// 			validNozzles.push(self.nozzleTypes()[i]);
+		// 		}
+		// 	}
+		// 	return validNozzles;
+		// }, this);
+
+		// self.displaySawteethMaterials = ko.pureComputed(function(){
+		// 	validMaterials = [];
+		// 	for (var i = 0; i < self.validSawteethNozzleMaterialCombinations().length; i++){
+				
+		// 		validMaterials.push(self.materialTypes()[self.displaySawteethNozzles()[i]]);
+				
+		// 	}
+		// 	return validMaterials;
+
+
+		// }, this);
 
 																																										 
 	//  ad88888ba                                                      88888888888                                                 88                                       
@@ -5494,6 +5617,7 @@ $(function() {
 			// 	self.displayTool1TempTarget(self.temperatures.tools()[1].target);
 			// }
 
+			self.parseProfile();
 
 
 		};
@@ -6087,33 +6211,7 @@ $(function() {
 
 
 		self.parseProfile = function() {
-			// profile parser
-			// look at profile model string
-			// decide if we should show the single or dual version of the plugin
-			// 	based on number of extruders
-			// decide if we should show the probe or probeless version of the plugin
-			// 	based on model string contents
-			// handle firmware:
-			// 	convert model string to configuration string:
-			// 		convert to UPPER
-			// 		convert all "-" to "_"
-			// 		prefix it with "MAKERGEAR_MODEL_"
-			// 	configuration.makergear.h:
-			// 		check first line:
-			// 			blank:
-			// 				replace first line with ("#define " + [modified configuration string]) and a comment with date and "AUTOMATICALLY SELECTED PROFILE"
-			// 			contains a configuration string:
-			// 				add newline to beginning
-			// 				comment out old configuration string - add comment at end with date and "automatically commented out by firmware configuration"
-			// 				replace first line with ("#define " + [modified configuration string]) and a comment with date and "AUTOMATICALLY SELECTED PROFILE"
 
-			// (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
-			//if (self.settings.printerProfiles.currentProfileData().model().indexOf("probe") !== -1 ){
-			// MakerGear M3 Single Extruder Rev 0		M3-SE Rev0-004
-			// MakerGear M3 Single Extruder Rev 0		M3-SE Rev0-005
-			// MakerGear M3 Independent Dual Rev 0		M3-ID Rev0-005
-			// MakerGear M3 Single Extruder Rev 1		M3-SE Rev1-000
-			// MakerGear M3 Independent Dual Rev 1		M3-ID Rev1-000
 			self.profileString(self.settings.printerProfiles.currentProfileData().model().toString());
 			self.mgLog("profileString:");
 			self.mgLog(self.profileString());

@@ -203,7 +203,7 @@
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='1'">
 
 	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" />
+		<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='1'" />
 	</div>
 	<br>
 
@@ -305,7 +305,7 @@
 
 <div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser  && setupStep()==='2'">
 	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" />
+		<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='2'" />
 	</div>
 	<br>
 	<h1>Adjust Starting Height </h1>
@@ -504,7 +504,7 @@
 
 
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && (setupStep()==='3' || setupStep()==='23' || setupStep()==='24')" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && (setupStep()==='3' || setupStep()==='23' || setupStep()==='24')" />
 		</div>
 		<br>
 		<h1 style="text-align:left">Extrude Filament</h1>
@@ -662,7 +662,7 @@
 
 	<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='4'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='4'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='4'" />
 		</div>
 		<br>
 
@@ -896,7 +896,7 @@
 	{# Heated Corner Check (wiggles) #}
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='5'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='5'" />
 		</div>
 		<br>
 		<center>
@@ -997,7 +997,7 @@
 
 	<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser && setupStep()==='6'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='6'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='6'" />
 		</div>
 		<br>
 		<br>
@@ -1110,7 +1110,7 @@
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='7'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='7'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='7'" />
 		</div>
 		<br>
 
@@ -1187,7 +1187,7 @@
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='8'">
 		<center>
 			<div class="fileupload-new thumbnail" style="width: 95%; " data-bind="visible: $root.isDual">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='8'" />
 			</div>
 		</center>
 		<br>
@@ -1267,7 +1267,7 @@
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='9'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
+			<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='9'" />
 		</div>
 		<br>
 
@@ -1371,7 +1371,7 @@
 
 	<div id="nine" data-bind="visible: loginState.isUser && setupStep()==='10'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" />
+			<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='10'" />
 		</div>
 		<br>
 		<h1 style="text-align:left">Extrude Filament on Extruder 1</h1>
@@ -1491,7 +1491,7 @@
 		{# EEPROM Adjust EXT1 Hotend Offset #}
 		<div data-bind="visible: loginState.isUser && setupStep()==='11'">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='11'" />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='11'" />
 			</div>
 			<br>
 
@@ -1712,7 +1712,7 @@
 	{# Print Something with EXT1 Only #}
 	<div data-bind="visible: loginState.isUser && setupStep()==='12'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" />
+			<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='12'" />
 		</div>
 		<br><br>
 		Now we’ll print a square pattern in order to determine the level of calibration between both extruders along the X and Y axes.
@@ -1817,7 +1817,7 @@
 		{# Imperfection in Both Prints Requires X/Y Calibration #}
 		<div data-bind="visible: loginState.isUser && setupStep()==='14'">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='14'" />
+				<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='14'" />
 			</div><br><br>
 			<p>
 				In this step we will calibrate the distance between the 2 extruders on the X axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the X axis is completely calibrated.
@@ -1892,7 +1892,7 @@
 		{# Y Calibration #}
 		<div data-bind="visible: loginState.isUser && setupStep()==='15'">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='15'" />
+				<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='15'" />
 			</div><br><br>
 			<p>
 				In this step we will calibrate the distance between the 2 extruders on the Y axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the Y axis is completely calibrated.
@@ -1981,7 +1981,7 @@
 	#}
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='16'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='16'" />
+			<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='16'" />
 		</div><br>
 
 		<h1 style="text-align:left;">Your First Print on T1</h1>
@@ -2050,7 +2050,7 @@
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='17'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='17'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='17'" />
 		</div><br><br>
 
 
@@ -2161,7 +2161,7 @@
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='18'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='18'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='18'" />
 		</div><br><br>
 
 
@@ -2248,7 +2248,7 @@ It looks like your probe failed to activate while testing in
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='19'">
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='19'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='19'" />
 		</div><br><br>
 
 
@@ -2309,7 +2309,7 @@ d8"           `8ba,  ,ad8'
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='20'">
 	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" />
+		<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='20'" />
 	</div><br>
 
 	<h1 style="text-align:left">Adjust Probe Offset</h1>
@@ -2526,7 +2526,7 @@ d8"              88
 
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='21'">
 	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='21'" />
+		<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='21'" />
 	</div><br><br>
 
 
@@ -2771,7 +2771,7 @@ d8"          d8"
 <div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && setupStep()==='22'">
 
 	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='22'" />
+		<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='22'" />
 	</div><br>
 
 
@@ -2990,11 +2990,11 @@ d8"          Y8a     a8P
 		</div>
 
 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='25'" />
+			<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='25'" />
 		</div><br><br>
 
 {# <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='3'" />
+		<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='3'" />
 	</div><br> #}
 	<h1 style="text-align:left">Extrude Filament</h1>
 
@@ -3022,19 +3022,42 @@ d8"          Y8a     a8P
 
 
 
-
+	<div data-bind="visible: !$root.rrf">
 		Place the PLA filament spools on the spool holders so that the loose end points directly upward into the filament guides.  Place the spool of Black PLA on the Left spool holder, and the spool of Blue PLA on the Right spool holder.  You may need to flip your spools in order to achieve the proper orientation. Cut the ends of the filament so that the tip is flat.
-		<br>
+		<br><br>
 		This shows the Left Extruder (T0) being loaded - the process is the same for the Right Extruder (T1).  Load the Right Extruder at this time as well.
+	</div>
+
+	<div data-bind="visible: $root.rrf">
+		Place both PLA filament spools on the spool holders so that the loose end points upward, uncoiling from the left side such that the spool will turn clockwise when filament is pulled from it.  Place the spool of Black PLA on the left spool holder, and Blue on the right.
+		<br><br>
+		Feed the filament into the "Filament Funnel" at the rear of the Filament box - the left funnel is for the left extruder, T0, and the right funnel is for the right extruder, T1.
+		<br><br>
+		Continue pushing filament until you see it pass through the rear of the frame, and through until it is near the end of the guide tube.
+
+
+	</div>
+
+
+
+
+
 
 		<br /><br />
 
 
-		<p>
+		<p data-bind="visible: !$root.rrf">
 			Feed the tip of your filament up through the black filament guide and the clear filament guide tube.
 		</p>
-		<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
+		<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24', visible: !$root.rrf" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
 			<source src="/plugin/mgsetup/video/filamentLoad1.mp4" type='video/mp4'>
+				<p class="vjs-no-js">
+					To view this video please enable JavaScript, and consider upgrading to a web browser that
+					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+				</p>
+			</video>
+			<video controls id="filamentVideo1" class="video-js"  preload="none"  data-setup='{"fluid": true, "controls":true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad1Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24', visible: $root.rrf" onclick="this.paused ? this.play() : this.pause();" vjs-big-play-centered>
+			<source src="/plugin/mgsetup/video/u1-filamentLoad1.mp4" type='video/mp4'>
 				<p class="vjs-no-js">
 					To view this video please enable JavaScript, and consider upgrading to a web browser that
 					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
@@ -3045,20 +3068,43 @@ d8"          Y8a     a8P
 
 
 
-			<p>
+			<p data-bind="visible: !$root.rrf">
 				Next insert the filament into the hole on top of the extruder. 
 			</p>
 
-			<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
+			<p data-bind="visible: $root.rrf">
+				Next insert the filament into the top of the right, T1 extruder filament drive.  First loosen the filament guide tube clamp, and remove the filament guide tube.  If needed, push more filament through the guide tube from the filament box, until you are able to push the filament into the top of the filament drive.
+			<br><br>
+				Repeat the process for the left, T0 extruder as well.
+			</p>
+
+			<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24', visible: !$root.rrf" onclick="this.paused ? this.play() : this.pause();">
 				<source src="/plugin/mgsetup/video/filamentLoad2.mp4" type='video/mp4'>
 					<p class="vjs-no-js">
 						To view this video please enable JavaScript, and consider upgrading to a web browser that
 						<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
 					</p>
 				</video>
+			<video controls id="filamentVideo2" class="video-js"  preload="none"  data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad2Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24', visible: $root.rrf" onclick="this.paused ? this.play() : this.pause();">
+				<source src="/plugin/mgsetup/video/u1-filamentLoad2.mp4" type='video/mp4'>
+					<p class="vjs-no-js">
+						To view this video please enable JavaScript, and consider upgrading to a web browser that
+						<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+					</p>
+				</video>
+				<br>
+				<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24', visible: $root.rrf" onclick="this.paused ? this.play() : this.pause();">
+					<source src="/plugin/mgsetup/video/u1-filamentLoad3.mp4" type='video/mp4'>
+						<p class="vjs-no-js">
+							To view this video please enable JavaScript, and consider upgrading to a web browser that
+							<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+						</p>
+					</video>
 				<br /><br />
 
-				<p>Below you can see your extruder temperatures. Once both extruder temperatures match the target temperature within 2 degrees, click "Feed Filament" on either the Left Extruder (T0) or Right Extruder (T1) to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder.<br>
+
+				<p>Below you can see your extruder temperatures. Once both extruder temperatures match the target temperature within 2 degrees, click "Feed Filament" on either the Left Extruder (T0) or Right Extruder (T1) to start loading filament. You may need to apply slight downward pressure on the filament to get started. Once the filament has started to feed, you should feel it being pulled into the extruder.<br><br>
+
 					Extrude filament on both extruders before continuing.
 				</p>
 
@@ -3085,12 +3131,12 @@ d8"          Y8a     a8P
 				<div style="width: 98%; display:inline-block; vertical-align:middle; text-align:center;">
 
 					<div style="width: 45%; display:inline-block; vertical-align:middle; text-align:center;border:4px solid #000; border-radius:5px;">
-						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='25'" /><br>
+						<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='25'" /><br>
 						<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
 					</div>
 
 					<div style="width: 45%; display:inline-block; vertical-align:middle; text-align:center; border:4px solid #000; border-radius:5px;">
-						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='25'" /><br>
+						<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='25'" /><br>
 						<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
 					</div>
 
@@ -3105,17 +3151,23 @@ d8"          Y8a     a8P
 					Continue clicking "Feed Filament" until a thin strand of filament is consistently extruding from the tip of the nozzle. Use your tweezers to remove the hot filament after it has been extruded. <br><br>
 
 				</p>
-				<p>
+				<p data-bind="visible: !$root.rrf">
 					Push the filament guide tube down into the plastic extruder hole. 
 
 				</p>
-				<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24'" onclick="this.paused ? this.play() : this.pause();">
+
+				<p data-bind="visible: $root.rrf">
+					Push the filament guide tubes down into the tops of the filament drives, and secure the filament guide tube clamps as shown.
+				</p>
+				<video controls id="filamentVideo3" class="video-js" preload="none"   data-setup='{"fluid": true}' data-bind="attr: { autoplay: 'true', loop: 'true' , poster:'/plugin/mgsetup/static/img/filamentLoad3Poster.jpg'}, if:  setupStep() === '25' || setupStep() === '23' || setupStep() === '24', visible: !$root.rrf" onclick="this.paused ? this.play() : this.pause();">
 					<source src="/plugin/mgsetup/video/filamentLoad3.mp4" type='video/mp4'>
 						<p class="vjs-no-js">
 							To view this video please enable JavaScript, and consider upgrading to a web browser that
 							<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
 						</p>
 					</video>
+
+
 
 					Once filament is consistently extruding through both the Left Extruder (T0) and Right Extruder (T1), click to "Next Step" proceed:<br>
 
@@ -3155,14 +3207,13 @@ d8"          88a     a8P
 {# Print Something with both extruders #}
 <div data-bind="visible: loginState.isUser && setupStep()==='26'">
 	<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-		<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='26'" />
+		<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='26'" />
 	</div><br>
 	<br>
 	Now we’ll print a square pattern in order to determine the level of calibration between both extruders along the X and Y axes.  You can skip this test and move directly on to Dual printing, however we strongly recommend running this print at least once to verify everything on the printer.
 	<br><br>
 	If there is an adjustment you know is needed, all adjustments can be performed either in the Maintenance tab, or by expanding the "There was an issue with the print" section below and clicking the appropriate button.
 	<br><br><br>
-
 
 	After printing the pattern, examine it on the build plate: the perimeters of the pattern should be perfectly aligned, and should not overlap except at the purge lines, which are located at the lower left-hand corner of the pattern.
 

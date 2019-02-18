@@ -1343,6 +1343,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				self._printer_profile_manager.save(newProfile, True, True)
 				self._printer_profile_manager.select(newProfile['name'])
 				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "New profile created and selected.\n"))
+				self.triggerSettingsUpdate()
 				self._logger.info("printerUpgrade debug position 3.")
 
 			except Exception as e:
