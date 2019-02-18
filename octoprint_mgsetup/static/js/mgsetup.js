@@ -961,11 +961,11 @@ $(function() {
 			}
 			if (self.rrf()){
 				if (targetTool == "tool0"){
-								OctoPrint.control.sendGcode(["M120",
-									"M83",
-									"T0",
-									"G1 E75 F400",
-									"M121"]);
+					OctoPrint.control.sendGcode(["M120",
+						"M83",
+						"T0",
+						"G1 E75 F400",
+						"M121"]);
 				} else if (targetTool == "tool1"){
 					OctoPrint.control.sendGcode(["M120",
 						"M83",
@@ -6424,7 +6424,7 @@ $(function() {
 
 		// Finally, this is the list of selectors for all elements we want this view model to be bound to.
 		// ["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance","#tab_plugin_mgsetup_maintenance-cleanup"]
-		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance-cleanup","#tab_plugin_mgsetup_rrf"]
+		["#tab_plugin_mgsetup", "#navbar_plugin_mgsetup","#mgsettings","#tab_plugin_mgsetup_maintenance-cleanup"]
 		//["#tab_plugin_mgsetup"]
 	]);
 });

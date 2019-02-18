@@ -414,7 +414,7 @@
 
 	<div data-bind="visible: loginState.isUser && ($root.shownTask() === 'Load') ">
 		<div data-bind="visible: maintenanceTaskHotend() === 'Both'">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
+			<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser " />
 			<br><br>
 			<h1 style="text-align:left">Extrude Filament</h1>
 
@@ -520,12 +520,12 @@
 				<br>
 				<div style="width: 98%; display:inline-block; vertical-align:middle; text-align:center;">
 					<div style="width: 45%; display:inline-block; vertical-align:middle; text-align:center;border:4px solid #000; border-radius:5px;">
-						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" /><br>
+						<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser" /><br>
 						<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool0'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
 					</div>
 
 					<div style="width: 45%; display:inline-block; vertical-align:middle; text-align:center; border:4px solid #000; border-radius:5px;">
-						<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser" /><br>
+						<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser" /><br>
 						<center><button title="Extrude 75 mm of Filament" class="btnstay" data-bind="enable: $root.stepThreeStartHeatingClicked() && $root.lockButton(), click: function() { $root.feedFilament('tool1'); $root.enableLockedButton() }, enabled: (parseFloat($root.displayToolTemp()) > 180) ">Feed Filament</button></center>
 					</div>
 				</div>
@@ -567,8 +567,8 @@
 
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
 
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T0'" />
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T1'" />
+				<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T0'" />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T1'" />
 			</div><br>
 			<h1 style="text-align:left">Extrude Filament</h1>
 
@@ -716,9 +716,9 @@
 	<div data-bind="visible: loginState.isUser && $root.shownTask() === 'Unload'">
 		<div data-bind="visible: ($root.shownTask() === 'Unload') ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T0'" />
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T1'" />
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'Both'" />
+				<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T0'" />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'T1'" />
+				<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && maintenanceTaskHotend() === 'Both'" />
 			</div>
 			<br>
 
@@ -869,7 +869,7 @@
 		<div data-bind="visible: loginState.isUser && maintenanceTaskHardwareRevision() === 'R0' && !$root.rrf()">
 			<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser ">
 				<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
-					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+					<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser" />
 				</div><br>
 
 				<h1 style="text-align:left">Verify Starting Height</h1>
@@ -1052,7 +1052,7 @@
 		<div data-bind="visible: loginState.isUser && (maintenanceTaskHardwareRevision() === 'R1' || $root.rrf() )">
 			<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
 				<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: maintenanceTaskPrinterType()==='ID'">
-					<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+					<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser" />
 				</div><br>
 
 				<h1 style="text-align:left">Adjust Probe Offset</h1>
@@ -1272,7 +1272,7 @@
 
 		<div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+				<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser" />
 			</div><br>
 			<h1>Adjust Starting Height - Cold using Feeler Gauge</h1>
 
@@ -1409,7 +1409,7 @@
 
 		<div id="control-jog-custom" style="clear: both; display: none;" data-bind="visible: loginState.isUser">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+				<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser" />
 			</div><br>
 			<h1>Adjust Starting Height - Cold using Feeler Gauge</h1>
 
@@ -1541,7 +1541,7 @@
 	<div data-bind="visible: $root.shownTask()==='SetT1Hot'">
 		<div data-bind="visible: loginState.isUser">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser" />
 			</div><br>
 
 			<h1 style="text-align:left">Verify T1 Starting Height</h1>
@@ -1716,7 +1716,7 @@
 
 		<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser " />
 			</div><br>
 
 			In this step, we will physically adjust the height of the Right Extruder (T1) in the mounting plate.  The system is already calibrated for Extruder 0's height, so we will adjust Extruder 1 to match that as closely as possible.
@@ -1798,7 +1798,7 @@
 
 		<div data-bind="visible: loginState.isUser ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
+				<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser " />
 			</div><br><br>
 			<p>
 				In this step we will calibrate the distance between the 2 extruders on the X axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the X axis is completely calibrated.
@@ -1875,7 +1875,7 @@
 
 		<div data-bind="visible: loginState.isUser ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
+				<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser " />
 			</div><br><br>
 			<p>
 				In this step we will calibrate the distance between the 2 extruders on the Y axis. To do this we will use both extruders to print a series of 'sawteeth' and choose which one is best aligned. We will repeat this process until the Y axis is completely calibrated.
@@ -1958,9 +1958,9 @@
 	<div data-bind="visible: $root.shownTask()==='ChangeInstructions'">
 		<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='T0')" />
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='T1')" />
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='Both')" />
+				<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='T0')" />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='T1')" />
+				<img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser && ($root.maintenanceTaskHotend()==='Both')" />
 			</div>
 			<h1><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID' && $root.maintenanceTaskHotend()==='T0'">T0 Left Extruder Hotend Swap</span><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID' && $root.maintenanceTaskHotend()==='T1'">T1 Right Extruder Hotend Swap</span><span data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID' && $root.maintenanceTaskHotend()==='Both'">T0 Left and T1 Right Extruder Hotend Swap - For Duplication Mode</span><span data-bind="visible: $root.maintenanceTaskPrinterType() === 'SE'">Hotend Swap</span></h1>
 			<br><br>
@@ -2024,7 +2024,7 @@
 	<div data-bind="visible: $root.shownTask()==='T0T1SetCold'">
 		<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " >
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder1-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
+				<img data-bind="attr: {'src': $root.t1Picture, 'width': '100%',} , visible: loginState.isUser " />
 			</div><br>
 
 			<b>
@@ -2107,7 +2107,7 @@
 	<div data-bind="visible: $root.shownTask()==='HotLevel'">
 		<div id="wiggle-section" class="jog-panel" style="display:none;" data-bind="visible: loginState.isUser ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
+				<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser " />
 			</div><br>
 			<br>
 			<h1 style="text-align:left;"> Heated Build Platform Leveling</h1>
@@ -2264,7 +2264,7 @@
 
 		<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser ">
 			<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible:$root.maintenanceTaskPrinterType() === 'ID'">
-				<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser " />
+				<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser " />
 			<br><br></div>
 
 			<h1 style="text-align:left;">Assisted Bed Leveling</h1>
@@ -2492,7 +2492,7 @@
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='Check'">
 	  <div class="fileupload-new thumbnail" style="width: 95%; margin:auto; ">
-	        <img data-bind="attr: {'src': '/plugin/mgsetup/static/img/both-small.jpg', 'width': '100%',} , visible: loginState.isUser" />
+	        <img data-bind="attr: {'src': $root.bothToolsPicture, 'width': '100%',} , visible: loginState.isUser" />
 	    </div>
 	<br>
 
@@ -2601,7 +2601,7 @@
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='ProbeCheck'">
 {# 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='17'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='17'" />
 		</div><br><br> #}
 
 
@@ -2689,7 +2689,7 @@
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='ProbeWiring'">
 {# 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='18'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='18'" />
 		</div><br><br> #}
 
 
@@ -2776,7 +2776,7 @@ It looks like your probe failed to activate while testing in
 
 	<div class="jog-panel" style="display: none;" data-bind="visible: loginState.isUser && $root.shownTask()==='ProbePhysical'">
 {# 		<div class="fileupload-new thumbnail" style="width: 95%; margin:auto; " data-bind="visible: $root.isDual">
-			<img data-bind="attr: {'src': '/plugin/mgsetup/static/img/extruder0-small.jpg', 'width': '100%',} , visible: loginState.isUser && setupStep()==='19'" />
+			<img data-bind="attr: {'src': $root.t0Picture, 'width': '100%',} , visible: loginState.isUser && setupStep()==='19'" />
 		</div><br><br> #}
 
 
@@ -2826,8 +2826,79 @@ It looks like your probe failed to activate while testing in
 
 
 
-<hr>
-	<center><textarea id="rrfMaintenanceReport" data-bind="text: $root.rrfMaintenanceReport" style="width:95%;height:250px;"></textarea></center>
+
+ <div id="tab_plugin_mgsetup_rrf" data-bind="visible: false">
+
+ <div id="rrfConfigBox" >
+ 	<center>Config:</center>
+ 	<br>
+ 	<center><textarea id="rrfConfig" data-bind="text: $root.rrfConfig" style="width:90%;height:250px;"></textarea></center>
+ 	<br>
+ 	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('duetFtp','command','openConfig') }">Update Config(Python side)</button></div>
+
+ 	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('duetFtp','command','sendConfig') }">Update Config(here)</button></div>
+
+ 	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('duetFtp','command','saveConfig') }">Save Config(Python side)</button></div>
+
+ {# 	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('changeRrfConfig','command', {'targetParameter':'probeOffset','newValue':'1.23'}) }">Change Config on Duet</button></div> #}
+
+
+
+ </div>
+ <hr>
+ <br>
+ <br>
+ <br>
+ <div id="rrfLineStepper" >
+ 	<center>LineStepper:</center>
+ 	<br>
+ 	Enter lines of gcode to run, then click on "Step" to run next line.
+ 	<br>
+ 	<br><b>WARNING:</b> There is no syntax or safety checking done on these lines - they will be split and sent exactly as typed, which may confuse or interact poorly with the printer firmware.  Use only for testing/diagnostics, and with full printer observation.
+ 	<br><br>
+ 	<center><textarea id="rrfLines" data-bind="textInput: $root.rrfLinesDisplay, disable: $root.rrfLinesLock" style="width:90%;height:250px;"></textarea></center>
+ 	<br>
+ 	Current line to send: <span data-bind="text: $root.rrfLineArrayPosition()"></span>
+
+
+
+
+ 	<div align="left"><button class="btn btn-primary" data-bind="click: function() { $root.rrfLineStep('lock') }">Lock Contents for Sending</button></div><br>
+ 	<div align="left"><button class="btn btn-primary" data-bind="click: function() { $root.rrfLineStep('unlock') }">Unlock Contents for Editing</button> - Note, this will reset send position to the first line when starting again.</div><br>
+ 	<div align="left"><button class="btn btn-primary" data-bind="click: function() { $root.rrfLineStep('next') }">Lock Contents and Send First Line / NEXT LINE</button></div><br>
+ {# 	<div align="right"><button class="btn btn-primary" data-bind="click: function() { $root.adminAction('changeRrfConfig','command', {'targetParameter':'probeOffset','newValue':'1.23'}) }">Change Config on Duet</button></div> #}
+
+
+
+ </div>
+
+
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<center><textarea id="rrfMaintenanceReport" data-bind="visible: false, text: $root.rrfMaintenanceReport" style="width:95%;height:250px;"></textarea></center>
 
 
 
@@ -2843,8 +2914,8 @@ It looks like your probe failed to activate while testing in
 			<input type="checkbox" data-bind="checked: $root.showMaintenanceButtons" /> Show Maintenance step buttons - deprecated.<br>
 			<input type="checkbox" data-bind="checked: $root.showMaintenanceChecklist" /> Show Maintenance step checklist.<br>
 
-			<hr>
-			Ignore everything below this statement.  And this statement.<br>
+
+
 
 
 	{#   88888888ba,    88888888888  88888888ba   88        88    ,ad8888ba,    #}
