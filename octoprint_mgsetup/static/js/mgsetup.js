@@ -417,83 +417,106 @@ $(function() {
 
 		// Maintenance specific variables
 
-		// self.selectedNozzle = ko.observable("");
-		// self.selectedMaterial = ko.observable("");
+		//Convoluted chunk of code to select what materials to present to a user to run various tests with.  Currently split into Wiggles (zigzags - Z offset)
+		//and Sawteeth (X/Y calibration).
+		//Heavily modular/parametric - nozzleTypes contains a list of all nozzles we want to use; materialTypes contains the list of all materials.
+		//validWiggleNozzleMaterialCombinations (and the same for Sawteeth) is an array with one subarray per nozzleType element, where each subarray
+		//contains the materialType indexes (indices...) that are valid for that process and nozzle.
 
-		// self.nozzleTypes = ko.observableArray(["Brass 0.35mm",
-		// 	"Brass 0.50mm",
-		// 	"Brass 0.75mm",
-		// 	"Stainless Steel 0.35mm",
-		// 	"Stainless Steel 0.50mm",
-		// 	"Stainless Steel 0.75mm"]);
+		//Template side code:
 
-		// self.materialTypes = ko.observableArray(["PLA",
-		// 	"ABS",
-		// 	"PolySupport",
-		// 	"PETG",
-		// 	"HIPS",
-		// 	"BVOH"]);
+		// <select data-bind="options: $root.displayWiggleNozzles, value: $root.selectedWiggleNozzle"></select>
+		// <select data-bind="options: $root.displayWiggleMaterials, value: $root.selectedWiggleMaterial"></select>
+		// <select data-bind="options: $root.displaySawteethNozzles, value: $root.selectedSawteethNozzle"></select>
+		// <select data-bind="options: $root.displaySawteethMaterials, value: $root.selectedSawteethMaterial"></select>
 
-		// self.validWiggleNozzleMaterialCombinations = ko.observableArray([[0, 1, 2, 3, 4, 5],
-		// 	[0, 1, 2, 3, 4],
-		// 	[0, 1],
-		// 	[],
-		// 	[],
-		// 	[] ]);
+		self.lockWiggleSelection = ko.observable(false);
+		self.lockSawteethSelection = ko.observable(false);
 
-		// self.validSawteethNozzleMaterialCombinations = ko.observableArray([[0, 1],
-		// 	[0, 1],
-		// 	[],
-		// 	[],
-		// 	[],
-		// 	[] ]);
+		self.selectedWiggleNozzle = ko.observable("");
+		self.selectedWiggleMaterial = ko.observable("");
 
-		// self.displayWiggleNozzles = ko.pureComputed(function() {
+		self.selectedSawteethNozzle = ko.observable("");
+		self.selectedSawteethMaterial = ko.observable("");
 
-		// 	validNozzles = [];
-		// 	for (var i = 0; i < self.validWiggleNozzleMaterialCombinations().length; i++){
-		// 		if (self.validWiggleNozzleMaterialCombinations()[i].length > 0){
-		// 			validNozzles.push(self.nozzleTypes()[i]);
-		// 		}
-		// 	}
-		// 	return validNozzles;
-		// }, this);
+		self.nozzleTypes = ko.observableArray(["Brass 0.35mm",
+			"Brass 0.50mm",
+			"Brass 0.75mm",
+			"Stainless Steel 0.35mm",
+			"Stainless Steel 0.50mm",
+			"Stainless Steel 0.75mm"]);
 
-		// self.displayWiggleMaterials = ko.pureComputed(function(){
-		// 	validMaterials = [];
-		// 	for (var i = 0; i < self.validWiggleNozzleMaterialCombinations().length; i++){
+		self.materialTypes = ko.observableArray(["PLA",
+			"ABS",
+			"PolySupport",
+			"PETG",
+			"HIPS",
+			"BVOH"]);
+
+		self.validWiggleNozzleMaterialCombinations = ko.observableArray([[0, 1, 2, 3, 4, 5],
+			[0, 1, 2, 3, 4],
+			[0, 1],
+			[],
+			[],
+			[] ]);
+
+		self.validSawteethNozzleMaterialCombinations = ko.observableArray([[0, 1],
+			[0, 1],
+			[],
+			[],
+			[],
+			[] ]);
+
+		self.displayWiggleNozzles = ko.pureComputed(function() {
+
+			validNozzles = [];
+			for (var i = 0; i < self.validWiggleNozzleMaterialCombinations().length; i++){
+				if (self.validWiggleNozzleMaterialCombinations()[i].length > 0){
+					validNozzles.push(self.nozzleTypes()[i]);
+				}
+			}
+			return validNozzles;
+		}, this);
+
+		self.displayWiggleMaterials = ko.pureComputed(function(){
+			validMaterials = ["Select Material"];
+			selectedNozzlePosition = self.nozzleTypes().indexOf(self.selectedWiggleNozzle());
+			for (var i = 0; i < self.validWiggleNozzleMaterialCombinations()[selectedNozzlePosition].length; i++){
 				
-		// 		validMaterials.push(self.materialTypes()[self.displayWiggleNozzles()[i]]);
+				validMaterials.push(self.materialTypes()[i]);
 				
-		// 	}
-		// 	return validMaterials;
+			}
+			// console.log("validMaterials:");
+			// console.log(validMaterials);
+			return validMaterials;
 
 
-		// }, this);
+		}, this);
 
 
-		// self.displaySawteethNozzles = ko.pureComputed(function() {
+		self.displaySawteethNozzles = ko.pureComputed(function() {
 
-		// 	validNozzles = [];
-		// 	for (var i = 0; i < self.validSawteethNozzleMaterialCombinations().length; i++){
-		// 		if (self.validSawteethNozzleMaterialCombinations()[i].length > 0){
-		// 			validNozzles.push(self.nozzleTypes()[i]);
-		// 		}
-		// 	}
-		// 	return validNozzles;
-		// }, this);
+			validNozzles = [];
+			for (var i = 0; i < self.validSawteethNozzleMaterialCombinations().length; i++){
+				if (self.validSawteethNozzleMaterialCombinations()[i].length > 0){
+					validNozzles.push(self.nozzleTypes()[i]);
+				}
+			}
+			return validNozzles;
+		}, this);
 
-		// self.displaySawteethMaterials = ko.pureComputed(function(){
-		// 	validMaterials = [];
-		// 	for (var i = 0; i < self.validSawteethNozzleMaterialCombinations().length; i++){
+		self.displaySawteethMaterials = ko.pureComputed(function(){
+			validMaterials = ["Select Material"];
+			selectedNozzlePosition = self.nozzleTypes().indexOf(self.selectedSawteethNozzle());
+			for (var i = 0; i < self.validSawteethNozzleMaterialCombinations()[selectedNozzlePosition].length; i++){
 				
-		// 		validMaterials.push(self.materialTypes()[self.displaySawteethNozzles()[i]]);
+				validMaterials.push(self.materialTypes()[i]);
 				
-		// 	}
-		// 	return validMaterials;
+			}
+			return validMaterials;
 
 
-		// }, this);
+		}, this);
 
 																																										 
 	//  ad88888ba                                                      88888888888                                                 88                                       
@@ -544,7 +567,8 @@ $(function() {
 			self.mgLog("wigglePosition: "+wigglePosition);
 			self.mgLog("inputWiggleHeight: "+inputWiggleHeight);
 			self.mgLog("wiggleHeightAdjust: "+self.wiggleHeightAdjust);
-
+			wiggleNumberString = self.selectedWiggleNozzle()+" "+self.selectedWiggleMaterial();
+			console.log(wiggleNumberString);
 				
 
 
@@ -857,11 +881,7 @@ $(function() {
 				if (self.rrf()){
 					parameters.wiggleX = 150;
 					parameters.wiggleY = 177.5;
-					if (self.setupStep()==='11'){
-						parameters.wigglenumber = "050plaflat";
-					} else {
-						parameters.wigglenumber = "050absflat";						
-					}
+					parameters.wigglenumber = wiggleNumberString;
 					wiggleName = "customProbeWiggleRrf";
 					OctoPrint.control.sendGcode(["M503"]);
 				} else {
@@ -896,7 +916,7 @@ $(function() {
 				wiggleX: 90,
 				wiggleY: 110,
 				tohome: true,
-				wigglenumber: self.customWiggle(),
+				wigglenumber: wiggleNumberString,
 				tool: 0};
 				if (self.stepTwentyFirstWiggleClicked()){
 					parameters.tohome = false;
@@ -916,7 +936,7 @@ $(function() {
 				wiggleX: 203,
 				wiggleY: 177.5,
 				tohome: true,
-				wigglenumber: "050absflat",
+				wigglenumber: wiggleNumberString,
 				tool: 0};
 				if (self.stepTwentyFirstWiggleClicked()){
 					parameters.tohome = false;
@@ -939,7 +959,7 @@ $(function() {
 				wiggleX: 203,
 				wiggleY: 177.5,
 				tohome: true,
-				wigglenumber: "050plaflat",
+				wigglenumber: wiggleNumberString,
 				tool: 0};
 				if (self.stepTwentyFirstWiggleClicked()){
 					parameters.tohome = false;

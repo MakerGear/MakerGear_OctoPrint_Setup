@@ -36,7 +36,12 @@
 		</style>
 		<br>
 
+{# <select data-bind="options: $root.displayWiggleNozzles, value: $root.selectedWiggleNozzle"></select>
+<select data-bind="options: $root.displayWiggleMaterials, value: $root.selectedWiggleMaterial"></select>
 
+
+<select data-bind="options: $root.displaySawteethNozzles, value: $root.selectedSawteethNozzle"></select>
+<select data-bind="options: $root.displaySawteethMaterials, value: $root.selectedSawteethMaterial"></select> #}
 
 		<ul class="nav nav-stacked" id="maintenanceAccordionTasks">
 			<li class="panel">
@@ -888,8 +893,11 @@
 				<p>
 					During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your starting height (also known as "Z Offset") with a non-standard material or nozzle diameter.  Before starting the print, select your printer configuration:
 				</p>
-
-				<div class="thumbnail" style="margin:auto; width:70%"><br>
+				<center>
+					<select data-bind="options: $root.displayWiggleNozzles, value: $root.selectedWiggleNozzle, disable: $root.lockWiggleSelection"></select>
+					<select data-bind="options: $root.displayWiggleMaterials, value: $root.selectedWiggleMaterial, disable: $root.lockWiggleSelection"></select>
+				</center>
+{# 				<div class="thumbnail" style="margin:auto; width:70%"><br>
 					<div style="margin:auto; width:90%">
 						<div><b><input type="radio" name="customWiggleSelect" value="defaultT0" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.35mm Standard Brass Nozzle, PLA - Default</b></div>
 						<hr>
@@ -905,7 +913,7 @@
 						<div><input type="radio" name="customWiggleSelect" value="050psflat" data-bind="checked: customWiggle, click: function() { $root.stepElevenFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, PolySupport</div>
 						<hr>
 					</div>
-				</div>
+				</div> #}
 				<p>
 					Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
 				</p>
@@ -923,7 +931,7 @@
 				</p>
 				<br>
 
-				<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+				<center><button class="btnstay" data-bind="enable: !$root.stepElevenFirstWiggleClicked() && ($root.selectedWiggleNozzle() !== undefined) && ($root.selectedWiggleMaterial() !== 'Select Material'), click: function() { $root.printWiggleConfirm('custom'); $root.enableLockedButton(8000); $root.lockWiggleSelection(true) }">Print Zigzag Pattern</button></center><br>
 
 				<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 					<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
@@ -1001,7 +1009,7 @@
 
 						<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 
-							<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance'); window.scroll(0,0); $root.stepElevenFirstWiggleClicked(false) }">Save<br></button></center>
+							<center><button style="width:100%;" class="btngoBig" data-bind="enable: $root.stepElevenFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance'); window.scroll(0,0); $root.stepElevenFirstWiggleClicked(false); $root.lockWiggleSelection(false) }">Save<br></button></center>
 
 							<!--Too far-->
 						</td>
@@ -1072,8 +1080,11 @@
 				<p>
 					During this step, you will print a small Zigzag pattern that will help you to gauge, adjust and perfect your probe-to-nozzle offset with a non-standard material or nozzle diameter.  Before starting the print, select your printer configuration:
 				</p>
-
-				<div class="thumbnail" style="margin:auto; width:70%"><br>
+				<center>
+					<select data-bind="options: $root.displayWiggleNozzles, value: $root.selectedWiggleNozzle, disable: $root.lockWiggleSelection"></select>
+					<select data-bind="options: $root.displayWiggleMaterials, value: $root.selectedWiggleMaterial, disable: $root.lockWiggleSelection"></select>
+				</center>
+{# 				<div class="thumbnail" style="margin:auto; width:70%"><br>
 					<div style="margin:auto; width:90%">
 						<div><b><input type="radio" name="customWiggleSelect" value="defaultProbe" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.35mm Standard Brass Nozzle, PLA - Default</b></div>
 						<hr>
@@ -1089,7 +1100,7 @@
 						<div><input type="radio" name="customWiggleSelect" value="050psflat" data-bind="checked: customWiggle, click: function() { $root.stepTwentyFirstWiggleClicked(false); return true }" /> 0.50mm Flat Brass Nozzle, PolySupport</div>
 						<hr>
 					</div>
-				</div>
+				</div> #}
 				<p>
 					Clicking the "Print Zigzag Pattern" button will trigger the following printer tasks:
 				</p>
@@ -1107,10 +1118,10 @@
 				</p>
 				<br>
 
-				<center><button class="btnstay" data-bind="visible: !$root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(8000) }">Print Zigzag Pattern</button></center><br>
+				<center><button class="btnstay" data-bind="visible: !$root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked() && ($root.selectedWiggleNozzle() !== undefined) && ($root.selectedWiggleMaterial() !== 'Select Material'), click: function() { $root.printWiggleConfirm('probe-custom'); $root.enableLockedButton(8000); $root.lockWiggleSelection(true) }">Print Zigzag Pattern</button></center><br>
 
 
-				<center><button class="btnstay" data-bind="visible: $root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked() && ($root.customWiggle() !== undefined), click: function() { $root.printWiggleConfirm('probeRrf'); $root.enableLockedButton(8000) }">RRF Probe</button></center><br>
+				<center><button class="btnstay" data-bind="visible: $root.rrf(), enable: !$root.stepTwentyFirstWiggleClicked() && ($root.selectedWiggleNozzle() !== undefined) && ($root.selectedWiggleMaterial() !== 'Select Material'), click: function() { $root.printWiggleConfirm('probeRrf'); $root.enableLockedButton(8000); $root.lockWiggleSelection(true) }">RRF Probe</button></center><br>
 
 				<div style="margin:auto; display:block; padding:4px; border:8px solid #000; border-radius:10px; text-align:center; width:70%;">
 					<div style="display:inline-block; vertical-align:middle; width:25%; text-align:center; ">
@@ -1195,7 +1206,7 @@
 						<tr>
 							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 
-								<center><button style="width:100%;" class="btngoBig" data-bind="visible: !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0) }">Save Offset<br></button></center>
+								<center><button style="width:100%;" class="btngoBig" data-bind="visible: !$root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('probe'); window.scroll(0,0); $root.lockWiggleSelection(false) }">Save Offset<br></button></center>
 
 								<!--Too far-->
 							</td>
@@ -1223,7 +1234,7 @@
 
 							<td style="border-bottom:0px;border-top:0px;border-left:2px; border-right:2px;border:solid #ddd;min-height:40px;">
 
-								<center><button style="width:100%;" class="btngoBig" data-bind="visible: $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance-rrf'); window.scroll(0,0) }">RRF Save Offset<br></button></center>
+								<center><button style="width:100%;" class="btngoBig" data-bind="visible: $root.rrf(), enable: $root.stepTwentyFirstWiggleClicked() && $root.lockButton(), click: function() { $root.setupSetStartingHeight('2-maintenance-rrf'); window.scroll(0,0); $root.lockWiggleSelection(false) }">RRF Save Offset<br></button></center>
 
 								<!--Too far-->
 							</td>
