@@ -10,7 +10,6 @@
 
 		<li class="panel">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsAA">Support<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 			<ul id="settingsAA" class="collapse">
 
 
@@ -55,7 +54,7 @@
 
 					<div class="form-horizontal">
 						<div class="control-group">
-							<label class="control-label">{{ _('Firmware installed on  RAMBo:') }}</label>
+							<label class="control-label">{{ _('Firmware installed on RAMBo:') }}</label>
 							<div class="controls">
 								<span data-bind="text: $root.firmwareline()"></span>
 
@@ -88,8 +87,7 @@
 
 
 		<li class="panel">
-			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsA">OctoPrint interface options <i class="icon-chevron-down"></i> </a></h3>
-			<hr />
+			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsA">OctoPrint Interface Options <i class="icon-chevron-down"></i> </a></h3>
 
 			<ul id="settingsA" class="collapse">
 				<li>
@@ -128,6 +126,17 @@
 								</div>
 							</div>
 
+							<div class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label">{{ _('Display Name') }}</label>
+									<div class="controls">
+										<input type="checkbox" data-bind="checked: settings.settings.plugins.mgsetup.prefixDisplayName" />  Uncheck this option to prevent automatically adding "MakerGear " to the beginning of a custom hostname.  A refresh of the OctoPrint webpage, or restart of the OctoPrint server, may be needed to finalize this change.
+
+
+
+									</div>
+								</div>
+							</div>
 
 
 
@@ -142,7 +151,6 @@
 
 		<li class="panel">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsB">Printer Usage Information<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 
 
 			<ul id="settingsB" class="collapse">
@@ -266,7 +274,6 @@
 
 		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsCC">Registration<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 
 			<ul id="settingsCC" class="collapse">
 				<li>
@@ -301,7 +308,6 @@
 
 		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsC">Networking<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 
 			<ul id="settingsC" class="collapse">
 				<li>
@@ -455,7 +461,6 @@
 
 		<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 			<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsD">Firmware<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 
 			<ul id="settingsD" class="collapse">
 				<li>
@@ -549,7 +554,6 @@
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsF">SSH Access<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 
 		<ul id="settingsF" class="collapse">
 			<li>
@@ -614,7 +618,6 @@
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsG">Diagnostics<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 
 		<ul id="settingsG" class="collapse">
 			<li>
@@ -668,7 +671,6 @@
 
 	<li class="panel" data-bind="visible: $root.unlockAdvanced()">
 		<h3> <a data-toggle="collapse" data-parent="#settingsAccordion" href="#settingsH">Misc. Operations<i class="icon-chevron-down"></i> </a></h3>
-			<hr />
 
 		<ul id="settingsH" class="collapse">
 			<li>

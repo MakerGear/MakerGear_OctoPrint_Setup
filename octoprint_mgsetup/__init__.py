@@ -195,7 +195,10 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#		octoprint.settings.Settings.set(dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName, "temperature", "control", "gcodeviewer", "terminal", "timelapse"])))))
 		#		octoprint.settings.Settings.set(dict(appearance=dict(name=["MakerGear "+self.newhost])))
 		#__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
-		octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
+		if (self._settings.get(["prefixDisplayName"])):
+			octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],["MakerGear " +self.newhost])
+		else:
+			octoprint.settings.Settings.set(octoprint.settings.settings(),["appearance", "name"],[self.newhost])
 		self.activeProfile = (octoprint.settings.Settings.get( octoprint.settings.settings() , ["printerProfiles","default"] ))
 		self._logger.info(self.activeProfile)
 		self._logger.info("extruders: "+str( ( self._printer_profile_manager.get_all() [ self.activeProfile ]["extruder"]["count"] ) ) )
@@ -400,7 +403,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			totalMachineFailTimeFriendly = "",
 			printing = False,
 			currentPrintStartTime = 0,
-			currentPrintElapsedTime = 0)
+			currentPrintElapsedTime = 0,
+			prefixDisplayName = True)
 
 
 
