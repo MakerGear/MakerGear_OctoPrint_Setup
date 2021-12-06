@@ -20,7 +20,7 @@ import time
 import datetime
 import errno
 import sys
-import urllib2
+# import urllib2
 from logging.handlers import TimedRotatingFileHandler
 from logging.handlers import RotatingFileHandler
 from zipfile import *
@@ -96,7 +96,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self.updateElapsedTimer = False
 		self.smbpatchstring = ""
 
-
+		self.pythonExe = "/home/pi/oprint/bin/python"
 
 
 	def create_loggers(self):
@@ -216,19 +216,38 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			url = url
 		for i in range(0, iterations+1):
 			self._logger.info("Testing Internet Connection, iteration "+str(i)+" of "+str(iterations)+", timeout of "+str(timeout)+" .")
-			try:
-				response=urllib2.urlopen(url,timeout=timeout)
-				self._logger.info("Check Internet Passed.  URL: "+str(url))
+			self._logger.info("Except with a new version that uses OctoPrint's connectivity checker, instead of a manual check.")
+			if self._connectivity_checker.online:
 				self.internetConnection = True
 				self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
 				return True
-			except urllib2.URLError as err: pass
-			if (i >= iterations):
+			elif (i >= iterations):
 				self._logger.info("Testing Internet Connection Failed, iteration "+str(i)+" of "+str(iterations)+", timeout of "+str(timeout)+" .  Looking for URL: "+str(url))
 				self.internetConnection = False
 				self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
 				return False
+			
+			# try:
+			# 	response=urllib2.urlopen(url,timeout=timeout)
+			# 	self._logger.info("Check Internet Passed.  URL: "+str(url))
+			# 	self.internetConnection = True
+			# 	self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
+			# 	return True
+			# except urllib2.URLError as err: pass
+			# if (i >= iterations):
+			# 	self._logger.info("Testing Internet Connection Failed, iteration "+str(i)+" of "+str(iterations)+", timeout of "+str(timeout)+" .  Looking for URL: "+str(url))
+			# 	self.internetConnection = False
+			# 	self._plugin_manager.send_plugin_message("mgsetup", dict(internetConnection = self.internetConnection))
+			# 	return False
 
+
+	def hashMatches(self, fileA, fileB):
+		# function to compare the MD5 hash of two files, returning True if they match, and False if they do not match;
+		# this is close enough for our needs to confirming that the files are identical
+		if ((hashlib.md5(open(fileA).read().encode()).hexdigest()) == (hashlib.md5(open(fileB).read().encode()).hexdigest())):
+			return True
+		else:
+			return False
 
 
 	def on_after_startup(self):
@@ -244,9 +263,11 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		self._logger.info(self._printer_profile_manager.get_all()["_default"]["extruder"]["count"])
 		# self._logger.info(__version__)
 
-
-		subprocess.call("/home/pi/.octoprint/scripts/hosts.sh") #recreate hostsname.js for external devices/ print finder
-		
+		try:
+			subprocess.call("/home/pi/.octoprint/scripts/hosts.sh") #recreate hostsname.js for external devices/ print finder
+		except Exception as e:
+			self._logger.info("Could not execute hosts.sh - might not exist?  Exception: {}".format(str(e)))
+			
 		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
 			os.makedirs('/home/pi/.octoprint/scripts/gcode')
 		except OSError:
@@ -263,9 +284,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				shutil.copy(full_src_name, dest)
 				self._logger.info("Had to copy "+file_name+" to scripts folder.")
 			else:
-				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
+				if not self.hashMatches(full_src_name, full_dest_name):
 					shutil.copy(full_src_name, dest)
-					self._logger.info("Had to overwrite "+file_name+" with new version.")
+					self._logger.info("Had to overwrite {} with new version.".format(file_name))
 
 		src_files = os.listdir(self._basefolder+"/static/maintenance/scripts/")
 		src = (self._basefolder+"/static/maintenance/scripts/")
@@ -275,13 +296,19 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			full_dest_name = os.path.join(dest, file_name)
 			if not (os.path.isfile(full_dest_name)):
 				shutil.copy(full_src_name, dest)
-				self._logger.info("Had to copy "+file_name+" to scripts folder.")
+				self._logger.info("Had to overwrite {} with new version.".format(file_name))
 			else:
-				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
+				if not self.hashMatches(full_src_name, full_dest_name):
 					shutil.copy(full_src_name, dest)
-					self._logger.info("Had to overwrite "+file_name+" with new version.")
+					self._logger.info("Had to overwrite {} with new version.".format(file_name))
 			if ".sh" in file_name:
-				os.chmod(full_dest_name, 0755)
+				os.chmod(full_dest_name, 0o755)
+
+		try:  #a bunch of code with minor error checking and user alert...ion to copy scripts to the right location; should only ever need to be run once
+			os.makedirs("/home/pi/.octoprint/slicingProfiles/cura/")
+		except OSError:
+			if not os.path.isdir("/home/pi/.octoprint/slicingProfiles/cura/"):
+				raise
 
 		src_files = os.listdir(self._basefolder+"/static/maintenance/cura/")
 		src = (self._basefolder+"/static/maintenance/cura/")
@@ -291,25 +318,25 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			full_dest_name = os.path.join(dest, file_name)
 			if not (os.path.isfile(full_dest_name)):
 				shutil.copy(full_src_name, dest)
-				self._logger.info("Had to copy "+file_name+" to scripts folder.")
+				self._logger.info("Had to copy {} to scripts folder.".format(file_name))
 			else:
-				if ((hashlib.md5(open(full_src_name).read()).hexdigest()) != (hashlib.md5(open(full_dest_name).read()).hexdigest())):
+				if not self.hashMatches(full_src_name, full_dest_name):
 					shutil.copy(full_src_name, dest)
-					self._logger.info("Had to overwrite "+file_name+" with new version.")
+					self._logger.info("Had to overwrite {} with new version.".format(file_name))
 		try:
-			os.chmod(self._basefolder+"/static/js/hostname.js", 0666)
+			os.chmod(self._basefolder+"/static/js/hostname.js", 0o666)
 		except OSError:
 			self._logger.info("Hostname.js doesn't exist?")
 		except:
 			raise
 		try:
-			os.chmod(self._basefolder+"/static/patch/patch.sh", 0755)
+			os.chmod(self._basefolder+"/static/patch/patch.sh", 0o755)
 		except OSError:
 			self._logger.info("Patch.sh doesn't exist?")
 		except:
 			raise
 		try:
-			os.chmod(self._basefolder+"/static/patch/logpatch.sh", 0755)
+			os.chmod(self._basefolder+"/static/patch/logpatch.sh", 0o755)
 		except OSError:
 			self._logger.info("logpatch.sh doesn't exist?")
 		except:
@@ -318,8 +345,8 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		try:
 			self.ip = str(([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]))
-		except IOError, e:
-			self._logger.info(e)
+		except IOError as e:
+			self._logger.info(str(e))
 		except:
 			raise
 		self.getLocalFirmwareVersion()
@@ -346,7 +373,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		#if
 		try:
-			smbHashVal = (hashlib.md5(open("/etc/samba/smb.conf").read()).hexdigest()) # != "03dc1620b398cbe3d2d82e83c20c1905":
+			smbHashVal = (hashlib.md5(open("/etc/samba/smb.conf").read().encode()).hexdigest()) # != "03dc1620b398cbe3d2d82e83c20c1905":
 			if smbHashVal == "44c057b0ffc7ab0f88c1923bdd32b559":
 				self.smbpatchstring = "Patch Already In Place"
 				self.mgLog("smb.conf hash matches patched file, no need to patch",2)
@@ -583,7 +610,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		# kwargs.update(dict(async=True, stdout=sarge.Capture(), stderr=sarge.Capture()))
 
 		try:
-			p = sarge.run(command, async=True, stdout=sarge.Capture(), stderr=sarge.Capture())
+			p = sarge.run(command, async_=True, stdout=sarge.Capture(), stderr=sarge.Capture())
 			while len(p.commands) == 0:
 				# somewhat ugly... we can't use wait_events because
 				# the events might not be all set if an exception
@@ -622,7 +649,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 					if errorFlag == False:
 						self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "\n\r"))
 
-					lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+					# lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+					lines = [self._to_unicode(x, errors="replace") for x in lines]
+
 					#_log_stderr(*lines)
 					all_stderr += list(lines)
 					self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
@@ -633,7 +662,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 				lines = p.stdout.readlines(timeout=0.5)
 				if lines:
-					lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+					# lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+					lines = [self._to_unicode(x, errors="replace") for x in lines]
+
 					#_log_stdout(*lines)
 					all_stdout += list(lines)
 					self._logger.info(lines)
@@ -653,7 +684,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		lines = p.stderr.readlines()
 		if lines:
-			lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+			# lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+			lines = [self._to_unicode(x, errors="replace") for x in lines]
+
 			#_log_stderr(*lines)
 			all_stderr += lines
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = all_stderr))
@@ -663,7 +696,9 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 		lines = p.stdout.readlines()
 		if lines:
-			lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+			# lines = map(lambda x: self._to_unicode(x, errors="replace"), lines)
+			lines = [self._to_unicode(x, errors="replace") for x in lines]
+
 			#_log_stdout(*lines)
 			all_stdout += lines
 
@@ -672,6 +707,86 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = all_stdout))
 			all_stdout = []
 		return p.returncode, all_stdout, all_stderr
+
+	# def _execute(command, **kwargs):
+	# 	# new copy of OctoPrint's _execute code, from https://github.com/OctoPrint/OctoPrint/blob/a811f191f2992b8e8f4a10ed337ce1f2421fd165/src/octoprint/plugins/softwareupdate/scripts/update-octoprint.py#L65
+	# 	import sarge
+
+	# 	if isinstance(command, (list, tuple)):
+	# 		joined_command = " ".join(command)
+	# 	else:
+	# 		joined_command = command
+	# 	_log_call(joined_command)
+
+	# 	kwargs.update(
+	# 		{
+	# 			"close_fds": CLOSE_FDS,
+	# 			"async_": True,
+	# 			"stdout": sarge.Capture(),
+	# 			"stderr": sarge.Capture(),
+	# 		}
+	# 	)
+
+	# 	try:
+	# 		p = sarge.run(command, **kwargs)
+	# 		while len(p.commands) == 0:
+	# 			# somewhat ugly... we can't use wait_events because
+	# 			# the events might not be all set if an exception
+	# 			# by sarge is triggered within the async process
+	# 			# thread
+	# 			time.sleep(0.01)
+
+	# 		# by now we should have a command, let's wait for its
+	# 		# process to have been prepared
+	# 		p.commands[0].process_ready.wait()
+
+	# 		if not p.commands[0].process:
+	# 			# the process might have been set to None in case of any exception
+	# 			print(
+	# 				"Error while trying to run command {}".format(joined_command),
+	# 				file=sys.stderr,
+	# 			)
+	# 			return None, [], []
+	# 	except Exception:
+	# 		print(
+	# 			"Error while trying to run command {}".format(joined_command), file=sys.stderr
+	# 		)
+	# 		traceback.print_exc(file=sys.stderr)
+	# 		return None, [], []
+
+	# 	all_stdout = []
+	# 	all_stderr = []
+	# 	try:
+	# 		while p.commands[0].poll() is None:
+	# 			lines = p.stderr.readlines(timeout=0.5)
+	# 			if lines:
+	# 				lines = list(map(lambda x: _to_unicode(x, errors="replace"), lines))
+	# 				_log_stderr(*lines)
+	# 				all_stderr += lines
+
+	# 			lines = p.stdout.readlines(timeout=0.5)
+	# 			if lines:
+	# 				lines = list(map(lambda x: _to_unicode(x, errors="replace"), lines))
+	# 				_log_stdout(*lines)
+	# 				all_stdout += lines
+
+	# 	finally:
+	# 		p.close()
+
+	# 	lines = p.stderr.readlines()
+	# 	if lines:
+	# 		lines = list(map(lambda x: _to_unicode(x, errors="replace"), lines))
+	# 		_log_stderr(*lines)
+	# 		all_stderr += lines
+
+	# 	lines = p.stdout.readlines()
+	# 	if lines:
+	# 		lines = list(map(lambda x: _to_unicode(x, errors="replace"), lines))
+	# 		_log_stdout(*lines)
+	# 		all_stdout += lines
+
+	# 	return p.returncode, all_stdout, all_stderr
+
 
 	def counterTest(self, actionMaybe):
 		self._execute("/home/pi/.octoprint/scripts/counter.sh")
@@ -698,7 +813,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 			else:
 				self._execute("sudo chgrp pi /home/pi/.octoprint/config.yaml.backup")
 				self._execute("sudo chown pi /home/pi/.octoprint/config.yaml.backup")
-				os.chmod("/home/pi/.octoprint/config.yaml.backup", 0600)
+				os.chmod("/home/pi/.octoprint/config.yaml.backup", 0o600)
 				self._plugin_manager.send_plugin_message("mgsetup", dict(commandError = "Changed the owner, group and permissions of config.yaml.backup - please try to Update Firmware again to backup config.yaml.\n"))
 
 	def collectLogs(self):
@@ -815,7 +930,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				# self._logger.info(self._printer_profile_manager.get_current_or_default()["model"])
 				self._logger.info("Profile: "+self.activeProfile)
 
-				newProfileString = (re.sub('[^\w]','_',self.activeProfile)).upper()
+				newProfileString = (re.sub(r'[^\w]','_',self.activeProfile)).upper()
 
 				with open('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h','r+') as f:
 					timeString = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
@@ -1087,7 +1202,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 			self._printer.cancel_print()
 			self._printer.disconnect()
-			self.mgLog(self._execute("python /home/pi/.octoprint/scripts/upload.py"),2)
+			self.mgLog(self._execute("{} /home/pi/.octoprint/scripts/upload.py".format(self.pythonExe)),2)
 			self._printer.connect()
 			
 		elif action["action"] == 'uploadAndFlashFirmware':
@@ -1096,7 +1211,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 
 			self._printer.cancel_print()
 			self._printer.disconnect()
-			self.mgLog(self._execute("python /home/pi/.octoprint/scripts/upload.py"),2)
+			self.mgLog(self._execute("{} /home/pi/.octoprint/scripts/upload.py".format(self.pythonExe)),2)
 			self._printer.connect()
 			
 
@@ -1280,7 +1395,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 				self._logger.info(self._execute("git -C /home/pi/m3firmware/src fetch --all; git -C /home/pi/m3firmware/src reset --hard; git -C /home/pi/m3firmware/src pull; git -C /home/pi/m3firmware/src checkout 1.1.6"))
 				self._logger.info("printerUpgrade debug position 5.")
 
-				newProfileString = (re.sub('[^\w]','_',newProfile["model"])).upper()
+				newProfileString = (re.sub(r'[^\w]','_',newProfile["model"])).upper()
 
 				with open('/home/pi/m3firmware/src/Marlin/Configuration_makergear.h','r+') as f:
 					timeString = str(datetime.datetime.now().strftime('%y-%m-%d.%H:%M'))
@@ -1297,7 +1412,7 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 						oldConfigStripped = oldConfig[i+1:]
 						f.write("#define MAKERGEAR_MODEL_" + newProfileString + "//AUTOMATICALLY FILLED BY MGSETUP PLUGIN - " + timeString + '\n' + "// " + oldLine + "// OLD LINE BACKED UP - " + timeString + "\n" + oldConfigStripped)
 
-				self.mgLog(self._execute("python /home/pi/.octoprint/scripts/upload.py"),2)
+				self.mgLog(self._execute("{} /home/pi/.octoprint/scripts/upload.py".format(self.pythonExe)),2)
 				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Reconnecting to printer.\n"))
 				self._printer.connect()
 				self._plugin_manager.send_plugin_message("mgsetup", dict(commandResponse = "Resetting firmware values.\n"))
@@ -1453,21 +1568,22 @@ class MGSetupPlugin(octoprint.plugin.StartupPlugin,
 		#self._logger.info(server_routes)
 
 		return [
-            (r"/video/(.*)", LargeResponseHandler, dict(path=self._basefolder+"/video",
-                                                           as_attachment=True,
-                                                           path_validation=path_validation_factory(lambda path: not is_hidden_path(path),
-                                                                                                   status_code=404)))
-        ]        
+			(r"/video/(.*)", LargeResponseHandler, dict(path=self._basefolder+"/video",
+														   as_attachment=True,
+														   path_validation=path_validation_factory(lambda path: not is_hidden_path(path),
+																								   status_code=404)))
+		]        
 #__plugin_settings_overlay__ = {appearance: {components: {order: {tab: {'- plugin_mgsetup'}}}}}
 #__plugin_settings_overlay__ = dict(appearance=dict(components=dict(order=dict(tab=[MGSetupPlugin().firstTabName]))))
 #__plugin_settings_overlay__ = dict(server=dict(port=5001))
 
 __plugin_name__ = "MakerGear Setup"
+__plugin_pythoncompat__ = ">=2.7,<4"
 
 __plugin_implementation__ = MGSetupPlugin()
 
 __plugin_hooks__ = {
-    "octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_z_offset,
+	"octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_z_offset,
 	"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
-    "octoprint.server.http.routes": __plugin_implementation__.route_hook
+	"octoprint.server.http.routes": __plugin_implementation__.route_hook
 }

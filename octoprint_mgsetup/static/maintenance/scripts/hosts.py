@@ -14,6 +14,20 @@ wlanip = ["-1","-1","-1","-1"]
 
 ethip = ["-1","-1","-1","-1"]
 
+# todo 12/1/2021 - A), rewrite this to use https://www.delftstack.com/howto/python/get-ip-address-python/ ; B), add in some better error reporting and checking...
+# also needs a relative reference to the file to modify (python version, absolute path, etc. might change), and that's ignoring the properties of that hostname.js file in the firstplace
+
+# loose version:
+
+# >>> for ifaceName in interfaces():
+# ...     addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':'No IP addr'}] )]
+# ...     print("{}:{}".format(ifaceName, (' '.join(addresses))))
+# ...
+# lo:127.0.0.1
+# eth0:10.0.0.141
+# wlan0:No IP addr
+
+
 
 def get_ip_address(ifname):
     try:

@@ -23,6 +23,8 @@ import subprocess
 import time
 import sys
 
+firmwareHexFile = ".pioenvs/megaatmega2560/firmware.hex"
+logFile = "/home/pi/.octoprint/logs/firmware.log"
 
 #_init.py / plugin will discoonect and cancel prints
 
@@ -32,17 +34,17 @@ avrFlag = 0
 
 #check if AVR dude is running, set flag if it is
 for line in os.popen("pgrep -x \"avrdude\""):
-	print ("Warning: AVRdude is already running, Quitting upload process. You may need to restart the printer to clear this warning.")
+	print("Warning: AVRdude is already running, Quitting upload process. You may need to restart the printer to clear this warning.")
 	sys.stdout.flush()
 	quit()
-   
-subprocess.check_output('echo $(date) > /home/pi/.octoprint/logs/firmware.log',shell=True)
 
-print( "Canceling prints and disconnecting ")
-subprocess.check_output('echo Canceling prints and disconnecting >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+subprocess.check_output('echo $(date) > {}'.format(logFile),shell=True)
 
-print( "Starting Update and Upload Process")
-subprocess.check_output('echo Starting Update and Upload Process >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+print("Canceling prints and disconnecting")
+subprocess.check_output('echo Canceling prints and disconnecting >> {}'.format(logFile),shell=True)
+
+print("Starting Update and Upload Process")
+subprocess.check_output('echo Starting Update and Upload Process >> {}'.format(logFile),shell=True)
 
 sys.stdout.flush()
 #                                              /$$ /$$
@@ -60,23 +62,35 @@ sys.stdout.flush()
 os.chdir("/home/pi/m3firmware/")
 
 try:
-	subprocess.check_output('platformio run --target clean >> /home/pi/.octoprint/logs/firmware.log',shell=True)
-	print "Cleaned Compilation Build - Starting Compiling"
+	subprocess.check_output('platformio run --target clean >> {}'.format(logFile),shell=True)
+	print("Cleaned Compilation Build - Starting Compiling")
 	sys.stdout.flush()
 except subprocess.CalledProcessError:
-	print "Failed to Clean directory, quitting"
+	print("Failed to Clean directory, quitting")
 	sys.stdout.flush()
 	quit()
 
 
 try:
-	subprocess.check_output('platformio run >> /home/pi/.octoprint/logs/firmware.log',shell=True)
-	print "Compilation Successful "
+	subprocess.check_output('platformio run >> {}'.format(logFile),shell=True)
+	print("Compilation Successful")
 	sys.stdout.flush()
 except subprocess.CalledProcessError:
-	print "Failed to Compile Script, quitting"
+	print("Failed to Compile Script, quitting")
 	sys.stdout.flush()
 	quit()
+
+
+try:
+	with open(logFile) as infile:
+		contents = infile.read()
+		matches = [match for match in contents.split("\n") if "Building" in match and "hex" in match]
+		hexfile = [match for match in matches[0].split(" ") if "hex" in match][0]
+		firmwareHexFile = hexfile
+		print("Extracted compiled .hex file location of: {}".format(firmwareHexFile))
+except Exception as e:
+	print("Could not extract the compiled .hex file location, or there was some other error; going to proceed with the default .hex file location.")
+	print("Specific exception: {}".format(str(e)))
 
 
 
@@ -91,8 +105,8 @@ except subprocess.CalledProcessError:
 
 
 
-print ("Storing previous firmware settings")
-subprocess.check_output('echo Storing  previous firmware settings >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+print("Storing previous firmware settings")
+subprocess.check_output('echo Storing  previous firmware settings >> {}'.format(logFile),shell=True)
 sys.stdout.flush()
 
 ser = serial.Serial('/dev/ttyS0', 115200, timeout=.5, xonxoff=False, rtscts=False, dsrdtr=False) #start serial port to upload script
@@ -109,13 +123,13 @@ zprobe = None
 matcher = None
 zprobeMatcher = None
 
-ser.write("M115\n\r") #request firmware info
+ser.write(b"M115\n\r") #request firmware info
 print("m115")
 
 lineCount = 0	#keep track of how many lines we read
 while lineCount < 20 : #max out to 100 lines
 
-	data_raw = ser.readline() #read one serial line
+	data_raw = str(ser.readline()) #read one serial line
 	lineCount = lineCount + 1 #incerease number of lines we've read
 
 	if data_raw.startswith("ok") :	#ok means we're done  - should put something 
@@ -132,12 +146,12 @@ while lineCount < 20 : #max out to 100 lines
 
 #match to figure out version, machine type, and extruder count
 if responseLineProbe != None:
-	matcher = re.match (r'FIRMWARE_NAME:Marlin ([0-9]\.[0-9]\.[0-9]\.?[0-9]?\.?[0-9]?) \(Github\) SOURCE_CODE_URL:https://github.com/MakerGear/m3firmware PROTOCOL_VERSION:1.0 MACHINE_TYPE:(.*) EXTRUDER_COUNT:([1-2])', responseLine)
+	matcher = re.match(r'FIRMWARE_NAME:Marlin ([0-9]\.[0-9]\.[0-9]\.?[0-9]?\.?[0-9]?) \(Github\) SOURCE_CODE_URL:https://github.com/MakerGear/m3firmware PROTOCOL_VERSION:1.0 MACHINE_TYPE:(.*) EXTRUDER_COUNT:([1-2])', responseLine)
 	zprobeMatcher = re.match (r'Cap:Z_PROBE:([0-1])', responseLineProbe)
 
 if (matcher == None) or (zprobeMatcher == None):
-	print ("Warning: Could not detect previous marlin firmware and settings.")
-	subprocess.check_output('echo Warning: Could not detect previous marlin firmware and settings. >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	print("Warning: Could not detect previous marlin firmware and settings.")
+	subprocess.check_output('echo Warning: Could not detect previous marlin firmware and settings. >> {}'.format(logFile),shell=True)
 
 #get version, printerName, extruder count
 if matcher:
@@ -153,7 +167,7 @@ ser.flushInput()	#clear any latent input
 ser.flushOutput()   #clear any latent output
 
 
-ser.write("M503\n\r")	#request EEPROM info
+ser.write(b"M503\n\r")	#request EEPROM info
 
 
 #value variables
@@ -174,7 +188,7 @@ m851String = None
 lineCount = 0
 if matcher != None:
 	while lineCount < 100 : #max out to 100 lines
-		data_raw = ser.readline() #read one serial line
+		data_raw = str(ser.readline()) #read one serial line
 		#print(data_raw)
 		lineCount = lineCount + 1
 		responseLine = data_raw
@@ -213,28 +227,28 @@ if m206X != None and  m206Y != None and  m206Z != None  :
 	#print m206String
 
 else:
-	print ("Could not read previous M503 M206 - Please proceed to Quick Check after firmware has uploaded")
-	subprocess.check_output('echo Could not read previous M503 M206 - Please proceed to Quick Check after firmware has uploaded >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	print("Could not read previous M503 M206 - Please proceed to Quick Check after firmware has uploaded")
+	subprocess.check_output('echo Could not read previous M503 M206 - Please proceed to Quick Check after firmware has uploaded >> {}'.format(logFile),shell=True)
 
 	sys.stdout.flush()
 
 
 if extruderCount == None:
-	print ("Could not read number of extruders - Please proceed to Quick Check after firmware has uploaded")
-	subprocess.check_output('echo Could not read number of extruders - Please proceed to Quick Check after firmware has uploaded >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	print("Could not read number of extruders - Please proceed to Quick Check after firmware has uploaded")
+	subprocess.check_output('echo Could not read number of extruders - Please proceed to Quick Check after firmware has uploaded >> {}'.format(logFile),shell=True)
 
 elif int(extruderCount) == 2:
 
 	if m218X != None and  m218Y != None and  m218Z != None  :
 		m218String = "M218 T1 X" + m218X + " Y" + m218Y + " Z" + m218Z + "\n\r"
 	else:
-		print ("Could not read previous M503 M218 - Please proceed to Quick Check after firmware has uploaded")
-		subprocess.check_output('echo Could not read previous M503 M218 - Please proceed to Quick Check after firmware has uploaded >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+		print("Could not read previous M503 M218 - Please proceed to Quick Check after firmware has uploaded")
+		subprocess.check_output('echo Could not read previous M503 M218 - Please proceed to Quick Check after firmware has uploaded >> {}'.format(logFile),shell=True)
 
 		sys.stdout.flush()
 
 if zprobe == None:
-	print ("Could not read previous M503 M851 - Please proceed to Quick Check after firmware has uploaded")
+	print("Could not read previous M503 M851 - Please proceed to Quick Check after firmware has uploaded")
 
 elif int(zprobe) == 1:
 	if m851Z != None  :
@@ -242,8 +256,8 @@ elif int(zprobe) == 1:
 		m851String = "M851 Z" + m851Z + "\n\r"
 
 	else:
-		print ("Could not read previous M503 M851 - Please proceed to Quick Check after firmware has uploaded")
-		subprocess.check_output('echo Could not read previous M503 M851 - Please proceed to Quick Check after firmware has uploaded >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+		print("Could not read previous M503 M851 - Please proceed to Quick Check after firmware has uploaded")
+		subprocess.check_output('echo Could not read previous M503 M851 - Please proceed to Quick Check after firmware has uploaded >> {}'.format(logFile),shell=True)
 
 		sys.stdout.flush()
 #else :
@@ -264,8 +278,8 @@ ser.close #close serial port so that AVRdude can use it
 #           | $$
 #           | $$
 #           |__/
-print ("Starting Upload")
-subprocess.check_output('echo Starting Upload >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+print("Starting Upload")
+subprocess.check_output('echo Starting Upload >> {}'.format(logFile),shell=True)
 sys.stdout.flush()
 
 
@@ -273,13 +287,17 @@ sys.stdout.flush()
 
 
 try:
-	subprocess.check_output('/home/pi/.platformio/packages/tool-avrdude/avrdude -cwiring -p atmega2560 -P/dev/ttyS0 -b115200 -D -Uflash:w:.pioenvs/megaatmega2560/firmware.hex >> /home/pi/.octoprint/logs/firmware.log',shell=True)
-	print "Upload Successful "
-	subprocess.check_output('echo Upload Sucessful >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	# subprocess.check_output('/home/pi/.platformio/packages/tool-avrdude/avrdude -cwiring -p atmega2560 -P/dev/ttyS0 -b115200 -D -Uflash:w:.pioenvs/megaatmega2560/firmware.hex >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	# subprocess.check_output('avrdude -cwiring -p atmega2560 -P/dev/ttyS0 -b115200 -D -Uflash:w:.pioenvs/megaatmega2560/firmware.hex >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	subprocess.check_output('/home/pi/m3firmware/avrdudeWrapper.sh -cwiring -p atmega2560 -P/dev/ttyS0 -b115200 -D -Uflash:w:{} >> {}'.format(firmwareHexFile, logFile),shell=True)
+
+
+	print("Upload Successful ")
+	subprocess.check_output('echo Upload Sucessful >> {}'.format(logFile),shell=True)
 	sys.stdout.flush()
 except subprocess.CalledProcessError:
-	print "Failed to Upload, quitting"
-	subprocess.check_output('echo Failed to Upload, quitting >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	print("Failed to Upload, quitting")
+	subprocess.check_output('echo Failed to Upload, quitting >> {}'.format(logFile),shell=True)
 	sys.stdout.flush()
 	quit()
 
@@ -287,8 +305,8 @@ except subprocess.CalledProcessError:
 time.sleep(5)
 
 if matcher != None :
-	print "Restoring parameters "
-	subprocess.check_output('echo Restoring parameters >> /home/pi/.octoprint/logs/firmware.log',shell=True)
+	print("Restoring parameters ")
+	subprocess.check_output('echo Restoring parameters >> {}'.format(logFile),shell=True)
 	sys.stdout.flush()
 
 
@@ -299,18 +317,18 @@ if matcher != None :
 
 	if m206String != None:
 		ser.write(m206String)
-		subprocess.check_output("echo M206 X" + m206X + " Y" + m206Y + " Z" + m206Z + " >> /home/pi/.octoprint/logs/firmware.log",shell=True)
+		subprocess.check_output("echo M206 X" + m206X + " Y" + m206Y + " Z" + m206Z + " >> {}".format(logFile),shell=True)
 
 		#print "write M206"
 	if m851String != None:
 		ser.write(m851String)
-		subprocess.check_output("echo M851 Z" + m851Z + " >> /home/pi/.octoprint/logs/firmware.log",shell=True)
+		subprocess.check_output("echo M851 Z" + m851Z + " >> {}".format(logFile),shell=True)
 		#print "write M851"
 
 	if int(extruderCount) == 2:
 		if m218String != None:
 			ser.write(m218String)
-		subprocess.check_output("echo M218 T1 X" + m218X + " Y" + m218Y + " Z" + m218Z + " >> /home/pi/.octoprint/logs/firmware.log",shell=True)
+		subprocess.check_output("echo M218 T1 X" + m218X + " Y" + m218Y + " Z" + m218Z + " >> {}".format(logFile),shell=True)
 		#print "write M218"
 
 
@@ -323,7 +341,7 @@ if matcher != None :
 
 ser.close
 
-print "Finished!"
+print("Finished!")
 sys.stdout.flush()
 
 
