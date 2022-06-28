@@ -1022,10 +1022,14 @@ $(function() {
 		};
 
 		self.cooldown = function () {
-			OctoPrint.control.sendGcode(["M104 T0 S0",
+			if (self.isDual()) {
+				OctoPrint.control.sendGcode(["M104 T0 S0",
 				"M104 T1 S0",
-				"M140 S0"
-			]);
+				"M140 S0"]);
+			} else {
+				OctoPrint.control.sendGcode(["M104 S0",
+				"M140 S0"]);
+			}
 		};
 
 		self.stepOneConfirm = function(){
