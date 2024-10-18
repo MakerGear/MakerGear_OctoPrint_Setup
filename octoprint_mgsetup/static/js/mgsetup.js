@@ -167,11 +167,17 @@ $(function() {
 		self.tools(self.temperatures.tools());
 
 		self.isDual = ko.pureComputed(function(){
-			if (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
-				self.mgLog("We're a Dual!");
-				return true;
+			if (self.settings.printerProfiles.currentProfileData() != null){
+			
+				if (self.settings.printerProfiles.currentProfileData().extruder.count() == 2){
+					self.mgLog("We're a Dual!");
+					return true;
+				} else {
+					self.mgLog("We're a Single!");
+					return false;
+				}
 			} else {
-				self.mgLog("We're a Single!");
+				self.mgLog("currentProfileData is null, proceeding as a single extruder for now.");
 				return false;
 			}
 		},this); //stand-in for setting dual vs. single - set to true for now/testing - TODO - change this to actually check/reflect dual state
@@ -1022,10 +1028,14 @@ $(function() {
 		};
 
 		self.cooldown = function () {
-			OctoPrint.control.sendGcode(["M104 T0 S0",
+			if (self.isDual()) {
+				OctoPrint.control.sendGcode(["M104 T0 S0",
 				"M104 T1 S0",
-				"M140 S0"
-			]);
+				"M140 S0"]);
+			} else {
+				OctoPrint.control.sendGcode(["M104 S0",
+				"M140 S0"]);
+			}
 		};
 
 		self.stepOneConfirm = function(){
@@ -5360,7 +5370,13 @@ $(function() {
 
 		self.parseProfile = function() {
 
-			self.profileString(self.settings.printerProfiles.currentProfileData().model().toString());
+			//self.profileString(self.settings.printerProfiles.currentProfileData().model().toString());
+			if (self.settings.printerProfiles.currentProfileData() != null){
+				self.profileString(self.settings.printerProfiles.currentProfileData().model().toString());
+			} else {
+				self.mgLog("currentProfileData is null, setting profile string to an empty string for now.");
+				self.profileString("");
+			}
 			self.mgLog("profileString:");
 			self.mgLog(self.profileString());
 			if (self.profileString() === ""){
